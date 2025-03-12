@@ -92,21 +92,35 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 
 
 import dj_database_url  # Make sure to install this package
-DATABASE_URL = os.getenv("MYSQL_URL")
-
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)#automatically sets up Django to use the MySQL database from Railway by fetching the MYSQL_URL from environment variables.
-
+# DATABASE_URL = os.getenv("MYSQL_URL")
+DATABASES = {
+    'default': {
+        'ENGINE': 'mysql.connector.django',  # Use mysql-connector-python
+        'NAME': 'agribazaar',
+        'USER': 'root',
+        'PASSWORD':'YgHihGOQauBRHDQzhoJGXApMDgEecNZm',  #Vijay@2025sql'
+        'HOST': 'mysql.railway.internal',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
     }
-else:
-    DATABASES = {
-        'default': dj_database_url.config(
-        default=os.getenv("mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway"),
-        engine='mysql.connector.django',  # Use mysql-connector-python
-        conn_max_age=600
-        )
-    }
+    
+}
+# if DATABASE_URL:
+#     DATABASES = {
+#         'default': dj_database_url.parse("mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway", conn_max_age=600)#automatically sets up Django to use the MySQL database from Railway by fetching the MYSQL_URL from environment variables.
+
+#     }
+# else:
+    
+    # DATABASES = {
+    #     'default': dj_database_url.config(
+    #     default=os.getenv("mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway"),
+    #     engine='mysql.connector.django',  # Use mysql-connector-python
+    #     conn_max_age=600
+    #     )
+    # }
     # 'default': 
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME' : 'agribazaar',
