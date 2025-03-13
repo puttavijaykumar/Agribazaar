@@ -106,7 +106,7 @@ DATABASES = {
         'USER': env('root',default='root'),
         'PASSWORD':env('YgHihGOQauBRHDQzhoJGXApMDgEecNZm',default='Vijay@2025sql'),  #Vijay@2025sql'
         'HOST': env('mysql.railway.internal',default='127.0.0.1'),
-        'PORT': env.int('3306',default='3306'),
+        'PORT': env.int('3306',default=3306),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
             # 'autocommit': True,
