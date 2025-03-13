@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url 
 # Security settings
 # Database configuration
 
@@ -28,7 +29,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 DEBUG = os.getenv('DEBUG', 'True' if os.getenv('RENDER') is None else 'False') == 'True'
-DATABASE_URL = os.getenv('DATABASE_URL')  # Fetch from environment variable
 
 DEBUG = True
 
@@ -37,11 +37,11 @@ DEBUG = True
 from decouple import config
 
 # Read ALLOWED_HOSTS from environment variable
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='agribazaar-lxdu.onrender.com,localhost,127.0.0.1').split(',')
 # Print ALLOWED_HOSTS to verify
-print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
-# Application definition
 
+# Application definition
+print("✅ ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging to check if it loads correctly
 INSTALLED_APPS = [
     
     'accounts',
@@ -91,49 +91,33 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-import dj_database_url  # Make sure to install this package
+ # Make sure to install this package
 # DATABASE_URL = os.getenv("MYSQL_URL")
+import environ
+env = environ.Env()
+environ.Env.read_env()
+# DATABASE_URL = os.getenv('DATABASE_URL','mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway')  # Fetch from environment variable
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',  # Use mysql-connector-python
-        'NAME': 'agribazaar',
-        'USER': 'root',
-        'PASSWORD':'YgHihGOQauBRHDQzhoJGXApMDgEecNZm',  #Vijay@2025sql'
-        'HOST': 'mysql.railway.internal',
-        'PORT': '3306',
+        'NAME': env('railway',default='agribazaar'),
+        'USER': env('root',default='root'),
+        'PASSWORD':env('YgHihGOQauBRHDQzhoJGXApMDgEecNZm',default='Vijay@2025sql'),  #Vijay@2025sql'
+        'HOST': env('mysql.railway.internal',default='127.0.0.1'),
+        'PORT': env('3306',default='3306'),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+            # 'autocommit': True,
         }
     }
     
 }
-# if DATABASE_URL:
-#     DATABASES = {
-#         'default': dj_database_url.parse("mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway", conn_max_age=600)#automatically sets up Django to use the MySQL database from Railway by fetching the MYSQL_URL from environment variables.
 
-#     }
-# else:
+DATABASE_URL = "mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway"
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES['default'] = dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
     
-    # DATABASES = {
-    #     'default': dj_database_url.config(
-    #     default=os.getenv("mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway"),
-    #     engine='mysql.connector.django',  # Use mysql-connector-python
-    #     conn_max_age=600
-    #     )
-    # }
-    # 'default': 
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME' : 'agribazaar',
-    #     'USER' :'root',
-    #     'PASSWORD':'Vijay@2025sql',
-    #     'HOST' : 'localhost',
-    #     'PORT' :'3306',
-    #     'OPTIONS':{
-    #         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-    #     }   
-    #  'default': dj_database_url.config(default=os.getenv("mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway"), conn_max_age=600)    
-    # }
-
 
 
 # Password validation
@@ -186,10 +170,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # settings.py
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Shows email in the terminal (for testing)
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Shows email in the terminal (for testing)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_PORT = 587  
 EMAIL_USE_TLS = True  
 EMAIL_HOST_USER = 'vijaykumarputta08@gmail.com'  
 EMAIL_HOST_PASSWORD = 'thos cyhn ncmy ayyc'  
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+print(EMAIL_BACKEND)
