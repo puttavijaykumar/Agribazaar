@@ -95,7 +95,7 @@ def verify_email(request, uidb64, token):
         return redirect("register")  # Redirect to register page  
     
 from django.http import HttpResponse    
-def home(request):
-    return HttpResponse("Welcome to AgriBazaar! Homepage is working.")
 # def home(request):
-#     return render(request, "accounts/home.html") # Make sure home.html exists in templates folder
+    # return HttpResponse("Welcome to AgriBazaar! Homepage is working.")
+def home(request):
+    return render(request, "accounts/home.html") # Make sure home.html exists in templates folder
