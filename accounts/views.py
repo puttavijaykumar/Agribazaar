@@ -46,7 +46,7 @@ def login_view(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-        if user is not None: # If the authentication is succeeds
+        if user is not Nnoe: # If the authentication is succeeds
             login(request, user)
             return redirect("home")  # Redirect to home
         else: #If authentication fails
@@ -94,5 +94,8 @@ def verify_email(request, uidb64, token):
         messages.error(request, "Invalid or expired verification link. Please register again.")
         return redirect("register")  # Redirect to register page  
     
+from django.http import HttpResponse    
 def home(request):
-    return render(request, "accounts/home.html")  # Make sure home.html exists in templates folder
+    return HttpResponse("Welcome to AgriBazaar! Homepage is working.")
+# def home(request):
+#     return render(request, "accounts/home.html") # Make sure home.html exists in templates folder
