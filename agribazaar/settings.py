@@ -93,20 +93,17 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 
  # Make sure to install this package
 # DATABASE_URL = os.getenv("MYSQL_URL")
-import environ
-
-env = environ.Env()
-environ.Env.read_env()  # Ensure .env is loaded
-
+from dotenv import load_dotenv
+load_dotenv()
 # DATABASE_URL = os.getenv('DATABASE_URL','mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway')  # Fetch from environment variable
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',  # Use mysql-connector-python
-        'NAME': env('railway',default='agribazaar'),
-        'USER': env('root',default='root'),
-        'PASSWORD':env('YgHihGOQauBRHDQzhoJGXApMDgEecNZm',default='Vijay@2025sql'),  #Vijay@2025sql'
-        'HOST': env('mysql.railway.internal',default='127.0.0.1'),
-        'PORT': env.int('3306',default=3306),
+        'NAME':  os.getenv('railway',default='agribazaar'),
+        'USER': os.getenv('root',default='root'),
+        'PASSWORD': os.getenv('YgHihGOQauBRHDQzhoJGXApMDgEecNZm',default='Vijay@2025sql'),  #Vijay@2025sql'
+        'HOST':  os.getenv('mysql.railway.internal',default='127.0.0.1'),
+        'PORT': os.getenv('3306',default=3306),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
             # 'autocommit': True,
