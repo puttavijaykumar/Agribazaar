@@ -95,32 +95,30 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 # DATABASE_URL = os.getenv("MYSQL_URL")
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
 print("✅ ALLOWED_HOSTS:", ALLOWED_HOSTS)
-from dotenv import load_dotenv
-load_dotenv()
+
+# from dotenv import load_dotenv
+# load_dotenv()
 # DATABASE_URL = os.getenv('DATABASE_URL','mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway')  # Fetch from environment variable
-DATABASES = {
-    'default': {
-        'ENGINE': 'mysql.connector.django',  # Use mysql-connector-python
-        'NAME':  os.getenv('railway',default='agribazaar'),
-        'USER': os.getenv('root',default='root'),
-        'PASSWORD': os.getenv('YgHihGOQauBRHDQzhoJGXApMDgEecNZm',default='Vijay@2025sql'),  #Vijay@2025sql'
-        'HOST':  os.getenv('mysql.railway.internal',default='127.0.0.1'),
-        'PORT': os.getenv('59144',default=3306),
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-            # 'autocommit': True,
-        }
-    }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mysql.connector.django',  # Use mysql-connector-python
+#         'NAME':  os.getenv('railway',default='agribazaar'),
+#         'USER': os.getenv('root',default='root'),
+#         'PASSWORD': os.getenv('YgHihGOQauBRHDQzhoJGXApMDgEecNZm',default='Vijay@2025sql'),  #Vijay@2025sql'
+#         'HOST':  os.getenv('mainline.proxy.rlwy.net',default='127.0.0.1'),
+#         'PORT': os.getenv('59144',default=3306),
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#             # 'autocommit': True,
+#         }
+#     }
+# }
+
+# DATABASE_URL = "mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway"
+# DATABASE_URL = os.getenv('DATABASE_URL')
+# if DATABASE_URL:
+#     DATABASES['default'] = dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
     
-}
-
-DATABASE_URL = "mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway"
-DATABASE_URL = os.getenv('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES['default'] = dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
-    
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
