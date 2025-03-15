@@ -93,7 +93,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 
  # Make sure to install this package
 # DATABASE_URL = os.getenv("MYSQL_URL")
-ALLOWED_HOSTS = ['agribazaar-pi.vercel.app','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
 print("✅ ALLOWED_HOSTS:", ALLOWED_HOSTS)
 from dotenv import load_dotenv
 load_dotenv()
