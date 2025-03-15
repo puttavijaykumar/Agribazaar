@@ -24,10 +24,6 @@ logger = logging.getLogger(__name__)
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-
-
-
-
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -46,7 +42,7 @@ def login_view(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-        if user is not Nnoe: # If the authentication is succeeds
+        if user is not None: # If the authentication is succeeds
             login(request, user)
             return redirect("home")  # Redirect to home
         else: #If authentication fails

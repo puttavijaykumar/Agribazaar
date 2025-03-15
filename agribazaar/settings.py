@@ -33,7 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.getenv('DEBUG', 'True' if os.getenv('RENDER') is None else 'False') == 'True'
 
-DEBUG = True
+DEBUG = False
 
 
 # ALLOWED_HOSTS = ["127.0.0.1", "192.168.56.1"]
