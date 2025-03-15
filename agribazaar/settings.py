@@ -13,11 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
-# import dj_database_url 
-# Security settings
-# Database configuration
-# import pymysql
-# pymysql.install_as_MySQLdb()
+
  
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,13 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 DEBUG = os.getenv('DEBUG', 'True' if os.getenv('RENDER') is None else 'False') == 'True'
-
 DEBUG = False
-
-
-# ALLOWED_HOSTS = ["127.0.0.1", "192.168.56.1"]
-# ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='agribazaar-lxdu.onrender.com,localhost,127.0.0.1').split(',')
-# Print ALLOWED_HOSTS to verify
 
 # Application definition
   # Debugging to check if it loads correctly
@@ -90,35 +80,8 @@ WSGI_APPLICATION = 'agribazaar.wsgi.application'
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secrete key from environment variable
 # SECURITY WARNING: don't run with debug turned on in production!
 
-
- # Make sure to install this package
-# DATABASE_URL = os.getenv("MYSQL_URL")
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
-# print("✅ ALLOWED_HOSTS:", ALLOWED_HOSTS)
-
-# from dotenv import load_dotenv
-# load_dotenv()
-# DATABASE_URL = os.getenv('DATABASE_URL','mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway')  # Fetch from environment variable
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'mysql.connector.django',  # Use mysql-connector-python
-#         'NAME':  os.getenv('railway',default='agribazaar'),
-#         'USER': os.getenv('root',default='root'),
-#         'PASSWORD': os.getenv('YgHihGOQauBRHDQzhoJGXApMDgEecNZm',default='Vijay@2025sql'),  #Vijay@2025sql'
-#         'HOST':  os.getenv('mainline.proxy.rlwy.net',default='127.0.0.1'),
-#         'PORT': os.getenv('59144',default=3306),
-#         'OPTIONS': {
-#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-#             # 'autocommit': True,
-#         }
-#     }
-# }
-
-# DATABASE_URL = "mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway"
-# DATABASE_URL = os.getenv('DATABASE_URL')
-# if DATABASE_URL:
-#     DATABASES['default'] = dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
-    
+  
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -159,7 +122,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,"accounts","static"),
+    os.path.join(BASE_DIR,"static"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Ensure this directory exists
 # Default primary key field type
