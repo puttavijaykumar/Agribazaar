@@ -15,6 +15,9 @@ import os
 import dj_database_url 
 # Security settings
 # Database configuration
+import pymysql
+pymysql.install_as_MySQLdb()
+ 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,12 +35,9 @@ DEBUG = os.getenv('DEBUG', 'True' if os.getenv('RENDER') is None else 'False') =
 
 DEBUG = True
 
+ALLOWED_HOSTS = ['.vercel.app']
 # ALLOWED_HOSTS = ["127.0.0.1", "192.168.56.1"]
-# ALLOWED_HOSTS = ['*']
-from decouple import config
-
-# Read ALLOWED_HOSTS from environment variable
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='agribazaar-lxdu.onrender.com,localhost,127.0.0.1').split(',')
+# ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='agribazaar-lxdu.onrender.com,localhost,127.0.0.1').split(',')
 # Print ALLOWED_HOSTS to verify
 
 # Application definition
