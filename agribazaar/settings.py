@@ -35,13 +35,13 @@ DEBUG = os.getenv('DEBUG', 'True' if os.getenv('RENDER') is None else 'False') =
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
+
 # ALLOWED_HOSTS = ["127.0.0.1", "192.168.56.1"]
 # ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='agribazaar-lxdu.onrender.com,localhost,127.0.0.1').split(',')
 # Print ALLOWED_HOSTS to verify
 
 # Application definition
-print("✅ ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging to check if it loads correctly
+  # Debugging to check if it loads correctly
 INSTALLED_APPS = [
     
     'accounts',
@@ -93,6 +93,8 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 
  # Make sure to install this package
 # DATABASE_URL = os.getenv("MYSQL_URL")
+ALLOWED_HOSTS = ['agribazaar-pi.vercel.app','127.0.0.1','localhost']
+print("✅ ALLOWED_HOSTS:", ALLOWED_HOSTS)
 from dotenv import load_dotenv
 load_dotenv()
 # DATABASE_URL = os.getenv('DATABASE_URL','mysql://root:YgHihGOQauBRHDQzhoJGXApMDgEecNZm@mysql.railway.internal:3306/railway')  # Fetch from environment variable
@@ -103,7 +105,7 @@ DATABASES = {
         'USER': os.getenv('root',default='root'),
         'PASSWORD': os.getenv('YgHihGOQauBRHDQzhoJGXApMDgEecNZm',default='Vijay@2025sql'),  #Vijay@2025sql'
         'HOST':  os.getenv('mysql.railway.internal',default='127.0.0.1'),
-        'PORT': os.getenv('3306',default=3306),
+        'PORT': os.getenv('59144',default=3306),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
             # 'autocommit': True,
