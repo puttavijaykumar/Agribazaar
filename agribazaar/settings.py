@@ -35,7 +35,7 @@ DEBUG = os.getenv('DEBUG', 'True' if os.getenv('RENDER') is None else 'False') =
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
 # ALLOWED_HOSTS = ["127.0.0.1", "192.168.56.1"]
 # ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='agribazaar-lxdu.onrender.com,localhost,127.0.0.1').split(',')
 # Print ALLOWED_HOSTS to verify
