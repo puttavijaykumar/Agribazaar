@@ -35,7 +35,7 @@ def register_view(request):
             return HttpResponse("Check your email to verify your account.")  
     else:
         form = RegisterForm()
-    return render(request, "accounts/register.html", {"form": form})
+    return render(request, "register.html", {"form": form})
 
 def login_view(request):
     if request.method == "POST":
@@ -46,8 +46,8 @@ def login_view(request):
             login(request, user)
             return redirect("home")  # Redirect to home
         else: #If authentication fails
-            return render(request, "accounts/login.html", {"error": "Invalid Credentials"})
-    return render(request, "accounts/login.html")
+            return render(request, "login.html", {"error": "Invalid Credentials"})
+    return render(request, "login.html")
 
 def logout_view(request):
     logout(request)
@@ -94,4 +94,4 @@ from django.http import HttpResponse
 # def home(request):
     # return HttpResponse("Welcome to AgriBazaar! Homepage is working.")
 def home(request):
-    return render(request, "accounts/home.html") # Make sure home.html exists in templates folder
+    return render(request, "home.html") # Make sure home.html exists in templates folder
