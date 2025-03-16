@@ -1,9 +1,3 @@
-# from django.shortcuts import render
-
-# # Create your views here.
-# from django.shortcuts import render, redirect
-# from .forms import RegisterForm
-
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
@@ -90,8 +84,6 @@ def verify_email(request, uidb64, token):
         messages.error(request, "Invalid or expired verification link. Please register again.")
         return redirect("register")  # Redirect to register page  
     
-from django.http import HttpResponse    
-# def home(request):
-    # return HttpResponse("Welcome to AgriBazaar! Homepage is working.")
+
 def home(request):
     return render(request, "home.html") # Make sure home.html exists in templates folder
