@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,8 +9,11 @@
     
   </head>
   <body>
-    <div class="container">
-      <h2>Register</h2>
+    {% comment %} <div class="logo-container">
+      <img src="{% static 'images/agri_logo.png' %}" alt="AgriBazaar Logo" class="logo">
+  </div> {% endcomment %}
+    {% comment %} <div class="container"> 
+      <h1>Registration</h1>
       <form action="" method="post">
         {% csrf_token %} {{ form.as_p }}
         <button type="submit">Sign Up</button>
@@ -19,5 +22,39 @@
     </div>
   
     <script src="{% static 'javascript/scriptR.js' %}"></script>
-  </body>
+  </body> {% endcomment %}
+{% comment %} </html> {% endcomment %} 
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'css/styleR.css' %}">
+</head>
+<body>
+
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="{% static 'images/agri_logo.png' %}" alt="AgriBazaar Logo" class="logo">
+    </div>
+
+    <!-- Registration Form -->
+    <div class="container">
+        <h1>Registration</h1>
+        <form action="" method="post">
+            {% csrf_token %} 
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+        </form>
+        <p class="login-text">
+            <b>Already have an account?</b> 
+            <a href="/login" style="color:yellow;font-size:16px;">Login here</a>
+        </p>
+    </div>
+
+    <script src="{% static 'javascript/scriptR.js' %}"></script>
+
+</body>
 </html>

@@ -1,96 +1,84 @@
-/* Reset default styles */
-html, body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #126b97, #81c784);
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Background Gradient */
+body {
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    overflow:auto;  /* Prevents unnecessary scrolling */
-}
-
-/* Centering the form */
-.container {
-    background: linear-gradient(135deg, #4caf50, #81c784);
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Container */
+.container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    backdrop-filter: blur(10px);
     text-align: center;
-    width: 90%;
-    max-width: 400px;  /* Prevents form from being too wide */
-    min-height: auto;
-    position: relative;
-    top: 0;  /* Ensures form starts at the top */
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
 }
 
-/* Styling heading */
-h2 {
-    margin-bottom: 15px;
-    color: #333;
-    font-size: 20px;
+/* Heading */
+h1 {
+    margin-bottom: 20px;
 }
 
-/* Form elements */
-form {
-    display: flex;
-    flex-direction: column;
-  
-}
-
-input, button {
+/* Input Fields */
+form input {
     width: 100%;
     padding: 10px;
-    margin: 5px 0;
+    margin: 10px 0;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: none;
     font-size: 16px;
 }
 
-input:focus {
-    border-color: #4caf50;
-    outline: none;
-}
-
+/* Button Styling */
 button {
     background: #4caf50;
     color: white;
     border: none;
-    cursor: pointer;
-    transition: background 0.3s ease;
     padding: 12px;
-    font-size: 16px;
+    font-size: 18px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
 }
 
 button:hover {
-    background: #388e3c;
+    background: #45a049;
 }
 
-/* Text and Links */
-a {
-    display: block;
-    margin-top: 10px;
-    color: #ff9800;
-    text-decoration: none;
+/* Login Text */
+.login-text {
+    margin-top: 15px;
     font-size: 14px;
 }
 
-a:hover {
-    text-decoration: underline;
+/* AgriBazaar Logo */
+.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* Responsive Design */
-@media (max-width: 480px) {
-    .container {
-        width: 90%;
-        padding: 15px;
-    }
-    
-    h2 {
-        font-size: 18px;
-    }
+.logo {
+    width: 100px;
+    height: auto;
+}
 
-    input, button {
-        font-size: 14px;
-    }
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
 }
