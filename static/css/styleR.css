@@ -59,12 +59,13 @@ button:hover {
 a {
     display: block;
     margin-top: 15px;
-    color: #4caf50;
+    color: rgb(25, 121, 25);
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
+   
 }
 
 /* Responsive */

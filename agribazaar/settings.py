@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 DEBUG = os.getenv('DEBUG', 'True' if os.getenv('RENDER') is None else 'False') == 'True'
-DEBUG = False
+DEBUG = True
 
 # Application definition
   # Debugging to check if it loads correctly
