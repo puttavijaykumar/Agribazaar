@@ -84,19 +84,19 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 # SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
-
+import dj_database_url
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'neondb',  # Found after last `/`
-        'USER': 'neondb_owner',  # Found after `//` before `:`
-        'PASSWORD': 'npg_GX0qPjmrwU5v',  # Found between `:` and `@`
-        'HOST': 'ep-tiny-star-a1gmc2so-pooler.ap-southeast-1.aws.neon.tech',  # Found between `@` and `/`
-        'PORT': '5432',  # Default PostgreSQL port
-        'OPTIONS': {
-            'sslmode':'require',  # Found after `?sslmode=`
-        },
-    }
+     "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'neondb',  # Found after last `/`
+        # 'USER': 'neondb_owner',  # Found after `//` before `:`
+        # 'PASSWORD': 'npg_GX0qPjmrwU5v',  # Found between `:` and `@`
+        # 'HOST': 'ep-tiny-star-a1gmc2so-pooler.ap-southeast-1.aws.neon.tech',  # Found between `@` and `/`
+        # 'PORT': '5432',  # Default PostgreSQL port
+        # 'OPTIONS': {
+        #     'sslmode':'require',  # Found after `?sslmode=`
+        
+    
 }
 
 
