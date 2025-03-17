@@ -85,16 +85,19 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv("DATABASE_NAME"),
-#         'USER': os.getenv("DATABASE_USER"),
-#         'PASSWORD': os.getenv("DATABASE_PASSWORD"),
-#         'HOST': os.getenv("DATABASE_HOST"),
-#         'PORT': os.getenv("DATABASE_PORT"),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'neondb',  # Found after last `/`
+        'USER': 'neondb_owner',  # Found after `//` before `:`
+        'PASSWORD': 'npg_GX0qPjmrwU5v',  # Found between `:` and `@`
+        'HOST': 'ep-tiny-star-a1gmc2so-pooler.ap-southeast-1.aws.neon.tech',  # Found between `@` and `/`
+        'PORT': '5432',  # Default PostgreSQL port
+        'OPTIONS': {
+            'sslmode':'require',  # Found after `?sslmode=`
+        },
+    }
+}
 
 
 # Password validation
