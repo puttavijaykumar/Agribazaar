@@ -83,6 +83,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 # SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
+
   
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
