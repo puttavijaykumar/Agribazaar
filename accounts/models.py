@@ -6,4 +6,4 @@ class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15,unique=True)
     
     def __str__(self):
-        return self.username
+        return f" Username: {self.username}, Email: {self.email}, Phone: {self.phone_number}"
