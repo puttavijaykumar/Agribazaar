@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 
 
@@ -84,9 +85,9 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 # SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
-import dj_database_url
+
 DATABASES = {
-     "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
+    "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
         # 'ENGINE': 'django.db.backends.postgresql',
         # 'NAME': 'neondb',  # Found after last `/`
         # 'USER': 'neondb_owner',  # Found after `//` before `:`
