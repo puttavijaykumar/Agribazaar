@@ -88,16 +88,7 @@ ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
 
 DATABASES = {
     "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
-        # 'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'neondb',  # Found after last `/`
-        # 'USER': 'neondb_owner',  # Found after `//` before `:`
-        # 'PASSWORD': 'npg_GX0qPjmrwU5v',  # Found between `:` and `@`
-        # 'HOST': 'ep-tiny-star-a1gmc2so-pooler.ap-southeast-1.aws.neon.tech',  # Found between `@` and `/`
-        # 'PORT': '5432',  # Default PostgreSQL port
-        # 'OPTIONS': {
-        #     'sslmode':'require',  # Found after `?sslmode=`
-        
-    
+     
 }
 
 
@@ -158,7 +149,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_PORT = 587  
 EMAIL_USE_TLS = True  
-EMAIL_HOST_USER = 'vijaykumarputta08@gmail.com'  
-EMAIL_HOST_PASSWORD = 'thos cyhn ncmy ayyc'  
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER" ) 
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  #thos cyhn ncmy ayyc
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-print(EMAIL_BACKEND)
+# print(EMAIL_BACKEND)
