@@ -12,6 +12,15 @@
 
     <div class="login-container">
         <h2>Login</h2>
+        
+        <!-- Error Messages (If Any) -->
+        {% if messages %}
+            <div id="error-message">
+                {% for message in messages %}
+                    <p style="color: red; text-align: center;">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
         <form method="POST">
             {% csrf_token %}
             <input type="text" name="username" placeholder="Username" required>
@@ -21,6 +30,7 @@
         <p><a href="{% url 'password_reset' %}">Forgot Password?</a></p>
         <p>Don't have an account? <a href="{% url 'register' %}">Sign Up</a></p>
     </div>
+
     <script src="{% static 'javascript/scriptL.js' %}"></script>
 </body>
 </html>
