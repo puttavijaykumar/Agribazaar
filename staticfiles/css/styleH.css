@@ -1,0 +1,38 @@
+body{
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+   
+}
+/* Targeting the navbar */
+.navbar {
+    
+    /* background-color: #8cd19c !important; /* Green color */  
+    padding: 10px !important;
+}
+/* Targeting the navbar brand (AgriBazaar) */
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: green !important;
+}
+
+/* Targeting the search bar */
+.navbar .form-control {
+    width: 50%;
+    border-radius: 20px;
+}
+
+/* Targeting navigation links */
+.navbar-nav .nav-link {
+    color: grey;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Targeting the h1 */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
