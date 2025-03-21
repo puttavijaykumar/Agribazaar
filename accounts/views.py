@@ -13,6 +13,8 @@ from .forms import RegisterForm
 from django.contrib import messages
 import logging
 logger = logging.getLogger(__name__)
+from .models import product_farmer
+from django.contrib.auth.decorators import login_required
 # from .utils import generate_email_verification_link
 # from .utils import generate_email_verification_link
 from django.contrib.auth import get_user_model
@@ -32,6 +34,9 @@ def register_view(request):
     return render(request, "register.html", {"form": form})
 
 def login_view(request):
+    if not request.user.is_authenticated or request.user.role != 'farmer':  
+        return redirect('home')  # Redirect non-farmers to home
+    
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -87,3 +92,38 @@ def verify_email(request, uidb64, token):
 
 def home(request):
     return render(request, "home.html") # Make sure home.html exists in templates folder
+
+@login_required
+def product_list_farmer(request):
+    # Ensure only farmers can access this page
+    if getattr(request.user,"role",None) != 'farmer':  
+        return redirect('home')  # Redirect non-farmers to home
+    if request.method == "POST":                                                    
+        productName = request.POST.get("productName")
+        description = request.POST.get("description")
+        price = request.POST.get("price")
+        quantity = request.POST.get("quantity")
+        image = request.FILES.get("images")
+        video = request.FILES.get("video")
+
+        # Validate input
+        if not productName or not description or not price:
+            messages.error(request, "All fields except video are required.")
+            return redirect("product_list_farmer")
+
+        # Save product to database
+        product = product_farmer(
+            productName=productName,
+            description=description,
+            price=price,
+            quantity=quantity,
+            images=image,
+            product_vedio=video,
+            product_farmer=request.user #assigned to the logged in user
+        )
+        product.save()
+        
+        messages.success(request, "Product uploaded successfully!")
+        return redirect("product_list_farmer")
+
+    return render(request, "farmer_dashboard.html")

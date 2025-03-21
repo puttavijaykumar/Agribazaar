@@ -1,6 +1,7 @@
 from django.urls import path, include
 from .views import register_view, login_view, logout_view
 from .views import register_view, verify_email
+from .views import product_list_farmer
 from accounts.views import home
 from django.contrib.auth import views as auth_views
 
@@ -14,4 +15,5 @@ urlpatterns = [
     path('password_reset/done', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('farmer/products/', product_list_farmer, name='product_list_farmer'),
 ]
