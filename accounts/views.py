@@ -34,8 +34,6 @@ def register_view(request):
     return render(request, "register.html", {"form": form})
 
 def login_view(request):
-    if not request.user.is_authenticated or request.user.role != 'farmer':  
-        return redirect('home')  # Redirect non-farmers to home
     
     if request.method == "POST":
         username = request.POST["username"]
@@ -93,11 +91,14 @@ def verify_email(request, uidb64, token):
 def home(request):
     return render(request, "home.html") # Make sure home.html exists in templates folder
 
-@login_required
+@login_required(login_url='/login/')
 def product_list_farmer(request):
-    # Ensure only farmers can access this page
-    if getattr(request.user,"role",None) != 'farmer':  
+    if not request.user.is_authenticated or request.user.role != 'farmer':  
         return redirect('home')  # Redirect non-farmers to home
+    # # Ensure only farmers can access this page
+    # if getattr(request.user,"role",None) != 'farmer':  
+    #     return redirect('home')  # Redirect non-farmers to home
+    
     if request.method == "POST":                                                    
         productName = request.POST.get("productName")
         description = request.POST.get("description")
@@ -125,5 +126,5 @@ def product_list_farmer(request):
         
         messages.success(request, "Product uploaded successfully!")
         return redirect("product_list_farmer")
-
+    
     return render(request, "farmer_dashboard.html")

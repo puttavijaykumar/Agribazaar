@@ -6,9 +6,11 @@ from django.db import models
 # Create your models here.
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15,unique=True)
+    is_farmer = models.BooleanField(default=False)
+    is_buyer = models.BooleanField(default=False)
     
     def __str__(self):
-        return f" Username: {self.username}, Email: {self.email}, Phone: {self.phone_number}"
+        return f" Username: {self.username}, Email: {self.email}, Phone: {self.phone_number}, role:{self.is_farmer or self.is_buyer}"
     
 class product_farmer(models.Model):
     productName = models.CharField(max_length=50)
