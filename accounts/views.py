@@ -15,6 +15,7 @@ import logging
 logger = logging.getLogger(__name__)
 from .models import product_farmer
 from django.contrib.auth.decorators import login_required
+from .models import Role, CustomUser 
 # from .utils import generate_email_verification_link
 # from .utils import generate_email_verification_link
 from django.contrib.auth import get_user_model
@@ -25,8 +26,18 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            
+            
+            selected_roles = form.cleaned_data.get("roles", [])  # Get selected roles
+            user.save()      # Save user first to get an ID
+            
+             # Assign roles based on selection
+            for role_name in selected_roles:
+                role, created = Role.objects.get_or_create(name=role_name.capitalize())  
+                user.roles.add(role)
+            
             user.is_active = False  # Deactivate user until email verification
-            user.save()
+            user.save()  # Save user first to get an ID
             send_verification_email(request, user)
             return HttpResponse("Check your email to verify your account.")  
     else:
@@ -40,15 +51,30 @@ def login_view(request):
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None: # If the authentication is succeeds
-            login(request, user)
-            return redirect("home")  # Redirect to home
+            user_roles = user.roles.values_list("name", flat=True)
+
+            if "Farmer" in user_roles and "Buyer" in user_roles:
+                # Let user choose where to go
+                return render(request, "home.html", {"user": user})
+            elif "Farmer" in user_roles:
+                return redirect("farmer_dashboard")
+            elif "Buyer" in user_roles:
+                return redirect("buyer_dashboard")
+
+            return redirect("default_dashboard")  # Default redirect if no roles found
+
         else: #If authentication fails
+           
             return render(request, "login.html", {"error": "Invalid Credentials"})
     return render(request, "login.html")
 
 def logout_view(request):
     logout(request)
     return redirect("login")  # Redirect to login page after logout
+
+
+
+
 
 def send_verification_email(request, user):
     try:
@@ -90,15 +116,13 @@ def verify_email(request, uidb64, token):
 
 def home(request):
     return render(request, "home.html") # Make sure home.html exists in templates folder
+def default_dashboard(request):
+    return render(request, "default_dashboard.html")
 
 @login_required(login_url='/login/')
 def product_list_farmer(request):
     if not request.user.is_authenticated or request.user.role != 'farmer':  
-        return redirect('home')  # Redirect non-farmers to home
-    # # Ensure only farmers can access this page
-    # if getattr(request.user,"role",None) != 'farmer':  
-    #     return redirect('home')  # Redirect non-farmers to home
-    
+        return redirect('home')  
     if request.method == "POST":                                                    
         productName = request.POST.get("productName")
         description = request.POST.get("description")
@@ -128,3 +152,10 @@ def product_list_farmer(request):
         return redirect("product_list_farmer")
     
     return render(request, "farmer_dashboard.html")
+
+@login_required
+def buyer_dashboard(request):
+    return render(request, "buyer_dashboard.html")
+
+
+

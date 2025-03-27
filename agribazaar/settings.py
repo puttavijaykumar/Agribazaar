@@ -13,8 +13,9 @@ from pathlib import Path
 import os
 import dj_database_url
 
- 
+AUTH_USER_MODEL = "accounts.CustomUser"
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = "/buyer/dashboard/"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -140,9 +141,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # settings.py
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Shows email in the terminal (for testing)
+from dotenv import load_dotenv 
+load_dotenv()
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_PORT = 587  
 EMAIL_USE_TLS = True  
