@@ -19,11 +19,25 @@ class RegisterForm(UserCreationForm):
         required=True,  # Ensure at least one role is selected
         label="Select Role(s)"
     )
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter Password'}),
+        strip=False,
+        label="Password",
+        help_text=""
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}),
+        strip=False,
+        label="Confirm Password",
+        help_text=""
+    )
     class Meta:
         model = User
         fields = ['username', 'email', 'phone_number', 'password1', 'password2','roles']
+      
         help_texts = {
-            'username': None,  # Removes the help text
+            'username': None,  # Remove username help text
+            
         }
     
     def save(self, commit=True):
