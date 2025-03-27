@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Role</title>
+    <link rel="stylesheet" href="{% static 'css/role_selection.css' %}">
+    
+</head>
+<body>
+    <div class="container">
+        <h2>Select Your Role</h2>
+        <div class="role-box" id="farmerBox">
+            👨‍🌾 Farmer
+        </div>
+        <div class="role-box" id="buyerBox">
+            🛒 Buyer
+        </div>
+    </div>
+    <script src="{% static 'javascript /role_selection.js' %}"></script>
+</body>
+</html>
