@@ -123,6 +123,7 @@ def default_dashboard(request):
 def product_list_farmer(request):
     if not request.user.is_authenticated or request.user.role != 'farmer':  
         return redirect('home')  
+    
     if request.method == "POST":                                                    
         productName = request.POST.get("productName")
         description = request.POST.get("description")

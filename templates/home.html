@@ -18,113 +18,56 @@
             </form>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    {% if user.is_authenticated %}
-                        {% if user.role == 'farmer' %}
+                   
+                 
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'farmer_dashboard' %}">Farmer Dashboard</a>
                             </li>
-                        {% elif user.role == 'buyer' %}
+                        
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'buyer_dashboard' %}">Buyer Dashboard</a>
                             </li>
-                        {% endif %}
+                    {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                         </li>
-                    {% else %}
+                    {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'login' %}">Login</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'register' %}">Register</a>
                         </li>
-                    {% endif %}
+               
                 </ul>
             </div>
         </div>
     </nav>
+    <main>
+        <h1 class="text-center">Welcome to AgriBazaar</h1>
 
-    <div class="container mt-4">
-        <h1>Welcome to AgriBazaar</h1>
-        
-        {% if user.is_authenticated %}
-            <p>Hello, <strong>{{ user.username }}</strong>! You are logged in as a <strong>{{ user.role }}</strong>.</p>
+     
 
-            {% if user.role == 'farmer' %}
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Farmer Dashboard</h5>
-                        <p class="card-text">Manage your products, view orders, and connect with buyers.</p>
-                        <a href="{% url 'farmer_dashboard' %}" class="btn btn-success">Go to Farmer Dashboard</a>
-                    </div>
-                </div>
-            {% elif user.role == 'buyer' %}
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Buyer Dashboard</h5>
-                        <p class="card-text">Browse products, negotiate prices, and track your orders.</p>
-                        <a href="{% url 'buyer_dashboard' %}" class="btn btn-primary">Go to Buyer Dashboard</a>
-                    </div>
-                </div>
-            {% endif %}
-        {% else %}
-            <p><a href="{% url 'login' %}">Login</a> or <a href="{% url 'register' %}">Register</a> to access the platform.</p>
-        {% endif %}
-    </div>
+        <section>
+            <h3>Latest Agriculture News</h3>
+            <p>Stay updated with the latest trends, market prices, and farming techniques.</p>
+        </section>
 
-    <!-- New Section: Publicly Accessible Features -->
-    <div class="container mt-4">
-        <h2>Explore AgriBazaar</h2>
+        <section>
+            <h3>Smart Farming Tips</h3>
+            <ul>
+                <li>Use AI-based predictions for better yield.</li>
+                <li>Monitor soil health with smart sensors.</li>
+                <li>Water conservation techniques to maximize efficiency.</li>
+            </ul>
+        </section>
 
-        <!-- Latest Agriculture News -->
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Latest Agriculture News</h5>
-                <p class="card-text">Stay updated with the latest trends, market prices, and farming techniques.</p>
-            </div>
-        </div>
+        <section>
+            <h3>Available Products</h3>
+            <p>No products available at the moment.</p>
+        </section>
+    </main>
 
-        <!-- Smart Farming Tips -->
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Smart Farming Tips</h5>
-                <ul>
-                    <li>Use AI-based predictions for better yield.</li>
-                    <li>Monitor soil health with smart sensors.</li>
-                    <li>Water conservation techniques to maximize efficiency.</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Product Listings -->
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Available Products</h5>
-                <div class="row">
-                    {% for product in products %}
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ product.name }}</h5>
-                                    <p class="card-text">Price: ₹{{ product.price }}</p>
-                                    <p class="card-text">Seller: {{ product.seller }}</p>
-
-                                    {% if user.is_authenticated %}
-                                        <a href="{% url 'buy_product' product.id %}" class="btn btn-primary">Buy Now</a>
-                                        <a href="{% url 'negotiate_price' product.id %}" class="btn btn-warning">Negotiate</a>
-                                    {% else %}
-                                        <p class="text-danger">Login to purchase or negotiate.</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    {% empty %}
-                        <p>No products available at the moment.</p>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="{% static 'javascript/scriptH.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
