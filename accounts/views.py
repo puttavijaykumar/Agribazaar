@@ -51,11 +51,12 @@ def login_view(request):
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None: # If the authentication is succeeds
+            login(request, user)  # ✅ Logs in the user
             user_roles = user.roles.values_list("name", flat=True)
 
             if "Farmer" in user_roles and "Buyer" in user_roles:
                 # Let user choose where to go
-                return render(request, "home.html", {"user": user})
+                return redirect(request, "role_selection.html")
             elif "Farmer" in user_roles:
                 return redirect("farmer_dashboard")
             elif "Buyer" in user_roles:
@@ -63,8 +64,7 @@ def login_view(request):
 
             return redirect("default_dashboard")  # Default redirect if no roles found
 
-        else: #If authentication fails
-           
+        else: #If authentication fails   
             return render(request, "login.html", {"error": "Invalid Credentials"})
     return render(request, "login.html")
 
@@ -118,6 +118,35 @@ def home(request):
     return render(request, "home.html") # Make sure home.html exists in templates folder
 def default_dashboard(request):
     return render(request, "default_dashboard.html")
+
+def farmer_dashboard(request):
+    return render(request, "farmer_dashboard.html")
+
+@login_required
+def role_selection(request):
+    user_roles = request.user.roles.values_list("name", flat=True)
+
+    # Ensure the user actually has both roles before showing the selection page
+    if "Farmer" in user_roles and "Buyer" in user_roles:
+        if request.method == "POST":
+            selected_role = request.POST.get("role")
+            
+            if selected_role == "Farmer":
+                return redirect("farmer_dashboard")
+            elif selected_role == "Buyer":
+                return redirect("buyer_dashboard")
+        
+        # If no selection is made yet, show the role selection page
+        return render(request, "role_selection.html")
+    
+    # If the user somehow reaches here without having both roles, redirect them
+    elif "Farmer" in user_roles:
+        return redirect("farmer_dashboard")
+    elif "Buyer" in user_roles:
+        return redirect("buyer_dashboard")
+    
+    # Default case: if no roles are found (shouldn't happen)
+    return redirect("default_dashboard")
 
 @login_required(login_url='/login/')
 def product_list_farmer(request):
