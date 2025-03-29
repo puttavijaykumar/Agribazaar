@@ -2,7 +2,7 @@ from django.urls import path, include
 from .views import register_view, login_view, logout_view
 from .views import register_view, verify_email
 from .views import product_list_farmer
-from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selection
+from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selection_view
 from accounts.views import home
 from django.contrib.auth import views as auth_views
 
@@ -21,5 +21,5 @@ urlpatterns = [
     path("buyer/dashboard/", buyer_dashboard, name="buyer_dashboard"),
     path("buyer/dashboard/productshow",buyer_dashboard, name="product_show"),
     path("default/dashboard/", default_dashboard, name="default_dashboard"),
-    path("roleselection", role_selection, name="role_selection"),
+    path("role_selection", role_selection_view, name="role_selection_view"),
 ]
