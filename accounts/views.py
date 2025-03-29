@@ -14,8 +14,13 @@ from django.contrib import messages
 import logging
 logger = logging.getLogger(__name__)
 from .models import product_farmer
+import json
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Role, CustomUser 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
 # from .utils import generate_email_verification_link
 # from .utils import generate_email_verification_link
 from django.contrib.auth import get_user_model
@@ -51,12 +56,12 @@ def login_view(request):
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None: # If the authentication is succeeds
-            login(request, user)  # ✅ Logs in the user
+            login(request, user)  # Logs in the user
             user_roles = user.roles.values_list("name", flat=True)
 
             if "Farmer" in user_roles and "Buyer" in user_roles:
                 # Let user choose where to go
-                return redirect(request, "role_selection.html")
+                return render(request, "role_selection.html")
             elif "Farmer" in user_roles:
                 return redirect("farmer_dashboard")
             elif "Buyer" in user_roles:
@@ -121,32 +126,26 @@ def default_dashboard(request):
 
 def farmer_dashboard(request):
     return render(request, "farmer_dashboard.html")
+from django.http import JsonResponse
 
-@login_required
-def role_selection(request):
-    user_roles = request.user.roles.values_list("name", flat=True)
+@method_decorator(csrf_exempt, name='dispatch')  # Disable CSRF check (not recommended in production)
 
-    # Ensure the user actually has both roles before showing the selection page
-    if "Farmer" in user_roles and "Buyer" in user_roles:
-        if request.method == "POST":
-            selected_role = request.POST.get("role")
-            
+def role_selection_view(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            selected_role = data.get("role")
+
             if selected_role == "Farmer":
-                return redirect("farmer_dashboard")
+                return JsonResponse({"redirect": "/farmer_dashboard/"})
             elif selected_role == "Buyer":
-                return redirect("buyer_dashboard")
-        
-        # If no selection is made yet, show the role selection page
-        return render(request, "role_selection.html")
-    
-    # If the user somehow reaches here without having both roles, redirect them
-    elif "Farmer" in user_roles:
-        return redirect("farmer_dashboard")
-    elif "Buyer" in user_roles:
-        return redirect("buyer_dashboard")
-    
-    # Default case: if no roles are found (shouldn't happen)
-    return redirect("default_dashboard")
+                return JsonResponse({"redirect": "/buyer_dashboard/"})
+            else:
+                return JsonResponse({"error": "Invalid role"}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid data"}, status=400)
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 @login_required(login_url='/login/')
 def product_list_farmer(request):
