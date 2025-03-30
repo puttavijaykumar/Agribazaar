@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () { 
+document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("farmerBox").addEventListener("click", function () {
         sendRoleSelection("Farmer");
     });
@@ -12,17 +12,22 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken() // Include CSRF token
+                "X-CSRFToken": getCSRFToken() // CSRF token for security
             },
             body: JSON.stringify({ role: role })
-        }).then(response => {
-            if (response.redirected) {
-                window.location.href = response.url; // Redirect to the dashboard
+        })
+        .then(response => response.json()) 
+        .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect; // Redirect to the correct dashboard
+            } else {
+                console.error("Unexpected response:", data);
             }
-        }).catch(error => console.error("Error:", error));
+        })
+        .catch(error => console.error("Error:", error));
     }
 
     function getCSRFToken() {
-        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+        return document.querySelector("meta[name='csrf-token']").getAttribute("content");
     }
 });

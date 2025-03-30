@@ -5,15 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Role</title>
+    <meta name="csrf-token" content="{{ csrf_token }}"> <!-- CSRF Token for JS -->
     <link rel="stylesheet" href="{% static 'css/role_selection.css' %}">
 </head>
 <body>
     <div class="container">
         <h2>Select Your Role</h2>
         
-        <!-- CSRF token (hidden) -->
-        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-
         <div class="role-box" id="farmerBox">
             👨‍🌾 Farmer
         </div>
