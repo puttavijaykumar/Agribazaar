@@ -12,14 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken() // CSRF token for security
+                "X-CSRFToken": getCSRFToken() // Include CSRF token
             },
             body: JSON.stringify({ role: role })
         })
         .then(response => response.json()) 
         .then(data => {
             if (data.redirect) {
-                window.location.href = data.redirect; // Redirect to the correct dashboard
+                window.location.href = data.redirect; // Redirect to dashboard
             } else {
                 console.error("Unexpected response:", data);
             }
