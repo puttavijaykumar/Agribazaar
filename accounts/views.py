@@ -19,13 +19,12 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Role, CustomUser 
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 
-# from .utils import generate_email_verification_link
-# from .utils import generate_email_verification_link
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+# from .utils import generate_email_verification_link
+# from .utils import generate_email_verification_link
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -126,10 +125,8 @@ def default_dashboard(request):
 
 def farmer_dashboard(request):
     return render(request, "farmer_dashboard.html")
-from django.http import JsonResponse
 
-@method_decorator(csrf_exempt, name='dispatch')  # Disable CSRF check (not recommended in production)
-
+@csrf_exempt
 def role_selection_view(request):
     if request.method == "POST":
         try:
@@ -142,10 +139,11 @@ def role_selection_view(request):
                 return JsonResponse({"redirect": "/buyer_dashboard/"})
             else:
                 return JsonResponse({"error": "Invalid role"}, status=400)
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid data"}, status=400)
 
-    return JsonResponse({"error": "Invalid request"}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    return JsonResponse({"error": "Invalid request"}, status=405)
 
 @login_required(login_url='/login/')
 def product_list_farmer(request):
