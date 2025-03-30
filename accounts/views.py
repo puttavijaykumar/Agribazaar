@@ -126,7 +126,7 @@ def default_dashboard(request):
 def farmer_dashboard(request):
     return render(request, "farmer_dashboard.html")
 
-@csrf_exempt
+@csrf_exempt  # Use this only for testing; better use CSRF tokens properly
 def role_selection_view(request):
     if request.method == "POST":
         try:
