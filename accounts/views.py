@@ -77,9 +77,6 @@ def logout_view(request):
     return redirect("login")  # Redirect to login page after logout
 
 
-
-
-
 def send_verification_email(request, user):
     try:
         token = default_token_generator.make_token(user)
@@ -120,6 +117,7 @@ def verify_email(request, uidb64, token):
 
 def home(request):
     return render(request, "home.html") # Make sure home.html exists in templates folder
+
 def default_dashboard(request):
     return render(request, "default_dashboard.html")
 
@@ -134,9 +132,9 @@ def role_selection_view(request):
             selected_role = data.get("role")
 
             if selected_role == "Farmer":
-                return JsonResponse({"redirect": "/farmer_dashboard/"})
+                return JsonResponse({"redirect": "farmer_dashboard/"})
             elif selected_role == "Buyer":
-                return JsonResponse({"redirect": "/buyer_dashboard/"})
+                return JsonResponse({"redirect": "buyer_dashboard/"})
             else:
                 return JsonResponse({"error": "Invalid role"}, status=400)
 
