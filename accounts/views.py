@@ -132,9 +132,9 @@ def role_selection_view(request):
             selected_role = data.get("role")
 
             if selected_role == "Farmer":
-                return JsonResponse({"redirect": "/farmer_dashboard/"})  
+                return JsonResponse({"redirect": "farmer/dashboard/"})  
             elif selected_role == "Buyer":
-                return JsonResponse({"redirect": "/buyer_dashboard/"})  
+                return JsonResponse({"redirect": "/buyer/dashboard/"})  
             else:
                 return JsonResponse({"error": "Invalid role"}, status=400)
 
