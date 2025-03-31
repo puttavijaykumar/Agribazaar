@@ -118,9 +118,11 @@ def verify_email(request, uidb64, token):
 def home(request):
     return render(request, "home.html") # Make sure home.html exists in templates folder
 
+@login_required(login_url='/login/')
 def default_dashboard(request):
     return render(request, "default_dashboard.html")
 
+@login_required(login_url='/login/')
 def farmer_dashboard(request):
     return render(request, "farmer_dashboard.html")
 
@@ -132,7 +134,7 @@ def role_selection_view(request):
             selected_role = data.get("role")
 
             if selected_role == "Farmer":
-                return JsonResponse({"redirect": "farmer/dashboard/"})  
+                return JsonResponse({"redirect": "/farmer/dashboard/"})  
             elif selected_role == "Buyer":
                 return JsonResponse({"redirect": "/buyer/dashboard/"})  
             else:
