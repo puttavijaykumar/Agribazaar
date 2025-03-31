@@ -8,18 +8,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function sendRoleSelection(role) {
+        let csrfToken = getCSRFToken();
+
         fetch("/role_selection/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": document.querySelector("meta[name='csrf-token']").content
+                "X-CSRFToken": csrfToken  //document.querySelector("meta[name='csrf-token']").content
             },
             body: JSON.stringify({ role: role })
         })
-        .then(response => response.json()) 
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.redirect) {
-                window.location.href = data.redirect; // Redirect to dashboard
+                window.location.href = data.redirect;  // Redirect user to dashboard
             } else {
                 console.error("Unexpected response:", data);
             }
@@ -27,7 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Error:", error));
     }
 
+
     function getCSRFToken() {
-        return document.querySelector("meta[name='csrf-token']").getAttribute("content");
+        let tokenElement = document.querySelector("meta[name='csrf-token']");
+        return tokenElement ? tokenElement.getAttribute("content") : "";
     }
 });
