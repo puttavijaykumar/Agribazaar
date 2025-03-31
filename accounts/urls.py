@@ -19,7 +19,7 @@ urlpatterns = [
     # path('farmer/products/', product_list_farmer, name='product_list_farmer'),
     path("farmer/dashboard/", farmer_dashboard, name="farmer_dashboard"),
     path("buyer/dashboard/", buyer_dashboard, name="buyer_dashboard"),
-    path("buyer/dashboard/productshow",buyer_dashboard, name="product_show"),
+    path("buyer/dashboard/productshow/",buyer_dashboard, name="product_show"),
     path("default/dashboard/", default_dashboard, name="default_dashboard"),
-    path("role_selection", role_selection_view, name="role_selection_view"),
+    path("role_selection/", role_selection_view, name="role_selection_view"),
 ]

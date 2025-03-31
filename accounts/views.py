@@ -129,19 +129,11 @@ def role_selection_view(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            selected_role = data.get("role")
-
-            if selected_role == "Farmer":
-                return JsonResponse({"redirect": "farmer_dashboard/"})
-            elif selected_role == "Buyer":
-                return JsonResponse({"redirect": "buyer_dashboard/"})
-            else:
-                return JsonResponse({"error": "Invalid role"}, status=400)
-
+            role = data.get("role")
+            return JsonResponse({"message": f"Role {role} selected!"})
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
-
-    return JsonResponse({"error": "Invalid request"}, status=405)
+    return JsonResponse({"error": "Invalid request method"}, status=405)
 
 @login_required(login_url='/login/')
 def product_list_farmer(request):
