@@ -19,7 +19,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Role, CustomUser 
 from django.views.decorators.csrf import csrf_exempt
-
+from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -124,7 +124,7 @@ def default_dashboard(request):
 def farmer_dashboard(request):
     return render(request, "farmer_dashboard.html")
 
-# @csrf_exempt  # Use this only for testing; better use CSRF tokens properly
+@csrf_protect  # Use this only for testing; better use CSRF tokens properly
 def role_selection_view(request):
     if request.method == "POST":
         try:
