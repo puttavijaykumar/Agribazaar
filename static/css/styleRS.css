@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color:rgb(84, 80, 80);
+    background-color:lightblue;
     margin: 0;
     padding: 0;
 }
@@ -47,4 +47,8 @@ h1 {
     background-color: #4CAF50;
     color: white;
     transform: scale(1.05);
+}
+#roleForm{
+    display: none;
+   
 }
