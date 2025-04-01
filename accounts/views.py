@@ -125,6 +125,9 @@ def default_dashboard(request):
 
 @login_required(login_url='/login/')
 def farmer_dashboard(request):
+    if request.method == "GET":
+        return render(request, "farmer_dashboard.html")  # Load the HTML page
+
     if request.method == "POST":
         try:
             data = json.loads(request.body)
