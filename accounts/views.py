@@ -124,9 +124,72 @@ def default_dashboard(request):
 
 @login_required(login_url='/login/')
 def farmer_dashboard(request):
-    return render(request, "farmer_dashboard.html")
+    if not request.user.is_authenticated or request.user.role != "farmer":
+        return redirect("home")
 
-@csrf_protect  # Use this only for testing; better use CSRF tokens properly
+    # Fetch products, orders, and calculate total profit
+    products = product_farmer.objects.filter(product_farmer=request.user)
+    total_profit = sum([product.price * product.quantity for product in products])
+ 
+    # Handle AJAX product upload
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)  # Parse JSON request
+            productName = data.get("productName")
+            description = data.get("description")
+            price = data.get("price")
+            quantity = data.get("quantity")
+
+            if not productName or not description or not price or not quantity:
+                return JsonResponse({"error": "All fields are required"}, status=400)
+
+            # Create product entry in database
+            product = product_farmer.objects.create(
+                product_farmer=request.user,
+                productName=productName,
+                description=description,
+                price=price,
+                quantity=quantity
+            )
+            return JsonResponse({"success": "Product uploaded successfully!"})
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+    else:
+        # Handle Multipart Form-Data (File Uploads)
+        productName = request.POST.get("productName")
+        description = request.POST.get("description")
+        price = request.POST.get("price")
+        quantity = request.POST.get("quantity")
+        image = request.FILES.get("image")  # Handle image upload
+        video = request.FILES.get("video")  # Handle video upload
+
+        if not productName or not description or not price or not quantity:
+            messages.error(request, "All fields except video are required.")
+            return redirect("farmer_dashboard")
+
+        # Save product to database with image/video
+        product = product_farmer.objects.create(
+            product_farmer=request.user,
+            productName=productName,
+            description=description,
+            price=price,
+            quantity=quantity,
+            image=image,
+            video=video
+        )
+                
+        messages.success(request, "Product uploaded successfully!")
+        return redirect("farmer_dashboard")
+
+
+    return render(request, "farmer_dashboard.html", {
+        "products": products,
+        "total_profit": total_profit,
+       
+    })
+
+@csrf_exempt # Use this only for testing; better use CSRF tokens properly
 def role_selection_view(request):
     if request.method == "POST":
         try:
