@@ -125,27 +125,13 @@ def default_dashboard(request):
 
 @login_required(login_url='/login/')
 def farmer_dashboard(request):
-    print("Request method:", request.method)  # Debugging output
-    if request.method == "GET":
-        return render(request, "farmer_dashboard.html")  # Load the HTML page
+    """ Renders the farmer dashboard without handling POST requests for role selection. """
 
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            selected_role = data.get("role")
-            print("Received Role:", selected_role)  # ✅ Debugging print
-            
-            if selected_role == "Product":
-                return JsonResponse({"redirect": "/products/list/?role=Product"})  
-            elif selected_role == "Accounts":
-                return JsonResponse({"redirect": "/farmer/account/?role=Accounts"})  
-            else:
-                return JsonResponse({"error": "Invalid role"}, status=400)
+    # Debugging: Print the request method
+    print("Request method:", request.method)  
 
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON"}, status=400)
-
-    return JsonResponse({"error": "Invalid request method"}, status=405)
+    # Only render the dashboard on GET request
+    return render(request, "farmer_dashboard.html")
 
 @csrf_exempt # Use this only for testing; better use CSRF tokens properly
 def role_selection_view(request):
