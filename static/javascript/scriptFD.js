@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function sendRoleSelection(role) {
-        fetch("/farmer_dashboard/", {
+        fetch("/farmer/dashboard/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

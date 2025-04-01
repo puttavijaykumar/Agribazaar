@@ -83,6 +83,9 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secret
 # SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
+CSRF_TRUSTED_ORIGINS = [
+    'https://agribazaar-pi.vercel.app',
+]
 
 DATABASES = {
     "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
