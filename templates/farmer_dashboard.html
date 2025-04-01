@@ -4,46 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}"> 
     <title>List Your Product</title>
     <link rel="stylesheet" href="css/styleFD.css">
 </head>
 <body>
-    <div class="container">
-        <h2>List Your Product</h2>
-        <form id="productForm" enctype="multipart/form-data" method="POST">
-            {% csrf_token %}
-            <label for="productName">Product Name:</label>
-            <input type="text" id="productName" name="productName" required>
-
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" required></textarea>
-
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" required>
-
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" required>
-
-            <label for="category">Category:</label>
-            <select id="category" name="category">
-                <option value="fruits">Fruits</option>
-                <option value="vegetables">Vegetables</option>
-                <option value="grains">Grains</option>
-                <option value="others">Others</option>
-            </select>
-
-            <label for="images">Upload Images:</label>
-            <input type="file" id="images" name="images" accept="image/*" multiple>
-            <div id="imagePreview"></div>
-
-            <label for="video">Upload Video:</label>
-            <input type="file" id="video" name="video" accept="video/*">
-            <div id="videoPreview"></div>
-
-            <button type="submit">Submit</button>
-        </form>
+    <h1>Select Your Role</h1>
+    <!-- CSRF token placed inside hidden form -->
+    <form id="roleForm">
+        {% csrf_token %}
+    </form>
+    <div class="role-container">
+        <div class="role-box" id="farmerBox">   
+            <p>Farmer</p>        
+        </div>
+        <div class="role-box" id="buyerBox">    
+            <p>Buyer</p>
+        </div>
     </div>
-    
-    <script src="javascript/scriptFD.js"></script>
+    <script src="{% static 'javascript/scriptFD.js' %}"></script>
 </body>
 </html>
