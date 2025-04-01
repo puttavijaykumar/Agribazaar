@@ -203,7 +203,7 @@ def farmer_account(request):
         'transactions': transactions,
         'payout_requests': payout_requests
     }
-    return render(request, 'account_dashboard.html', context)
+    return render(request, 'accounts_dashboard.html')
 
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
