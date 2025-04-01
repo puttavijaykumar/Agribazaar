@@ -125,6 +125,7 @@ def default_dashboard(request):
 
 @login_required(login_url='/login/')
 def farmer_dashboard(request):
+    print("Request method:", request.method)  # Debugging output
     if request.method == "GET":
         return render(request, "farmer_dashboard.html")  # Load the HTML page
 
@@ -132,7 +133,8 @@ def farmer_dashboard(request):
         try:
             data = json.loads(request.body)
             selected_role = data.get("role")
-
+            print("Received Role:", selected_role)  # ✅ Debugging print
+            
             if selected_role == "Product":
                 return JsonResponse({"redirect": "/products/list/?role=Product"})  
             elif selected_role == "Accounts":
