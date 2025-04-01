@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -40,3 +40,21 @@ class product_show(models.Model):
     product_farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
     def __str__(self):
         return f"Product Name: {self.productName}, Price: {self.price}, Quantity: {self.quantity}, Description: {self.description}, Farmer: {self.product_farmer}"
+class FarmerWallet(models.Model):
+    farmer = models.OneToOneField(User, on_delete=models.CASCADE)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    pending_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    withdrawn_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
+class Transaction(models.Model):
+    farmer = models.ForeignKey(User, on_delete=models.CASCADE)
+    order_id = models.CharField(max_length=20)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Completed', 'Completed')])
+    date = models.DateTimeField(auto_now_add=True)
+
+class PayoutRequest(models.Model):
+    farmer = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Rejected', 'Rejected')])
+    request_date = models.DateTimeField(auto_now_add=True)
