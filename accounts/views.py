@@ -154,9 +154,14 @@ def role_selection_view(request):
 
 @login_required(login_url='/login/')
 def product_list_farmer(request):
-    if not request.user.is_authenticated or request.user.role != 'farmer':  
+    """ View for farmers to list products """
+    # Check if user has the "Farmer" role (Fix applied)
+    user_roles = request.user.roles.all()
+    if not any(role.name.lower() == 'farmer' for role in user_roles):  
+        messages.error(request, "Access denied: You must be a Farmer to list products.")
         return redirect('home')  
     
+   
     if request.method == "POST":                                                    
         productName = request.POST.get("productName")
         description = request.POST.get("description")
@@ -186,6 +191,7 @@ def product_list_farmer(request):
         return redirect("product_list_farmer")
     
     return render(request, "farmer_dashboard.html")
+
 @login_required
 def farmer_account(request):
     farmer_wallet = FarmerWallet.objects.get(farmer=request.user)
