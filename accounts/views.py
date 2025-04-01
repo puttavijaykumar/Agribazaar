@@ -21,6 +21,7 @@ from .models import Role, CustomUser
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import get_user_model
+from .models import FarmerWallet, Transaction, PayoutRequest
 User = get_user_model()
 
 # from .utils import generate_email_verification_link
@@ -124,70 +125,22 @@ def default_dashboard(request):
 
 @login_required(login_url='/login/')
 def farmer_dashboard(request):
-    if not request.user.is_authenticated or request.user.role != "farmer":
-        return redirect("home")
-
-    # Fetch products, orders, and calculate total profit
-    products = product_farmer.objects.filter(product_farmer=request.user)
-    total_profit = sum([product.price * product.quantity for product in products])
- 
-    # Handle AJAX product upload
     if request.method == "POST":
         try:
-            data = json.loads(request.body)  # Parse JSON request
-            productName = data.get("productName")
-            description = data.get("description")
-            price = data.get("price")
-            quantity = data.get("quantity")
+            data = json.loads(request.body)
+            selected_role = data.get("role")
 
-            if not productName or not description or not price or not quantity:
-                return JsonResponse({"error": "All fields are required"}, status=400)
-
-            # Create product entry in database
-            product = product_farmer.objects.create(
-                product_farmer=request.user,
-                productName=productName,
-                description=description,
-                price=price,
-                quantity=quantity
-            )
-            return JsonResponse({"success": "Product uploaded successfully!"})
+            if selected_role == "Product":
+                return JsonResponse({"redirect": "/products/list/?role=Product"})  
+            elif selected_role == "Accounts":
+                return JsonResponse({"redirect": "/farmer/account/?role=Accounts"})  
+            else:
+                return JsonResponse({"error": "Invalid role"}, status=400)
 
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
-    else:
-        # Handle Multipart Form-Data (File Uploads)
-        productName = request.POST.get("productName")
-        description = request.POST.get("description")
-        price = request.POST.get("price")
-        quantity = request.POST.get("quantity")
-        image = request.FILES.get("image")  # Handle image upload
-        video = request.FILES.get("video")  # Handle video upload
 
-        if not productName or not description or not price or not quantity:
-            messages.error(request, "All fields except video are required.")
-            return redirect("farmer_dashboard")
-
-        # Save product to database with image/video
-        product = product_farmer.objects.create(
-            product_farmer=request.user,
-            productName=productName,
-            description=description,
-            price=price,
-            quantity=quantity,
-            image=image,
-            video=video
-        )
-                
-        messages.success(request, "Product uploaded successfully!")
-        return redirect("farmer_dashboard")
-
-
-    return render(request, "farmer_dashboard.html", {
-        "products": products,
-        "total_profit": total_profit,
-       
-    })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
 
 @csrf_exempt # Use this only for testing; better use CSRF tokens properly
 def role_selection_view(request):
@@ -242,6 +195,61 @@ def product_list_farmer(request):
         return redirect("product_list_farmer")
     
     return render(request, "farmer_dashboard.html")
+@login_required
+def farmer_account(request):
+    farmer_wallet = FarmerWallet.objects.get(farmer=request.user)
+    transactions = Transaction.objects.filter(farmer=request.user).order_by('-date')
+    payout_requests = PayoutRequest.objects.filter(farmer=request.user).order_by('-request_date')
+
+    context = {
+        'wallet': farmer_wallet,
+        'transactions': transactions,
+        'payout_requests': payout_requests
+    }
+    return render(request, 'account_dashboard.html', context)
+
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+
+@login_required
+def download_transaction_pdf(request):
+    farmer = request.user
+    transactions = Transaction.objects.filter(farmer=farmer).order_by('-date')
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="transaction_history.pdf"'
+
+    pdf = canvas.Canvas(response, pagesize=letter)
+    pdf.setTitle("Transaction History")
+    
+    # PDF Header
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(200, 750, "Transaction History")
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(50, 730, f"Farmer: {farmer.username}")
+
+    # Table Header
+    pdf.drawString(50, 700, "Order ID")
+    pdf.drawString(200, 700, "Amount")
+    pdf.drawString(300, 700, "Status")
+    pdf.drawString(400, 700, "Date")
+
+    y = 680  # Start position for table rows
+
+    for transaction in transactions:
+        pdf.drawString(50, y, transaction.order_id)
+        pdf.drawString(200, y, f"₹{transaction.amount}")
+        pdf.drawString(300, y, transaction.status)
+        pdf.drawString(400, y, transaction.date.strftime("%Y-%m-%d"))
+        y -= 20  # Move to the next row
+
+        if y < 50:  # If page limit is reached, add a new page
+            pdf.showPage()
+            y = 750  # Reset position for new page
+
+    pdf.showPage()
+    pdf.save()
+    return response
 
 @login_required
 def buyer_dashboard(request):
