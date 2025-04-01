@@ -190,7 +190,7 @@ def product_list_farmer(request):
         messages.success(request, "Product uploaded successfully!")
         return redirect("product_list_farmer")
     
-    return render(request, "farmer_dashboard.html")
+    return render(request, "products_list.html")
 
 @login_required
 def farmer_account(request):
