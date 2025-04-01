@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("accountsBox").addEventListener("click", function () {
-        navigateToPage("/farmer/accounts/");  // Navigate directly
+        navigateToPage("farmer/account/");  // Navigate directly
     });
 
     function navigateToPage(url) {
