@@ -14,13 +14,28 @@
     <form id="roleForm">
         {% csrf_token %}
     </form>
-
-
     <div class="role-container">
         <div class="role-box" id="farmerBox">
           
             <p>Farmer</p>
+             <!-- List Product Box -->
+             <div class="dashboard-box">
+                <h4>List Product</h4>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text" name="productName" placeholder="Product Name" required>
+                    <textarea name="description" placeholder="Description" required></textarea>
+                    <input type="number" name="price" placeholder="Price" required>
+                    <input type="number" name="quantity" placeholder="Quantity" required>
+                    <input type="file" name="images" required>
+                    <input type="file" name="video">
+                    <button type="submit">Upload</button>
+                </form>
+            </div>           
         </div>
+    </div>
+
+
         <div class="role-box" id="buyerBox">
             
             <p>Buyer</p>
