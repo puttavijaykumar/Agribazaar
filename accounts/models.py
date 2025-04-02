@@ -20,6 +20,10 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return f" Username: {self.username}, Email: {self.email}, Phone: {self.phone_number}, roles: {', '.join(role.name for role in self.roles.all())}"
     
+    @property
+    def is_farmer(self):
+        return self.roles.filter(name="farmer").exists()
+    
 class product_farmer(models.Model):
     productName = models.CharField(max_length=50)
     price = models.IntegerField()
@@ -44,7 +48,7 @@ class product_show(models.Model):
     def __str__(self):
         return f"Product Name: {self.productName}, Price: {self.price}, Quantity: {self.quantity}, Description: {self.description}, Farmer: {self.product_farmer}"
     
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=CustomUser)
 def create_farmer_wallet(sender, instance, created, **kwargs):
     if created:  # Only create a wallet when a new user is created
         if instance.is_farmer:  # Assuming you have a field to differentiate farmers
