@@ -2,6 +2,9 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 # Create your models here.
 class Role(models.Model):
@@ -41,7 +44,12 @@ class product_show(models.Model):
     def __str__(self):
         return f"Product Name: {self.productName}, Price: {self.price}, Quantity: {self.quantity}, Description: {self.description}, Farmer: {self.product_farmer}"
     
-    
+@receiver(post_save, sender=User)
+def create_farmer_wallet(sender, instance, created, **kwargs):
+    if created:  # Only create a wallet when a new user is created
+        if instance.is_farmer:  # Assuming you have a field to differentiate farmers
+            FarmerWallet.objects.create(farmer=instance) 
+            
 class FarmerWallet(models.Model):
     farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)

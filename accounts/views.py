@@ -194,10 +194,14 @@ def product_list_farmer(request):
 
 @login_required
 def farmer_account(request):
-    farmer_wallet = FarmerWallet.objects.get(farmer=request.user)
+    farmer_wallet,created = FarmerWallet.objects.get_or_create(farmer=request.user)
     transactions = Transaction.objects.filter(farmer=request.user).order_by('-date')
     payout_requests = PayoutRequest.objects.filter(farmer=request.user).order_by('-request_date')
-
+    
+    # Debugging: Print a message if a new wallet was created
+    if created:
+        print(f"New wallet created for farmer: {request.user.username}")
+        
     context = {
         'wallet': farmer_wallet,
         'transactions': transactions,
