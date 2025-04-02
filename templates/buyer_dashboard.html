@@ -1,19 +1,4 @@
-{% comment %} {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buyer Dashboard</title>
-</head>
-<body>
-    <h1>Welcome, Buyer!</h1>
-    <p>This is your buyer dashboard where you can browse and purchase products.</p>
-
-
-    <a href="{% url 'logout' %}">Logout</a>
-</body>
-</html> {% endcomment %}
++
 {% load static %} 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,14 +40,35 @@
             </div>
         </div>
     </nav>
-    <main>
-        <h1 class="text-center">Welcome to AgriBazaar</h1>
-        <section>
-            <h3>Available Products</h3>
-            <p>No products available at the moment.</p>
-        </section>
-    </main>
+    <!-- Category Section -->
+    <div class="categories">
+        <div class="category-item">🌱 Seeds</div>
+        <div class="category-item">🌿 Fertilizers</div>
+        <div class="category-item">🔧 Tools</div>
+        <div class="category-item">🚜 Equipment</div>
+        <div class="category-item">🥦 Organic</div>
+    </div>
+    
+    <!-- Banner Section -->
+    <div class="banner">
+        <img src="banner1.png" alt="AgriBazaar Sale" id="banner-img">
+    </div>
 
+    <!-- Top Offers Section -->
+    <h2>Top Offers</h2>
+    <div class="product-grid">
+        <div class="product-item">🌾 Wheat Seeds - 20% Off</div>
+        <div class="product-item">🌻 Organic Fertilizer - 15% Off</div>
+        <div class="product-item">🛠️ Farming Tools Kit - 25% Off</div>
+    </div>
+
+    <!-- Live Market Prices -->
+    <h2>Live Market Prices</h2>
+    <div class="market-prices">
+        <div class="price-item">🌾 Rice: ₹40/kg</div>
+        <div class="price-item">🥜 Peanuts: ₹90/kg</div>
+        <div class="price-item">🍅 Tomatoes: ₹30/kg</div>
+    </div>
 
     <script src="{% static 'javascript/scriptBD.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
