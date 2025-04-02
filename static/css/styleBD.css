@@ -15,10 +15,16 @@ body {
     padding: 10px;
     cursor: pointer;
 }
-.carousel-inner img {
-    height: 400px; /* Adjust height as needed */
-    object-fit: cover; /* Ensures images cover the entire space without distortion */
+.carousel-inner {
+    height: 300px; /* Adjust as needed */
 }
+
+.carousel-inner img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
 .product-grid {
     display: flex;
     justify-content: space-around;
