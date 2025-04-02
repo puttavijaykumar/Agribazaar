@@ -15,13 +15,11 @@ body {
     padding: 10px;
     cursor: pointer;
 }
-.carousel-inner {
-    height: 300px; /* Adjust as needed */
-}
+
 
 .carousel-inner img {
-    height: 100%;
-    width: 100%;
+    height: 300px !important;
+    width: 100% !important;
     object-fit: cover;
 }
 
