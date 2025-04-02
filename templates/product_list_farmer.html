@@ -13,18 +13,24 @@
         <h2>List Your Product</h2>
         <form id="productForm" enctype="multipart/form-data" method="POST">
             {% csrf_token %}
+        <div>  
             <label for="productName">Product Name:</label>
             <input type="text" id="productName" name="productName" required>
+        </div>
+        <div>  
 
             <label for="description">Description:</label>
             <textarea id="description" name="description" required></textarea>
-
+        </div>
+        <div>
             <label for="price">Price:</label>
             <input type="number" id="price" name="price" required>
-
+        </div>
+        <div>
             <label for="quantity">Quantity:</label>
             <input type="number" id="quantity" name="quantity" required>
-
+        </div>
+        <div>
             <label for="category">Category:</label>
             <select id="category" name="category">
                 <option value="fruits">Fruits</option>
@@ -32,15 +38,17 @@
                 <option value="grains">Grains</option>
                 <option value="others">Others</option>
             </select>
-
+        </div>
+        <div>
             <label for="images">Upload Images:</label>
             <input type="file" id="images" name="images" accept="image/*" multiple>
             <div id="imagePreview"></div>
-
+        </div>
+        <div>
             <label for="video">Upload Video:</label>
             <input type="file" id="video" name="video" accept="video/*">
             <div id="videoPreview"></div>
-
+        </div>
             <button type="submit">Submit</button>
         </form>
     </div>
