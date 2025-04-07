@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import CustomUser,Role
 from django.contrib.auth.admin import UserAdmin
-
+from .models import Offer, MarketPrice
 
 
 class CustomUserAdmin(UserAdmin):
@@ -13,7 +13,8 @@ class CustomUserAdmin(UserAdmin):
     
 admin.site.register(Role) 
 admin.site.register(CustomUser) 
-
+admin.site.register(Offer)
+admin.site.register(MarketPrice)
 
 
 
