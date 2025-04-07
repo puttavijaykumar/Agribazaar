@@ -16,13 +16,12 @@ body {
     cursor: pointer;
 }
 
-
-.carousel-inner img {
-    height: 300px !important;
-    width: 100% !important;
-    object-fit: cover;
-    object-position: center top; /* move the focus higher to show more of farmers */
-}
+.carousel-item img {
+    width: 100%;       /* Fill carousel width */
+    height: 300px;     /* Match carousel height */
+    object-fit: cover; /* Crop image to fill container */
+    display: block;    /* Remove default image spacing */
+  }
 
 
 /* Top Offers Section */
