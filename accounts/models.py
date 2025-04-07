@@ -72,3 +72,20 @@ class PayoutRequest(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Rejected', 'Rejected')])
     request_date = models.DateTimeField(auto_now_add=True)
+    
+class Offer(models.Model):
+    product_type = models.CharField(max_length=100)
+    discount = models.IntegerField()  # percentage
+    description = models.TextField()
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.product_type} - {self.discount}% Off"
+
+class MarketPrice(models.Model):
+    product_name = models.CharField(max_length=100)
+    price_per_kg = models.DecimalField(max_digits=10, decimal_places=2)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.product_name} - ₹{self.price_per_kg}/kg"

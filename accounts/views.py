@@ -22,6 +22,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import get_user_model
 from .models import FarmerWallet, Transaction, PayoutRequest
+from .models import Offer, MarketPrice
 User = get_user_model()
 
 # from .utils import generate_email_verification_link
@@ -254,7 +255,14 @@ def download_transaction_pdf(request):
 
 @login_required
 def buyer_dashboard(request):
-    return render(request, "buyer_dashboard.html")
+    offers = Offer.objects.filter(active=True)
+    prices = MarketPrice.objects.all()
+
+
+    return render(request, "buyer_dashboard.html" ,{
+        'offers': offers,
+        'market_prices': prices,
+    })
 
 
 
