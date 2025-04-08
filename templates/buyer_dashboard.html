@@ -26,11 +26,11 @@
                             </li>
                         
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'buyer_dashboard' %}">Cart</a>
+                                <a class="nav-link" href="{% url 'cart' %}">Cart</a>
                             </li>
              
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Account</a>
+                            <a class="nav-link" href="{% url 'account' %}">Account</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
@@ -42,13 +42,13 @@
     </nav>
     <!-- Category Section -->
     <div class="categories">
-        <div class="category-item">🌱 Seeds</div>
-        <div class="category-item">🌿 Fertilizers</div>
-        <div class="category-item">🔧 Tools</div>
-        <div class="category-item">🚜 Equipment</div>
-        <div class="category-item">🥦 Organic</div>
-    </div>
-    
+      <a href="{% url 'category_products' 'seeds' %}" class="category-item">🌱 Seeds</a>
+      <a href="{% url 'category_products' 'fertilizers' %}" class="category-item">🌿 Fertilizers</a>
+      <a href="{% url 'category_products' 'tools' %}" class="category-item">🔧 Tools</a>
+      <a href="{% url 'category_products' 'equipment' %}" class="category-item">🚜 Equipment</a>
+      <a href="{% url 'category_products' 'organic' %}" class="category-item">🥦 Organic</a>
+  </div>
+  
     <!-- Banner Section -->
     {% comment %} <div class="banner">
         <img src="{% static 'images/banner1.png' %}" alt="AgriBazaar Sale" id="banner-img">
