@@ -36,17 +36,17 @@ class product_farmer(models.Model):
     def __str__(self):
         return f"Product Name: {self.productName}, Price: {self.price}, Quantity: {self.quantity}, Description: {self.description}, Farmer: {self.product_farmer}"
     
-class product_show(models.Model):
-    productName = models.CharField(max_length=50)
-    price = models.IntegerField()
-    quantity = models.IntegerField()
-    description = models.TextField()
-    images = models.ImageField(upload_to='product_images/')
-    product_vedio = models.FileField(upload_to='product_vedios/',null=True,blank=True)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    product_farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
-    def __str__(self):
-        return f"Product Name: {self.productName}, Price: {self.price}, Quantity: {self.quantity}, Description: {self.description}, Farmer: {self.product_farmer}"
+# class product_show(models.Model):
+#     productName = models.CharField(max_length=50)
+#     price = models.IntegerField()
+#     quantity = models.IntegerField()
+#     description = models.TextField()
+#     images = models.ImageField(upload_to='product_images/')
+#     product_vedio = models.FileField(upload_to='product_vedios/',null=True,blank=True)
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
+#     product_farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
+#     def __str__(self):
+#         return f"Product Name: {self.productName}, Price: {self.price}, Quantity: {self.quantity}, Description: {self.description}, Farmer: {self.product_farmer}"
     
 @receiver(post_save, sender=CustomUser)
 def create_farmer_wallet(sender, instance, created, **kwargs):
@@ -89,3 +89,23 @@ class MarketPrice(models.Model):
 
     def __str__(self):
         return f"{self.product_name} - ₹{self.price_per_kg}/kg"
+    
+class MarketplaceProduct(models.Model):
+    CATEGORY_CHOICES = [
+        ('seeds', 'Seeds'),
+        ('fertilizers', 'Fertilizers'),
+        ('tools', 'Tools'),
+        ('equipment', 'Equipment'),
+        ('organic', 'Organic'),
+    ]
+
+    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.IntegerField()
+    description = models.TextField()
+    image = models.ImageField(upload_to='marketplace_products/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.category}) - ₹{self.price}"

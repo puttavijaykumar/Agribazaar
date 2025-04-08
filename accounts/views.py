@@ -22,7 +22,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import get_user_model
 from .models import FarmerWallet, Transaction, PayoutRequest
-from .models import Offer, MarketPrice
+from .models import Offer, MarketPrice,MarketplaceProduct
 User = get_user_model()
 
 # from .utils import generate_email_verification_link
@@ -264,5 +264,9 @@ def buyer_dashboard(request):
         'market_prices': prices,
     })
 
+
+def category_products(request, category):
+    products = MarketplaceProduct.objects.filter(category__iexact=category)
+    return render(request, 'category_products.html', {'category': category, 'products': products})
 
 
