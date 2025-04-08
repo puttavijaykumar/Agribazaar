@@ -10,11 +10,17 @@ body {
     background-color: #fff;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;   /* Add this */
+    z-index: 10;          /* Add this */
 }
+
 .category-item {
     padding: 10px;
     cursor: pointer;
+    position: relative;   /* Optional but helpful */
+    z-index: 20;          /* Ensures it's clickable */
 }
+
 
 .carousel-item img {
     width: 100%;       /* Fill carousel width */
