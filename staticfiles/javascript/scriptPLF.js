@@ -1,4 +1,4 @@
-document.getElementById("image").addEventListener("change", function (event) {
+document.getElementById("images").addEventListener("change", function (event) {
     let reader = new FileReader();
     reader.onload = function () {
         let imgPreview = document.getElementById("imgPreview");
