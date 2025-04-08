@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - AgriBazaar</title>
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+</head>
+<body>
+    <div class="cart-wrapper">
+        <h2>Your Cart</h2>
+        <div class="cart-container">
+            {% for item in cart_items %}
+                <div class="cart-item">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    <div class="details">
+                        <h4>{{ item.product.name }}</h4>
+                        <p>₹{{ item.product.price }} x {{ item.quantity }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="empty-cart">Your cart is empty.</p>
+            {% endfor %}
+        </div>
+        <h3 class="total">Total: ₹{{ total }}</h3>
+    </div>
+
+    <script src="{% static 'javascript/cart.js' %}"></script>
+</body>
+</html>

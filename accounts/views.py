@@ -263,10 +263,45 @@ def buyer_dashboard(request):
         'offers': offers,
         'market_prices': prices,
     })
+from .models import CartItem
 
+def cart_view(request):
+    cart_items = CartItem.objects.filter(user=request.user)
+    total = sum(item.product.price * item.quantity for item in cart_items)
+    return render(request, 'cart.html',{
+        "cart_items": cart_items,
+        "total": total,
+    })
+
+@login_required
+def add_to_cart(request, product_id):
+    # logic to add product to cart using session or model
+    return JsonResponse({'message': 'Item added to cart'})
+
+
+def account(request):
+    # Logic for account details page
+    return render(request, 'account.html')
+
+from django.shortcuts import render, get_object_or_404
+from .models import MarketplaceProduct
 
 def category_products(request, category):
+
+    category = category.lower()
+    # Validate if the category is in defined choices
+    valid_categories = dict(MarketplaceProduct.CATEGORY_CHOICES).keys()
+    if category not in valid_categories:
+        return render(request, '404.html', status=404)  # Optional: handle invalid category
+
+    # Filter products by the given category (case-insensitive)
     products = MarketplaceProduct.objects.filter(category__iexact=category)
-    return render(request, 'category_products.html', {'category': category, 'products': products})
+
+    # Render the template with filtered products
+    return render(request, 'category_products.html', {
+        'category': category.title(),
+        'products': products
+    })
+
 
 

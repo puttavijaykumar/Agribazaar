@@ -36,18 +36,7 @@ class product_farmer(models.Model):
     def __str__(self):
         return f"Product Name: {self.productName}, Price: {self.price}, Quantity: {self.quantity}, Description: {self.description}, Farmer: {self.product_farmer}"
     
-# class product_show(models.Model):
-#     productName = models.CharField(max_length=50)
-#     price = models.IntegerField()
-#     quantity = models.IntegerField()
-#     description = models.TextField()
-#     images = models.ImageField(upload_to='product_images/')
-#     product_vedio = models.FileField(upload_to='product_vedios/',null=True,blank=True)
-#     uploaded_at = models.DateTimeField(auto_now_add=True)
-#     product_farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
-#     def __str__(self):
-#         return f"Product Name: {self.productName}, Price: {self.price}, Quantity: {self.quantity}, Description: {self.description}, Farmer: {self.product_farmer}"
-    
+
 @receiver(post_save, sender=CustomUser)
 def create_farmer_wallet(sender, instance, created, **kwargs):
     if created:  # Only create a wallet when a new user is created
@@ -109,3 +98,12 @@ class MarketplaceProduct(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.category}) - ₹{self.price}"
+    
+class CartItem(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(MarketplaceProduct, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name} x{self.quantity}"
