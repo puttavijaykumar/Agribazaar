@@ -4,50 +4,63 @@ body {
     padding: 0;
     background-color: #f5f5f5;
 }
+
+/* Navigation Categories */
 .categories {
     display: flex;
     justify-content: space-around;
     background-color: #fff;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: relative;   /* Add this */
-    z-index: 10;          /* Add this */
+    position: relative;
+    z-index: 10;
 }
 
 .category-item {
     padding: 10px;
     cursor: pointer;
-    position: relative;   /* Optional but helpful */
-    z-index: 20;          /* Ensures it's clickable */
+    position: relative;
+    z-index: 20;
+    text-decoration: none;
+    color: black;
 }
 
+.category-item:hover {
+    text-decoration: none;
+    color: green; /* Optional: adds hover color */
+}
 
+/* Carousel Image Styling */
 .carousel-item img {
-    width: 100%;       /* Fill carousel width */
-    height: 300px;     /* Match carousel height */
-    object-fit: cover; /* Crop image to fill container */
-    display: block;    /* Remove default image spacing */
-  }
-/* Crop display section */
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Crop Display Section */
 .crop-section {
-    padding: 80px;
-    /* scroll-margin-top: 100px; */
+    padding: 40px 20px 20px 20px; /* Reduced top padding */
+    margin-top: 0; /* Removed extra margin */
     background-color: #f9f9f9;
 }
 
 .crop-section h2 {
+    text-align: left;
     font-size: 24px;
     margin-bottom: 10px;
     padding-left: 10px;
+    font-weight: bold;
 }
 
+/* Scrollable Crop Cards */
 .crop-scroll {
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-wrap: nowrap;
     overflow-x: auto;
-    margin-top: 20px;
+    margin-top: 10px;
     gap: 20px;
     padding: 10px 20px;
     scroll-behavior: smooth;
@@ -58,7 +71,6 @@ body {
     text-decoration: none;
     color: black;
     width: 150px;
-
 }
 
 .crop-scroll img {
