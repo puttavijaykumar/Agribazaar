@@ -302,6 +302,8 @@ def category_products(request, category):
         'category': category.title(),
         'products': products
     })
+def crop_detail_view(request, crop_name):
+    return render(request, f"crops/{crop_name}.html", {"crop": crop_name})
 
 
 

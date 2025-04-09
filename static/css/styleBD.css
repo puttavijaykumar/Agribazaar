@@ -28,7 +28,50 @@ body {
     object-fit: cover; /* Crop image to fill container */
     display: block;    /* Remove default image spacing */
   }
+/* Crop display section */
+.crop-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
 
+.crop-section h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
+
+.crop-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px;
+    scroll-behavior: smooth;
+}
+
+.crop-scroll a {
+    text-align: center;
+    flex: 0 0 auto;
+    text-decoration: none;
+    color: black;
+}
+
+.crop-scroll img {
+    height: 120px;
+    width: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+
+.crop-scroll img:hover {
+    transform: scale(1.05);
+}
+
+.crop-scroll p {
+    margin-top: 8px;
+    font-weight: bold;
+}
 
 /* Top Offers Section */
 .product-grid {

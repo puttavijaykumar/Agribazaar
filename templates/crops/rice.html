@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rice - AgriBazaar</title>
+    <link rel="stylesheet" href="{% static 'css/rice.css' %}">
+</head>
+<body>
+    <h1>🍚 {{ crop|capfirst }}</h1>
+    <img src="{% static 'images/rice.jpeg' %}" alt="Rice Image" width="300">
+    <p>Rice is the staple food crop of India. It requires high humidity and plenty of water.</p>
+    <p><strong>Season:</strong> Kharif (Monsoon)</p>
+    <p><strong>Major Growing States:</strong> West Bengal, Uttar Pradesh, Andhra Pradesh, Punjab</p>
+
+    <srcipt src="{% static 'javascript/rice.js' %}"></script>
+</body>
+</html>

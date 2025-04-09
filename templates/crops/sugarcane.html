@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rice - AgriBazaar</title>
+    <link rel="stylesheet" href="{% static 'css/sugarcane.css' %}">
+</head>
+<body>
+    <h1>🍚 {{ crop|capfirst }}</h1>
+    <img src="{% static 'images/sugarcane.jpeg' %}" alt="Sugarcane Image" width="300">
+    <p>Sugarcane is a tropical crop known for its high sugar content and is mainly grown for sugar production.
+         It is also used in producing jaggery, ethanol, paper, and even electricity through bagasse. 
+    </p>
+    <p><strong>Season:</strong> Grown throughout the year</p>
+    <p><strong>Major Growing States:</strong> Uttar Pradesh, Maharashtra, Karnataka, Tamil Nadu</p>
+    
+    <srcipt src="{% static 'javascript/sugarcane.js' %}"></script>
+</body>
+</html>

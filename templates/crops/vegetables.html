@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rice - AgriBazaar</title>
+    <link rel="stylesheet" href="{% static 'css/vegetables.css' %}">
+</head>
+<body>
+    <h1>🍚 {{ crop|capfirst }}</h1>
+    <img src="{% static 'images/vegetables.jpg' %}" alt="Vegetables Image" width="300">
+    <p>Vegetables include a wide variety of edible plants such as tomatoes, carrots, spinach, brinjal, and many more. 
+        They are essential for a balanced diet and rich in vitamins, minerals, and fiber.
+    </p>
+    <p><strong>Season:</strong> Depends on the vegetable (Rabi/Kharif/Zaid)</p>
+    <p><strong>Major Growing States:</strong> West Bengal, Uttar Pradesh, Madhya Pradesh, Maharashtra</p>
+    
+    <srcipt src="{% static 'javascript/vegetables.js' %}"></script>
+</body>
+</html>
