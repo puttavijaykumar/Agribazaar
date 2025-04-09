@@ -31,7 +31,7 @@ body {
 /* Crop display section */
 .crop-section {
     padding: 80px;
-    scroll-margin-top: 100px;
+    /* scroll-margin-top: 100px; */
     background-color: #f9f9f9;
 }
 
