@@ -83,6 +83,18 @@
           <span class="sr-only">Next</span>
         </button>
       </div>
+      <!-- Explore Crops Section -->
+<div class="crop-section">
+  <h2>Explore Crops</h2>
+  <div class="crop-scroll">
+      <a href="{% url 'crop_detail' 'wheat' %}"><img src="{% static 'images/wheat.png' %}" alt="Wheat"><p>Wheat</p></a>
+      <a href="{% url 'crop_detail' 'rice' %}"><img src="{% static 'images/rice.jpeg' %}" alt="Rice"><p>Rice</p></a>
+      <a href="{% url 'crop_detail' 'maize' %}"><img src="{% static 'images/maize.png' %}" alt="Maize"><p>Maize</p></a>
+      <a href="{% url 'crop_detail' 'sugarcane' %}"><img src="{% static 'images/sugarcane.jpeg' %}" alt="Sugarcane"><p>Sugarcane</p></a>
+      <a href="{% url 'crop_detail' 'pulses' %}"><img src="{% static 'images/vegetables.jpg' %}" alt="Pulses"><p>Vegetables</p></a>
+  </div>
+</div>
+
     <!-- Top Offers Section -->
     <h2>Top Offers</h2>
     <div class="product-grid">

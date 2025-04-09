@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rice - AgriBazaar</title>
+    <link rel="stylesheet" href="{% static 'css/maize.css' %}">
+</head>
+<body>
+    <h1>🍚 {{ crop|capfirst }}</h1>
+    <img src="{% static 'images/maize.png' %}" alt="Maize Image" width="300">
+    <p>Maize, also known as corn, is one of the most important cereal crops grown worldwide. In India, it is cultivated both as a food crop and fodder.</p>
+    <p><strong>Season:</strong> Kharif (Monsoon) and Rabi (in some states)</p>
+    <p><strong>Major Growing States:</strong> Karnataka, Andhra Pradesh, Bihar, Madhya Pradesh</p>
+    
+    <srcipt src="{% static 'javascript/maize.js' %}"></script>
+</body>
+</html>
