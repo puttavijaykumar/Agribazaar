@@ -42,26 +42,31 @@ body {
 
 .crop-scroll {
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: nowrap;
     overflow-x: auto;
+    margin-top: 20px;
     gap: 20px;
-    padding: 80px;
+    padding: 10px 20px;
     scroll-behavior: smooth;
 }
 
 .crop-scroll a {
     text-align: center;
-    flex: 0 0 auto;
     text-decoration: none;
     color: black;
+    width: 150px;
+
 }
 
 .crop-scroll img {
-    height: 120px;
-    width: 120px;
+    height: auto;
+    width: 100%;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
 }
 
 .crop-scroll img:hover {
