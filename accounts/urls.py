@@ -29,6 +29,6 @@ urlpatterns = [
     path('category/<str:category>/', category_products, name='category_products'),
     path('cart/', cart_view, name='cart_view'),
     path('account/', account, name='account'),
-    path('crop/<int:crop_id>/', crop_detail_view, name='crop_detail_view'),
+    path('crop/<str:crop_name>/', crop_detail_view, name='crop_detail_view'),
 
 ]
