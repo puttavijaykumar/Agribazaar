@@ -80,6 +80,7 @@ a.disabled-link {
 
 /* --- Crop Image Cards --- */
 .crop-section h2 {
+    text-align: left;
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 20px;
@@ -87,8 +88,15 @@ a.disabled-link {
 
 /* Crop section container styling */
 .crop-section .d-flex {
-    gap: 40px; /* spacing between items */
-    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-top: 10px;
+    gap: 20px;
+    padding: 10px 20px;
+    scroll-behavior: smooth;
 }
 
 /* Each crop item */
