@@ -85,28 +85,32 @@ a.disabled-link {
     margin-bottom: 20px;
 }
 
-.crop-section .crop-card {
+.crop-section a {
+    text-decoration: none !important; /* Remove underline */
+    color: #000000; /* Set text color to black or anything else you prefer */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 15px;
-    text-align: center;
-    width: 120px;
-}
-
-.crop-section .crop-card img {
-    width: 100px;
-    height: 100px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
 }
 
-.crop-section .crop-card img:hover {
-    transform: scale(1.1);
+.crop-section a:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
 }
 
-.crop-section .crop-card p {
+.crop-section img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.crop-section p {
     margin-top: 8px;
     font-weight: 600;
-    color: #1a1a1a;
+    font-size: 1rem;
 }
 
 /* Flex layout */
