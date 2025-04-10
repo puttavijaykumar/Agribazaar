@@ -40,14 +40,35 @@ section {
 }
 
 /* --- Category Buttons --- */
-.category-button {
+/* .category-button {
     font-size: 1rem;
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 20px;
     margin: 5px;
     display: inline-block;
+} */
+.category-button {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 22px;
+    border-radius: 30px;
+    margin: 5px;
+    display: inline-block;
+    background: linear-gradient(to right, #56ab2f, #a8e063);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    text-decoration: none; /* in case you're using <a> elements */
 }
+
+.category-button:hover {
+    background: linear-gradient(to right, #3e8e41, #92d050);
+    transform: scale(1.05);
+}
+
 
 /* --- Disabled Link Look (for unauthenticated users) --- */
 a.disabled-link {

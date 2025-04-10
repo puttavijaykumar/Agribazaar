@@ -118,6 +118,13 @@ def verify_email(request, uidb64, token):
     
 
 def home(request):
+    category_icons = [
+        {'category': 'seeds', 'icon': '🌱'},
+        {'category': 'fertilizers', 'icon': '🌿'},
+        {'category': 'tools', 'icon': '🔧'},
+        {'category': 'equipment', 'icon': '🚜'},
+        {'category': 'organic', 'icon': '🥦'},
+    ]
     offers = Offer.objects.filter(active=True)
     prices = MarketPrice.objects.all()
     return render(request, "home.html",{
