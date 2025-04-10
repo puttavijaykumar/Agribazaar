@@ -86,32 +86,34 @@ a.disabled-link {
 }
 
 .crop-section a {
-    text-decoration: none !important; /* Remove underline */
-    color: #000000; /* Set text color to black or anything else you prefer */
+    text-decoration: none !important;
+    color: #000;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 15px;
+    margin: 20px;
     transition: transform 0.2s ease;
 }
 
 .crop-section a:hover {
-    transform: scale(1.05); /* Slight zoom on hover */
+    transform: scale(1.05);
 }
 
 .crop-section img {
-    width: 100px;
+    width: 130px;
     height: 100px;
     object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .crop-section p {
     margin-top: 8px;
-    font-weight: 600;
-    font-size: 1rem;
+    font-weight: bold;
+    font-size: 1.05rem;
+    text-align: center;
 }
+
 
 /* Flex layout */
 .crop-section .crop-container {
