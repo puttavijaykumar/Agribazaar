@@ -118,7 +118,13 @@ def verify_email(request, uidb64, token):
     
 
 def home(request):
-    return render(request, "home.html") # Make sure home.html exists in templates folder
+    offers = Offer.objects.filter(active=True)
+    prices = MarketPrice.objects.all()
+    return render(request, "home.html",{
+        'offers': offers,
+        'market_prices': prices,
+    })
+   
 
 @login_required(login_url='/login/')
 def default_dashboard(request):

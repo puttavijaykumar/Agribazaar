@@ -1,42 +1,96 @@
-body{
+body {
     height: 100%;
     margin: 0;
     font-family: Arial, sans-serif;
-   
 }
-/* Targeting the navbar */
+
+/* --- NAVBAR (unchanged as requested) --- */
 .navbar {
-    
-    /* background-color: #8cd19c !important; /* Green color */  
     padding: 10px !important;
 }
-/* Targeting the navbar brand (AgriBazaar) */
 .navbar-brand {
     font-size: 1.8rem;
     font-weight: bold;
     color: green !important;
 }
-
-/* Targeting the search bar */
 .navbar .form-control {
     width: 50%;
     border-radius: 20px;
 }
-
-/* Targeting navigation links */
 .navbar-nav .nav-link {
     color: grey;
     font-weight: bold;
     margin-left: 10px;
 }
 
-/* Targeting the h1 */
+/* --- Section Headings --- */
 h1 {
     text-align: center;
     margin-top: 20px;
     color: #333;
 }
+
+/* --- General Styling --- */
 ul.errorlist {
     display: none;
 }
 
+section {
+    padding: 20px 0;
+}
+
+/* --- Category Buttons --- */
+.category-button {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin: 5px;
+    display: inline-block;
+}
+
+/* --- Disabled Link Look (for unauthenticated users) --- */
+a.disabled-link {
+    pointer-events: none;
+    opacity: 0.6;
+    text-decoration: none;
+    cursor: not-allowed;
+}
+
+/* --- Crop Image Cards --- */
+.crop-card {
+    text-align: center;
+}
+.crop-card img {
+    width: 100%;
+    max-height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.crop-card p {
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+/* --- Carousel --- */
+.carousel-inner img {
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* --- Offers Section --- */
+.card {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: none;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+}
+
+/* --- Live Market Prices --- */
+.market-price-card {
+    background-color: #e9f5e9;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+}
