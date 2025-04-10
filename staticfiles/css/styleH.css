@@ -85,32 +85,40 @@ a.disabled-link {
     margin-bottom: 20px;
 }
 
+/* Crop section container styling */
+.crop-section .d-flex {
+    gap: 40px; /* spacing between items */
+    margin-top: 20px;
+}
+
+/* Each crop item */
 .crop-section a {
-    text-decoration: none !important;
+    text-decoration: none !important; /* remove underline */
     color: #000;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
 }
 
 .crop-section a:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* optional hover effect */
 }
 
+/* Crop images */
 .crop-section img {
-    width: 130px;
+    width: 130px !important;
     height: 100px;
     object-fit: cover;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Crop name text */
 .crop-section p {
-    margin-top: 8px;
-    font-weight: bold;
-    font-size: 1.05rem;
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
     text-align: center;
 }
 
