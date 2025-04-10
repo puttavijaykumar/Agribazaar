@@ -51,13 +51,17 @@
     
    <!-- Category Section -->
    <div class="categories text-center my-4">
-    {% for category, icon in [('seeds', '🌱'), ('fertilizers', '🌿'), ('tools', '🔧'), ('equipment', '🚜'), ('organic', '🥦')] %}
-        {% if user.is_authenticated %}
-            <a href="{% url 'category_products' category %}" class="btn btn-outline-success m-1">{{ icon }} {{ category|title }}</a>
-        {% else %}
-            <a href="{% url 'login' %}" class="btn btn-outline-secondary m-1" title="Login required">{{ icon }} {{ category|title }}</a>
-        {% endif %}
-    {% endfor %}
+    {% for item in category_icons %}
+    {% if user.is_authenticated %}
+        <a href="{% url 'category_products' item.category %}" class="btn btn-outline-success m-1">
+            {{ item.icon }} {{ item.category|title }}
+        </a>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-secondary m-1" title="Login required">
+            {{ item.icon }} {{ item.category|title }}
+        </a>
+    {% endif %}
+{% endfor %}
 </div>
 
 <!-- Banner / Carousel -->

@@ -29,13 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 🔐 Disable feature links for unauthorized users
+    // Disable feature links for unauthorized users
     const disabledLinks = document.querySelectorAll("a.disabled-link");
 
     disabledLinks.forEach(function (link) {
         link.addEventListener("click", function (e) {
             e.preventDefault(); // Stop the navigation
-            alert("⚠️ Please login to access this feature.");
+            alert("Please login to access this feature.");
         });
     });
 });
