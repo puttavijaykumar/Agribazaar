@@ -128,6 +128,7 @@ def home(request):
     offers = Offer.objects.filter(active=True)
     prices = MarketPrice.objects.all()
     return render(request, "home.html",{
+        'category_icons':category_icons,
         'offers': offers,
         'market_prices': prices,
     })
