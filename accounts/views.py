@@ -125,12 +125,20 @@ def home(request):
         {'category': 'equipment', 'icon': '🚜'},
         {'category': 'organic', 'icon': '🥦'},
     ]
+    crop_images = [
+        {'crop': 'wheat', 'image': 'wheat.png'},
+        {'crop': 'rice', 'image': 'rice.jpeg'},
+        {'crop': 'maize', 'image': 'maize.png'},
+        {'crop': 'sugarcane', 'image': 'sugarcane.jpeg'},
+        {'crop': 'vegetables', 'image': 'vegetables.jpg'}
+    ]
     offers = Offer.objects.filter(active=True)
     prices = MarketPrice.objects.all()
     return render(request, "home.html",{
         'category_icons':category_icons,
         'offers': offers,
         'market_prices': prices,
+        'crop_images': crop_images,
     })
    
 
