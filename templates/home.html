@@ -49,30 +49,90 @@
         </div>
     </nav>
     
-    <main>
-        <h1 class="text-center">Welcome to AgriBazaar</h1>
+   <!-- Category Section -->
+   <div class="categories text-center my-4">
+    {% for category, icon in [('seeds', '🌱'), ('fertilizers', '🌿'), ('tools', '🔧'), ('equipment', '🚜'), ('organic', '🥦')] %}
+        {% if user.is_authenticated %}
+            <a href="{% url 'category_products' category %}" class="btn btn-outline-success m-1">{{ icon }} {{ category|title }}</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-secondary m-1" title="Login required">{{ icon }} {{ category|title }}</a>
+        {% endif %}
+    {% endfor %}
+</div>
 
-     
+<!-- Banner / Carousel -->
+<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{% static 'images/banner1.png' %}" class="d-block w-100" alt="Banner">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'images/banner2.png' %}" class="d-block w-100" alt="Banner">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'images/banner3.png' %}" class="d-block w-100" alt="Banner">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-target="#carouselExampleCaptions" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-target="#carouselExampleCaptions" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
 
-        <section>
-            <h3>Latest Agriculture News</h3>
-            <p>Stay updated with the latest trends, market prices, and farming techniques.</p>
-        </section>
+<!-- Explore Crops Section -->
+<div class="crop-section text-center my-4">
+    <h2>Explore Crops</h2>
+    <div class="d-flex flex-wrap justify-content-center">
+        {% for crop, image in [('wheat', 'wheat.png'), ('rice', 'rice.jpeg'), ('maize', 'maize.png'), ('sugarcane', 'sugarcane.jpeg'), ('vegetables', 'vegetables.jpg')] %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'crop_detail_view' crop %}" class="m-2">
+                    <img src="{% static 'images/'|add:image %}" alt="{{ crop }}" width="100"><br>
+                    <p>{{ crop|title }}</p>
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="m-2" title="Login required">
+                    <img src="{% static 'images/'|add:image %}" alt="{{ crop }}" width="100"><br>
+                    <p>{{ crop|title }}</p>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
 
-        <section>
-            <h3>Smart Farming Tips</h3>
-            <ul>
-                <li>Use AI-based predictions for better yield.</li>
-                <li>Monitor soil health with smart sensors.</li>
-                <li>Water conservation techniques to maximize efficiency.</li>
-            </ul>
-        </section>
+<!-- Top Offers Section -->
+<div class="container my-4">
+    <h2 class="text-center">Top Offers</h2>
+    <div class="row">
+        {% for offer in offers %}
+            <div class="col-md-4">
+                <div class="card mb-3 p-2">
+                    🌾 {{ offer.product_type }} - {{ offer.discount }}% Off <br>
+                    <small>{{ offer.description }}</small>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted text-center">No current offers available.</p>
+        {% endfor %}
+    </div>
+</div>
 
-        <section>
-            <h3>Available Products</h3>
-            <p>No products available at the moment.</p>
-        </section>
-    </main>
+<!-- Live Market Prices -->
+<div class="container my-4">
+    <h2 class="text-center">Live Market Prices</h2>
+    <div class="row">
+        {% for price in market_prices %}
+            <div class="col-md-4 mb-2">
+                <div class="border rounded p-2 text-center">
+                    🌿 {{ price.product_name }}: ₹{{ price.price_per_kg }}/kg
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted text-center">No market prices available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
 
 
     <script src="{% static 'javascript/scriptH.js' %}"></script>
