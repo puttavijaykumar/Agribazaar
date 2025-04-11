@@ -106,20 +106,16 @@
 </div>
 
 <!-- Top Offers Section -->
-<div class="container my-4">
-    <h2 class="text-center">Top Offers</h2>
-    <div class="row">
-        {% for offer in offers %}
-            <div class="col-md-4">
-                <div class="card mb-3 p-2">
-                    🌾 {{ offer.product_type }} - {{ offer.discount }}% Off <br>
-                    <small>{{ offer.description }}</small>
-                </div>
-            </div>
-        {% empty %}
-            <p class="text-muted text-center">No current offers available.</p>
-        {% endfor %}
-    </div>
+<h2>Top Offers</h2>
+<div class="product-grid">
+  {% for offer in offers %}
+  <div class="product-item">
+      🌾 {{ offer.product_type }} - {{ offer.discount }}% Off <br>
+      <small>{{ offer.description }}</small>
+  </div>
+{% empty %}
+  <p class="text-muted">No current offers available.</p>
+{% endfor %}
 </div>
 
 <!-- Live Market Prices -->
