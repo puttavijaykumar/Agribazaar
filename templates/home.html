@@ -14,7 +14,10 @@
         <div class="container-fluid">
             <!-- Brand -->
             <a class="navbar-brand" href="/">AgriBazaar</a>
-    
+            
+            <form class="d-flex flex-grow-1 mx-3" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            </form>
             <!-- Toggler/collapsible Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -52,17 +55,18 @@
    <!-- Category Section -->
    <div class="categories text-center my-4">
     {% for item in category_icons %}
-    {% if user.is_authenticated %}
-        <a href="{% url 'category_products' item.category %}" class="btn btn-outline-success m-1">
-            {{ item.icon }} {{ item.category|title }}
-        </a>
-    {% else %}
-        <a href="{% url 'login' %}" class="btn btn-outline-secondary m-1" title="Login required">
-            {{ item.icon }} {{ item.category|title }}
-        </a>
-    {% endif %}
-{% endfor %}
+        {% if user.is_authenticated %}
+            <a href="{% url 'category_products' item.category %}" class="category-button">
+                {{ item.icon }} {{ item.category|title }}
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="category-button" title="Login required">
+                {{ item.icon }} {{ item.category|title }}
+            </a>
+        {% endif %}
+    {% endfor %}
 </div>
+
 
 <!-- Banner / Carousel -->
 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
