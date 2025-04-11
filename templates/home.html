@@ -119,20 +119,20 @@
 </div>
 
 <!-- Live Market Prices -->
-<div class="container my-4">
-    <h2 class="text-center">Live Market Prices</h2>
-    <div class="row">
+<h2>Live Market Prices</h2>
+    <div class="market-prices">
+      <div class="market-prices">
         {% for price in market_prices %}
-            <div class="col-md-4 mb-2">
-                <div class="border rounded p-2 text-center">
-                    🌿 {{ price.product_name }}: ₹{{ price.price_per_kg }}/kg
-                </div>
+            <div class="price-item">
+                🌿 {{ price.product_name }}: ₹{{ price.price_per_kg }}/kg
             </div>
         {% empty %}
-            <p class="text-muted text-center">No market prices available at the moment.</p>
+            <p class="text-muted">No market prices available at the moment.</p>
         {% endfor %}
     </div>
-</div>
+    
+    </div>
+
 
 
     <script src="{% static 'javascript/scriptH.js' %}"></script>
