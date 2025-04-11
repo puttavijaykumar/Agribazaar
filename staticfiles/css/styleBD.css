@@ -37,6 +37,9 @@ body {
     object-fit: cover;
     display: block;
 }
+.carousel-caption {
+    display: none !important;
+}
 
 /* Crop Display Section */
 .crop-section {

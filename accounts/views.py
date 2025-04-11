@@ -25,8 +25,9 @@ from .models import FarmerWallet, Transaction, PayoutRequest
 from .models import Offer, MarketPrice,MarketplaceProduct
 User = get_user_model()
 
-# from .utils import generate_email_verification_link
-# from .utils import generate_email_verification_link
+
+
+
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -50,8 +51,7 @@ def register_view(request):
         form = RegisterForm()
     return render(request, "register.html", {"form": form})
 
-def login_view(request):
-    
+def login_view(request):   
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -327,5 +327,24 @@ def category_products(request, category):
 def crop_detail_view(request, crop_name):
     return render(request, f"crops/{crop_name}.html", {"crop": crop_name})
 
+# Smart Search Functionality
 
+import re
+
+ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
+
+def search_products(request):
+    query = request.GET.get('q', '').strip()
+
+    # Check for abusive words
+    for word in ABUSIVE_WORDS:
+        pattern = r'\b' + re.escape(word) + r'\b'
+        if re.search(pattern, query, flags=re.IGNORECASE):
+            return JsonResponse({'error': 'Inappropriate language detected. Please use respectful words.'}, status=400)
+
+    # Perform search
+    products = MarketplaceProduct.objects.filter(name__icontains=query) | MarketplaceProduct.objects.filter(category__icontains=query)
+    data = [{'id': p.id, 'name': p.name, 'price': p.price, 'image': p.image.url} for p in products]
+
+    return JsonResponse({'results': data})
 
