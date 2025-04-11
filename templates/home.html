@@ -92,12 +92,12 @@
         {% for item in crop_images %}
         {% if user.is_authenticated %}
             <a href="{% url 'crop_detail_view' item.crop %}" class="m-2">
-                <img src="{% static 'images/'|add:item.image %}" alt="{{ item.crop }}" width="100"><br>
+                <img src="{% static 'images/'|add:item.image %}" alt="{{ item.crop }}" ><br>
                 <p>{{ item.crop|title }}</p>
             </a>
         {% else %}
             <a href="{% url 'login' %}" class="m-2" title="Login required">
-                <img src="{% static 'images/'|add:item.image %}" alt="{{ item.crop }}" width="100"><br>
+                <img src="{% static 'images/'|add:item.image %}" alt="{{ item.crop }}" ><br>
                 <p>{{ item.crop|title }}</p>
             </a>
         {% endif %}
