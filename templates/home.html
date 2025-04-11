@@ -16,8 +16,11 @@
             <a class="navbar-brand" href="/">AgriBazaar</a>
             
             <form class="d-flex flex-grow-1 mx-3" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
             </form>
+            <div id="searchResults" class="mt-2"></div>
+            <div id="warningMessage" style="color: red; font-weight: bold;"></div>
+            
             <!-- Toggler/collapsible Button -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
