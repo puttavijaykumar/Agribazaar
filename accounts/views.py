@@ -329,6 +329,7 @@ def crop_detail_view(request, crop_name):
 
 # Smart Search Functionality
 
+
 import re
 
 ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
@@ -348,3 +349,9 @@ def search_products(request):
 
     return JsonResponse({'results': data})
 
+# Display the farmer products 
+from .models import ProductFarmer
+
+def farmer_products_view(request):
+    farmer_products = ProductFarmer.objects.all().order_by('-uploaded_at')
+    return render(request, 'farmer_disp_products.html', {'farmer_products': farmer_products})
