@@ -4,7 +4,7 @@ from .views import register_view, verify_email
 from .views import product_list_farmer
 from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selection_view,category_products,cart_view,account
 from .views import download_transaction_pdf,farmer_account
-from .views import crop_detail_view,search_products
+from .views import crop_detail_view,search_products,farmer_products_view
 from accounts.views import home
 from django.contrib.auth import views as auth_views
 
@@ -31,4 +31,5 @@ urlpatterns = [
     path('account/', account, name='account'),
     path('crop/<str:crop_name>/', crop_detail_view, name='crop_detail_view'),
     path('search-products/', search_products, name='search_products'),
+    path('farmer/displayProducts/',farmer_products_view, name='farmer_products_view')
 ]
