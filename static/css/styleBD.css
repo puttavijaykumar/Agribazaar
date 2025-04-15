@@ -1,178 +1,29 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-}
-.navbar-nav .nav-link {
-    color: grey;
-    font-weight: bold;
-    margin-left: 10px;
-}
-
-/* Navigation Categories */
-.categories {
+.categories{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     flex-wrap: wrap;
-    gap: 140px;
-    padding: 20px 0;
-}
-
-.category-button {
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding: 10px 22px;
-    justify-content: space-around;
-    border-radius: 40px;
-    margin: 5px;
-    display: inline-block;
-    background: linear-gradient(to right, #56ab2f, #a8e063);
-    color: white;
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s ease, transform 0.2s ease;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.category-button:hover {
-    background: linear-gradient(to right, #3e8e41, #92d050);
-    transform: scale(1.05);
-}
-
-/* --- Disabled Link Look (for unauthenticated users) --- */
-a.disabled-link {
-    pointer-events: none;
-    opacity: 0.6;
-    text-decoration: none;
-    cursor: not-allowed;
-}
-
-
-/* Carousel Image Styling */
-.carousel-item img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    display: block;
-}
-.carousel-caption {
-    display: none !important;
-}
-
-/* Crop Display Section */
-.crop-section {
-    padding: 40px 20px 20px 20px; /* Reduced top padding */
-    margin-top: 0; /* Removed extra margin */
-    background-color: #f9f9f9;
-}
-
-.crop-section h2 {
-    text-align: left;
-    font-size: 24px;
-    margin-bottom: 10px;
-    padding-left: 10px;
-    font-weight: bold;
-}
-
-/* Scrollable Crop Cards */
-.crop-scroll {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    margin-top: 10px;
+    margin: 30px auto;
+    max-width: 90%;
     gap: 20px;
-    padding: 10px 20px;
-    scroll-behavior: smooth;
-}
-
-.crop-scroll a {
-    text-align: center;
-    text-decoration: none;
-    color: black;
-    width: 150px;
-}
-
-.crop-scroll img {
-    height: auto;
-    width: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease;
-}
-
-.crop-scroll img:hover {
-    transform: scale(1.05);
-}
-
-.crop-scroll p {
-    margin-top: 8px;
+  }
+  
+  .category-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
     font-weight: bold;
-}
-
-/* Top Offers Section */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin: 20px;
-    padding: 20px;
-    background-color: #f5fdf5;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.product-item {
-    background-color: #ffffff;
-    border-left: 6px solid #4CAF50;
-    padding: 16px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
-    transition: transform 0.2s ease;
-}
-
-.product-item small {
-    display: block;
-    margin-top: 5px;
-    font-size: 13px;
-    color: #666;
-}
-
-.product-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
-}
-
-/* Live Market Prices Section */
-.market-prices {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.2rem;
-    margin: 20px;
-    padding: 20px;
-    background-color: #fffaf5;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.price-item {
-    background-color: #fff;
-    padding: 14px 18px;
-    border-left: 6px solid #FFA500;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    color: #444;
-    transition: transform 0.2s ease;
-}
-
-.price-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.2);
-}
+    background: linear-gradient(135deg, #7bdc63, #4caf50);
+    padding: 15px 30px;
+    color: white;
+    text-decoration: none;
+    border-radius: 40px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .category-item:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #6dcf52, #43a047);
+  }
+  
