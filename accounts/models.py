@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Role(models.Model):
@@ -29,8 +29,11 @@ class product_farmer(models.Model):
     price = models.IntegerField()
     quantity = models.IntegerField()
     description = models.TextField()
-    images = models.ImageField(upload_to='product_images/')
-    product_vedio = models.FileField(upload_to='product_vedios/',null=True,blank=True)
+    # images = models.ImageField(upload_to='product_images/')
+    # product_vedio = models.FileField(upload_to='product_vedios/',null=True,blank=True)
+    images = CloudinaryField('image', null=True, blank=True)
+    product_vedio = CloudinaryField('video', null=True, blank=True)
+    
     uploaded_at = models.DateTimeField(auto_now_add=True)
     product_farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
     def __str__(self):

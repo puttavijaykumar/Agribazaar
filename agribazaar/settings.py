@@ -43,6 +43,8 @@ DEBUG = True
 INSTALLED_APPS = [
     
     'accounts',
+    'cloudinary',
+    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
