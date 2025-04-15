@@ -335,7 +335,7 @@ import re
 ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
 
 def search_products(request):
-    query = request.GET.get('q', '').strip()
+    query = request.GET.get('query', '').strip()
 
     # Check for abusive words
     for word in ABUSIVE_WORDS:
@@ -345,9 +345,15 @@ def search_products(request):
 
     # Perform search
     products = MarketplaceProduct.objects.filter(name__icontains=query) | MarketplaceProduct.objects.filter(category__icontains=query)
-    data = [{'id': p.id, 'name': p.name, 'price': p.price, 'image': p.image.url} for p in products]
 
-    return JsonResponse({'results': data})
+    results = [{
+        'id': p.id,
+        'name': p.name,
+        'price': str(p.price),
+        'image': p.image.url
+    } for p in products[:6]]
+
+    return JsonResponse({'products': results})
 
 # Display the farmer products 
 
