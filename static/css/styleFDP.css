@@ -1,0 +1,42 @@
+/* static/css/farmer_products.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+.products-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.product-card {
+    width: 90%;
+    max-width: 500px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.product-card img {
+    width: 250px;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.product-card video {
+    width: 250px;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+.uploader {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
