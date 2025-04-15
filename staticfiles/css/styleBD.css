@@ -21,20 +21,33 @@ body {
     z-index: 10;
 }
 
+.categories {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 40px 0;
+  }
+  
 .category-item {
-    padding: 10px;
-    cursor: pointer;
-    position: relative;
-    z-index: 20;
+    background: linear-gradient(to right, #6ddc4b, #a1e267);
+    border: none;
+    border-radius: 30px;
+    padding: 15px 35px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
     text-decoration: none;
-    color: black;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
-
+  
 .category-item:hover {
-    text-decoration: none;
-    color: green; /* Optional: adds hover color */
-}
-
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
 /* Carousel Image Styling */
 .carousel-item img {
     width: 100%;
