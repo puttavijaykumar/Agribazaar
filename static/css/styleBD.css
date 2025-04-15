@@ -4,6 +4,35 @@ body {
     padding: 0;
     background-color: #f5f5f5;
 }
+#search-results {
+    background: #fff;
+    border: 1px solid #ccc;
+    max-height: 250px;
+    overflow-y: auto;
+    margin-top: 5px;
+    padding: 10px;
+    z-index: 999;
+    position: absolute;
+    width: 30%;
+    top: 60px; /* adjust based on form position */
+    left: 20%; /* adjust based on layout */
+}
+
+.search-suggestion {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.search-suggestion:hover {
+    background-color: #f3f3f3;
+}
+
+.search-error {
+    color: red;
+    font-weight: bold;
+}
+
 .navbar-nav .nav-link {
     color: grey;
     font-weight: bold;
