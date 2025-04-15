@@ -13,27 +13,42 @@ body {
 /* Navigation Categories */
 .categories {
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 140px;
+    padding: 20px 0;
+}
+
+.category-button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 10px 22px;
     justify-content: space-around;
-    background-color: #fff;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 10;
-}
-
-.category-item {
-    padding: 10px;
+    border-radius: 40px;
+    margin: 5px;
+    display: inline-block;
+    background: linear-gradient(to right, #56ab2f, #a8e063);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, transform 0.2s ease;
     cursor: pointer;
-    position: relative;
-    z-index: 20;
     text-decoration: none;
-    color: black;
 }
 
-.category-item:hover {
-    text-decoration: none;
-    color: green; /* Optional: adds hover color */
+.category-button:hover {
+    background: linear-gradient(to right, #3e8e41, #92d050);
+    transform: scale(1.05);
 }
+
+/* --- Disabled Link Look (for unauthenticated users) --- */
+a.disabled-link {
+    pointer-events: none;
+    opacity: 0.6;
+    text-decoration: none;
+    cursor: not-allowed;
+}
+
 
 /* Carousel Image Styling */
 .carousel-item img {
