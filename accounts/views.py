@@ -350,8 +350,7 @@ def search_products(request):
     return JsonResponse({'results': data})
 
 # Display the farmer products 
-from .models import ProductFarmer
 
 def farmer_products_view(request):
-    farmer_products = ProductFarmer.objects.all().order_by('-uploaded_at')
+    farmer_products = product_farmer.objects.all().order_by('-uploaded_at')
     return render(request, 'farmer_disp_products.html', {'farmer_products': farmer_products})
