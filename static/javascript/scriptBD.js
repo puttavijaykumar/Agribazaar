@@ -26,14 +26,8 @@ searchForm.addEventListener("submit", function(event) {
       search_products(data);  // Call your backend function with received data
     })
     .catch(error => {
-      console.error('Full error:', error);
-      
-      // Attempt to read error response
-      error.json().then(errData => {
-        alert(`Error: ${errData.error || 'Unknown error'}`);
-      }).catch(() => {
-        alert("An error occurred during the search");
-      });
+      console.error('Error:', error);
+      alert("An error occurred during the search");
     });
   }
   else {
