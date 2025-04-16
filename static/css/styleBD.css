@@ -32,6 +32,10 @@ body {
     color: red;
     font-weight: bold;
 }
+.navbar {
+    position: relative;
+    z-index: 1050;  /* Higher than carousel controls */
+}
 
 .navbar-nav .nav-link {
     color: grey;
