@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch(`/ajax/search-products/?query=${encodeURIComponent(query)}`)
+        fetch(`/search-products/?query=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
                 resultsDiv.innerHTML = '';
@@ -27,8 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         const item = document.createElement('div');
                         item.classList.add('search-suggestion');
                         item.innerHTML = `
-                            <strong>${product.name}</strong><br>
-                            ₹${product.price}
+                            <a href="/product/${product.id}/">
+                                <strong>${product.name}</strong><br>
+                                ₹${product.price}
+                            </a>
                         `;
                         resultsDiv.appendChild(item);
                     });
