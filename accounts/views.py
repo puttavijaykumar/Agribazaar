@@ -383,10 +383,14 @@ def search_products(request):
     
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-    
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-    
+        import traceback
+        traceback.print_exc()  # Print to console
+        return JsonResponse({
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }, status=500)
+        
 def product_detail(request, id):
     product = get_object_or_404(MarketplaceProduct, id=id)
     return render(request, 'product_detail.html', {'product': product})
