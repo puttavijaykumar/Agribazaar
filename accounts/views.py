@@ -324,6 +324,7 @@ def category_products(request, category):
         'category': category.title(),
         'products': products
     })
+    
 def crop_detail_view(request, crop_name):
     return render(request, f"crops/{crop_name}.html", {"crop": crop_name})
 
@@ -356,7 +357,6 @@ def search_products(request):
     return JsonResponse({'products': results})
 
 # Display the farmer products 
-
 def farmer_products_view(request):
     farmer_products = product_farmer.objects.all().order_by('-uploaded_at')
     return render(request, 'farmer_disp_products.html', {'farmer_products': farmer_products})
