@@ -25,9 +25,9 @@ searchForm.addEventListener("submit", function(event) {
       // Handle successful response
       search_products(data);  // Call your backend function with received data
     })
-    .catch(error => {
-      console.error('Error:', error);
-      alert("An error occurred during the search");
+    .catch((error) => {
+      console.error("Fetch error:", error);
+      // Don't try to call error.json() here
     });
   }
   else {
