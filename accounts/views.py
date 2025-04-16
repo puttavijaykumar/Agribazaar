@@ -332,30 +332,59 @@ def crop_detail_view(request, crop_name):
 
 
 import re
-
+from cloudinary import CloudinaryImage, CloudinaryVideo 
 ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
 
 def search_products(request):
-    query = request.GET.get('query', '').strip()
+    try:
+        # Parse JSON data from request body
+        data = json.loads(request.body)
+        search_query = data.get('search_query', '').strip()
+        
+        if not search_query:
+            return JsonResponse({'error': 'Empty search query'}, status=400)
+        if search_query == ABUSIVE_WORDS :
+            return JsonResponse({'error': 'no abusing words should use otherwise We will block you from the website'}, status=400)
+        
+        products = product_farmer.objects.filter(name__icontains=search_query )  
+          
+        product_data = []
+        for product in products:       
+            image_url = CloudinaryImage(product.images.public_id).build_url(
+                width=400,
+                height=400,
+                crop='fill',
+                format='webp'
+            ) if product.images else None
 
-    # Check for abusive words
-    for word in ABUSIVE_WORDS:
-        pattern = r'\b' + re.escape(word) + r'\b'
-        if re.search(pattern, query, flags=re.IGNORECASE):
-            return JsonResponse({'error': 'Inappropriate language detected. Please use respectful words.'}, status=400)
+            # Build video URL
+            video_url = CloudinaryVideo(product.product_vedio.public_id).build_url(
+                resource_type="video",
+                transformation=[
+                    {'width': 600, 'crop': 'scale'},
+                    {'fetch_format': 'auto'}
+                ]
+            ) if product.product_vedio else None
 
-    # Perform search
-    products = MarketplaceProduct.objects.filter(name__icontains=query) | MarketplaceProduct.objects.filter(category__icontains=query)
-
-    results = [{
-        'id': p.id,
-        'name': p.name,
-        'price': str(p.price),
-        'image': p.image.url
-    } for p in products[:6]]
-
-    return JsonResponse({'products': results})
-
+            product_data.append({
+                'id': product.id,
+                'productName': product.productName,
+                'price': product.price,
+                'quantity': product.quantity,
+                'description': product.description,
+                'image_url': image_url,
+                'video_url': video_url,
+                'farmer': product.product_farmer.username
+            })
+        
+        return JsonResponse({'products': product_data}, safe=False)
+    
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+    
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
 def product_detail(request, id):
     product = get_object_or_404(MarketplaceProduct, id=id)
     return render(request, 'product_detail.html', {'product': product})
