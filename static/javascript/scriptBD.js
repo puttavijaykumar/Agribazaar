@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch(`/ajax/search/?query=${encodeURIComponent(query)}`)
+        fetch(`/ajax/search-products/?query=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
                 resultsDiv.innerHTML = '';
