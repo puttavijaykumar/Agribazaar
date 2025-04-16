@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
+</head>
+<body>
+    <h1>{{ product.name }}</h1>
+    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    <p>Price: ₹{{ product.price }}</p>
+    <p>Category: {{ product.category }}</p>
+    <!-- Add more product details as needed -->
+    <script src="{% static 'javascript/product_details.js' %}"></script>
+</body>
+</html>

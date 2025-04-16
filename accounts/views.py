@@ -356,6 +356,10 @@ def search_products(request):
 
     return JsonResponse({'products': results})
 
+def product_detail(request, id):
+    product = get_object_or_404(MarketplaceProduct, id=id)
+    return render(request, 'product_detail.html', {'product': product})
+
 # Display the farmer products 
 def farmer_products_view(request):
     farmer_products = product_farmer.objects.all().order_by('-uploaded_at')
