@@ -14,6 +14,7 @@
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <a class="navbar-brand" href="/">AgriBazaar</a>
             <form class="d-flex flex-grow-1 mx-3" role="search">
+              {% csrf_token %}
                 <input id = "search-input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
             </form>
           
