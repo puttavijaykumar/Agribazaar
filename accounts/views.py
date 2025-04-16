@@ -336,36 +336,36 @@ from cloudinary import CloudinaryImage, CloudinaryVideo
 from django.views.decorators.http import require_POST
 
 ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
-@require_POST 
+
+@require_POST
 def search_products(request):
     try:
         # Parse JSON data from request body
         data = json.loads(request.body)
-        search_query = data.get('search_query', '').strip()
-        
+        search_query = data.get('search_query', '').strip().lower()
+
         if not search_query:
             return JsonResponse({'error': 'Empty search query'}, status=400)
-        if search_query == ABUSIVE_WORDS :
-            return JsonResponse({'error': 'no abusing words should use otherwise We will block you from the website'}, status=400)
-        
-        products = product_farmer.objects.filter(name__icontains=search_query )  
-          
+
+        # Check for abusive content in search query
+        for word in ABUSIVE_WORDS:
+            if word in search_query:
+                return JsonResponse({
+                    'error': 'Abusive words are not allowed. Continued misuse may result in a ban.'
+                }, status=400)
+
+        # Filter products
+        products = product_farmer.objects.filter(name__icontains=search_query)
+
         product_data = []
-        for product in products:       
+        for product in products:
             image_url = CloudinaryImage(product.images.public_id).build_url(
-                width=400,
-                height=400,
-                crop='fill',
-                format='webp'
+                width=400, height=400, crop='fill', format='webp'
             ) if product.images else None
 
-            # Build video URL
             video_url = CloudinaryVideo(product.product_vedio.public_id).build_url(
                 resource_type="video",
-                transformation=[
-                    {'width': 600, 'crop': 'scale'},
-                    {'fetch_format': 'auto'}
-                ]
+                transformation=[{'width': 600, 'crop': 'scale'}, {'fetch_format': 'auto'}]
             ) if product.product_vedio else None
 
             product_data.append({
@@ -378,17 +378,18 @@ def search_products(request):
                 'video_url': video_url,
                 'farmer': product.product_farmer.username
             })
-        
-        return JsonResponse({'products': product_data}, safe=False)
-    
+
+        return JsonResponse({'products': product_data}, status=200)
+
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+
     except Exception as e:
         import traceback
-        traceback.print_exc()  # Print to console
+        traceback.print_exc()
         return JsonResponse({
-            "error": str(e),
-            "traceback": traceback.format_exc()
+            'error': str(e),
+            'traceback': traceback.format_exc()
         }, status=500)
         
 def product_detail(request, id):
