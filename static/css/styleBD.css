@@ -49,6 +49,8 @@ body {
     justify-content: space-around;
     flex-wrap: wrap;
     margin: 40px 0;
+    position: relative;
+    z-index: 1050;
   }
   
 .category-item {
@@ -65,8 +67,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    z-index: 1040;
-    position: relative;
+    
 }
   
 .category-item:hover {
