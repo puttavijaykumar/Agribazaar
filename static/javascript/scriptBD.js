@@ -27,6 +27,7 @@ searchForm.addEventListener("submit", function(event) {
     })
     .catch((error) => {
       console.error("Fetch error:", error);
+      alert("An error occurred while searching. Please try again.");
       // Don't try to call error.json() here
     });
   }
