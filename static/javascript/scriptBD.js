@@ -1,7 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("search-input");
+  const searchForm = searchInput.closest("form");
 
-  searchInput.addEventListener("input", function () {
+  searchForm.addEventListener("submit", function (e) {
+    e.preventDefault();  // ❗ Prevent form from reloading the page
+
     const query = searchInput.value.trim();
 
     if (query) {
@@ -16,18 +19,18 @@ document.addEventListener("DOMContentLoaded", function () {
         })
       })
       .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        if (!response.ok) throw new Error("Network response was not ok");
         return response.json();
       })
       .then(data => {
         console.log("Search results:", data);
-        search_products(data);  // your handler function
+        search_products(data);  // This should render the search result
       })
       .catch((error) => {
         console.error("Fetch error:", error);
       });
+    } else {
+      alert("Please enter a search term.");
     }
   });
 });
