@@ -333,8 +333,10 @@ def crop_detail_view(request, crop_name):
 
 import re
 from cloudinary import CloudinaryImage, CloudinaryVideo 
-ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
+from django.views.decorators.http import require_POST
 
+ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
+@require_POST 
 def search_products(request):
     try:
         # Parse JSON data from request body
