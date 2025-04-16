@@ -7,7 +7,7 @@ searchForm.addEventListener("submit", function(event) {
 
   if(query){ 
     // Send data to backend
-    fetch("{% url 'search_products' %}", {  // Use Django template tag for URL reversal
+    fetch("/search-products/}", {  // Use Django template tag for URL reversal
       method: "POST",  // or GET depending on your backend setup
       headers: {
         "Content-Type": "application/json",
