@@ -341,8 +341,10 @@ def search_results(request):
     query = request.GET.get('q', '')
    
     products = product_farmer.objects.filter(productName__icontains=query)
+    products_ex = MarketplaceProduct.objects.filter(name__icontains = query)          
     return render(request, 'search_results.html', {
         'products': products,
+        'products_ex':products_ex,
         'query': query,
         'request': request  # Pass request to access GET parameters
     })
@@ -352,6 +354,3 @@ def product_detail(request, id):
     return render(request, 'product_detail.html', {'product': product})
 
 # Display the farmer products 
-def farmer_products_view(request):
-    farmer_products = product_farmer.objects.all().order_by('-uploaded_at')
-    return render(request, 'farmer_disp_products.html', {'farmer_products': farmer_products})

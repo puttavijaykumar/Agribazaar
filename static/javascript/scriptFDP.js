@@ -1,1 +1,0 @@
-console.log("Farmer product page loaded.");
