@@ -44,13 +44,13 @@
             {% for product in products %}
             <div class="col">
                 <div class="card h-100">
-                    {% if product.video %}
-                    <video controls class="card-img-top" poster="{{ product.image.url }}">
-                        <source src="{{ product.video.url }}" type="video/mp4">
+                    {% if product.product_vedio %}
+                    <video controls class="card-img-top" poster="{{ products.image.url }}">
+                        <source src="{{ product.product_vedio.url }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     {% else %}
-                    <img src="{{ product.image.url }}" 
+                    <img src="{{ product.images.url }}" 
                          class="card-img-top" 
                          alt="{{ product.productName }}">
                     {% endif %}
