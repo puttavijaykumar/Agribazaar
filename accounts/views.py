@@ -337,40 +337,15 @@ from django.views.decorators.http import require_POST
 
 ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
 
-@require_POST
-@csrf_exempt  # Only for development! Remove in production and use proper CSRF
-@require_POST
-def search_products(request):
-    try:
-       
-        data = json.loads(request.body.decode('utf-8'))
-        search_query = data.get('search_query', '').strip().lower()
-        
-        products = product_farmer.objects.filter(
-            productName__icontains=search_query
-        ).select_related('product_farmer')  # Assuming farmer is a ForeignKey
-        
-        # Prepare response data
-        results = []
-        for product in products:
-            results.append({
-                'productName': product.productName,
-                'id': product.id,
-                'price': float(product.price),  # Ensure decimal is serialized
-                'description': product.description,
-                'farmer': product.farmer.username if product.farmer else 'Unknown',
-                'quantity': product.quantity,
-                'image_url': product.image.url if product.image else None,
-                'video_url':product.product_vedio.url if product.product_vedio else None              
-            })
-        results = list(products)  
-        print(results)  
-        return JsonResponse({'products': results}, safe=False)
-        
-    except json.JSONDecodeError:
-        return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+def search_results(request):
+    query = request.GET.get('q', '')
+   
+    products = product_farmer.objects.filter(productName__icontains=query)
+    return render(request, 'search_results.html', {
+        'products': products,
+        'query': query,
+        'request': request  # Pass request to access GET parameters
+    })
     
 def product_detail(request, id):
     product = get_object_or_404(MarketplaceProduct, id=id)

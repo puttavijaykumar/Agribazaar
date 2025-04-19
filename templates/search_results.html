@@ -1,0 +1,87 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - AgriBazaar</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Basic CSS -->
+    <style>
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .container {
+            padding: 20px;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">AgriBazaar</a>
+            <form class="d-flex ms-auto" method="GET" action="/search/">
+                <input class="form-control me-2" type="search" 
+                       name="q" placeholder="Search" 
+                       value="{{ request.GET.q }}">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Search Results for "{{ query }}"</h2>
+        
+        {% if products %}
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+            {% for product in products %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if product.video %}
+                    <video controls class="card-img-top" poster="{{ product.image.url }}">
+                        <source src="{{ product.video.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    {% else %}
+                    <img src="{{ product.image.url }}" 
+                         class="card-img-top" 
+                         alt="{{ product.productName }}">
+                    {% endif %}
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.productName }}</h5>
+                        <p class="card-text">₹{{ product.price }}</p>
+                        <p class="text-muted">{{ product.description }}</p>
+                        <p class="text-muted">Seller: {{ product.farmer.username }}</p>
+                        <p class="text-muted">Quantity: {{ product.quantity }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-warning mt-3">
+            No products found matching "{{ query }}"
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Back button script -->
+    <script>
+        // Add back button functionality if needed
+        document.getElementById('backButton').addEventListener('click', () => {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>
