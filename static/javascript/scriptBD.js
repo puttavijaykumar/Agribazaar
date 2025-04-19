@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => {
         console.error("Fetch error:", error);
+        alert("An error occurred while fetching search results. Please try again.");
       });
     } else {
       alert("Please enter a search term.");
