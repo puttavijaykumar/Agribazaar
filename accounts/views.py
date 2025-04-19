@@ -357,7 +357,7 @@ def search_products(request):
                 }, status=400)
 
         # Filter products
-        products = product_farmer.objects.filter(name__icontains=search_query)
+        products = product_farmer.objects.filter(productName__icontains=search_query)
 
         product_data = []
         for product in products:
