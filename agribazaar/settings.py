@@ -26,13 +26,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-yu6h+kl*e$m^+walqvybzv4iz76=0o&g=c(uy&ejp_s=340er*'
 
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+#     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+#     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+# }
+import cloudinary
+cloudinary.config(
+    cloud_name='dpiogqjk4',
+    api_key='963572252588284',
+    api_secret='H9QgDvkq8JUvnGATF6tBRkHUSbc'
+)
+
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': 'dpiogqjk4',  # Hardcoded
+    'API_KEY': '963572252588284',
+    'API_SECRET': 'H9QgDvkq8JUvnGATF6tBRkHUSbc',
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# In settings.py
 
 
 DEBUG = os.getenv('DEBUG', 'True' if os.getenv('RENDER') is None else 'False') == 'True'
