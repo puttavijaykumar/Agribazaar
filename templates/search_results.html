@@ -52,6 +52,33 @@
             </div>
             {% endfor %}
         </div>
+        {% if products_ex %}
+        <div class="marketplace_products">
+            {% for product in products_ex %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if product.product_vedio %}
+                    <video controls class="card-img-top" poster="{{ products.image.url }}">
+                        <source src="{{ product.product_vedio.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    {% else %}
+                    <img src="{{ product.images.url }}" 
+                         class="card-img-top" 
+                         alt="{{ product.name }}">
+                    {% endif %}
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">₹{{ product.price }}</p>
+                        <p class="text-muted">{{ product.description }}</p>
+                        <p class="text-muted">availability(stock){{ product.stock }}</p>
+                        <p class="text-muted">Seller: {{ product.farmer.username }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
         {% else %}
         <div class="alert alert-warning mt-3">
             No products found matching "{{ query }}"
