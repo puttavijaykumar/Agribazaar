@@ -339,12 +339,20 @@ ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
 
 def search_results(request):
     query = request.GET.get('q', '')
+    if any(word in query.lower() for word in ABUSIVE_WORDS):
+        return render(request, 'search_results.html', {
+            'products': [],
+            'marketplace_products': [],
+            'query': query,
+            'abusive': True,
+            'request': request
+        })
    
-    products = product_farmer.objects.filter(productName__icontains=query)
-    products_ex = MarketplaceProduct.objects.filter(name__icontains = query)          
+    products = product_farmer.objects.filter(productName__icontains=query)  
+    marketplace_products = MarketplaceProduct.objects.filter(name__icontains=query)      
     return render(request, 'search_results.html', {
         'products': products,
-        'products_ex':products_ex,
+        'marketplace_products':marketplace_products,
         'query': query,
         'request': request  # Pass request to access GET parameters
     })
