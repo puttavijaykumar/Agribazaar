@@ -344,6 +344,8 @@ def search_products(request):
         data = json.loads(request.body)
         search_query = data.get('search_query', '').strip().lower()
 
+        print("Search Query:", search_query)
+
         if not search_query:
             return JsonResponse({'error': 'Empty search query'}, status=400)
 
@@ -359,9 +361,10 @@ def search_products(request):
 
         product_data = []
         for product in products:
-            image_url = product.images.url if product.images else None
-            video_url = product.product_vedio.url if product.product_vedio else None
-
+            print("Processing product ID:", product.id)
+            image_url = getattr(product.images, 'url', None)
+            video_url = getattr(product.product_vedio, 'url', None)
+            
             # SAFE ACCESS TO FIELDS
             product_data.append({
                 'id': product.id,
@@ -374,7 +377,7 @@ def search_products(request):
                 'farmer': product.product_farmer.username if product.product_farmer else 'Unknown'
             })
 
-
+        print("Product data ready to return.")
         return JsonResponse({'products': product_data}, status=200)
 
     except json.JSONDecodeError:
