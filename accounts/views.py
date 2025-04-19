@@ -343,7 +343,7 @@ ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
 def search_products(request):
     try:
        
-        data = json.loads(request.body)
+        data = json.loads(request.body.decode('utf-8'))
         search_query = data.get('search_query', '').strip().lower()
         
         products = product_farmer.objects.filter(
@@ -363,8 +363,9 @@ def search_products(request):
                 'image_url': product.image.url if product.image else None,
                 'video_url':product.product_vedio.url if product.product_vedio else None              
             })
-            
-        return JsonResponse({'products': results}, status=200)
+        results = list(products)  
+        print(results)  
+        return JsonResponse({'products': results}, safe=False)
         
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON format'}, status=400)
