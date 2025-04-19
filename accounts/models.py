@@ -33,7 +33,6 @@ class product_farmer(models.Model):
     # product_vedio = models.FileField(upload_to='product_vedios/',null=True,blank=True)
     images = CloudinaryField('image', null=True, blank=True)
     product_vedio = CloudinaryField('video', null=True, blank=True)
-    
     uploaded_at = models.DateTimeField(auto_now_add=True)
     product_farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
     

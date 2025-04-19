@@ -338,59 +338,39 @@ from django.views.decorators.http import require_POST
 ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
 
 @require_POST
+@csrf_exempt  # Only for development! Remove in production and use proper CSRF
+@require_POST
 def search_products(request):
     try:
-        # Parse JSON data from request body
+       
         data = json.loads(request.body)
         search_query = data.get('search_query', '').strip().lower()
-
-        print("Search Query:", search_query)
-
-        if not search_query:
-            return JsonResponse({'error': 'Empty search query'}, status=400)
-
-        # Check for abusive content in search query
-        for word in ABUSIVE_WORDS:
-            if word in search_query:
-                return JsonResponse({
-                    'error': 'Abusive words are not allowed. Continued misuse may result in a ban.'
-                }, status=400)
-
-        # Filter products
-        products = product_farmer.objects.filter(productName__icontains=search_query)
-
-        product_data = []
+        
+        products = product_farmer.objects.filter(
+            productName__icontains=search_query
+        ).select_related('product_farmer')  # Assuming farmer is a ForeignKey
+        
+        # Prepare response data
+        results = []
         for product in products:
-            print("Processing product ID:", product.id)
-            image_url = product.images.url if product.images else None
-            video_url = product.product_vedio.url if product.product_vedio else None
-            
-            # SAFE ACCESS TO FIELDS
-            product_data.append({
-                'id': product.id,
+            results.append({
                 'productName': product.productName,
-                'price': product.price,
-                'quantity': product.quantity,
+                'id': product.id,
+                'price': float(product.price),  # Ensure decimal is serialized
                 'description': product.description,
-                'image_url': image_url,
-                'video_url': video_url,
-                'farmer': product.product_farmer.username if product.product_farmer else 'Unknown'
+                'farmer': product.farmer.username if product.farmer else 'Unknown',
+                'quantity': product.quantity,
+                'image_url': product.image.url if product.image else None,
+                'video_url':product.product_vedio.url if product.product_vedio else None              
             })
-
-        print("Product data ready to return.")
-        return JsonResponse({'products': product_data}, status=200)
-
+            
+        return JsonResponse({'products': results}, status=200)
+        
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-
     except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return JsonResponse({
-            'error': str(e),
-            'traceback': traceback.format_exc()
-        }, status=500)
-        
+        return JsonResponse({'error': str(e)}, status=500)
+    
 def product_detail(request, id):
     product = get_object_or_404(MarketplaceProduct, id=id)
     return render(request, 'product_detail.html', {'product': product})
