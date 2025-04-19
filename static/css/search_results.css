@@ -1,0 +1,10 @@
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+.container {
+    padding: 20px;
+}
+.alert {
+    margin-top: 20px;
+}
