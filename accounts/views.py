@@ -359,25 +359,31 @@ def search_products(request):
 
         product_data = []
         for product in products:
-            image_url = CloudinaryImage(product.images.public_id).build_url(
-                width=400, height=400, crop='fill', format='webp'
-            ) if product.images else None
+            image_url = None
+            if product.images and hasattr(product.images, 'public_id'):
+                image_url = CloudinaryImage(product.images.public_id).build_url(
+                    width=400, height=400, crop='fill', format='webp'
+                )
 
-            video_url = CloudinaryVideo(product.product_vedio.public_id).build_url(
-                resource_type="video",
-                transformation=[{'width': 600, 'crop': 'scale'}, {'fetch_format': 'auto'}]
-            ) if product.product_vedio else None
+            video_url = None
+            if product.product_vedio and hasattr(product.product_vedio, 'public_id'):
+                video_url = CloudinaryVideo(product.product_vedio.public_id).build_url(
+                    resource_type="video",
+                    transformation=[{'width': 600, 'crop': 'scale'}, {'fetch_format': 'auto'}]
+                )
 
+            # SAFE ACCESS TO FIELDS
             product_data.append({
                 'id': product.id,
-                'productName': product.productName,
-                'price': product.price,
-                'quantity': product.quantity,
-                'description': product.description,
+                'productName': getattr(product, 'productName', getattr(product, 'name', '')),
+                'price': getattr(product, 'price', 0),
+                'quantity': getattr(product, 'quantity', ''),
+                'description': getattr(product, 'description', ''),
                 'image_url': image_url,
                 'video_url': video_url,
-                'farmer': product.product_farmer.username
+                'farmer': getattr(getattr(product, 'product_farmer', None), 'username', 'Unknown')
             })
+
 
         return JsonResponse({'products': product_data}, status=200)
 
