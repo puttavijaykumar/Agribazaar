@@ -362,8 +362,8 @@ def search_products(request):
         product_data = []
         for product in products:
             print("Processing product ID:", product.id)
-            image_url = getattr(product.images, 'url', None)
-            video_url = getattr(product.product_vedio, 'url', None)
+            image_url = product.images.url if product.images else None
+            video_url = product.product_vedio.url if product.product_vedio else None
             
             # SAFE ACCESS TO FIELDS
             product_data.append({
