@@ -58,10 +58,10 @@
             </div>
             {% endfor %}
         </div>
-        {% else %}
+        {% comment %} {% else %}
         <div class="alert alert-warning mt-3">
             No products found matching "{{ query }}"
-        </div>
+        </div> {% endcomment %}
         {% endif %}
     </div>
     <h2>Marketplace Products matching "{{ query }}"</h2>
@@ -71,7 +71,7 @@
         {% for mp in marketplace_products %}
         <div class="col">
             <div class="card h-100">
-                <img src="{{ mp.image.url }}" class="card-img-top" alt="{{ mp.name }}">
+                <img src="{{ mp.images.url }}" class="card-img-top" alt="{{ mp.name }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ mp.name }}</h5>
                     <p class="card-text">₹{{ mp.price }}</p>
