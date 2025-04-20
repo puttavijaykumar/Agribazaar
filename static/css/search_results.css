@@ -41,6 +41,13 @@ h1 {
     object-fit: cover;
     border-radius: 4px;
     margin-bottom: 10px;
+    display: block;
+    max-width: 100%;
+}
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 .product-details h2 {
