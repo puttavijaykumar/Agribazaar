@@ -366,7 +366,8 @@ def search_results(request):
             'video': obj.product_vedio.url if hasattr(obj, 'product_vedio') and obj.product_vedio else '',
             'category': getattr(obj, 'get_category_display', lambda: "Farmer Product")(),
             'uploaded_at': obj.uploaded_at,
-            'source': source
+            'source': source,
+            'model_name': source 
         }
 
     # Normalize lists
@@ -388,4 +389,28 @@ def product_detail(request, id):
     product = get_object_or_404(MarketplaceProduct, id=id)
     return render(request, 'product_detail.html', {'product': product})
 
-# Display the farmer products 
+#NEGOTIATION
+def negotiate_product(request, product_id):
+    product = get_object_or_404(product_farmer, id=product_id)
+
+    if request.method == "POST":
+        message = request.POST.get('negotiation_message')
+        if message:
+            # Optional: Save negotiation in DB if you have a model
+            # Negotiation.objects.create(user=request.user, product=product, message=message)
+
+            messages.success(request, "Negotiation message sent successfully!")
+            return redirect('negotiate_product', product_id=product_id)
+
+    context = {
+        'product': product
+    }
+    return render(request, 'negotiation.html', context)
+
+def view_marketplace_product(request, product_id):
+    product = get_object_or_404(MarketplaceProduct, id=product_id)
+
+    context = {
+        'product': product
+    }
+    return render(request, 'view_marketplace_product.html', context)
