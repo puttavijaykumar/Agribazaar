@@ -339,22 +339,49 @@ ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
 
 def search_results(request):
     query = request.GET.get('q', '')
+    
     if any(word in query.lower() for word in ABUSIVE_WORDS):
         return render(request, 'search_results.html', {
             'products': [],
             'marketplace_products': [],
+            'combined_products': [],
             'query': query,
             'abusive': True,
             'request': request
         })
-   
-    products = product_farmer.objects.filter(productName__icontains=query)  
-    marketplace_products = MarketplaceProduct.objects.filter(name__icontains=query)      
+
+    # Fetch results
+    farmer_products = product_farmer.objects.filter(productName__icontains=query)
+    marketplace_products = MarketplaceProduct.objects.filter(name__icontains=query)
+
+    # Normalize both model instances into a unified dictionary format
+    def normalize_product(obj, source):
+        return {
+            'name': getattr(obj, 'productName', getattr(obj, 'name', '')),
+            'price': float(getattr(obj, 'price', 0)),
+            'quantity': getattr(obj, 'quantity', getattr(obj, 'stock', 0)),
+            'description': obj.description,
+            'image': obj.images.url if hasattr(obj, 'images') and obj.images else (
+                     obj.images_market.url if hasattr(obj, 'images_market') and obj.images_market else ''),
+            'video': obj.product_vedio.url if hasattr(obj, 'product_vedio') and obj.product_vedio else '',
+            'category': getattr(obj, 'get_category_display', lambda: "Farmer Product")(),
+            'uploaded_at': obj.uploaded_at,
+            'source': source
+        }
+
+    # Normalize lists
+    normalized_farmer = [normalize_product(p, 'product_farmer') for p in farmer_products]
+    normalized_marketplace = [normalize_product(p, 'MarketplaceProduct') for p in marketplace_products]
+
+    # Combine
+    combined_products = normalized_farmer + normalized_marketplace
+
     return render(request, 'search_results.html', {
-        'products': products,
-        'marketplace_products':marketplace_products,
+        'products': farmer_products,
+        'marketplace_products': marketplace_products,
+        'combined_products': combined_products,
         'query': query,
-        'request': request  # Pass request to access GET parameters
+        'request': request
     })
     
 def product_detail(request, id):

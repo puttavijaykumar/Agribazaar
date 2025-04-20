@@ -10,81 +10,47 @@
 </head>
 
 <body>
-    {% if abusive %}
-    <div class="alert alert-danger mt-3">
-        Your search query contains inappropriate words and was blocked.
-    </div>
-    {% endif %}
+    <div class="container">
+        <h1>Search Results for "{{ query }}"</h1>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">AgriBazaar</a>
-            <form class="d-flex ms-auto" method="GET" action="/search/">
-                <input class="form-control me-2" type="search" 
-                       name="q" placeholder="Search" 
-                       value="{{ request.GET.q }}">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
-
-    <div class="container mt-4">
-        <h2>Search Results for "{{ query }}"</h2>
- 
-        {% if products %}
-        <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
-            {% for product in products %}
-            <div class="col">
-                <div class="card h-100">
-                    {% if product.product_vedio %}
-                    <video controls class="card-img-top" poster="{{ products.image.url }}">
-                        <source src="{{ product.product_vedio.url }}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    {% else %}
-                    <img src="{{ product.images.url }}" 
-                         class="card-img-top" 
-                         alt="{{ product.productName }}">
-                    {% endif %}
-                    
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.productName }}</h5>
-                        <p class="card-text">₹{{ product.price }}</p>
-                        <p class="text-muted">{{ product.description }}</p>
-                        <p class="text-muted">Seller: {{ product.farmer.username }}</p>
-                        <p class="text-muted">Quantity: {{ product.quantity }}kg </p>
-                    </div>
-                </div>
+        {% if abusive %}
+            <div class="alert">
+                🚫 Inappropriate content detected in your search. Please try again with appropriate terms.
             </div>
-            {% endfor %}
-        </div>
-        {% comment %} {% else %}
-        <div class="alert alert-warning mt-3">
-            No products found matching "{{ query }}"
-        </div> {% endcomment %}
+        {% endif %}
+
+        {% if combined_products %}
+            <div class="product-grid">
+                {% for product in combined_products %}
+                    <div class="product-card">
+                        {% if product.image %}
+                            <img src="{{ product.image }}" alt="{{ product.name }}">
+                        {% else %}
+                            <div class="placeholder-img">No Image</div>
+                        {% endif %}
+
+                        <div class="product-details">
+                            <h2>{{ product.name }}</h2>
+                            <p><strong>Price:</strong> ₹{{ product.price }}</p>
+                            <p><strong>Quantity:</strong> {{ product.quantity }}</p>
+                            <p><strong>Category:</strong> {{ product.category }}</p>
+                            <p>{{ product.description }}</p>
+                            {% if product.video %}
+                                <video controls class="product-video">
+                                    <source src="{{ product.video }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% endif %}
+                            <small class="source-tag">From: {{ product.source }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-results">No products found matching your search.</p>
         {% endif %}
     </div>
-    <h2>Marketplace Products matching "{{ query }}"</h2>
 
-    {% if marketplace_products %}
-    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
-        {% for mp in marketplace_products %}
-        <div class="col">
-            <div class="card h-100">
-                <img src="{{ mp.images_market.url }}" class="card-img-top product-image" alt="{{ mp.name }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ mp.name }}</h5>
-                    <p class="card-text">₹{{ mp.price }}</p>
-                    <p class="text-muted">{{ mp.description }}</p>
-                    <p class="text-muted">Category: {{ mp.category }}</p>
-                    <p class="text-muted">In Stock: {{ mp.stock }}</p>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    
-    {% endif %}
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,5 +1,9 @@
-// Add back button functionality if needed
-
-document.getElementById('backButton').addEventListener('click', () => {
-    window.history.back();
+document.addEventListener("DOMContentLoaded", () => {
+    const alertBox = document.querySelector(".alert");
+    if (alertBox) {
+        alertBox.classList.add("shake");
+        setTimeout(() => {
+            alertBox.classList.remove("shake");
+        }, 1000);
+    }
 });
