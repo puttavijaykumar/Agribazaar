@@ -357,6 +357,7 @@ def search_results(request):
     # Normalize both model instances into a unified dictionary format
     def normalize_product(obj, source):
         return {
+            'id': obj.id, 
             'name': getattr(obj, 'productName', getattr(obj, 'name', '')),
             'price': float(getattr(obj, 'price', 0)),
             'quantity': getattr(obj, 'quantity', getattr(obj, 'stock', 0)),
