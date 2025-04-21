@@ -140,6 +140,8 @@ class Negotiation(models.Model):
     expires_at = models.DateTimeField(null=True, blank=True)
 
     def is_expired(self):
+        if self.expires_at is None:
+            return False
         return timezone.now() > self.expires_at
 
     def __str__(self):
