@@ -5,7 +5,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from cloudinary.models import CloudinaryField
-
+from django import forms
 # Create your models here.
 class Role(models.Model):
     name = models.CharField(max_length=15, unique=True)
@@ -25,6 +25,7 @@ class CustomUser(AbstractUser):
         return self.roles.filter(name="farmer").exists()
     
 class product_farmer(models.Model):
+ 
     productName = models.CharField(max_length=50)
     price = models.IntegerField()
     quantity = models.IntegerField()
