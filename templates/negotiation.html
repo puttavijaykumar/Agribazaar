@@ -41,8 +41,12 @@
             </div>
         {% endif %}
         
-
             <hr>
+            <div class="col-md-6">   
+                {% if latest_proposed_price %}      
+                    <p><strong>updated Price:</strong> ₹{{ latest_proposed_price }}</p>
+                {% endif %}
+            </div>
 
             {% if negotiation_expired %}
                 <div class="alert alert-danger">This negotiation has expired.</div>
@@ -64,20 +68,19 @@
             <button class="btn btn-primary mt-2">Buy Now</button>
         </div>
     </div>
-
-    {% if messages_history %}
-        <div class="mt-5">
-            <h5>Negotiation History</h5>
-            <ul class="list-group">
-                {% for msg in messages_history %}
-                    <li class="list-group-item">
-                        <strong>{{ msg.sender.username }}:</strong> {{ msg.message }}
-                        <div class="text-muted small">{{ msg.timestamp|date:"M d, Y H:i" }}</div>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
+    
+    <h4>Negotiation History</h4>
+    <div class="negotiation-history">
+        {% for msg in messages_history %}
+            <div class="message-block" style="margin-bottom: 10px; padding: 10px; border-left: 3px solid {% if msg.sender == user %}blue{% else %}green{% endif %}; background-color: #f8f8f8;">
+                <p><strong>{% if msg.sender == user %}You{% else %}{{ msg.sender.username }}{% endif %}</strong> 
+                <small style="color: gray;">on {{ msg.timestamp|date:"F d, Y H:i" }}</small></p>
+                <p>{{ msg.message }}</p>
+            </div>
+        {% empty %}
+            <p>No negotiation messages yet.</p>
+        {% endfor %}
+    </div>
 </div>
 
 <script src="{% static 'javascript/negotiation.js' %}"></script>

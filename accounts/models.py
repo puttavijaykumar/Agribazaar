@@ -152,6 +152,8 @@ class NegotiationMessage(models.Model):
     negotiation = models.ForeignKey(Negotiation, on_delete=models.CASCADE, related_name='messages')
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     message = models.TextField()
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='received_negotiations',null=True,blank=True)
+    proposed_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
