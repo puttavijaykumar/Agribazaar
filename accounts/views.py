@@ -174,46 +174,85 @@ def role_selection_view(request):
             return JsonResponse({"error": "Invalid JSON"}, status=400)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
-
+from .forms import ProductUploadForm
 @login_required(login_url='/login/')
+
 def product_list_farmer(request):
     """ View for farmers to list products """
-    # Check if user has the "Farmer" role (Fix applied)
+
+    # Check if user has the "Farmer" role
     user_roles = request.user.roles.all()
     if not any(role.name.lower() == 'farmer' for role in user_roles):  
         messages.error(request, "Access denied: You must be a Farmer to list products.")
         return redirect('home')  
+
+    if request.method == "POST":
+        form = ProductUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Save product with logged-in user
+            product = form.save(user=request.user)
+
+            # Save negotiation settings
+            negotiation_type = form.cleaned_data.get('negotiation_type')
+            validity_hours = form.cleaned_data.get('validity_hours')
+            validity_days = form.cleaned_data.get('validity_days')
+
+            if negotiation_type:
+                NegotiationSetting.objects.update_or_create(
+                    product=product,
+                    defaults={
+                        'negotiation_type': negotiation_type,
+                        'validity_hours': validity_hours,
+                        'validity_days': validity_days,
+                    }
+                )
+
+            messages.success(request, "Product uploaded successfully!")
+            return redirect("product_list_farmer")
+        else:
+            messages.error(request, "Please correct the errors in the form.")
+    else:
+        form = ProductUploadForm()
+
+    return render(request, "product_list_farmer.html", {'form': form})
+# def product_list_farmer(request):
+#     """ View for farmers to list products """
+#     # Check if user has the "Farmer" role (Fix applied)
+#     user_roles = request.user.roles.all()
+#     if not any(role.name.lower() == 'farmer' for role in user_roles):  
+#         messages.error(request, "Access denied: You must be a Farmer to list products.")
+#         return redirect('home')  
     
    
-    if request.method == "POST":                                                    
-        productName = request.POST.get("productName")
-        description = request.POST.get("description")
-        price = request.POST.get("price")
-        quantity = request.POST.get("quantity")
-        image = request.FILES.get("images")
-        video = request.FILES.get("video")
+#     if request.method == "POST":                                                    
+#         productName = request.POST.get("productName")
+#         description = request.POST.get("description")
+#         price = request.POST.get("price")
+#         quantity = request.POST.get("quantity")
+#         image = request.FILES.get("images")
+#         video = request.FILES.get("video")
 
-        # Validate input
-        if not productName or not description or not price:
-            messages.error(request, "All fields except video are required.")
-            return redirect("product_list_farmer")
+#         # Validate input
+#         if not productName or not description or not price:
+#             messages.error(request, "All fields except video are required.")
+#             return redirect("product_list_farmer")
 
-        # Save product to database
-        product = product_farmer(
-            productName=productName,
-            description=description,
-            price=price,
-            quantity=quantity,
-            images=image,
-            product_vedio=video,
-            product_farmer=request.user #assigned to the logged in user
-        )
-        product.save()
+#         # Save product to database
+#         product = product_farmer(
+#             productName=productName,
+#             description=description,
+#             price=price,
+#             quantity=quantity,
+#             images=image,
+#             product_vedio=video,
+#             product_farmer=request.user #assigned to the logged in user
+#         )
+#         product.save()
         
-        messages.success(request, "Product uploaded successfully!")
-        return redirect("product_list_farmer")
+#         messages.success(request, "Product uploaded successfully!")
+#         return redirect("product_list_farmer")
     
-    return render(request, "product_list_farmer.html")
+#     return render(request, "product_list_farmer.html")
 
 @login_required
 def farmer_account(request):

@@ -47,7 +47,25 @@
         <div>
             <label for="video">Upload Video:</label>
             <input type="file" id="video" name="video" accept="video/*">
-            <div id="videoPreview"></div>
+            <div id="videoPreview"></div>    
+        </div>
+        <div>
+            <label for="negotiation_type">Negotiation Type:</label>
+            <select id="negotiation_type" name="negotiation_type">
+                <option value="">-- Select --</option>
+                <option value="active">Active</option>
+                <option value="passive">Passive</option>
+            </select>
+        </div>
+    
+        <div>
+            <label for="validity_hours">Validity (Hours):</label>
+            <input type="number" id="validity_hours" name="validity_hours" placeholder="Only for active">
+        </div>
+    
+        <div>
+            <label for="validity_days">Validity (Days):</label>
+            <input type="number" id="validity_days" name="validity_days" placeholder="Only for passive">
         </div>
             <button type="submit">Submit</button>
         </form>

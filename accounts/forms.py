@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
+from .models import product_farmer, NegotiationSetting
 
 User = get_user_model()
 
@@ -46,3 +47,24 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user    
+    
+class ProductUploadForm(forms.ModelForm):
+    # These fields are not in product_farmer, but we add them manually for the form
+    negotiation_type = forms.ChoiceField(
+        choices=[('active', 'Active'), ('passive', 'Passive')],
+        required=False
+    )
+    validity_hours = forms.IntegerField(required=False)
+    validity_days = forms.IntegerField(required=False)
+
+    class Meta:
+        model = product_farmer
+        fields = ['productName', 'price', 'quantity', 'description', 'images', 'product_vedio']
+
+    def save(self, commit=True, user=None):
+        product = super().save(commit=False)
+        if user:
+            product.product_farmer = user
+        if commit:
+            product.save()
+        return product
