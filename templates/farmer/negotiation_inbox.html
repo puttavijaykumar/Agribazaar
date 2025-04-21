@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Negotiation - Notification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/negotiation_inbox.css' %}">
+</head>
+<body>
+<h2>Negotiation Inbox</h2>
+{% for message in inbox %}
+  <div class="message-box">
+    <p><strong>Product:</strong> {{ message.negotiation.product.productName }}</p>
+    <p><strong>From:</strong> {{ message.sender.username }}</p>
+    <p><strong>Message:</strong> {{ message.message }}</p>
+    <p><strong>Sent:</strong> {{ message.timestamp }}</p>
+    
+    <form method="post" action="{% url 'send_negotiation_reply' message.id %}">
+      {% csrf_token %}
+      <textarea name="reply" rows="2" required></textarea>
+      <input type="number" step="0.01" name="proposed_price" placeholder="New proposed price (optional)">
+      <button type="submit">Reply</button>
+    </form>
+  </div>
+{% endfor %}
+<script src="{% static 'javascript/negotiation_inbox.js' %}"></script>
+</body>
+</html>

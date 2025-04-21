@@ -459,6 +459,10 @@ def negotiate_product(request, product_id):
     ).count()
 
     max_reached = user_message_count >= 3
+    latest_price_message = NegotiationMessage.objects.filter(
+    negotiation=negotiation,
+    proposed_price__isnull=False
+    ).order_by('-timestamp').first()
 
     if request.method == "POST":
         if negotiation_expired:
@@ -471,6 +475,7 @@ def negotiate_product(request, product_id):
                 NegotiationMessage.objects.create(
                     negotiation=negotiation,
                     sender=user,
+                    receiver=negotiation.product.product_farmer,  # or negotiation.product.owner
                     message=message_text
                 )
                 messages.success(request, "Negotiation message sent successfully!")
@@ -484,6 +489,7 @@ def negotiate_product(request, product_id):
         'product': product,
         'negotiation': negotiation,
         'negotiation_setting': negotiation_setting,
+        'latest_proposed_price': latest_price_message.proposed_price if latest_price_message else product.price,
         'messages_history': messages_history,
         'max_reached': max_reached,
         'negotiation_expired': negotiation_expired,
@@ -497,9 +503,38 @@ def view_marketplace_product(request, product_id):
         'product': product
     }
     return render(request, 'view_marketplace_product.html', context)
+
+
+@login_required
+def negotiation_inbox(request):
+    inbox = NegotiationMessage.objects.filter(receiver=request.user).order_by('-timestamp')
+    return render(request, 'farmer/negotiation_inbox.html', {'inbox': inbox})
+
+@login_required
+def send_negotiation_reply(request, message_id):
+    original_message = get_object_or_404(NegotiationMessage, id=message_id)
+    
+    # Ensure only the product owner (farmer) can reply
+    if request.user != original_message.receiver:
+        messages.error(request, "You are not authorized to reply to this message.")
+        return redirect('negotiation_inbox')
+
+    if request.method == 'POST':
+        reply_text = request.POST.get('reply')
+        proposed_price = request.POST.get('proposed_price')  # from a hidden input or field
+        if reply_text:
+            NegotiationMessage.objects.create(
+                negotiation=original_message.negotiation,
+                sender=request.user,
+                receiver=original_message.sender,  # Buyer becomes receiver
+                message=reply_text,
+                proposed_price=proposed_price if proposed_price else None
+            )
+            messages.success(request, "Reply sent successfully!")
+    return redirect('negotiation_inbox')
+
 # admin view to monitor negotiations with real-time updates using AJAX (WebSockets can be added later if needed):
 from django.contrib.admin.views.decorators import staff_member_required
-
 @staff_member_required
 def monitor_negotiations(request):
     negotiations = Negotiation.objects.select_related('product', 'buyer', 'seller').order_by('-created_at')
