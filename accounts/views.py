@@ -443,7 +443,12 @@ def negotiate_product(request, product_id):
         product=product,
         defaults={'seller': product.product_farmer}
     )
-
+    negotiation_setting = None
+    try:
+        negotiation_setting = NegotiationSetting.objects.get(product=product)
+    except NegotiationSetting.DoesNotExist:
+        negotiation_setting = None
+        
     # Check if negotiation has expired
     negotiation_expired = negotiation.is_expired()
 
@@ -478,6 +483,7 @@ def negotiate_product(request, product_id):
     context = {
         'product': product,
         'negotiation': negotiation,
+        'negotiation_setting': negotiation_setting,
         'messages_history': messages_history,
         'max_reached': max_reached,
         'negotiation_expired': negotiation_expired,

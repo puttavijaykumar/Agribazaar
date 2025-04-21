@@ -30,10 +30,17 @@
             <p><strong>Description:</strong><br>{{ product.description }}</p>
             <p><strong>Uploaded At:</strong> {{ product.uploaded_at }}</p>
 
-            {% if negotiation %}
-                <p><strong>Negotiation Type:</strong> {{ negotiation.negotiation_type|title }}</p>
-                <p><strong>Expires At:</strong> {{ negotiation.expires_at }}</p>
-            {% endif %}
+            {% if negotiation_setting %}
+            <div class="mt-3">
+                <p><strong>Negotiation Mode:</strong> {{ negotiation_setting.negotiation_type|title }}</p>
+                {% if negotiation_setting.negotiation_type == "active" %}
+                    <p><strong>Validity:</strong> {{ negotiation_setting.validity_hours }} hour{{ negotiation_setting.validity_hours|pluralize }}</p>
+                {% elif negotiation_setting.negotiation_type == "passive" %}
+                    <p><strong>Validity:</strong> {{ negotiation_setting.validity_days }} day{{ negotiation_setting.validity_days|pluralize }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+        
 
             <hr>
 
