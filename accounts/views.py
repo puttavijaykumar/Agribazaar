@@ -402,7 +402,7 @@ def negotiate_product(request, product_id):
     negotiation, created = Negotiation.objects.get_or_create(
         buyer=user,
         product=product,
-        defaults={'seller': product.farmer}
+        defaults={'seller': product.product_farmer}
     )
 
     # Check if negotiation has expired
