@@ -109,9 +109,47 @@ class CartItem(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.product.name} x{self.quantity}"
     
+from datetime import timedelta
+from django.utils import timezone
 
+class NegotiationSetting(models.Model):
+    NEGOTIATION_TYPE_CHOICES = [
+        ('active', 'Active'),
+        ('passive', 'Passive'),
+    ]
+
+    product = models.OneToOneField('product_farmer', on_delete=models.CASCADE)
+    negotiation_type = models.CharField(max_length=10, choices=NEGOTIATION_TYPE_CHOICES)
+    validity_hours = models.PositiveIntegerField(null=True, blank=True, help_text="Only for active type")
+    validity_days = models.PositiveIntegerField(null=True, blank=True, help_text="Only for passive type")
+
+    def get_expiry_datetime(self):
+        now = timezone.now()
+        if self.negotiation_type == 'active' and self.validity_hours:
+            return now + timedelta(hours=self.validity_hours)
+        elif self.negotiation_type == 'passive' and self.validity_days:
+            return now + timedelta(days=self.validity_days)
+        return now  # fallback
+    
 class Negotiation(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    product = models.ForeignKey(product_farmer, on_delete=models.CASCADE)
+    product = models.ForeignKey('product_farmer', on_delete=models.CASCADE)
+    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='negotiations_as_buyer',null=True)  # Allow null temporarily
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='negotiations_as_seller',null=True,blank=True)
+    negotiation_type = models.CharField(max_length=10, choices=[('active', 'Active'), ('passive', 'Passive')],default='active')
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(null=True, blank=True)
+
+    def is_expired(self):
+        return timezone.now() > self.expires_at
+
+    def __str__(self):
+        return f"Negotiation for {self.product.name} (Buyer: {self.buyer.username}, Seller: {self.seller.username})"
+
+class NegotiationMessage(models.Model):
+    negotiation = models.ForeignKey(Negotiation, on_delete=models.CASCADE, related_name='messages')
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.sender.username} at {self.timestamp.strftime('%Y-%m-%d %H:%M')}"
