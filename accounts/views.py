@@ -391,20 +391,57 @@ def product_detail(request, id):
     return render(request, 'product_detail.html', {'product': product})
 
 #NEGOTIATION
+from django.utils import timezone
+from .models import NegotiationSetting, Negotiation, NegotiationMessage
+@login_required
 def negotiate_product(request, product_id):
     product = get_object_or_404(product_farmer, id=product_id)
+    user = request.user
+
+    # Get or create Negotiation instance for this user and product
+    negotiation, created = Negotiation.objects.get_or_create(
+        buyer=user,
+        product=product,
+        defaults={'seller': product.farmer}
+    )
+
+    # Check if negotiation has expired
+    negotiation_expired = negotiation.is_expired()
+
+    # Count number of messages sent by each party
+    user_message_count = NegotiationMessage.objects.filter(
+        negotiation=negotiation,
+        sender=user
+    ).count()
+
+    max_reached = user_message_count >= 3
 
     if request.method == "POST":
-        message = request.POST.get('negotiation_message')
-        if message:
-            # Optional: Save negotiation in DB if you have a model
-            # Negotiation.objects.create(user=request.user, product=product, message=message)
+        if negotiation_expired:
+            messages.error(request, "Negotiation has expired.")
+        elif max_reached:
+            messages.warning(request, "You’ve reached your 3-message negotiation limit.")
+        else:
+            message_text = request.POST.get('negotiation_message')
+            if message_text:
+                NegotiationMessage.objects.create(
+                    negotiation=negotiation,
+                    sender=user,
+                    message=message_text
+                )
+                messages.success(request, "Negotiation message sent successfully!")
+                return redirect('negotiate_product', product_id=product_id)
 
-            messages.success(request, "Negotiation message sent successfully!")
-            return redirect('negotiate_product', product_id=product_id)
+    messages_history = NegotiationMessage.objects.filter(
+        negotiation=negotiation
+    ).order_by('timestamp')
 
     context = {
-        'product': product
+        'product': product,
+        'negotiation': negotiation,
+        'messages_history': messages_history,
+        'max_reached': max_reached,
+        'negotiation_expired': negotiation_expired,
     }
     return render(request, 'negotiation.html', context)
 
@@ -415,3 +452,12 @@ def view_marketplace_product(request, product_id):
         'product': product
     }
     return render(request, 'view_marketplace_product.html', context)
+# admin view to monitor negotiations with real-time updates using AJAX (WebSockets can be added later if needed):
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required
+def monitor_negotiations(request):
+    negotiations = Negotiation.objects.select_related('product', 'buyer', 'seller').order_by('-created_at')
+    return render(request, 'admin/monitor_negotiations.html', {
+        'negotiations': negotiations
+    })
