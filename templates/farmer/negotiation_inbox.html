@@ -10,6 +10,7 @@
 <body>
   <div class="container">
     <h2>Negotiation Inbox</h2>
+    {% if inbox %}
     {% for message in inbox %}
       <div class="message-box">
         <p><strong>Product:</strong> {{ message.negotiation.product.productName }}</p>
@@ -29,6 +30,9 @@
         </form>
       </div>
     {% endfor %}
+    {% else %}
+          <p style="text-align:center; color:#6a1b9a;">No messages to show right now.</p>
+    {% endif %}
   </div>
   
 <script src="{% static 'javascript/negotiation_inbox.js' %}"></script>
