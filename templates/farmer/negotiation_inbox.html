@@ -27,8 +27,8 @@
     <!-- INBOX TAB -->
     <div class="tab-pane fade show active" id="inbox" role="tabpanel" aria-labelledby="inbox-tab">
       {% if inbox %}
-        {% for message in inbox %}
-        <div class="message-box {% if not message.is_read %}unread-message{% endif %}">
+        {% for message in inbox %} 
+        <div class="message-box ">{% comment %} {% if not message.is_read %}unread-message{% endif %} {% endcomment %}
             <p><strong>Product:</strong> {{ message.negotiation.product.productName }}</p>
             <p><strong>Actual Price:</strong> ₹{{ message.negotiation.product.price }}</p>
             <p><strong>From:</strong> {{ message.sender.username }}</p>
