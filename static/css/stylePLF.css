@@ -1,3 +1,49 @@
+.flash-messages {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    width: 90%;
+    max-width: 600px;
+    padding: 10px;
+    animation: slideDown 0.4s ease;
+}
+
+.flash-message {
+    padding: 18px 24px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style per tag */
+.flash-message.success {
+    background-color: #d1f5d3;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.flash-message.error {
+    background-color: #f8d7da;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -30px);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
 .form-container {
     width: 400px;
     background: white;

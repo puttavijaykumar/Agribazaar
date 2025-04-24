@@ -9,6 +9,15 @@
     <link rel="stylesheet" href={% static 'css/stylePLF.css' %}>
 </head>
 <body>
+     {% if messages %}
+        <div class="flash-messages">
+            {% for message in messages %}
+                <div class="flash-message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="container">
         <h2>List Your Product</h2>
         <form id="productForm" enctype="multipart/form-data" method="POST">
@@ -70,15 +79,7 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-    {% if messages %}
-    <div class="message-container">
-        {% for message in messages %}
-            <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+ 
 
     <script src="{% static 'javascript/scriptPLF.js' %}"></script>
 </body>
