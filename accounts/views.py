@@ -508,6 +508,7 @@ def view_marketplace_product(request, product_id):
 @login_required
 def negotiation_inbox(request):
     inbox = NegotiationMessage.objects.filter(receiver=request.user).order_by('-timestamp')
+    
     return render(request, 'farmer/negotiation_inbox.html', {'inbox': inbox})
 
 @login_required
