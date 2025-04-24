@@ -512,8 +512,8 @@ def negotiation_inbox(request):
     
     
     # Mark all unread messages as read when viewed
-    unread_messages = inbox.filter(is_read=False)
-    unread_messages.update(is_read=True)
+    # unread_messages = inbox.filter(is_read=False)
+    # unread_messages.update(is_read=True)
 
     return render(request, 'farmer/negotiation_inbox.html', {
         'inbox': inbox,
