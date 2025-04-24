@@ -508,8 +508,17 @@ def view_marketplace_product(request, product_id):
 @login_required
 def negotiation_inbox(request):
     inbox = NegotiationMessage.objects.filter(receiver=request.user).order_by('-timestamp')
+    sent = NegotiationMessage.objects.filter(sender=request.user).order_by('-timestamp')
     
-    return render(request, 'farmer/negotiation_inbox.html', {'inbox': inbox})
+    
+    # Mark all unread messages as read when viewed
+    unread_messages = inbox.filter(is_read=False)
+    unread_messages.update(is_read=True)
+
+    return render(request, 'farmer/negotiation_inbox.html', {
+        'inbox': inbox,
+        'sent': sent,
+    })
 
 @login_required
 def send_negotiation_reply(request, message_id):
