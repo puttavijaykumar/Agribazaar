@@ -70,7 +70,15 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-    
+    {% if messages %}
+    <div class="message-container">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <script src="{% static 'javascript/scriptPLF.js' %}"></script>
 </body>
