@@ -146,7 +146,7 @@ class Negotiation(models.Model):
         return timezone.now() > self.expires_at
 
     def __str__(self):
-        return f"Negotiation for {self.product.name} (Buyer: {self.buyer.username}, Seller: {self.seller.username})"
+        return f"Negotiation for {self.product.productName} (Buyer: {self.buyer.username}, Seller: {self.seller.username})"
 
 class NegotiationMessage(models.Model):
     negotiation = models.ForeignKey(Negotiation, on_delete=models.CASCADE, related_name='messages')
