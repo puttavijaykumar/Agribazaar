@@ -36,6 +36,14 @@ class product_farmer(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     product_farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  
     
+    def is_valid_for_display(self):
+        try:
+            setting = self.negotiationsetting
+            expiry_time = setting.get_expiry_datetime()
+            return timezone.now() < expiry_time
+        except:
+            return True  # Show if no setting or error
+        
     def __str__(self):
         return f"Product Name: {self.productName}, Price: {self.price}, Quantity: {self.quantity}, Description: {self.description}, Farmer: {self.product_farmer}"
     
