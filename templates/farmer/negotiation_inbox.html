@@ -32,8 +32,9 @@
             <p><strong>Product:</strong> {{ message.negotiation.product.productName }}</p>
             <p><strong>Actual Price:</strong> ₹{{ message.negotiation.product.price }}</p>
             <p><strong>From:</strong> {{ message.sender.username }}</p>
+            <p><strong>To:</strong> {{ message.receiver.username }}</p>
             <p><strong>Message:</strong> {{ message.message }}</p>
-            <p><strong>Sent:</strong> {{ message.timestamp }}</p>
+            <p><strong>Sent:</strong> {{ message.timestamp|localtime }}</p>
   
             <form method="post" action="{% url 'send_negotiation_reply' message.id %}" class="reply-form">
               {% csrf_token %}
@@ -61,7 +62,10 @@
             <p><strong>Actual Price:</strong> ₹{{ message.negotiation.product.price }}</p>
             <p><strong>To:</strong> {{ message.receiver.username }}</p>
             <p><strong>Message:</strong> {{ message.message }}</p>
-            <p><strong>Sent:</strong> {{ message.timestamp }}</p>
+            <p><strong>Sent:</strong> {{ message.timestamp|localtime}}</p>
+            <p><strong>From:</strong> {{ message.sender.username }}</p>
+
+
           </div>
         {% endfor %}
       {% else %}
