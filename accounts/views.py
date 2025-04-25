@@ -532,6 +532,9 @@ def send_negotiation_reply(request, message_id):
     if request.method == 'POST':
         reply_text = request.POST.get('reply')
         proposed_price = request.POST.get('proposed_price')  # from a hidden input or field
+        # Determine sender/reciever Dynamically
+        sender = request.user
+        receiver = original_message.sender if original_message.sender != request.user else original_message.receiver
         if reply_text:
             NegotiationMessage.objects.create(
                 negotiation=original_message.negotiation,
@@ -541,6 +544,8 @@ def send_negotiation_reply(request, message_id):
                 proposed_price=proposed_price if proposed_price else None
             )
             messages.success(request, "Reply sent successfully!")
+    print(f"Negotiation Message created: sender={sender.username}, receiver={receiver.username}")
+
     return redirect('negotiation_inbox')
 
 # admin view to monitor negotiations with real-time updates using AJAX (WebSockets can be added later if needed):
