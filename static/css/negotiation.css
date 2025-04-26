@@ -1,7 +1,18 @@
-body{
-
-}
-.updated-price{
-    color: maroon;
+.updated-price {
+    color: #28a745; /* a nice green, you can change it */
     font-weight: bold;
+    font-size: 1.2rem;
+    transition: all 0.3s ease; /* smooth animation */
+    background-color: #e8f5e9; /* light green background */
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* slight shadow */
+}
+
+.updated-price:hover {
+    transform: scale(1.1); /* slightly zoom on hover */
+    background-color: #c8e6c9; /* darker green on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* stronger shadow on hover */
+    cursor: pointer;
 }
