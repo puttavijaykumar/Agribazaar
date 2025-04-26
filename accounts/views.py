@@ -334,11 +334,40 @@ def cart_view(request):
         "total": total,
     })
 
+@require_POST
 @login_required
-def add_to_cart(request, product_id):
-    # logic to add product to cart using session or model
-    return JsonResponse({'message': 'Item added to cart'})
 
+def add_to_cart(request):
+    try:
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+
+        if not product_id:
+            return JsonResponse({'error': 'No product ID provided.'}, status=400)
+
+        # Check if product exists
+        product = get_object_or_404(MarketplaceProduct, id=product_id)
+
+        # Check if already in cart
+        cart_item, created = CartItem.objects.get_or_create(
+            user=request.user,
+            product=product,
+            defaults={'quantity': 1}
+        )
+
+        if not created:
+            # If already in cart, maybe increase quantity
+            cart_item.quantity += 1
+            cart_item.save()
+
+        return JsonResponse({'message': 'Product added to cart successfully!'})
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON.'}, status=400)
+
+    except Exception as e:
+        print(f"Error adding to cart: {e}")
+        return JsonResponse({'error': 'Something went wrong.'}, status=500)
 
 def account(request):
     # Logic for account details page

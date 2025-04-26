@@ -64,7 +64,7 @@
             {% endif %}
 
             <hr>
-            <button class="btn btn-success mt-2" href="{% url 'add_to_cart' %}" >Add to Cart</button>
+            <button id="add-to-cart" data-product-id="{{ product.id }}" class="btn btn-success">Add to Cart</button>
             <button class="btn btn-primary mt-2">Buy Now</button>
         </div>
     </div>
@@ -82,6 +82,7 @@
         {% endfor %}
     </div>
 </div>
+<input type="hidden" id="csrf-token" value="{{ csrf_token }}">
 
 <script src="{% static 'javascript/negotiation.js' %}"></script>
 </body>
