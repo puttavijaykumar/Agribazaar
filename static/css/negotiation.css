@@ -1,6 +1,6 @@
 body{
 
 }
-.col-md-6{
-    background-color: brown;
+.col-md-6 p strong {
+    color: red;
 }
