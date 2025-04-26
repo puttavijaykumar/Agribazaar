@@ -326,17 +326,8 @@ def buyer_dashboard(request):
     })
 from .models import CartItem
 
-def cart_view(request):
-    cart_items = CartItem.objects.filter(user=request.user)
-    total = sum(item.product.price * item.quantity for item in cart_items)
-    return render(request, 'cart.html',{
-        "cart_items": cart_items,
-        "total": total,
-    })
 
-@require_POST
 @login_required
-
 def add_to_cart(request):
     try:
         data = json.loads(request.body)

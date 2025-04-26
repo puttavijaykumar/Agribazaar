@@ -2,7 +2,7 @@ from django.urls import path, include
 from .views import register_view, login_view, logout_view
 from .views import register_view, verify_email
 from .views import product_list_farmer
-from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selection_view,category_products,cart_view,account
+from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selection_view,category_products,account
 from .views import download_transaction_pdf,farmer_account
 from .views import crop_detail_view,search_results,product_detail,negotiate_product,view_marketplace_product,send_negotiation_reply
 from .views import negotiation_inbox,add_to_cart
@@ -28,7 +28,6 @@ urlpatterns = [
     path('farmer/transactions/download/', download_transaction_pdf, name='download_transaction_pdf'),
     path('farmer/account/', farmer_account, name='farmer_account'),
     path('category/<str:category>/', category_products, name='category_products'),
-    path('cart/', cart_view, name='cart_view'),
     path('addtocart/', add_to_cart, name='add_to_cart'),
     path('account/', account, name='account'),
     path('crop/<str:crop_name>/', crop_detail_view, name='crop_detail_view'),
