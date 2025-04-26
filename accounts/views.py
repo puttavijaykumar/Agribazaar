@@ -389,11 +389,26 @@ def search_results(request):
             'request': request
         })
 
-    # Fetch results
-    # farmer_products = product_farmer.objects.filter(productName__icontains=query)
     farmer_products_all = product_farmer.objects.filter(productName__icontains=query)
-    non_expired_farmer_products  = [p for p in farmer_products_all if p.is_valid_for_display()]
-    
+
+    now = timezone.now()
+    valid_farmer_products = []
+
+    for product in farmer_products_all:
+        try:
+            setting = product.negotiationsetting
+            if setting.negotiation_type == 'active' and setting.validity_hours is not None:
+                expiry_time = product.uploaded_at + timezone.timedelta(hours=setting.validity_hours)
+                if now <= expiry_time:
+                    valid_farmer_products.append(product)
+            elif setting.negotiation_type == 'passive' and setting.validity_days is not None:
+                expiry_time = product.uploaded_at + timezone.timedelta(days=setting.validity_days)
+                if now <= expiry_time:
+                    valid_farmer_products.append(product)
+        except NegotiationSetting.DoesNotExist:
+            # If no negotiation setting linked, assume product is valid
+            valid_farmer_products.append(product)
+
     marketplace_products = MarketplaceProduct.objects.filter(name__icontains=query)
 
     # Normalize both model instances into a unified dictionary format

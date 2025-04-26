@@ -30,7 +30,6 @@ class product_farmer(models.Model):
     price = models.IntegerField()
     quantity = models.IntegerField()
     description = models.TextField()
-   
     images = CloudinaryField('image', null=True, blank=True)
     product_vedio = CloudinaryField('video', null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
