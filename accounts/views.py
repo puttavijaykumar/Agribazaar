@@ -429,14 +429,14 @@ def search_results(request):
         }
 
     # Normalize lists
-    normalized_farmer = [normalize_product(p, 'product_farmer') for p in non_expired_farmer_products]
+    normalized_farmer = [normalize_product(p, 'product_farmer') for p in valid_farmer_products]
     normalized_marketplace = [normalize_product(p, 'MarketplaceProduct') for p in marketplace_products]
 
     # Combine
     combined_products = normalized_farmer + normalized_marketplace
 
     return render(request, 'search_results.html', {
-        'products': non_expired_farmer_products,
+        'products': valid_farmer_products,
         'marketplace_products': marketplace_products,
         'combined_products': combined_products,
         'query': query,
