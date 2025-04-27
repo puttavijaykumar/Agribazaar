@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         addToCartButton.addEventListener('click', function () {
             const productId = this.getAttribute('data-product-id');
             const csrfToken = document.getElementById('csrf-token').value;
+            const productType = this.getAttribute('data-product-type'); 
 
             fetch('/addtocart/', {
                 method: 'POST',
@@ -30,7 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrfToken,
                 },
-                body: JSON.stringify({ product_id: productId })
+                body: JSON.stringify({ product_id: productId,
+                                       product_type: productType
+                })
             })
             .then(response => {
                 if (response.ok) {
