@@ -332,22 +332,29 @@ def add_to_cart(request):
     try:
         data = json.loads(request.body)
         product_id = data.get('product_id')
+        product_type = data.get('product_type')
 
-        if not product_id:
-            return JsonResponse({'error': 'No product ID provided.'}, status=400)
+        if not product_id or not product_type:
+            return JsonResponse({'error': 'Missing product ID or product type.'}, status=400)
 
-        # Check if product exists
-        product = get_object_or_404(MarketplaceProduct, id=product_id)
+        # Fetch product based on product_type
+        if product_type == 'MarketplaceProduct':
+            product = get_object_or_404(MarketplaceProduct, id=product_id)
+        elif product_type == 'ProductFarmer':
+            product = get_object_or_404(product_farmer, id=product_id)
+        else:
+            return JsonResponse({'error': 'Invalid product type.'}, status=400)
 
         # Check if already in cart
         cart_item, created = CartItem.objects.get_or_create(
             user=request.user,
-            product=product,
+            product_id=product.id,
+            product_type=product_type,
             defaults={'quantity': 1}
         )
 
         if not created:
-            # If already in cart, maybe increase quantity
+            # If already in cart, increase quantity
             cart_item.quantity += 1
             cart_item.save()
 
@@ -359,7 +366,7 @@ def add_to_cart(request):
     except Exception as e:
         print(f"Error adding to cart: {e}")
         return JsonResponse({'error': 'Something went wrong.'}, status=500)
-
+    
 def account(request):
     # Logic for account details page
     return render(request, 'account.html')
