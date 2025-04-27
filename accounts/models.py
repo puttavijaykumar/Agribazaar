@@ -110,12 +110,17 @@ class MarketplaceProduct(models.Model):
     
 class CartItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    product = models.ForeignKey(MarketplaceProduct, on_delete=models.CASCADE)
+    product_marketplace = models.ForeignKey(MarketplaceProduct, null=True, blank=True, on_delete=models.CASCADE)
+    product_farmer = models.ForeignKey(product_farmer, null=True, blank=True, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     added_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.product.name} x{self.quantity}"
+        if self.product_marketplace:
+            return f"{self.user.username} - {self.product_marketplace.name} x{self.quantity}"
+        elif self.product_farmer:
+            return f"{self.user.username} - {self.product_farmer.productName} x{self.quantity}"
+        return f"{self.user.username} - Unknown Product x{self.quantity}"
     
 from datetime import timedelta
 from django.utils import timezone

@@ -338,9 +338,7 @@ def add_to_cart(request):
             return JsonResponse({'error': 'Missing product ID or product type.'}, status=400)
 
         # Fetch product based on product_type
-        if product_type == 'MarketplaceProduct':
-            product = get_object_or_404(MarketplaceProduct, id=product_id)
-        elif product_type == 'ProductFarmer':
+        if product_type == 'ProductFarmer':
             product = get_object_or_404(product_farmer, id=product_id)
         else:
             return JsonResponse({'error': 'Invalid product type.'}, status=400)
@@ -348,8 +346,8 @@ def add_to_cart(request):
         # Check if already in cart
         cart_item, created = CartItem.objects.get_or_create(
             user=request.user,
-            product_id=product.id,
-            product_type=product_type,
+            product_farmer = product,
+          
             defaults={'quantity': 1}
         )
 
