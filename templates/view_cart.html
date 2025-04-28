@@ -9,10 +9,8 @@
 </head>
 <body>
     <div class="container mt-4">
-        <!-- Search Bar -->
-        <div class="search-bar mb-4">
-            <input type="text" class="form-control rounded-pill" placeholder="Search for products, brands and more">
-        </div>
+       
+
        
         <!-- Cart Items -->
         <div class="cart-items">
@@ -47,18 +45,7 @@
                                     {% endif %}
                                 </p>
                                 
-                                <!-- Specifications -->
-                                {% if item.product_marketplace %}
-                                <div class="specs">
-                                    <span class="badge bg-secondary">Pack of 1</span>
-                                    {% if item.product_marketplace.category == 'electronics' %}
-                                        <span class="badge bg-secondary">8 GB RAM</span>
-                                    {% endif %}
-                                </div>
-                                {% endif %}
                                 
-                                <div class="mt-2 text-danger">Out Of Stock</div>
-                            </div>
 
                             <!-- Actions -->
                             <div class="col-md-4 text-end">
