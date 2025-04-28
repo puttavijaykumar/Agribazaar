@@ -8,20 +8,21 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/negotiation.css' %}">
 </head>
 <body>
-     <!-- Header Section -->
-     <header>
-        <nav>
-            <ul>
-                <!-- Cart link -->
-                <li>
-                    <a href="{% url 'view_cart' %}">
-                        <img src="{% static 'images/cart.jpg' %}" alt="Cart" class="cart-icon"> 
-                        Cart
-                    </a>
-                </li>
-            </ul>
-        </nav>
+     <!-- Enhanced Cart Header -->
+     <header class="top-banner bg-light py-3">
+        <div class="container">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'view_cart' %}" class="cart-link text-decoration-none">
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="{% static 'images/cart.jpg' %}" alt="Cart" class="cart-icon">
+                        <span class="cart-text">View Cart</span>
+                        <span class="badge bg-danger cart-badge">0</span>
+                    </div>
+                </a>
+            </div>
+        </div>
     </header>
+    
 <div class="container my-5">
     {% if messages %}
         {% for message in messages %}
