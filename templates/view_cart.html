@@ -15,13 +15,13 @@
             {% for item in cart_items %}
                 <div class="cart-item-card">
                     {% if item.product_farmer %}
-                        <img src="{{ item.product_farmer.image.url }}" alt="{{ item.product_farmer.name }}" class="product-image">
+                        <img src="{{ item.product_farmer.images.url }}" alt="{{ item.product_farmer.name }}" class="product-image">
                         <h3>{{ item.product_farmer.name }}</h3>
                         <p>{{ item.product_farmer.description }}</p>
                         <p>Price: ₹{{ item.product_farmer.price }}</p>
                         <p>Quantity: {{ item.quantity }}</p>
                     {% elif item.product_marketplace %}
-                        <img src="{{ item.product_marketplace.image.url }}" alt="{{ item.product_marketplace.name }}" class="product-image">
+                        <img src="{{ item.product_marketplace.images_market.url }}" alt="{{ item.product_marketplace.name }}" class="product-image">
                         <h3>{{ item.product_marketplace.name }}</h3>
                         <p>{{ item.product_marketplace.description }}</p>
                         <p>Price: ₹{{ item.product_marketplace.price }}</p>
@@ -42,4 +42,3 @@
     <script src="{% static 'javascript/view_cart.js' %}"></script>
 </body>
 </html>
-u
