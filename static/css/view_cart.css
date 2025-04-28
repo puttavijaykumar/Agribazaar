@@ -1,0 +1,29 @@
+.quantity-section {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.input-group {
+    margin-top: 8px;
+}
+
+.price-details {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-outline-secondary {
+    border-color: #6c757d;
+}
+
+.total-amount {
+    margin-top: 1rem;
+}
