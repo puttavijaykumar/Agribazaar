@@ -369,6 +369,23 @@ def add_to_cart(request):
         print(f"Error adding to cart: {e}")
         return JsonResponse({'error': 'Something went wrong.'}, status=500)
     
+@login_required   
+def view_cart(request):
+    cart_items = CartItem.objects.filter(user=request.user)
+    total_price = 0
+
+    for item in cart_items:
+        if item.product_farmer:
+            total_price += item.quantity * item.product_farmer.price
+        elif item.product_marketplace:
+            total_price += item.quantity * item.product_marketplace.price
+
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price,
+    }
+    return render(request, 'view_cart.html', context)
+
 def account(request):
     # Logic for account details page
     return render(request, 'account.html')
