@@ -16,3 +16,29 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* stronger shadow on hover */
     cursor: pointer;
 }
+/* Cart icon styling */
+.cart-icon {
+    width: 24px; /* Set size of the icon */
+    height: 24px;
+    margin-right: 8px;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-end; /* Align to the right */
+}
+
+header nav ul li {
+    margin: 0 15px; /* Spacing between nav items */
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+}
+
+header nav ul li a:hover {
+    color: #5cb85c; /* Change color on hover */
+}
