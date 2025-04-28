@@ -1,29 +1,26 @@
+/* Action Buttons Styling */
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
 .quantity-section {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 6px;
     border: 1px solid #dee2e6;
 }
 
 .input-group {
-    margin-top: 8px;
+    flex-wrap: nowrap;
 }
 
-.price-details {
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.btn-outline-secondary {
-    border-color: #6c757d;
-}
-
-.total-amount {
-    margin-top: 1rem;
+.form-control {
+    text-align: center;
+    padding: 0.375rem 0.75rem;
 }
