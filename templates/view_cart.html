@@ -3,41 +3,126 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ product.name }} - Details</title>
+    <title>Your Cart - FlyMart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/view_cart.css' %}">
 </head>
 <body>
-    <h2>Your Cart</h2>
-
-    {% if cart_items %}
-        <div class="cart-container">
-            {% for item in cart_items %}
-                <div class="cart-item-card">
-                    {% if item.product_farmer %}
-                        <img src="{{ item.product_farmer.images.url }}" alt="{{ item.product_farmer.name }}" class="product-image">
-                        <h3>{{ item.product_farmer.name }}</h3>
-                        <p>{{ item.product_farmer.description }}</p>
-                        <p>Price: ₹{{ item.product_farmer.price }}</p>
-                        <p>Quantity: {{ item.quantity }}</p>
-                    {% elif item.product_marketplace %}
-                        <img src="{{ item.product_marketplace.images_market.url }}" alt="{{ item.product_marketplace.name }}" class="product-image">
-                        <h3>{{ item.product_marketplace.name }}</h3>
-                        <p>{{ item.product_marketplace.description }}</p>
-                        <p>Price: ₹{{ item.product_marketplace.price }}</p>
-                        <p>Quantity: {{ item.quantity }}</p>
-                    {% endif %}
-                </div>
-            {% endfor %}
+    <div class="container mt-4">
+        <!-- Search Bar -->
+        <div class="search-bar mb-4">
+            <input type="text" class="form-control rounded-pill" placeholder="Search for products, brands and more">
         </div>
-    
-        <h3>Total: ₹{{ total_price }}</h3>
-    
-    {% else %}
-        <p>Your cart is empty.</p>
-    {% endif %}
-    
 
+        <!-- Delivery Address -->
+        <div class="delivery-address card mb-4">
+            <div class="card-body">
+                <h5>Deliver to: Vijaykumar Putta, 305818</h5>
+                <p class="mb-0">B-S Central University of Rajasthan., b5 05, Kishangarh Ajm...</p>
+            </div>
+        </div>
+
+        <!-- Cart Items -->
+        <div class="cart-items">
+            {% if cart_items %}
+                {% for item in cart_items %}
+                <div class="cart-item card mb-3">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <!-- Product Image -->
+                            <div class="col-md-2">
+                                {% if item.product_farmer %}
+                                    <img src="{{ item.product_farmer.images.url }}" class="img-fluid" alt="{{ item.product_farmer.name }}">
+                                {% elif item.product_marketplace %}
+                                    <img src="{{ item.product_marketplace.images_market.url }}" class="img-fluid" alt="{{ item.product_marketplace.name }}">
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Product Details -->
+                            <div class="col-md-6">
+                                <h5 class="mb-1">
+                                    {% if item.product_farmer %}
+                                        {{ item.product_farmer.name }}
+                                    {% elif item.product_marketplace %}
+                                        {{ item.product_marketplace.name }}
+                                    {% endif %}
+                                </h5>
+                                <p class="text-muted small mb-2">
+                                    {% if item.product_farmer %}
+                                        {{ item.product_farmer.description }}
+                                    {% elif item.product_marketplace %}
+                                        {{ item.product_marketplace.description }}
+                                    {% endif %}
+                                </p>
+                                
+                                <!-- Specifications -->
+                                {% if item.product_marketplace %}
+                                <div class="specs">
+                                    <span class="badge bg-secondary">Pack of 1</span>
+                                    {% if item.product_marketplace.category == 'electronics' %}
+                                        <span class="badge bg-secondary">8 GB RAM</span>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                                
+                                <div class="mt-2 text-danger">Out Of Stock</div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="col-md-4 text-end">
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-secondary btn-sm">SAVE FOR LATER</button>
+                                        <button class="btn btn-outline-danger btn-sm">REMOVE</button>
+                                    </div>
+                                    <div class="quantity-selector mt-2">
+                                        <label>Quantity:</label>
+                                        <input type="number" class="form-control" value="{{ item.quantity }}" min="1" style="width: 80px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">Your cart is empty.</div>
+            {% endif %}
+        </div>
+
+        <!-- Price Details -->
+        <div class="price-details card mb-4">
+            <div class="card-body">
+                <h5 class="mb-3">PRICE DETAILS</h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Price ({{ cart_items|length }} items)</span>
+                    <span>₹{{ total_price }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2 text-success">
+                    <span>Discount</span>
+                    <span>-₹{{ discount }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Delivery Charges</span>
+                    <span>₹{{ delivery_charge }}</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between fw-bold">
+                    <span>Total Amount</span>
+                    <span>₹{{ total_amount }}</span>
+                </div>
+                <p class="text-success mt-2">You will save ₹{{ total_savings }} on this order</p>
+            </div>
+        </div>
+
+        <!-- Trust & Order Section -->
+        <div class="trust-section text-center mb-5">
+            <p class="small text-muted">
+                Safe and Secure Payments. Easy returns. 100% Authentic products.
+            </p>
+            <button class="btn btn-primary btn-lg w-100">PLACE ORDER</button>
+        </div>
+    </div>
 
     <script src="{% static 'javascript/view_cart.js' %}"></script>
 </body>
