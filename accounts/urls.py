@@ -5,7 +5,7 @@ from .views import product_list_farmer
 from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selection_view,category_products,account
 from .views import download_transaction_pdf,farmer_account
 from .views import crop_detail_view,search_results,product_detail,negotiate_product,view_marketplace_product,send_negotiation_reply
-from .views import negotiation_inbox,add_to_cart
+from .views import negotiation_inbox,add_to_cart,monitor_negotiations
 from accounts.views import home
 from django.contrib.auth import views as auth_views
 
@@ -37,5 +37,6 @@ urlpatterns = [
     path('negotiation/reply/<int:message_id>/', send_negotiation_reply, name='send_negotiation_reply'),
     path('negotiation/inbox/', negotiation_inbox, name='negotiation_inbox'),
     path('product/marketplace/<int:product_id>/', view_marketplace_product, name='view_marketplace_product'),
+    path('monitor/negotiations/', monitor_negotiations, name='monitor_negotiations')
 
 ]
