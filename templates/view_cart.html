@@ -9,9 +9,7 @@
 </head>
 <body>
     <div class="container mt-4">
-       
-
-       
+          
         <!-- Cart Items -->
         <div class="cart-items">
             {% if cart_items %}
@@ -44,20 +42,22 @@
                                         {{ item.product_marketplace.description }}
                                     {% endif %}
                                 </p>
-                                
-                                
-
-                            <!-- Actions -->
-                            <div class="col-md-4 text-end">
-                                <div class="d-flex flex-column gap-2">
-                                    <div class="btn-group">
+                            </div>
+                
+                            <!-- Actions & Quantity -->
+                            <div class="col-md-4">
+                                <div class="d-flex flex-column align-items-end gap-2">
+                                    <!-- Action Buttons -->
+                                    <div class="d-flex gap-2">
                                         <button class="btn btn-outline-secondary btn-sm">SAVE FOR LATER</button>
                                         <button class="btn btn-outline-danger btn-sm">REMOVE</button>
                                     </div>
-                                    <div class="quantity-section mb-3">
-                                        <label class="form-label">Quantity:</label>
-                                        <div class="input-group" style="width: 120px;">
-                                            <input type="number" class="form-control" value="3" min="1">
+                                    
+                                    <!-- Quantity Selector -->
+                                    <div class="quantity-section d-flex align-items-center gap-2">
+                                        <label class="form-label mb-0">Quantity:</label>
+                                        <div class="input-group" style="width: 100px;">
+                                            <input type="number" class="form-control" value="{{ item.quantity }}" min="1">
                                         </div>
                                     </div>
                                 </div>
