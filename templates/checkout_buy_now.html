@@ -1,0 +1,48 @@
+<!-- templates/checkout_buy_now.html -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - Buy Now</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/checkout_buy_now.css' %}">
+
+</head>
+<body>
+    <div class="container mt-5">
+
+        <h2 class="mb-4">Buy Now Checkout</h2>
+
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% if product.images %}
+                        <img src="{{ product.images.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+                    {% elif product.images_market %}
+                        <img src="{{ product.images_market.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <h4 class="card-text">Price: ₹{{ product.price }}</h4>
+
+                        <form action="{% url 'confirm_order' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <input type="hidden" name="product_type" value="{{ product_type }}">
+                            <button type="submit" class="btn btn-success mt-3">place order</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="{% static 'javascript/checkout_buy_now.js' %}"></script>
+</body>
+</html>
