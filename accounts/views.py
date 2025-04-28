@@ -539,13 +539,6 @@ def negotiate_product(request, product_id):
     }
     return render(request, 'negotiation.html', context)
 
-def view_marketplace_product(request, product_id):
-    product = get_object_or_404(MarketplaceProduct, id=product_id)
-
-    context = {
-        'product': product
-    }
-    return render(request, 'view_marketplace_product.html', context)
 
 
 @login_required
@@ -599,3 +592,12 @@ def monitor_negotiations(request):
     return render(request, 'admin/monitor_negotiations.html', {
         'negotiations': negotiations
     })
+    
+def view_marketplace_product(request, product_id):
+    product = get_object_or_404(MarketplaceProduct, id=product_id)
+
+    context = {
+        'product': product
+    }
+    return render(request, 'view_marketplace_product.html', context)
+
