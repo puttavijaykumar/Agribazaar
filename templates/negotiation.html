@@ -8,6 +8,20 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/negotiation.css' %}">
 </head>
 <body>
+     <!-- Header Section -->
+     <header>
+        <nav>
+            <ul>
+                <!-- Cart link -->
+                <li>
+                    <a href="{% url 'view_cart' %}">
+                        <img src="{% static 'images/cart_icon.png' %}" alt="Cart" class="cart-icon"> 
+                        Cart
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 <div class="container my-5">
     {% if messages %}
         {% for message in messages %}
