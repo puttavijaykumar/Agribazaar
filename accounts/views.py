@@ -386,7 +386,67 @@ def view_cart(request):
     }
     return render(request, 'view_cart.html', context)
 
+@login_required
+def buy_product(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+
+            product_id = data.get('product_id')
+            product_type = data.get('product_type')
+
+            if not product_id or not product_type:
+                return JsonResponse({'error': 'Invalid data provided.'}, status=400)
+
+            # For example, create a temporary order or save product_id to session
+            request.session['buy_now_product_id'] = product_id
+            request.session['buy_now_product_type'] = product_type
+
+            # ⚡ Later, on your checkout page, fetch from session and show directly!
+            # 👉 Send back the redirect URL
+            return JsonResponse({'redirect_url': '/checkout/buy-now/'})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON.'}, status=400)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    else:
+        return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
+def checkout_buy_now(request):
+    # Fetch data from session
+    product_id = request.session.get('buy_now_product_id')
+    product_type = request.session.get('buy_now_product_type')
+
+    if not product_id or not product_type:
+        # If session is empty, redirect to cart or home
+        return redirect('view_cart')  # or 'home' or wherever you want
+
+    # Fetch product based on type
+    product = None
+    if product_type == 'ProductFarmer':
+        product = product_farmer.objects.filter(id=product_id).first()
+    elif product_type == 'ProductMarketplace':
+        product = MarketplaceProduct.objects.filter(id=product_id).first()
+
+    if not product:
+        # Redirect back to the page the user came from
+        referer = request.META.get('HTTP_REFERER')
+        if referer:
+            return redirect(referer)
+        else:    
+            return redirect('view_cart')  
+        
+    context = {
+        'product': product,
+        'product_type': product_type,
+    }
+    return render(request, 'checkout_buy_now.html', context)
+ 
 def account(request):
+    
     # Logic for account details page
     return render(request, 'account.html')
 

@@ -5,7 +5,7 @@ from .views import product_list_farmer
 from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selection_view,category_products,account
 from .views import download_transaction_pdf,farmer_account
 from .views import crop_detail_view,search_results,product_detail,negotiate_product,view_marketplace_product,send_negotiation_reply
-from .views import negotiation_inbox,add_to_cart,monitor_negotiations,view_cart
+from .views import negotiation_inbox,add_to_cart,monitor_negotiations,view_cart,buy_product
 from accounts.views import home
 from django.contrib.auth import views as auth_views
 
@@ -29,6 +29,7 @@ urlpatterns = [
     path('farmer/account/', farmer_account, name='farmer_account'),
     path('category/<str:category>/', category_products, name='category_products'),
     path('addtocart/', add_to_cart, name='add_to_cart'),
+    path('buy/product/', buy_product, name='buy_product'),
     path('viewcart/', view_cart, name='view_cart'),
     path('account/', account, name='account'),
     path('crop/<str:crop_name>/', crop_detail_view, name='crop_detail_view'),
