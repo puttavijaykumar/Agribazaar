@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }} - Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/view_cart.css' %}">
+</head>
+<body>
+    <h2>Your Cart</h2>
+
+    {% if cart_items %}
+        <div class="cart-container">
+            {% for item in cart_items %}
+                <div class="cart-item-card">
+                    {% if item.product_farmer %}
+                        <img src="{{ item.product_farmer.image.url }}" alt="{{ item.product_farmer.name }}" class="product-image">
+                        <h3>{{ item.product_farmer.name }}</h3>
+                        <p>{{ item.product_farmer.description }}</p>
+                        <p>Price: ₹{{ item.product_farmer.price }}</p>
+                        <p>Quantity: {{ item.quantity }}</p>
+                    {% elif item.product_marketplace %}
+                        <img src="{{ item.product_marketplace.image.url }}" alt="{{ item.product_marketplace.name }}" class="product-image">
+                        <h3>{{ item.product_marketplace.name }}</h3>
+                        <p>{{ item.product_marketplace.description }}</p>
+                        <p>Price: ₹{{ item.product_marketplace.price }}</p>
+                        <p>Quantity: {{ item.quantity }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    
+        <h3>Total: ₹{{ total_price }}</h3>
+    
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+    
+
+
+    <script src="{% static 'javascript/view_cart.js' %}"></script>
+</body>
+</html>
+u
