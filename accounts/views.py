@@ -340,18 +340,20 @@ def add_to_cart(request):
         # Fetch product based on product_type
         if product_type == 'ProductFarmer':
             product = get_object_or_404(product_farmer, id=product_id)
-        elif product_type == 'MarketplaceProduct':
-            product = get_object_or_404(MarketplaceProduct, id=product_id)
-        else:
-            return JsonResponse({'error': 'Invalid product type.'}, status=400)
-
-        # Check if already in cart
-        cart_item, created = CartItem.objects.get_or_create(
+            cart_item, created = CartItem.objects.get_or_create(
             user=request.user,
             product_farmer = product,
+            defaults={'quantity': 1}
+        )
+        elif product_type == 'MarketPlaceProduct':
+            product = get_object_or_404(MarketplaceProduct, id=product_id)
+            cart_item, created = CartItem.objects.get_or_create(
+            user=request.user,  
             product_marketplace = product,
             defaults={'quantity': 1}
         )
+        else:
+            return JsonResponse({'error': 'Invalid product type.'}, status=400)
 
         if not created:
             # If already in cart, increase quantity
