@@ -82,9 +82,16 @@
            <!-- Modified Button Section -->
         <div class="d-flex gap-3 mt-3">  <!-- Added flex container with spacing -->
             <button id="add-to-cart" data-product-id="{{ product.id }}" data-product-type="ProductFarmer" class="btn btn-success flex-grow-1">Add to Cart</button>
-            <button id="add-to-buy" data-product-id="{{ product.id }}" data-product-type="ProductFarmer" class="btn btn-primary flex-grow-1">Buy Now</button>
-        </div>
-        
+            {% comment %} <button id="add-to-buy" data-product-id="{{ product.id }}" data-product-type="ProductFarmer" class="btn btn-primary flex-grow-1">Buy Now</button>
+        </div> {% endcomment %}
+        <form action="{% url 'buy_now' %}" method="post" class="flex-grow-1">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="hidden" name="price" value="{{ latest_proposed_price if latest_proposed_price else product.price }}">
+            <button type="submit" class="btn btn-primary w-100">
+                Buy Now 
+            </button>
+        </form>
         </div>
     </div>
     

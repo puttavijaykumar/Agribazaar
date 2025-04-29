@@ -394,14 +394,20 @@ def buy_product(request):
 
             product_id = data.get('product_id')
             product_type = data.get('product_type')
+            price = data.get('price') 
 
             if not product_id or not product_type:
                 return JsonResponse({'error': 'Invalid data provided.'}, status=400)
 
+            product = get_object_or_404(product_farmer, id=product_id)
+            
+            if price is None:
+                price = product.price
+                
             # For example, create a temporary order or save product_id to session
             request.session['buy_now_product_id'] = product_id
             request.session['buy_now_product_type'] = product_type
-
+            request.session['buy_now_price'] = price 
             # Latr, on your checkout page, fetch from session and show directly!
             # Send back the redirect URL
             return JsonResponse({'redirect_url': '/checkout/buy-now/'})
@@ -419,7 +425,8 @@ def checkout_buy_now(request):
     # Fetch data from session
     product_id = request.session.get('buy_now_product_id')
     product_type = request.session.get('buy_now_product_type')
-
+    price = request.session.get('buy_now_price', 0) 
+    
     if not product_id or not product_type:
         # If session is empty, redirect to cart or home
         return redirect('view_cart')  # or 'home' or wherever you want
@@ -442,6 +449,7 @@ def checkout_buy_now(request):
     context = {
         'product': product,
         'product_type': product_type,
+        'price': price,  # Pass the price to the template
     }
     return render(request, 'checkout_buy_now.html', context)
  

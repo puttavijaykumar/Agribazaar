@@ -61,6 +61,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const productId = this.getAttribute('data-product-id');
             const csrfToken = document.getElementById('csrf-token').value;
             const productType = this.getAttribute('data-product-type');
+            
+            // Get the price (use negotiated price or original price)
+            const price = document.getElementById('negotiated-price') 
+                          ? document.getElementById('negotiated-price').value 
+                          : this.getAttribute('data-price'); 
 
             fetch('/buy/product/', {
                 method: 'POST',
@@ -70,7 +75,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: JSON.stringify({
                     product_id: productId,
-                    product_type: productType
+                    product_type: productType,
+                    price: price  
                 })
             })
             .then(response => {
