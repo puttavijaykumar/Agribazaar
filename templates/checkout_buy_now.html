@@ -29,7 +29,7 @@
                         {%if product_type == "ProductFarmer" %}
                         <h5 class="card-title"><strong>{{ product.productName }}</strong></h5>
                         <p class="card-text">{{ product.description }}</p>
-                        <h4 class="card-text">Price: ₹{{ product.price }}</h4>
+                        <h4 class="card-text">Price: ₹{{ price }}</h4>
                         <p class="card-text">Quantity: {{ product.quantity }} kg</p>
 
                         {% elif product_type == "ProductMarket" %}
