@@ -390,42 +390,34 @@ def view_cart(request):
 def buy_product(request):
     if request.method == 'POST':
         try:
-            data = json.loads(request.body)
+            # Get data from the POST request (form data)
+            product_id = request.POST.get('product_id')
+            price = request.POST.get('price')
+            product_type = request.POST.get('product_type')
 
-            product_id = data.get('product_id')
-            product_type = data.get('product_type')
-            price = data.get('price') 
+            if not product_id:
+                return JsonResponse({'error': 'Invalid product ID provided.'}, status=400)
 
-            if not product_id or not product_type:
-                return JsonResponse({'error': 'Invalid data provided.'}, status=400)
-
+            # Fetch the product from the database
             product = get_object_or_404(product_farmer, id=product_id)
             
             if price is None:
-                price = product.price
-                
-            # For example, create a temporary order or save product_id to session
+                price = product.price  # Use the product's original price if price is not provided
+            
+            # Save the data in session for later use (like on the checkout page)
             request.session['buy_now_product_id'] = product_id
-            request.session['buy_now_product_type'] = product_type
+            request.session['buy_now_product_type'] = product_type  # Assuming `product_type` exists
             request.session['buy_now_price'] = price 
             
-            if not product_id or not price:
-                return JsonResponse({'error': 'Missing product_id or price.'}, status=400)
-            
-            
-            # Latr, on your checkout page, fetch from session and show directly!
-            # Send back the redirect URL
-            return JsonResponse({'redirect_url': '/checkout/buy-now/'})
-
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON.'}, status=400)
+            # Redirect to checkout page or return a success message
+            return redirect('checkout_buy_now')
 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
-
+    
     else:
         return JsonResponse({'error': 'Invalid request method.'}, status=405)
-
+    
 def checkout_buy_now(request):
     # Fetch data from session
     product_id = request.session.get('buy_now_product_id')

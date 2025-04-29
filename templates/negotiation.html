@@ -85,12 +85,16 @@
             {% comment %} <button id="add-to-buy" data-product-id="{{ product.id }}" data-product-type="ProductFarmer" class="btn btn-primary flex-grow-1">Buy Now</button>
         </div> {% endcomment %}
 
-            <input type="hidden" id= "csrf-token-buy-now" value="{{ csrf_token }}">
-            <input type="hidden" name="product_id" value="{{ product.id }}">
-            <input type="hidden" name="price" value=value="{% if latest_proposed_price %}{{ latest_proposed_price }}{% else %}{{ product.price }}{% endif %}">
-            <button type="submit" class="btn btn-primary w-100">
-                Buy Now 
+        <form method="POST" action="{% url 'buy_product' %}">
+            {% csrf_token %}
+            <input type="hidden" id="product-id-buy-now" name="product_id" value="{{ product.id }}">
+            <input type="hidden" id="product-type-buy-now" name="product_type" value="ProductFarmer">
+            <input type="hidden" id="negotiated-price" name="price" value="{% if latest_proposed_price %}{{ latest_proposed_price }}{% else %}{{ product.price }}{% endif %}">
+        
+            <button type="submit" id="add-to-buy" class="btn btn-primary w-100">
+                Buy Now
             </button>
+        </form>
      
         </div>
     </div>
