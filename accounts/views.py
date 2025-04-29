@@ -408,6 +408,11 @@ def buy_product(request):
             request.session['buy_now_product_id'] = product_id
             request.session['buy_now_product_type'] = product_type
             request.session['buy_now_price'] = price 
+            
+            if not product_id or not price:
+                return JsonResponse({'error': 'Missing product_id or price.'}, status=400)
+            
+            
             # Latr, on your checkout page, fetch from session and show directly!
             # Send back the redirect URL
             return JsonResponse({'redirect_url': '/checkout/buy-now/'})

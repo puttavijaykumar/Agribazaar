@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (buyNowButton) {
         buyNowButton.addEventListener('click', function () {
             const productId = this.getAttribute('data-product-id');
-            const csrfToken = document.getElementById('csrf-token').value;
+            const csrfToken = document.getElementById('csrf-token-buy-now').value;
             const productType = this.getAttribute('data-product-type');
             
             // Get the price (use negotiated price or original price)
