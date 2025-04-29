@@ -626,22 +626,24 @@ def negotiate_product(request, product_id):
     return render(request, 'negotiation.html', context)
 
 
+from django.core.paginator import Paginator
 
 @login_required
 def negotiation_inbox(request):
-    inbox = NegotiationMessage.objects.filter(receiver=request.user).order_by('-timestamp')
-    sent = NegotiationMessage.objects.filter(sender=request.user).order_by('-timestamp')
-    
-    
-    # Mark all unread messages as read when viewed
-    # unread_messages = inbox.filter(is_read=False)
-    # unread_messages.update(is_read=True)
+    inbox_list = NegotiationMessage.objects.filter(receiver=request.user).order_by('-timestamp')
+    sent_list = NegotiationMessage.objects.filter(sender=request.user).order_by('-timestamp')
+
+    # Pagination
+    inbox_paginator = Paginator(inbox_list, 5)
+    sent_paginator = Paginator(sent_list, 5)
+
+    inbox_page = inbox_paginator.get_page(request.GET.get('page'))
+    sent_page = sent_paginator.get_page(request.GET.get('sent_page'))
 
     return render(request, 'farmer/negotiation_inbox.html', {
-        'inbox': inbox,
-        'sent': sent,
+        'inbox_page': inbox_page,
+        'sent_page': sent_page,
     })
-
 @login_required
 def send_negotiation_reply(request, message_id):
     original_message = get_object_or_404(NegotiationMessage, id=message_id)
