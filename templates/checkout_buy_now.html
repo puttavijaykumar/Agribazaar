@@ -30,7 +30,7 @@
                         <p class="card-text">{{ product.description }}</p>
                         <h4 class="card-text">Price: ₹{{ product.price }}</h4>
 
-                        <form action="{% url 'confirm_order' %}" method="POST">
+                        <form id ="place-order" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="product_id" value="{{ product.id }}">
                             <input type="hidden" name="product_type" value="{{ product_type }}">
