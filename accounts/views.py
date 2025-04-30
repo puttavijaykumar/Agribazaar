@@ -632,12 +632,10 @@ from django.core.paginator import Paginator
 def negotiation_inbox(request):
     inbox_list = NegotiationMessage.objects.filter(receiver=request.user)\
         .select_related('sender')\
-        .only('sender__username', 'message', 'timestamp')\
         .order_by('-timestamp')
 
     sent_list = NegotiationMessage.objects.filter(sender=request.user)\
         .select_related('receiver')\
-        .only('receiver__username', 'message', 'timestamp')\
         .order_by('-timestamp')
 
     # Pagination
