@@ -630,8 +630,15 @@ from django.core.paginator import Paginator
 
 @login_required
 def negotiation_inbox(request):
-    inbox_list = NegotiationMessage.objects.filter(receiver=request.user).order_by('-timestamp')
-    sent_list = NegotiationMessage.objects.filter(sender=request.user).order_by('-timestamp')
+    inbox_list = NegotiationMessage.objects.filter(receiver=request.user)\
+        .select_related('sender')\
+        .only('sender__username', 'message', 'timestamp')\
+        .order_by('-timestamp')
+
+    sent_list = NegotiationMessage.objects.filter(sender=request.user)\
+        .select_related('receiver')\
+        .only('receiver__username', 'message', 'timestamp')\
+        .order_by('-timestamp')
 
     # Pagination
     inbox_paginator = Paginator(inbox_list, 5)
@@ -644,6 +651,7 @@ def negotiation_inbox(request):
         'inbox_page': inbox_page,
         'sent_page': sent_page,
     })
+    
 @login_required
 def send_negotiation_reply(request, message_id):
     original_message = get_object_or_404(NegotiationMessage, id=message_id)
