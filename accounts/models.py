@@ -162,12 +162,12 @@ class Negotiation(models.Model):
 
 class NegotiationMessage(models.Model):
     negotiation = models.ForeignKey(Negotiation, on_delete=models.CASCADE, related_name='messages')
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_index=True)
     message = models.TextField()
-    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='received_negotiations',null=True,blank=True)
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='received_negotiations',null=True,blank=True,db_index=True)
     proposed_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     is_read = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True,db_index=True)
 
     def __str__(self):
         return f"{self.sender.username} at {self.timestamp.strftime('%Y-%m-%d %H:%M')}"
