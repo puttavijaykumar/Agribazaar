@@ -69,24 +69,28 @@
 
 
 <!-- Banner / Carousel -->
-<div id="carouselNews" class="carousel slide" data-bs-ride="carousel">
+<div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         {% for news in farming_news %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            <div class="news-banner" style="background-image: url('{% static 'images/farming_land.png' %}');">
-                <div class="news-content text-white text-center">
-                    <h3>{{ news.title }}</h3>
-                    <p>{{ news.summary }}</p>
+            <div class="news-card">
+                <div class="news-content">
+                    <h3 class="news-title">{{ news.title }}</h3>
+                    <p class="news-excerpt">{{ news.description|truncatechars:150 }}</p>
+                    <div class="news-source">
+                        <span class="source-name">{{ news.source.name }}</span>
+                        <span class="publish-date">{{ news.publishedAt|date:"M d, Y" }}</span>
+                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselNews" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
+    <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselNews" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
+    <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
     </button>
 </div>
 
