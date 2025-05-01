@@ -116,7 +116,7 @@ def verify_email(request, uidb64, token):
         messages.error(request, "Invalid or expired verification link. Please register again.")
         return redirect("register")  # Redirect to register page  
     
-
+import requests
 def home(request):
     category_icons = [
         {'category': 'seeds', 'icon': '🌱'},
@@ -134,11 +134,24 @@ def home(request):
     ]
     offers = Offer.objects.filter(active=True)
     prices = MarketPrice.objects.all()
+    url = 'https://newsapi.org/v2/everything?q=farming%20agriculture&apiKey=f986edd1afe64a47988b934616f61f81&pageSize=3&language=en'
+    response = requests.get(url)
+    news_data = response.json()
+
+    farming_news = []
+    if news_data.get("status") == "ok":
+        for article in news_data["articles"]:
+            farming_news.append({
+                "title": article["title"],
+                "summary": article["description"] or "",
+            })
+
     return render(request, "home.html",{
         'category_icons':category_icons,
         'offers': offers,
         'market_prices': prices,
         'crop_images': crop_images,
+        'farming_news': farming_news,
     })
    
 

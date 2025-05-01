@@ -69,22 +69,23 @@
 
 
 <!-- Banner / Carousel -->
-<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+<div id="carouselNews" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="{% static 'images/banner1.png' %}" class="d-block w-100" alt="Banner">
+        {% for news in farming_news %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="news-banner" style="background-image: url('{% static 'images/farming_land.png' %}');">
+                <div class="news-content text-white text-center">
+                    <h3>{{ news.title }}</h3>
+                    <p>{{ news.summary }}</p>
+                </div>
+            </div>
         </div>
-        <div class="carousel-item">
-            <img src="{% static 'images/banner2.png' %}" class="d-block w-100" alt="Banner">
-        </div>
-        <div class="carousel-item">
-            <img src="{% static 'images/banner3.png' %}" class="d-block w-100" alt="Banner">
-        </div>
+        {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-target="#carouselExampleCaptions" data-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselNews" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
     </button>
-    <button class="carousel-control-next" type="button" data-target="#carouselExampleCaptions" data-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselNews" data-bs-slide="next">
         <span class="carousel-control-next-icon"></span>
     </button>
 </div>
