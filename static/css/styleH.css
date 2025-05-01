@@ -1,122 +1,202 @@
 body {
+    height: 100%;
     margin: 0;
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #e6f4e6 0%, #c8e6c9 100%);
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
 }
 
-/* Responsive Navbar */
+/* --- NAVBAR (unchanged as requested) --- */
 .navbar {
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(10px);
-    border-bottom: 2px solid #4CAF50;
-    padding: 0.5rem 1rem !important;
+    padding: 10px !important;
 }
-
 .navbar-brand {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 700;
-    color: #2e7d32 !important;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: green !important;
 }
-
 .navbar .form-control {
-    width: 100%;
-    max-width: 500px;
-    border: 2px solid #81c784;
+    width: 50%;
+    border-radius: 20px;
+}
+.navbar-nav .nav-link {
+    color: grey;
+    font-weight: bold;
+    margin-left: 10px;
 }
 
-/* Category Buttons */
+/* --- Section Headings --- */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+/* --- General Styling --- */
+ul.errorlist {
+    display: none;
+}
+
+section {
+    padding: 20px 0;
+}
+
+/* --- Category Buttons --- */
+/* .category-button {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin: 5px;
+    display: inline-block;
+} */
 .categories {
-    gap: 1rem;
-    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 140px;
+    padding: 20px 0;
 }
 
 .category-button {
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
-    padding: 0.8rem 1.5rem;
-    background: linear-gradient(145deg, #4CAF50, #81C784);
-    border-radius: 30px;
-    margin: 0.5rem;
-    flex: 1 0 auto;
-    max-width: 200px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 10px 22px;
+    justify-content: space-around;
+    border-radius: 40px;
+    margin: 5px;
+    display: inline-block;
+    background: linear-gradient(to right, #56ab2f, #a8e063);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
 }
 
-/* Responsive Carousel */
-.carousel-inner img {
-    height: 40vh;
-    min-height: 250px;
-    object-fit: cover;
-    border-radius: 15px;
+.category-button:hover {
+    background: linear-gradient(to right, #3e8e41, #92d050);
+    transform: scale(1.05);
 }
 
-/* Crop Section */
+/* --- Disabled Link Look (for unauthenticated users) --- */
+a.disabled-link {
+    pointer-events: none;
+    opacity: 0.6;
+    text-decoration: none;
+    cursor: not-allowed;
+}
+
+/* --- Crop Image Cards --- */
+.crop-section h2 {
+    text-align: left;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
 .crop-scroll {
-    gap: 1rem;
-    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 30px;
+    padding: 10px 20px;
+    scroll-behavior: smooth;
+    width: 100%;
 }
 
 .crop-scroll a {
-    width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    text-decoration: none;
+    color: black;
+    width: 150px;
+
 }
 
-/* Responsive Grids */
-.product-grid, .market-prices {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    margin: 1rem;
-    padding: 1rem;
+.crop-scroll img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
 }
 
-/* Section Headings */
-h2 {
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-    color: #1B5E20;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.9);
+.crop-scroll img:hover {
+    transform: scale(1.05);
+}
+
+/* --- Carousel --- */
+.carousel-inner img {
+    height: 300px;
+    object-fit: cover;
     border-radius: 10px;
-    margin: 1rem auto;
-    width: fit-content;
 }
 
-/* Mobile Optimization */
-@media (max-width: 768px) {
-    .categories {
-        gap: 0.5rem;
-        padding: 0.5rem;
-    }
-    
-    .category-button {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-        max-width: 150px;
-    }
-    
-    .carousel-inner img {
-        height: 30vh;
-    }
-    
-    .navbar-nav {
-        padding: 1rem;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 10px;
-        margin-top: 0.5rem;
-    }
-    
-    .crop-scroll {
-        gap: 0.5rem;
-    }
+/* --- Offers Section --- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f5fdf5;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-@media (max-width: 480px) {
-    .navbar-brand {
-        font-size: 1.2rem;
-    }
-    
-    .category-button {
-        max-width: 120px;
-        padding: 0.5rem 0.8rem;
-    }
-    
-    .product-grid, .market-prices {
-        grid-template-columns: 1fr;
-    }
+.product-item {
+    background-color: #ffffff;
+    border-left: 6px solid #4CAF50;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    transition: transform 0.2s ease;
 }
+
+.product-item small {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    color: #666;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+
+/* --- Live Market Prices --- */
+.market-prices {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin: 20px;
+    padding: 20px;
+    background-color: #fffaf5;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.price-item {
+    background-color: #fff;
+    padding: 14px 18px;
+    border-left: 6px solid #FFA500;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #444;
+    transition: transform 0.2s ease;
+}
+
+.price-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.2);
+}
+
