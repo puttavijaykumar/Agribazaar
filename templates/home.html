@@ -1,59 +1,41 @@
-{% load static %} 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <title>AgriBazaar</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styleH.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriBazaar</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{% static 'css/styleH.css' %}">
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <!-- Brand -->
-            <a class="navbar-brand" href="/">AgriBazaar</a>
-            
-            <form class="d-flex flex-grow-1 mx-3" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">AgriBazaar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <form class="d-flex ms-3 flex-grow-1">
+                <input class="form-control me-2 search-bar" type="search" 
+                       placeholder="Search" id="searchInput">
             </form>
-            <div id="searchResults" class="mt-2"></div>
-            <div id="warningMessage" style="color: red; font-weight: bold;"></div>
-            
-            <!-- Toggler/collapsible Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-    
-            <!-- Navbar links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <!-- Dashboard Links -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'farmer_dashboard' %}">Farmer Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'buyer_dashboard' %}">Buyer Dashboard</a>
-                    </li>
-                   
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
-                    </li>
-                   
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
-                    </li>
-                   
-                    
-                </ul>
-            </div>
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link" href="{% url 'farmer_dashboard' %}"><i class="bi bi-speedometer me-1"></i> Farmer</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'buyer_dashboard' %}"><i class="bi bi-cart4 me-1"></i> Buyer</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}"><i class="bi bi-person-plus me-1"></i> Register</a></li>
+                <li class="nav-item"><a class="nav-link btn-login" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right me-1"></i> Login</a></li>
+            </ul>
         </div>
-    </nav>
-    
-   <!-- Category Section -->
-   <div class="categories text-center my-4">
+    </div>
+</nav>
+
+<!-- Category Section -->
+<div class="categories text-center mb-0">
     {% for item in category_icons %}
         {% if user.is_authenticated %}
             <a href="{% url 'category_products' item.category %}" class="category-button">
@@ -65,11 +47,9 @@
             </a>
         {% endif %}
     {% endfor %}
-</div>
-
-
+</div> 
 <!-- Banner / Carousel -->
-<div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
+<div id="newsCarousel" class="carousel slide mb-0" data-bs-ride="carousel">
     <div class="carousel-inner">
         {% for news in farming_news %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
@@ -94,8 +74,22 @@
     </button>
 </div>
 
+<!-- Top Offers Section -->
+<div class="offers-section text-center mb-0">
+    <h2>Top Offers</h2>
+    <div class="product-grid">
+        {% for offer in offers %}
+        <div class="product-item">
+            🌾 {{ offer.product_type }} - {{ offer.discount }}% Off <br>
+            <small>{{ offer.description }}</small>
+        </div>
+        {% empty %}
+        <p class="text-muted">No current offers available.</p>
+        {% endfor %}
+    </div>
+</div>
 <!-- Explore Crops Section -->
-<div class="crop-section text-center my-4">
+<div class="crop-section text-center mt-0">
     <h2>Explore Crops</h2>
     <div class="crop-scroll">
         {% for item in crop_images %}
@@ -113,38 +107,91 @@
     {% endfor %}
     </div>
 </div>
-
-<!-- Top Offers Section -->
-<h2>Top Offers</h2>
-<div class="product-grid">
-  {% for offer in offers %}
-  <div class="product-item">
-      🌾 {{ offer.product_type }} - {{ offer.discount }}% Off <br>
-      <small>{{ offer.description }}</small>
-  </div>
-{% empty %}
-  <p class="text-muted">No current offers available.</p>
-{% endfor %}
-</div>
-
 <!-- Live Market Prices -->
-<h2>Live Market Prices</h2>
-    <div class="market-prices">
-      <div class="market-prices">
-        {% for price in market_prices %}
-            <div class="price-item">
-                🌿 {{ price.product_name }}: ₹{{ price.price_per_kg }}/kg
+<div class="market-prices-section text-center mt-0">
+    <h2>Live Market Prices</h2>
+        <div class="market-prices">
+            {% for price in market_prices %}
+                <div class="price-item">
+                    🌿 {{ price.product_name }}: ₹{{ price.price_per_kg }}/kg
+                </div>
+            {% empty %}
+                <p class="text-muted">No market prices available at the moment.</p>
+            {% endfor %}
+        </div>   
+</div>
+<!-- Add this before the closing </body> tag -->
+<footer class="footer-section bg-dark text-light mt-0">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Get to Know Us -->
+            <div class="col-6 col-md-3">
+                <h5 class="footer-heading mb-3 text-success">Get to Know Us</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light text-decoration-none">About AgriBazaar</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Careers</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Press Releases</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Agri Science</a></li>
+                </ul>
             </div>
-        {% empty %}
-            <p class="text-muted">No market prices available at the moment.</p>
-        {% endfor %}
+
+            <!-- Connect with Us -->
+            <div class="col-6 col-md-3">
+                <h5 class="footer-heading mb-3 text-success">Connect with Us</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light text-decoration-none"><i class="bi bi-facebook me-2"></i>Facebook</a></li>
+                    <li><a href="#" class="text-light text-decoration-none"><i class="bi bi-twitter me-2"></i>Twitter</a></li>
+                    <li><a href="#" class="text-light text-decoration-none"><i class="bi bi-instagram me-2"></i>Instagram</a></li>
+                </ul>
+            </div>
+
+            <!-- Make Money with Us -->
+            <div class="col-6 col-md-3">
+                <h5 class="footer-heading mb-3 text-success">Make Money with Us</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light text-decoration-none">Sell on AgriBazaar</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Become a Supplier</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Farm Partnerships</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Advertise Your Products</a></li>
+                </ul>
+            </div>
+
+            <!-- Let Us Help You -->
+            <div class="col-6 col-md-3">
+                <h5 class="footer-heading mb-3 text-success">Let Us Help You</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light text-decoration-none">Your Account</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Returns Centre</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">100% Purchase Protection</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Help</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Additional Sections -->
+        <div class="row mt-4 pt-4 border-top border-secondary">
+            <div class="col-md-6">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <h6 class="text-success">AgriBazaar</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-light text-decoration-none">English</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">India</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <h6 class="text-success">Farm Services</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-light text-decoration-none">Agri Web Services</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Farm Equipment</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    </div>
-
-
-
-    <script src="{% static 'javascript/scriptH.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'javascript/scriptH.js' %}"></script>
 </body>
 </html>
