@@ -1,109 +1,203 @@
-{% load static %} 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AgriBazaar</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styleBD.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <a class="navbar-brand" href="/">AgriBazaar</a>
-            
-            <form class="d-flex flex-grow-1 mx-3" method="GET" action="{% url 'search_results' %}" role="search">
-              <input name="q" class="form-control me-2" type="search" 
-                     placeholder="Search" aria-label="Search" autocomplete="off"
-                     value="{{ request.GET.q }}">
-              
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/styleBD.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">AgriBazaar</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <form
+            class="d-flex ms-3 flex-grow-1"
+            method="GET"
+            action="{% url 'search_results' %}"
+            role="search"
+          >
+            <input
+              name="q"
+              class="form-control me-2 search-bar"
+              type="search"
+              placeholder="Search"
+              id="searchInput"
+              aria-label="Search"
+              autocomplete="off"
+              value="{{ request.GET.q }}"
+            />
           </form>
-
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'farmer_dashboard' %}">Farmer Dashboard</a>
-                            </li>                        
-                            <li class="nav-item">
-                                <a class="nav-link">Cart</a>
-                            </li>
-             
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account' %}">Account</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                        </li>
-               
-                </ul>
-            </div>
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'farmer_dashboard' %}"
+                ><i class="bi bi-person-workspace me-1"></i> Farmer</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'view_cart' %}"
+                ><i class="bi bi-cart4 me-1"></i> Cart</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'account' %}"
+                ><i class="bi bi-person-plus me-1"></i> Account</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn-login" href="{% url 'logout' %}"
+                ><i class="bi bi-box-arrow-right me-1"></i> Logout</a
+              >
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
     <!-- Category Section -->
-    <div class="categories">
-      <a href="{% url 'category_products' 'seeds' %}" class="category-item">🌱 Seeds</a>
-      <a href="{% url 'category_products' 'fertilizers' %}" class="category-item">🌿 Fertilizers</a>
-      <a href="{% url 'category_products' 'tools' %}" class="category-item">🔧 Tools</a>
-      <a href="{% url 'category_products' 'equipment' %}" class="category-item">🚜 Equipment</a>
-      <a href="{% url 'category_products' 'organic' %}" class="category-item">🥦 Organic</a>
-  </div>
-  
-    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-          <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-          <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-          <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="{% static 'images/banner1.jpg' %}" class="d-block w-100" alt="Farmers selling fresh produce in AgriBazaar">
-          </div>
-          <div class="carousel-item">
-            <img src="{% static 'images/banner2.jpg' %}" class="d-block w-100" alt="Farmers selling fresh produce in AgriBazaar">
-            
-          </div>
-          <div class="carousel-item">
-            <img src="{% static 'images/banner3.jpg' %}" class="d-block w-100" alt="Farmers selling fresh produce in AgriBazaar">
-            
-            </div>
+    <div class="categories text-center mb-0">
+      {% for item in category_icons %} {% if user.is_authenticated %}
+      <a
+        href="{% url 'category_products' item.category %}"
+        class="category-button"
+      >
+        {{ item.icon }} {{ item.category|title }}
+      </a>
+      {% else %}
+      <a
+        href="{% url 'login' %}"
+        class="category-button"
+        title="Login required"
+      >
+        {{ item.icon }} {{ item.category|title }}
+      </a>
+      {% endif %} {% endfor %}
+    </div>
+
+    <!-- Banner / Carousel -->
+    <div class="banner-container" id="bannerContainer mb-0">
+      <!-- Banner 1 - Organic Farming -->
+      <div class="banner-organic floating-banner">
+        <nav class="nav-organic">
+          <a href="#">Organic Seeds</a>
+          <a href="#">Fertilizers</a>
+          <a href="#">Farming Tools</a>
+          <a href="#">Harvest Storage</a>
+          <a href="#">Livestock</a>
+          <a href="#">Seasonal Produce</a>
+        </nav>
+        <div class="main-banner-organic">
+          <h2>Best of Organic Farming</h2>
+          <p>Get premium quality seeds &amp; equipment</p>
+          <div class="discount-badge">15% OFF on First Order</div>
+        </div>
+      </div>
+
+      <!-- Banner 2 - Farm Equipment -->
+      <div class="banner-equipment floating-banner">
+        <nav class="nav-equipment">
+          <a href="#">Tractors</a>
+          <a href="#">Irrigation</a>
+          <a href="#">Tools</a>
+          <a href="#">Safety Gear</a>
+          <a href="#">Spare Parts</a>
+        </nav>
+        <div class="offer-equipment">
+          <h3>Modern Farming Equipment</h3>
+          <p>Get 10% Instant Discount on John Deere Products</p>
+          <button>Shop Now</button>
+        </div>
+      </div>
+
+      <!-- Banner 3 - Harvest Sale -->
+      <div class="banner-harvest floating-banner">
+        <nav class="nav-harvest">
+          <a href="#">Fresh Produce</a>
+          <a href="#">Storage Solutions</a>
+          <a href="#">Organic Fertilizers</a>
+          <a href="#">Farm Recipes</a>
+          <a href="#">Seasonal Offers</a>
+        </nav>
+        <div class="harvest-deal">
+          <h2>Seasonal Harvest Sale</h2>
+          <p>Up to 30% OFF on Storage Containers &amp; Processing Equipment</p>
+          <div class="discount-badge">Limited Time Offer</div>
+        </div>
+      </div>
+      {% comment %} Solar offer {% endcomment %}
+      <div class="banner-sustainable floating-banner">
+        <nav class="nav-sustainable">
+          <a href="#">Solar Tools</a>
+          <a href="#">Water Saving</a>
+          <a href="#">Eco Packaging</a>
+          <a href="#">Green Energy</a>
+          <a href="#">Certification</a>
+        </nav>
+        <div class="sustainable-offer">
+          <h2>Sustainable Farming Solutions</h2>
+          <p>Get government subsidies up to 40% on eco-friendly equipment</p>
+          <div class="sustainable-badge">
+            Eco-Friendly Certification Available
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-target="#carouselExampleCaptions" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-target="#carouselExampleCaptions" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </button>
       </div>
-      <!-- Explore Crops Section -->
-<div class="crop-section">
-  <h2>Explore Crops</h2>
-  <div class="crop-scroll">
-      <a href="{% url 'crop_detail_view' 'wheat' %}"><img src="{% static 'images/wheat.png' %}" alt="Wheat"><p>Wheat</p></a>
-      <a href="{% url 'crop_detail_view' 'rice' %}"><img src="{% static 'images/rice.jpeg' %}" alt="Rice"><p>Rice</p></a>
-      <a href="{% url 'crop_detail_view' 'maize' %}"><img src="{% static 'images/maize.png' %}" alt="Maize"><p>Maize</p></a>
-      <a href="{% url 'crop_detail_view' 'sugarcane' %}"><img src="{% static 'images/sugarcane.jpeg' %}" alt="Sugarcane"><p>Sugarcane</p></a>
-      <a href="{% url 'crop_detail_view' 'vegetables' %}"><img src="{% static 'images/vegetables.jpg' %}" alt="Vegetables"><p>Vegetables</p></a>
-  </div>
-</div>
+    </div>
+    <!-- Explore crop section-->
+    <div class="crop-section text-center mt-0">
+      <h2>Explore Crops</h2>
+      <div class="crop-scroll">
+        {% for item in crop_images %} {% if user.is_authenticated %}
+        <a href="{% url 'crop_detail_view' item.crop %}" class="m-2">
+          <img
+            src="{% static 'images/'|add:item.image %}"
+            alt="{{ item.crop }}"
+          /><br />
+          <p>{{ item.crop|title }}</p>
+        </a>
+        {% else %}
+        <a href="{% url 'login' %}" class="m-2" title="Login required">
+          <img
+            src="{% static 'images/'|add:item.image %}"
+            alt="{{ item.crop }}"
+          /><br />
+          <p>{{ item.crop|title }}</p>
+        </a>
+        {% endif %} {% endfor %}
+      </div>
+    </div>
 
     <!-- Top Offers Section -->
     <h2>Top Offers</h2>
     <div class="product-grid">
       {% for offer in offers %}
       <div class="product-item">
-          🌾 {{ offer.product_type }} - {{ offer.discount }}% Off <br>
-          <small>{{ offer.description }}</small>
+        🌾 {{ offer.product_type }} - {{ offer.discount }}% Off <br />
+        <small>{{ offer.description }}</small>
       </div>
-  {% empty %}
+      {% empty %}
       <p class="text-muted">No current offers available.</p>
-  {% endfor %}
+      {% endfor %}
     </div>
 
     <!-- Live Market Prices -->
@@ -111,23 +205,93 @@
     <div class="market-prices">
       <div class="market-prices">
         {% for price in market_prices %}
-            <div class="price-item">
-                🌿 {{ price.product_name }}: ₹{{ price.price_per_kg }}/kg
-            </div>
+        <div class="price-item">
+          🌿 {{ price.product_name }}: ₹{{ price.price_per_kg }}/kg
+        </div>
         {% empty %}
-            <p class="text-muted">No market prices available at the moment.</p>
+        <p class="text-muted">No market prices available at the moment.</p>
         {% endfor %}
+      </div>
     </div>
-    </div>
+    <!-- Add this before the closing </body> tag -->
+<footer class="footer-section bg-dark text-light mt-0">
+  <div class="container">
+      <div class="row g-4">
+          <!-- Get to Know Us -->
+          <div class="col-6 col-md-3">
+              <h5 class="footer-heading mb-3 text-success">Get to Know Us</h5>
+              <ul class="list-unstyled">
+                  <li><a href="#" class="text-light text-decoration-none">About AgriBazaar</a></li>
+                  <li><a href="#" class="text-light text-decoration-none">Careers</a></li>
+                  <li><a href="#" class="text-light text-decoration-none">Press Releases</a></li>
+                  <li><a href="#" class="text-light text-decoration-none">Agri Science</a></li>
+              </ul>
+          </div>
+
+          <!-- Connect with Us -->
+          <div class="col-6 col-md-3">
+              <h5 class="footer-heading mb-3 text-success">Connect with Us</h5>
+              <ul class="list-unstyled">
+                  <li><a href="#" class="text-light text-decoration-none"><i class="bi bi-facebook me-2"></i>Facebook</a></li>
+                  <li><a href="#" class="text-light text-decoration-none"><i class="bi bi-twitter me-2"></i>Twitter</a></li>
+                  <li><a href="#" class="text-light text-decoration-none"><i class="bi bi-instagram me-2"></i>Instagram</a></li>
+              </ul>
+          </div>
+
+          <!-- Make Money with Us -->
+          <div class="col-6 col-md-3">
+              <h5 class="footer-heading mb-3 text-success">Make Money with Us</h5>
+              <ul class="list-unstyled">
+                  <li><a href="#" class="text-light text-decoration-none">Sell on AgriBazaar</a></li>
+                  <li><a href="#" class="text-light text-decoration-none">Become a Supplier</a></li>
+                  <li><a href="#" class="text-light text-decoration-none">Farm Partnerships</a></li>
+                  <li><a href="#" class="text-light text-decoration-none">Advertise Your Products</a></li>
+              </ul>
+          </div>
+
+          <!-- Let Us Help You -->
+          <div class="col-6 col-md-3">
+              <h5 class="footer-heading mb-3 text-success">Let Us Help You</h5>
+              <ul class="list-unstyled">
+                  <li><a href="#" class="text-light text-decoration-none">Your Account</a></li>
+                  <li><a href="#" class="text-light text-decoration-none">Returns Centre</a></li>
+                  <li><a href="#" class="text-light text-decoration-none">100% Purchase Protection</a></li>
+                  <li><a href="#" class="text-light text-decoration-none">Help</a></li>
+              </ul>
+          </div>
+      </div>
+
+      <!-- Additional Sections -->
+      <div class="row mt-4 pt-4 border-top border-secondary">
+          <div class="col-md-6">
+              <div class="row g-3">
+                  <div class="col-6">
+                      <h6 class="text-success">AgriBazaar</h6>
+                      <ul class="list-unstyled">
+                          <li><a href="#" class="text-light text-decoration-none">English</a></li>
+                          <li><a href="#" class="text-light text-decoration-none">India</a></li>
+                      </ul>
+                  </div>
+                  <div class="col-6">
+                      <h6 class="text-success">Farm Services</h6>
+                      <ul class="list-unstyled">
+                          <li><a href="#" class="text-light text-decoration-none">Agri Web Services</a></li>
+                          <li><a href="#" class="text-light text-decoration-none">Farm Equipment</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
     <script>
       const searchProductsURL = "{% url 'search_results' %}";
     </script>
     <script src="{% static 'javascript/scriptBD.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+  </body>
 </html>
- 

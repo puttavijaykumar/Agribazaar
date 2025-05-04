@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import register_view, login_view, logout_view
-from .views import register_view, verify_email
+from .views import register_view, verify_otp,resend_otp
 from .views import product_list_farmer
 from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selection_view,category_products,account
 from .views import download_transaction_pdf,farmer_account
@@ -14,7 +14,8 @@ urlpatterns = [
     path("register/", register_view, name="register"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
-    path('verify-email/<uidb64>/<token>/', verify_email, name='verify_email'),
+    path('verify-otp/', verify_otp, name='verify_otp'),
+    path('resend-otp/', resend_otp, name='resend_otp'),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

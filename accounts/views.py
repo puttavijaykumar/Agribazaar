@@ -25,9 +25,6 @@ from .models import FarmerWallet, Transaction, PayoutRequest
 from .models import Offer, MarketPrice,MarketplaceProduct
 User = get_user_model()
 
-
-
-
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -78,44 +75,68 @@ def logout_view(request):
     logout(request)
     return redirect("login")  # Redirect to login page after logout
 
+import random
+from django.core.cache import cache  # optional for storing OTP
+from datetime import timedelta
 
-def send_verification_email(request, user):
+def send_otp_email(request, user):
     try:
-        token = default_token_generator.make_token(user)
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        verification_url = request.build_absolute_uri(reverse('verify_email', kwargs={'uidb64': uid, 'token': token}))
-        
-        subject = "Verify Your AgriBazaar Account"
-        message = f"Hello {user.username},\n\nClick the link below to verify your email:\n\n{verification_url}\n\nThank you!"
+        otp = random.randint(100000, 999999)
+
+        # Save OTP to session or use cache/db
+        request.session['otp'] = str(otp)
+        request.session['otp_user_id'] = user.id
+        request.session.set_expiry(300)  # OTP expires in 5 minutes
+
+        subject = "AgriBazaar Account OTP Verification"
+        message = f"Hello {user.username},\n\nYour OTP for AgriBazaar email verification is: {otp}\n\nIt is valid for 5 minutes.\n\nThank you!"
         from_email = 'vijaykumarputta08@gmail.com'
         send_mail(subject, message, from_email, [user.email])
-        messages.success(request, "Verification email has been sent.  check your inobx.")
-        logger.info(f"✅ Verification email sent to {user.email}")
         
-    except BadHeaderError:
-        logger.error("🚨 Invalid header found while sending email.")
-        return HttpResponse("Invalid header found.")
-    
-    except Exception as e:
-        logger.error (f"🚨 Email sending failed: {e}")
-        logger.error(f"Email sending failed: {e}")
-        
-def verify_email(request, uidb64, token):
-    try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
+        messages.success(request, "OTP has been sent to your email. Please enter it to verify your account.")
+        logger.info(f"✅ OTP sent to {user.email}")
+        return redirect("verify_otp")  # Page where user enters OTP
 
-    if user and default_token_generator.check_token(user, token):
-        user.is_active = True
-        user.save()
-        messages.success(request, "Your email has been verified! You can now log in.")
-        return redirect("login")  # Redirect to login page after successful verification
-    else:
-        messages.error(request, "Invalid or expired verification link. Please register again.")
-        return redirect("register")  # Redirect to register page  
+    except BadHeaderError:
+        logger.error("🚨 Invalid header found while sending OTP email.")
+        return HttpResponse("Invalid header found.")
+    except Exception as e:
+        logger.error(f"🚨 OTP Email sending failed: {e}")
+        return HttpResponse("OTP sending failed.")
+
+@login_required
+def resend_otp(request):
+    try:
+        user = request.user
+        return send_otp_email(request, user)  # Resend OTP logic is same
+    except Exception as e:
+        logger.error(f"🚨 Resend OTP failed: {e}")
+        messages.error(request, "Unable to resend OTP. Please try again later.")
+        return redirect("verify_otp")
     
+def verify_otp(request):
+    if request.method == "POST":
+        entered_otp = request.POST.get("otp")
+        session_otp = request.session.get("otp")
+        user_id = request.session.get("otp_user_id")
+
+        if entered_otp and session_otp and entered_otp == session_otp:
+            try:
+                user = User.objects.get(id=user_id)
+                user.is_active = True
+                user.save()
+                messages.success(request, "Your email has been verified successfully!")
+                logger.info(f"✅ OTP verified and user {user.email} activated.")
+                return redirect("login")
+            except User.DoesNotExist:
+                messages.error(request, "User does not exist.")
+                return redirect("register")
+        else:
+            messages.error(request, "Invalid OTP. Please try again.")
+            return redirect("verify_otp")
+    
+    return render(request, "otp/verify_otp.html")  # your template
+        
 import requests
 def home(request):
     category_icons = [
@@ -228,44 +249,6 @@ def product_list_farmer(request):
         form = ProductUploadForm()
 
     return render(request, "product_list_farmer.html", {'form': form})
-# def product_list_farmer(request):
-#     """ View for farmers to list products """
-#     # Check if user has the "Farmer" role (Fix applied)
-#     user_roles = request.user.roles.all()
-#     if not any(role.name.lower() == 'farmer' for role in user_roles):  
-#         messages.error(request, "Access denied: You must be a Farmer to list products.")
-#         return redirect('home')  
-    
-   
-#     if request.method == "POST":                                                    
-#         productName = request.POST.get("productName")
-#         description = request.POST.get("description")
-#         price = request.POST.get("price")
-#         quantity = request.POST.get("quantity")
-#         image = request.FILES.get("images")
-#         video = request.FILES.get("video")
-
-#         # Validate input
-#         if not productName or not description or not price:
-#             messages.error(request, "All fields except video are required.")
-#             return redirect("product_list_farmer")
-
-#         # Save product to database
-#         product = product_farmer(
-#             productName=productName,
-#             description=description,
-#             price=price,
-#             quantity=quantity,
-#             images=image,
-#             product_vedio=video,
-#             product_farmer=request.user #assigned to the logged in user
-#         )
-#         product.save()
-        
-#         messages.success(request, "Product uploaded successfully!")
-#         return redirect("product_list_farmer")
-    
-#     return render(request, "product_list_farmer.html")
 
 @login_required
 def farmer_account(request):
@@ -329,6 +312,20 @@ def download_transaction_pdf(request):
 
 @login_required
 def buyer_dashboard(request):
+    category_icons = [
+        {'category': 'seeds', 'icon': '🌱'},
+        {'category': 'fertilizers', 'icon': '🌿'},
+        {'category': 'tools', 'icon': '🔧'},
+        {'category': 'equipment', 'icon': '🚜'},
+        {'category': 'organic', 'icon': '🥦'},
+    ]
+    crop_images = [
+        {'crop': 'wheat', 'image': 'wheat.png'},
+        {'crop': 'rice', 'image': 'rice.jpeg'},
+        {'crop': 'maize', 'image': 'maize.png'},
+        {'crop': 'sugarcane', 'image': 'sugarcane.jpeg'},
+        {'crop': 'vegetables', 'image': 'vegetables.jpg'}
+    ]
     offers = Offer.objects.filter(active=True)
     prices = MarketPrice.objects.all()
 
@@ -336,6 +333,8 @@ def buyer_dashboard(request):
     return render(request, "buyer_dashboard.html" ,{
         'offers': offers,
         'market_prices': prices,
+        'category_icons':category_icons,
+        'crop_images': crop_images,
     })
 from .models import CartItem
 
