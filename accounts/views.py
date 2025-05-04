@@ -30,20 +30,20 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            
-            
+
             selected_roles = form.cleaned_data.get("roles", [])  # Get selected roles
+            
+            user.is_active = False  # Deactivate user until email verification
             user.save()      # Save user first to get an ID
             
              # Assign roles based on selection
             for role_name in selected_roles:
                 role, created = Role.objects.get_or_create(name=role_name.capitalize())  
                 user.roles.add(role)
-            
-            user.is_active = False  # Deactivate user until email verification
-            user.save()  # Save user first to get an ID
-            send_verification_email(request, user)
-            return HttpResponse("Check your email to verify your account.")  
+                
+            send_otp_email(request, user)
+            return redirect(verify_otp)
+           
     else:
         form = RegisterForm()
     return render(request, "register.html", {"form": form})
@@ -89,11 +89,13 @@ def send_otp_email(request, user):
         request.session.set_expiry(300)  # OTP expires in 5 minutes
 
         subject = "AgriBazaar Account OTP Verification"
-        message = f"Hello {user.username},\n\nYour OTP for AgriBazaar email verification is: {otp}\n\nIt is valid for 5 minutes.\n\nThank you!"
+        message = f"Hello {user.username},\n\n Your OTP for AgriBazaar email verification is: {otp}\n\nIt is valid for 5 minutes.\n\nThank you!"
         from_email = 'vijaykumarputta08@gmail.com'
         send_mail(subject, message, from_email, [user.email])
         
+       
         messages.success(request, "OTP has been sent to your email. Please enter it to verify your account.")
+        
         logger.info(f"✅ OTP sent to {user.email}")
         return redirect("verify_otp")  # Page where user enters OTP
 
@@ -115,6 +117,7 @@ def resend_otp(request):
         return redirect("verify_otp")
     
 def verify_otp(request):
+    
     if request.method == "POST":
         entered_otp = request.POST.get("otp")
         session_otp = request.session.get("otp")
@@ -208,6 +211,7 @@ def role_selection_view(request):
             return JsonResponse({"error": "Invalid JSON"}, status=400)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
 from .forms import ProductUploadForm
 @login_required(login_url='/login/')
 
