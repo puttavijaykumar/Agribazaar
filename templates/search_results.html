@@ -22,6 +22,11 @@
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         {% for product in combined_products %}
           <div class="col">
+            <a href="{% if product.model_name == 'product_farmer' %}
+            {% url 'negotiate_product' product.id %}
+         {% else %}
+            {% url 'view_marketplace_product' product.id %}
+         {% endif %}"
             <div class="card h-100 product-card shadow-sm">
               <div class="image-container">
                 {% if product.image %}
@@ -36,20 +41,13 @@
                 <h5 class="card-title product-name">{{ product.name }}</h5>
                 <p class="product-price">₹{{ product.price }}</p>
                 <p class="product-quantity">Qty: {{ product.quantity }}kg</p>
-                <p class="product-username">Uploaded by: {{ product.product_farmer.username }}</p>
-                <p class="product-description" title="{{ product.description }}">{{ product.description|truncatechars:60 }}</p>
+                {% comment %} <p class="product-username">Uploaded by: {{ product.product_farmer.username }}</p> {% endcomment %}
+                {% comment %} <p class="product-description" title="{{ product.description }}">{{ product.description|truncatechars:60 }}</p> {% endcomment %}
                 <span class="source-tag">{{ product.source|title }}</span>
-                <div class="mt-auto text-center pt-2">
-                  <a href="{% if product.model_name == 'product_farmer' %}
-                             {% url 'negotiate_product' product.id %}
-                           {% else %}
-                             {% url 'view_marketplace_product' product.id %}
-                           {% endif %}" class="btn btn-outline-success btn-sm w-100">
-                    View Product
-                  </a>
-                </div>
+                
               </div>
             </div>
+        </a>
           </div>
         {% endfor %}
       </div>
