@@ -26,6 +26,13 @@ h2 {
     margin-bottom: 40px;
     letter-spacing: 1px;
 }
+#imagePreview img {
+    max-width: 100px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 
 /* ===== Form Styling ===== */
 #productForm {
