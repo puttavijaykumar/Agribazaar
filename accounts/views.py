@@ -213,8 +213,8 @@ def role_selection_view(request):
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
 from .forms import ProductUploadForm
+import cloudinary.uploader
 @login_required(login_url='/login/')
-
 def product_list_farmer(request):
     """ View for farmers to list products """
 
@@ -226,7 +226,20 @@ def product_list_farmer(request):
 
     if request.method == "POST":
         form = ProductUploadForm(request.POST, request.FILES)
+        
         if form.is_valid():
+            if hasattr(form, 'rejected_image_public_id') or hasattr(form, 'rejected_video_public_id'):
+                if hasattr(form, 'rejected_image_public_id'):
+                    cloudinary.uploader.destroy(form.rejected_image_public_id)
+                if hasattr(form, 'rejected_video_public_id'):
+                    cloudinary.uploader.destroy(form.rejected_video_public_id)
+
+                # Block the user
+                request.user.is_active = False
+                request.user.save()
+                messages.error(request, "Your account has been blocked due to inappropriate content.")
+                return redirect("home")
+
             # Save product with logged-in user
             product = form.save(user=request.user)
 
