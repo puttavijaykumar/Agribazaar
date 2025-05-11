@@ -20,9 +20,19 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <form class="d-flex ms-3 flex-grow-1">
-                <input class="form-control me-2 search-bar" type="search" 
-                       placeholder="Search" id="searchInput">
+            <form class="d-flex ms-3 flex-grow-1"
+                method="GET"
+                action="{% url 'search_results' %}"
+                role="search">
+            <input
+              name="q"
+              class="form-control me-2 search-bar"
+              type="search"
+              placeholder="Search"
+              id="searchInput"
+              aria-label="Search"
+              autocomplete="off"
+              value="{{ request.GET.q }}"/>
             </form>
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item"><a class="nav-link" href="{% url 'farmer_dashboard' %}"><i class="bi bi-person-workspace me-1"></i> Farmer</a></li>

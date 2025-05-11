@@ -505,11 +505,25 @@ def category_products(request, category):
     })
     
 def crop_detail_view(request, crop_name):
-    return render(request, f"crops/{crop_name}.html", {"crop": crop_name})
+    crop_name_lower = crop_name.lower()
+
+    if crop_name_lower == "vegetable" or crop_name_lower == "vegetables":
+        farmer_products = product_farmer.objects.filter(category__iexact="vegetables")
+        market_products = MarketplaceProduct.objects.filter(category__iexact="Vegetables")
+    else:
+        farmer_products = product_farmer.objects.filter(productName__iexact=crop_name)
+        market_products = MarketplaceProduct.objects.filter(name__icontains=crop_name)
+
+    context = {
+        'crop_name': crop_name.title(),
+        'farmer_products': farmer_products,
+        'market_products': market_products
+    }
+
+    return render(request, f"crops/{crop_name}.html", context)
+
 
 # Smart Search Functionality
-
-
 import re
 from cloudinary import CloudinaryImage, CloudinaryVideo 
 from django.views.decorators.http import require_POST
@@ -723,4 +737,5 @@ def view_marketplace_product(request, product_id):
         'product': product
     }
     return render(request, 'view_marketplace_product.html', context)
+
 

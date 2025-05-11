@@ -3,16 +3,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Rice - AgriBazaar</title>
+    <title>{{ crop_name }} - AgriBazaar</title>
     <link rel="stylesheet" href="{% static 'css/rice.css' %}">
 </head>
 <body>
-    <h1>🍚 {{ crop|capfirst }}</h1>
-    <img src="{% static 'images/rice.jpeg' %}" alt="Rice Image" width="300">
-    <p>Rice is the staple food crop of India. It requires high humidity and plenty of water.</p>
-    <p><strong>Season:</strong> Kharif (Monsoon)</p>
-    <p><strong>Major Growing States:</strong> West Bengal, Uttar Pradesh, Andhra Pradesh, Punjab</p>
+    <h2 class="search-heading">Search Results for "<strong>{{ crop_name|lower }}</strong>"</h2>
 
-    <srcipt src="{% static 'javascript/rice.js' %}"></script>
+    <div class="product-grid">
+        {% for product in farmer_products %}
+            <a href="{% url 'negotiate_product' product.id %}" class="product-link">
+                <div class="product-card">
+                    <img src="{% static 'images/rice.jpeg' %}" alt="{{ product.productName }}" class="product-image">
+                    <div class="product-info">
+                        <h4>{{ product.productName }}</h4>
+                        <p class="price">₹{{ product.price }}</p>
+                        <p>Qty: {{ product.quantity }}</p>
+                        <span class="badge-farmer">Product_Farmer</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="product-grid">
+        {% for product in market_products %}
+            <a href="{% url 'view_marketplace_product' product.id %}" class="product-link">
+                <div class="product-card">
+                    <img src="{% static 'images/rice.jpeg' %}" alt="{{ product.name }}" class="product-image">
+                    <div class="product-info">
+                        <h4>{{ product.name }}</h4>
+                        <p class="price">₹{{ product.price }}</p>
+                        <p>Qty: {{ product.quantity }}</p>
+                        <span class="badge-market">Marketplace</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
 </body>
 </html>

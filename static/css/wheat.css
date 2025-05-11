@@ -1,0 +1,73 @@
+body {
+    background-color: #f0fff4;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.search-heading {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 24px;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 30px;
+}
+
+.product-card {
+    width: 250px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.product-card:hover {
+    transform: scale(1.03);
+}
+
+.product-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 12px;
+}
+
+.product-info h4 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.price {
+    color: green;
+    font-weight: bold;
+    margin: 4px 0;
+}
+
+.badge-farmer, .badge-market {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    color: white;
+}
+
+.badge-farmer {
+    background-color: green;
+}
+
+.badge-market {
+    background-color: #007bff;
+}
+.product-link {
+    text-decoration: none;
+    color: inherit;
+}

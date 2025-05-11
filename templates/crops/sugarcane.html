@@ -3,18 +3,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Rice - AgriBazaar</title>
+    <title>{{ crop_name }} - AgriBazaar</title>
     <link rel="stylesheet" href="{% static 'css/sugarcane.css' %}">
 </head>
 <body>
-    <h1>🍚 {{ crop|capfirst }}</h1>
-    <img src="{% static 'images/sugarcane.jpeg' %}" alt="Sugarcane Image" width="300">
-    <p>Sugarcane is a tropical crop known for its high sugar content and is mainly grown for sugar production.
-         It is also used in producing jaggery, ethanol, paper, and even electricity through bagasse. 
-    </p>
-    <p><strong>Season:</strong> Grown throughout the year</p>
-    <p><strong>Major Growing States:</strong> Uttar Pradesh, Maharashtra, Karnataka, Tamil Nadu</p>
-    
-    <srcipt src="{% static 'javascript/sugarcane.js' %}"></script>
+    <h2 class="search-heading">Search Results for "<strong>{{ crop_name|lower }}</strong>"</h2>
+
+    <div class="product-grid">
+        {% for product in farmer_products %}
+            <a href="{% url 'negotiate_product' product.id %}" class="product-link">
+                <div class="product-card">
+                    <img src="{% static 'images/rice.jpeg' %}" alt="{{ product.productName }}" class="product-image">
+                    <div class="product-info">
+                        <h4>{{ product.productName }}</h4>
+                        <p class="price">₹{{ product.price }}</p>
+                        <p>Qty: {{ product.quantity }}</p>
+                        <span class="badge-farmer">Product_Farmer</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="product-grid">
+        {% for product in market_products %}
+            <a href="{% url 'view_marketplace_product' product.id %}" class="product-link">
+                <div class="product-card">
+                    <img src="{% static 'images/rice.jpeg' %}" alt="{{ product.name }}" class="product-image">
+                    <div class="product-info">
+                        <h4>{{ product.name }}</h4>
+                        <p class="price">₹{{ product.price }}</p>
+                        <p>Qty: {{ product.quantity }}</p>
+                        <span class="badge-market">Marketplace</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
 </body>
 </html>
