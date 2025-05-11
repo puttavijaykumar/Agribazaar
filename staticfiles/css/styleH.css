@@ -202,4 +202,41 @@ a.disabled-link {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(255, 165, 0, 0.2);
 }
+.product-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 1.5rem;
+    padding: 20px;
+    margin: 0 40px;
+    background-color: #f5fdf5;
+    border-radius: 12px;
+}
+
+.product-scroll-container::-webkit-scrollbar {
+    display: none; /* optional: hide scrollbar */
+}
+
+.offer-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.offer-nav.left {
+    left: 10px;
+}
+
+.offer-nav.right {
+    right: 10px;
+}
 
