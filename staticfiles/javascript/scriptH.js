@@ -74,3 +74,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+function scrollOffers(direction) {
+    const container = document.getElementById("offerScroll");
+    const scrollAmount = 300;
+    container.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+}
