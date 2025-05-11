@@ -75,7 +75,7 @@
 </div>
 
 <!-- Top Offers Section -->
-<div class="offers-section text-center mb-0">
+{% comment %} <div class="offers-section text-center mb-0">
     <h2>Top Offers</h2>
     <div class="product-grid">
         {% for offer in offers %}
@@ -87,7 +87,24 @@
         <p class="text-muted">No current offers available.</p>
         {% endfor %}
     </div>
+</div> {% endcomment %}
+<div class="offers-section text-center mb-0 position-relative">
+    <h2>Top Offers</h2>
+    <div class="offer-nav left" onclick="scrollOffers(-1)">&#10094;</div>
+    <div class="offer-nav right" onclick="scrollOffers(1)">&#10095;</div>
+
+    <div class="product-scroll-container" id="offerScroll">
+        {% for offer in offers %}
+        <div class="product-item">
+            🌾 {{ offer.product_type }} - {{ offer.discount }}% Off <br>
+            <small>{{ offer.description }}</small>
+        </div>
+        {% empty %}
+        <p class="text-muted">No current offers available.</p>
+        {% endfor %}
+    </div>
 </div>
+
 <!-- Explore Crops Section -->
 <div class="crop-section text-center mt-0">
     <h2>Explore Crops</h2>
