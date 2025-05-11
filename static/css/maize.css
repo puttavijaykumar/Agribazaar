@@ -67,3 +67,7 @@ body {
 .badge-market {
     background-color: #007bff;
 }
+.product-link {
+    text-decoration: none;
+    color: inherit;
+}
