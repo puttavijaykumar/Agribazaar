@@ -25,11 +25,18 @@ class CustomUser(AbstractUser):
         return self.roles.filter(name="farmer").exists()
     
 class product_farmer(models.Model):
+    CATEGORY_CHOICES = [
+        ('fruits', 'Fruits'),
+        ('vegetables', 'Vegetables'),
+        ('grains', 'Grains'),
+        ('others', 'Others'),
+    ]
  
     productName = models.CharField(max_length=50)
     price = models.IntegerField()
     quantity = models.IntegerField()
     description = models.TextField()
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='others')
     images = CloudinaryField('image', null=True, blank=True)
     product_vedio = CloudinaryField('video', null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)

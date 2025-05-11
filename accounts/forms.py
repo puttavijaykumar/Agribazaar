@@ -65,7 +65,7 @@ class ProductUploadForm(forms.ModelForm):
 
     class Meta:
         model = product_farmer
-        fields = ['productName', 'price', 'quantity', 'description', 'images', 'product_vedio']
+        fields = ['productName', 'price', 'quantity', 'description', 'category','images', 'product_vedio']
         
     def clean_images(self):
         image = self.cleaned_data.get('images') #images is model class field of proproduct_farmer class

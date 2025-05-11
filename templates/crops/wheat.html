@@ -3,15 +3,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Wheat - AgriBazaar</title>
+    <title>{{ crop_name }} - AgriBazaar</title>
     <link rel="stylesheet" href="{% static 'css/wheat.css' %}">
 </head>
 <body>
-    <h1>🌾 {{ crop|capfirst }}</h1>
-    <img src="{% static 'images/wheat.png' %}" alt="Wheat Image" width="300">
-    <p>Wheat is one of the most widely grown cereal crops in India. It is used to produce flour for bread, pasta, pastry, and more.</p>
-    <p><strong>Season:</strong> Rabi (Winter)</p>
-    <p><strong>Major Growing States:</strong> Punjab, Haryana, Uttar Pradesh, Madhya Pradesh</p>
-    <srcipt src="{% static 'javascript/wheat.js' %}"></script>
+    <h2 class="search-heading">Search Results for "<strong>{{ crop_name|lower }}</strong>"</h2>
+
+    <div class="product-grid">
+        {% for product in farmer_products %}
+            <a href="{% url 'negotiate_product' product.id %}" class="product-link">
+                <div class="product-card">
+                    <img src="{% static 'images/rice.jpeg' %}" alt="{{ product.productName }}" class="product-image">
+                    <div class="product-info">
+                        <h4>{{ product.productName }}</h4>
+                        <p class="price">₹{{ product.price }}</p>
+                        <p>Qty: {{ product.quantity }}</p>
+                        <span class="badge-farmer">Product_Farmer</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="product-grid">
+        {% for product in market_products %}
+            <a href="{% url 'view_marketplace_product' product.id %}" class="product-link">
+                <div class="product-card">
+                    <img src="{% static 'images/rice.jpeg' %}" alt="{{ product.name }}" class="product-image">
+                    <div class="product-info">
+                        <h4>{{ product.name }}</h4>
+                        <p class="price">₹{{ product.price }}</p>
+                        <p>Qty: {{ product.quantity }}</p>
+                        <span class="badge-market">Marketplace</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
 </body>
 </html>
