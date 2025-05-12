@@ -111,3 +111,4 @@ class ProductUploadForm(forms.ModelForm):
         if commit:
             product.save()
         return product
+

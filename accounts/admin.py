@@ -16,12 +16,14 @@ admin.site.register(Role)
 admin.site.register(CustomUser) 
 admin.site.register(Offer)
 admin.site.register(MarketPrice)
-admin.site.register(MarketplaceProduct)
+# admin.site.register(MarketplaceProduct)
 admin.site.register(product_farmer)
 admin.site.register(Negotiation)
 admin.site.register(NegotiationMessage)
 admin.site.register(NegotiationSetting)
 
 
-
+@admin.register(MarketplaceProduct)
+class MarketplaceProductAdmin(admin.ModelAdmin):
+    list_display = ['name', 'category', 'price']
 
