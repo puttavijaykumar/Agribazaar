@@ -7,6 +7,7 @@ from .views import download_transaction_pdf,farmer_account
 from .views import crop_detail_view,search_results,product_detail,negotiate_product,view_marketplace_product,send_negotiation_reply
 from .views import negotiation_inbox,add_to_cart,monitor_negotiations,view_cart,buy_product,checkout_buy_now
 from accounts.views import home
+from .views import buy_category_product_now,add_to_cart_category_product,view_cart_category_product
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -28,7 +29,6 @@ urlpatterns = [
     path("role_selection/", role_selection_view, name="role_selection_view"),
     path('farmer/transactions/download/', download_transaction_pdf, name='download_transaction_pdf'),
     path('farmer/account/', farmer_account, name='farmer_account'),
-    path('category/<str:category>/', category_products, name='category_products'),
     path('addtocart/', add_to_cart, name='add_to_cart'),
     path('buy/product/', buy_product, name='buy_product'),
     path('viewcart/', view_cart, name='view_cart'),
@@ -41,6 +41,14 @@ urlpatterns = [
     path('negotiation/reply/<int:message_id>/', send_negotiation_reply, name='send_negotiation_reply'),
     path('negotiation/inbox/', negotiation_inbox, name='negotiation_inbox'),
     path('product/marketplace/<int:product_id>/', view_marketplace_product, name='view_marketplace_product'),
-    path('monitor/negotiations/', monitor_negotiations, name='monitor_negotiations')
+    path('monitor/negotiations/', monitor_negotiations, name='monitor_negotiations'),
+    path('add-to-cart-category-product/', add_to_cart_category_product, name='add_to_cart_category_product'),
+    path('buy-category-product-now/', buy_category_product_now, name='buy_category_product_now'),
+    path('category/cart/', view_cart_category_product, name='view_cart_category_product'),
+    path('category/<str:category>/', category_products, name='category_products'),
+
 
 ]
+
+
+

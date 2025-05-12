@@ -738,4 +738,93 @@ def view_marketplace_product(request, product_id):
     }
     return render(request, 'view_marketplace_product.html', context)
 
+@login_required
+def add_to_cart_category_product(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
 
+    product_id = request.POST.get('product_id')
+    quantity = int(request.POST.get('quantity', 1))
+
+    try:
+        product = MarketplaceProduct.objects.get(pk=product_id)
+    except MarketplaceProduct.DoesNotExist:
+        return JsonResponse({'error': 'Product not found'}, status=404)
+
+    cart = request.session.get('cart', [])
+
+    # Add or update product in cart
+    updated = False
+    for item in cart:
+        if item['product_id'] == product_id and item['product_type'] == 'MarketplaceProduct':
+            item['quantity'] += quantity
+            updated = True
+            break
+
+    if not updated:
+        cart.append({
+            'product_id': product_id,
+            'product_type': 'MarketPlaceProduct',
+            'name': product.name,
+            'price': float(product.price),
+            'quantity': quantity
+        })
+
+    request.session['cart'] = cart
+    return JsonResponse({'message': 'Product added to cart successfully'})
+
+@login_required
+def view_cart_category_product(request):
+    session_cart = request.session.get('cart', [])
+    
+    # Match the product_type exactly with what's stored in add_to_cart
+    category_cart = [item for item in session_cart if item.get('product_type') == 'MarketPlaceProduct']
+    
+    # Update prices and images from database
+    for item in category_cart:
+        try:
+            product = MarketplaceProduct.objects.get(pk=item['product_id'])
+            item['image_url'] = product.images_market.url
+            # Update price from DB to ensure latest price
+            item['price'] = float(product.price)
+        except MarketplaceProduct.DoesNotExist:
+            item['image_url'] = ''
+            item['price'] = 0.0  # Handle missing products
+
+    # Calculate cart totals
+    total_quantity = sum(item['quantity'] for item in category_cart)
+    subtotal = sum(item['price'] * item['quantity'] for item in category_cart)
+    discount = 0  # Add discount logic if needed
+    delivery_charges = 0  # Add delivery logic if needed
+    total_amount = subtotal - discount + delivery_charges
+
+    return render(request, 'category_cart_view.html', {
+        'cart_items': category_cart,
+        'total_quantity': total_quantity,
+        'total_price': subtotal,
+        'discount': discount,
+        'delivery_charges': delivery_charges,
+        'total_amount': total_amount,
+    })
+
+@login_required
+def buy_category_product_now(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+    product_id = request.POST.get('product_id')
+
+    try:
+        product = MarketplaceProduct.objects.get(pk=product_id)
+    except MarketplaceProduct.DoesNotExist:
+        return JsonResponse({'error': 'Product not found'}, status=404)
+
+    # Store product details in session
+    request.session['checkout_product'] = {
+        'product_id': product.id,
+        'product_type': 'MarketPlaceProduct',
+        'price': float(product.price),
+        'name': product.name
+    }
+
+    return JsonResponse({'redirect_url': reverse('checkout_buy_now')})
