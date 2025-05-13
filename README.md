@@ -25,7 +25,7 @@ This is **Release 1**, showcasing the core functionality to demonstrate the init
 
 ---
 
-## 🚫Features Coming in Future Releases
+## Features Coming in Future Releases
 
 - products searching functionality
 - User profile
