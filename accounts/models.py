@@ -22,7 +22,7 @@ class CustomUser(AbstractUser):
     
     @property
     def is_farmer(self):
-        return self.roles.filter(name="farmer").exists()
+        return self.roles.filter(name="Farmer").exists()
     
 class product_farmer(models.Model):
     CATEGORY_CHOICES = [

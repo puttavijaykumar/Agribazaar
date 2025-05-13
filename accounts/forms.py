@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from .models import product_farmer, NegotiationSetting
 import cloudinary
 import cloudinary.uploader
-
+from .models import CustomUser, Role
 User = get_user_model()
 
 
@@ -20,36 +20,33 @@ class RegisterForm(UserCreationForm):
     roles = forms.MultipleChoiceField(
         choices=ROLE_CHOICES,
         widget=forms.CheckboxSelectMultiple,
-        required=True,  # Ensure at least one role is selected
+        required=True,
         label="Select Role(s)"
     )
-    password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Enter Password'}),
-        strip=False,
-        label="Password",
-        help_text=""
-    )
-    password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}),
-        strip=False,
-        label="Confirm Password",
-        help_text=""
-    )
-    class Meta:
+
+    class Meta(UserCreationForm.Meta):
         model = User
-        fields = ['username', 'email', 'phone_number', 'password1', 'password2','roles']
-      
+        fields = ['username', 'email', 'phone_number', 'password1', 'password2', 'roles']
         help_texts = {
-            'username': None,  # Remove username help text
-            
+            'username': None,
         }
-    
+        widgets = {
+            'password1': forms.PasswordInput(attrs={'placeholder': 'Enter Password'}),
+            'password2': forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}),
+        }
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if User.objects.filter(phone_number=phone_number).exists():
+            raise ValidationError("This phone number is already in use.")
+        return phone_number
+
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.is_active = False  # Deactivate the account until verified
+        user.is_active = False
         if commit:
             user.save()
-        return user    
+        return user
     
 MAX_IMAGE_SIZE_MB = 1
 MAX_VIDEO_SIZE_MB = 5
