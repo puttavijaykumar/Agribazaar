@@ -9,7 +9,7 @@ This is **Release 1**, showcasing the core functionality to demonstrate the init
 ## Features Included in Release 1
 
 -  **User Authentication**  
-  - Registration, Login, and Logout functionality using secure sessions or tokens.
+  - Registration, Login, and Logout functionality using secure sessions or tokens and allows users into the dashboard according to thier role.
 
 -  **Category-Based Product Section**  
   - Products organized into categories for easy navigation.
@@ -27,18 +27,21 @@ This is **Release 1**, showcasing the core functionality to demonstrate the init
 
 ## 🚫Features Coming in Future Releases
 
-- Payment Gateway Integration  
-- Order Placement and Tracking  
-- Admin Panel & Product Management  
-- Product Ratings & User Reviews  
+- products searching functionality
+- User profile
+- farmer dashboards
+- Explore crop section
+- Negotiation page(chat between farmer and buyer)  
+- Add to cart and Buy now of products 
+-   
 
 ---
 
 ##  Tech Stack
 
-- **Frontend:** HTML, CSS, JavaScript (React.js)
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB
+- **Frontend:** HTML, CSS, JavaScript 
+- **Backend:** Django
+- **Database:** PostgreSQL
 - **APIs Used:** NewsAPI, Product Pricing API
 
 ---
@@ -46,8 +49,15 @@ This is **Release 1**, showcasing the core functionality to demonstrate the init
 ##  How to Run Locally
 
 ```bash
-# Install dependencies
-npm install
+# Step 1: Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate
 
-# Run the application
-npm start
+# Install dependencies
+pip install -r requirements.txt
+
+# Step 3: Apply database migrations
+python manage.py migrate
+
+# Step 4: Run the development server
+python manage.py runserver
