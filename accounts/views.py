@@ -807,24 +807,34 @@ def view_cart_category_product(request):
         'total_amount': total_amount,
     })
 
+from django.http import JsonResponse
+
 @login_required
 def buy_category_product_now(request):
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Invalid request method'}, status=400)
+    if request.method == 'POST':
+        # Get the form data
+        product_id = request.POST.get('product_id')
+        product_type = request.POST.get('product_type')
+        price = request.POST.get('price')
 
-    product_id = request.POST.get('product_id')
+        # Fetch the product from the database
+        try:
+            product = MarketplaceProduct.objects.get(id=product_id)
+        except MarketplaceProduct.DoesNotExist:
+            return JsonResponse({'error': 'Product not found.'}, status=404)
 
-    try:
-        product = MarketplaceProduct.objects.get(pk=product_id)
-    except MarketplaceProduct.DoesNotExist:
-        return JsonResponse({'error': 'Product not found'}, status=404)
+        # Additional logic can be placed here (e.g., updating cart, creating order, etc.)
 
-    # Store product details in session
-    request.session['checkout_product'] = {
-        'product_id': product.id,
-        'product_type': 'MarketPlaceProduct',
-        'price': float(product.price),
-        'name': product.name
-    }
+        # Prepare context data for the checkout page
+        context = {
+            'product': product,
+            'price': price,
+            'product_type': product_type,
+            # You can also add other necessary context like user info, cart items, etc.
+        }
 
-    return JsonResponse({'redirect_url': reverse('checkout_buy_now')})
+        # Render the checkout page with the context
+        return render(request, 'category_product_checkout.html', context)
+    
+    # If the request is not POST, handle as an error or redirect
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)

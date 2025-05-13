@@ -43,10 +43,9 @@ urlpatterns = [
     path('product/marketplace/<int:product_id>/', view_marketplace_product, name='view_marketplace_product'),
     path('monitor/negotiations/', monitor_negotiations, name='monitor_negotiations'),
     path('add-to-cart-category-product/', add_to_cart_category_product, name='add_to_cart_category_product'),
-    path('buy-category-product-now/', buy_category_product_now, name='buy_category_product_now'),
     path('category/cart/', view_cart_category_product, name='view_cart_category_product'),
     path('category/<str:category>/', category_products, name='category_products'),
-
+    path('category/product/buy',buy_category_product_now, name='buy_category_product_now'),
 
 ]
 

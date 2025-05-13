@@ -36,26 +36,5 @@ function addToCart(productId) {
   });
 }
 
-// Buy Now for Category Products
-function buyNow(productId) {
-  fetch("/buy-category-product-now/", {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'X-CSRFToken': csrfToken
-    },
-    body: `product_id=${productId}`
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.redirect_url) {
-      window.location.href = data.redirect_url;
-    } else {
-      alert('Purchase failed.');
-    }
-  })
-  .catch(err => {
-    alert("Error processing purchase.");
-    console.error(err);
-  });
-}
+
+
