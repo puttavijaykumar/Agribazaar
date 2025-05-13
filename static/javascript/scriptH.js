@@ -74,3 +74,18 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+  const ticker = document.querySelector('.news-ticker');
+    let scrollSpeed = 1;
+
+    function autoScroll() {
+        ticker.scrollLeft += scrollSpeed;
+        if (ticker.scrollLeft >= ticker.scrollWidth - ticker.clientWidth) {
+            ticker.scrollLeft = 0; // Loop to start
+        }
+    }
+
+    let scrollInterval = setInterval(autoScroll, 30);
+
+    // Pause on hover
+    ticker.addEventListener('mouseenter', () => clearInterval(scrollInterval));
+    ticker.addEventListener('mouseleave', () => scrollInterval = setInterval(autoScroll, 30));

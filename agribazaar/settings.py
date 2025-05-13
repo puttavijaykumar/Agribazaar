@@ -194,3 +194,11 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER" )
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  #thos cyhn ncmy ayyc
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # print(EMAIL_BACKEND)
+import sys
+
+if 'test' in sys.argv:
+    print("🔧 Using in-memory SQLite database for testing")
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+    }

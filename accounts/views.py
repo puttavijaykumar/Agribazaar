@@ -30,22 +30,21 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            selected_roles = form.cleaned_data.get("roles", [])
+            user.is_active = False
+            user.save()
 
-            selected_roles = form.cleaned_data.get("roles", [])  # Get selected roles
-            
-            user.is_active = False  # Deactivate user until email verification
-            user.save()      # Save user first to get an ID
-            
-             # Assign roles based on selection
+            role_objs = []
             for role_name in selected_roles:
-                role, created = Role.objects.get_or_create(name=role_name.capitalize())  
-                user.roles.add(role)
-                
+                role, _ = Role.objects.get_or_create(name=role_name.capitalize())
+                role_objs.append(role)
+
+            user.roles.set(role_objs)
             send_otp_email(request, user)
             return redirect(verify_otp)
-           
     else:
         form = RegisterForm()
+
     return render(request, "register.html", {"form": form})
 
 def login_view(request):   
@@ -169,11 +168,36 @@ def home(request):
                 "title": article["title"],
                 "summary": article["description"] or "",
             })
+            
+    market_prices = cache.get('market_prices')
+    if not market_prices:
+        api_key = "579b464db66ec23bdd0000018d6f8bafc93d4a3863116e69aee5d22b"
+        api_url = f"https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key={api_key}&format=json&limit=10"
+        
+        try:
+            response = requests.get(api_url)
+            response.raise_for_status()
+            data = response.json()
+            market_prices = []
+            
+            for record in data.get('records', []):
+                market_prices.append({
+                    'commodity': record.get('commodity', 'N/A'),
+                    'min_price': record.get('min_price', 0),
+                    'max_price': record.get('max_price', 0),
+                    'market': record.get('market', 'N/A'),
+                    'state': record.get('state', 'N/A')
+                })
+            
+            cache.set('market_prices', market_prices, 60 * 15)  # Cache for 15 minutes
+            
+        except Exception as e:
+            market_prices = []
 
     return render(request, "home.html",{
         'category_icons':category_icons,
         'offers': offers,
-        'market_prices': prices,
+        'market_prices': market_prices,
         'crop_images': crop_images,
         'farming_news': farming_news,
     })
@@ -344,12 +368,34 @@ def buyer_dashboard(request):
         {'crop': 'vegetables', 'image': 'vegetables.jpg'}
     ]
     offers = Offer.objects.filter(active=True)
-    prices = MarketPrice.objects.all()
-
+    market_prices = cache.get('market_prices')
+    if not market_prices:
+        api_key = "579b464db66ec23bdd0000018d6f8bafc93d4a3863116e69aee5d22b"
+        api_url = f"https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key={api_key}&format=json&limit=10"
+        
+        try:
+            response = requests.get(api_url)
+            response.raise_for_status()
+            data = response.json()
+            market_prices = []
+            
+            for record in data.get('records', []):
+                market_prices.append({
+                    'commodity': record.get('commodity', 'N/A'),
+                    'min_price': record.get('min_price', 0),
+                    'max_price': record.get('max_price', 0),
+                    'market': record.get('market', 'N/A'),
+                    'state': record.get('state', 'N/A')
+                })
+            
+            cache.set('market_prices', market_prices, 60 * 15)  # Cache for 15 minutes
+            
+        except Exception as e:
+            market_prices = []
 
     return render(request, "buyer_dashboard.html" ,{
         'offers': offers,
-        'market_prices': prices,
+        'market_prices': market_prices,
         'category_icons':category_icons,
         'crop_images': crop_images,
     })

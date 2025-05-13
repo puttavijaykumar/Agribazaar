@@ -25,3 +25,31 @@ document.getElementById("images").addEventListener("change", function (event) {
         }
     }
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const negotiationType = document.getElementById('negotiation_type');
+    const validityHours = document.getElementById('validity_hours');
+    const validityDays = document.getElementById('validity_days');
+
+    function updateValidityFields() {
+        const selectedValue = negotiationType.value;
+        
+        if (selectedValue === 'active') {
+            validityDays.disabled = true;
+            validityDays.value = '';
+            validityHours.disabled = false;
+        } else if (selectedValue === 'passive') {
+            validityHours.disabled = true;
+            validityHours.value = '';
+            validityDays.disabled = false;
+        } else {
+            validityHours.disabled = false;
+            validityDays.disabled = false;
+        }
+    }
+
+    // Initial check on page load
+    updateValidityFields();
+
+    // Event listener for negotiation type change
+    negotiationType.addEventListener('change', updateValidityFields);
+});

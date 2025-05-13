@@ -42,13 +42,15 @@
 
                         {% endif %}
 
-                        <form id ="place-order" method="POST">
+                        <form method="POST" class="place-order" id ="paymentForm" >
                             {% csrf_token %}
                             <input type="hidden" name="product_id" value="{{ product.id }}">
                             <input type="hidden" name="product_type" value="{{ product_type }}">
                             <button type="submit" class="btn btn-success mt-3">place order</button>
                         </form>
-
+                    <p id="orderMessage" style="display: none; color: green; font-weight: bold; margin-top: 10px;">
+                    ✅ Order placed successfully!
+                    </p>
                     </div>
                 </div>
             </div>
