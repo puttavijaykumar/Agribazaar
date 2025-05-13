@@ -33,7 +33,7 @@ This is **Release 1**, showcasing the core functionality to demonstrate the init
 - Explore crop section
 - Negotiation page(chat between farmer and buyer)  
 - Add to cart and Buy now of products 
--   
+ 
 
 ---
 
