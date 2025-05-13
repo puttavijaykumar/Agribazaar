@@ -389,62 +389,62 @@ a.disabled-link {
 }
 
 /* Market Prices */
-.market-prices {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    margin: 20px;
+.market-prices-section{
+    background: #d3eb73; /* Light green background */
+    box-shadow: 0 -5px 15px rgba(44, 95, 45, 0.05); /* Soft green shadow above */
     padding: 20px;
-    background-color: #fffaf5;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin: 0 !important;
+} 
+.market-prices-section h2{
+    color: #090b09; 
+    text-align: left;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
+.price-ticker {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 0;
+    scrollbar-width: none; /* For Firefox */
+}
+
+.price-ticker::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari */
+}
+
+.ticker-content {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    animation: tickerMove 30s linear infinite;
+}
+
 .price-item {
-    background-color: #fff;
+    display: inline-block;
+    min-width: max-content;
+    background-color: #e4f5da;
     padding: 14px 18px;
-    border-left: 6px solid #FFA500;
+    border-left: 6px solid #fb8c00;
     border-radius: 10px;
-    font-size: 0.95rem;
+    font-size: 15px;
     font-weight: 500;
     color: #444;
     transition: transform 0.2s ease;
 }
+
 .price-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(255, 165, 0, 0.2);
 }
 
-/* Responsive Tweaks */
-@media (max-width: 768px) {
-    .category-item {
-        font-size: 16px;
-        padding: 10px 20px;
+/* Optional: Smooth ticker animation */
+@keyframes tickerMove {
+    from {
+        transform: translateX(0%);
     }
-    .carousel-item img {
-        height: 200px;
-    }
-    .crop-scroll a {
-        width: 120px;
-    }
-    #search-results {
-        width: 80%;
-        left: 10%;
-    }
-}
-
-@media (max-width: 480px) {
-    .category-item {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-    .crop-section h2 {
-        font-size: 1.2rem;
-    }
-    .carousel-item img {
-        height: 180px;
-    }
-    .product-item, .price-item {
-        font-size: 0.9rem;
+    to {
+        transform: translateX(-100%);
     }
 }
 .footer-section {

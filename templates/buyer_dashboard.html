@@ -201,18 +201,26 @@
     </div>
 
     <!-- Live Market Prices -->
+ <div class="market-prices-section text-center mt-0">
     <h2>Live Market Prices</h2>
-    <div class="market-prices">
-      <div class="market-prices">
-        {% for price in market_prices %}
-        <div class="price-item">
-          🌿 {{ price.product_name }}: ₹{{ price.price_per_kg }}/kg
+    <div class="price-ticker"> 
+        <div class="ticker-content">
+            {% for price in market_prices %}
+            <div class="price-item">
+                <span class="commodity">{{ price.commodity }}</span>
+                <span class="market">({{ price.market }}, {{ price.state }})</span>
+                <span class="price-range">
+                    ₹{{ price.min_price }} - ₹{{ price.max_price }}
+                </span>
+            </div>
+            {% if not forloop.last %} • {% endif %}
+            {% empty %}
+            <div class="text-muted">No market prices available at the moment.</div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <p class="text-muted">No market prices available at the moment.</p>
-        {% endfor %}
-      </div>
     </div>
+</div>
+
     <!-- Add this before the closing </body> tag -->
 <footer class="footer-section bg-dark text-light mt-0">
   <div class="container">
