@@ -137,3 +137,70 @@ body {
 .buy-btn:hover {
   background-color: #ef6c00;
 }
+.product-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.add-btn, .buy-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.add-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.add-btn:hover {
+    background-color: #45a049;
+}
+
+.buy-btn {
+    background-color: #FF9800;
+    color: white;
+}
+
+.buy-btn:hover {
+    background-color: #F57C00;
+}
+
+/* Remove Bootstrap grid classes */
+.row.g-3.mt-3, .col-md-6 {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.product-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.product-actions form {
+    flex: 1; /* Make form take equal space */
+    min-width: 0; /* Prevent form from overflowing */
+}
+
+.add-btn, .buy-btn {
+    width: 100%; /* Force full width within container */
+    padding: 10px;
+    box-sizing: border-box; /* Include padding in width calculation */
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Rest of your existing button styles */
