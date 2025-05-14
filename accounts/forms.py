@@ -29,11 +29,19 @@ class RegisterForm(UserCreationForm):
         fields = ['username', 'email', 'phone_number', 'password1', 'password2', 'roles']
         help_texts = {
             'username': None,
+            'password1':None,
+            'password2': None,
         }
         widgets = {
             'password1': forms.PasswordInput(attrs={'placeholder': 'Enter Password'}),
             'password2': forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}),
         }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].help_text = ''
+        self.fields['password2'].help_text = ''
+
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')

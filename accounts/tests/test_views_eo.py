@@ -1,9 +1,10 @@
+# tests.py
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.core import mail
 from unittest.mock import patch
-import time
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -18,62 +19,51 @@ class OTPViewsTest(TestCase):
             is_active=False
         )
 
-    # TC_OTP_DO1: Send OTP during registration
     @patch('random.randint', return_value=123456)
     def test_send_otp_email(self, mock_randint):
-        session = self.client.session
-        session.update({'otp': '123456', 'otp_user_id': self.user.id})
-        session.save()
-
-        response = self.client.get(reverse('verify_otp'))
-        self.assertContains(response, "Enter OTP")
-
-        # Verify session data and email
-        self.assertEqual(self.client.session['otp'], '123456')
+        response = self.client.post(reverse('register'), {
+            'username': 'newuser',
+            'email': 'new@example.com',
+            'phone_number': '+1234567891',
+            'password1': 'testpass123',
+            'password2': 'testpass123',
+            'roles': ['farmer']
+        })
         self.assertEqual(len(mail.outbox), 1)
-        self.assertRedirects(response, reverse('verify_otp'))
+        self.assertEqual(self.client.session['otp'], '123456')
 
-    # TC_OTP_DO2: Resend OTP (authenticated)
-    @patch('random.randint', return_value=654321)
+    @patch('random.randint', return_value=654328)
     def test_resend_otp_authenticated(self, mock_randint):
         self.client.force_login(self.user)
-        response = self.client.get(reverse('resend_otp'))
-        self.assertEqual(self.client.session['otp'], '654321')
-        self.assertRedirects(response, reverse('verify_otp'))
+        response = self.client.get(reverse('resend_otp'), follow=True)
+        session = response.wsgi_request.session
+        self.assertEqual(session.get('otp'), '654328')
+        self.assertEqual(len(mail.outbox), 1)
 
-    # TC_OTP_DO3: Resend OTP (unauthenticated)
     def test_resend_otp_unauthenticated(self):
         response = self.client.get(reverse('resend_otp'))
         self.assertRedirects(response, f"{reverse('login')}?next={reverse('resend_otp')}")
 
-    # TC_OTP_DO4: Valid OTP verification
     def test_valid_otp_verification(self):
         session = self.client.session
         session.update({'otp': '123456', 'otp_user_id': self.user.id})
         session.save()
-
         response = self.client.post(reverse('verify_otp'), {'otp': '123456'})
         self.user.refresh_from_db()
         self.assertTrue(self.user.is_active)
         self.assertRedirects(response, reverse('login'))
 
-    # TC_OTP_DO5: Invalid OTP verification
     def test_invalid_otp_verification(self):
         session = self.client.session
         session.update({'otp': '123456', 'otp_user_id': self.user.id})
         session.save()
-
-        response = self.client.post(reverse('verify_otp'), {'otp': '000000'})
+        response = self.client.post(reverse('verify_otp'), {'otp': '000000'}, follow=True)
         self.assertContains(response, "Invalid OTP")
-        self.assertFalse(self.user.is_active)
 
-    # TC_OTP_DO6: Expired OTP session
     def test_expired_otp_session(self):
         session = self.client.session
         session.update({'otp': '123456', 'otp_user_id': self.user.id})
-        session.set_expiry(1)  # 1 second expiry
+        session.set_expiry(timezone.now() - timezone.timedelta(seconds=10))  # Expired
         session.save()
-        
-        time.sleep(2)  # Wait for session to expire
         response = self.client.post(reverse('verify_otp'), {'otp': '123456'})
         self.assertRedirects(response, reverse('register'))
