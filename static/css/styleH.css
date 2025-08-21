@@ -446,6 +446,65 @@ a.disabled-link {
     color: #a8e063 !important;
     padding-left: 5px;
 }
+/* Adjacenting the home page according to mobile view */
+@media (max-width: 992px) {
+    .navbar-collapse {
+        padding-top: 1rem;
+    }
+    
+    /* Make search bar full width and add some bottom margin for spacing */
+    .search-bar {
+        margin-bottom: 1rem;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .nav-item {
+        margin: 5px 0 !important;
+    }
+    
+    .btn-login {
+        margin-left: 0 !important;
+    }
+
+    /* Adjust the massive gap between categories to fit smaller screens */
+    .categories {
+        gap: 20px; /* Reduced the gap from 140px to a more manageable 20px */
+    }
+}
+/* Additional tweaks for very small screens (phones) */
+@media (max-width: 480px) {
+    .news-card {
+        padding: 1rem;
+    }
+    .news-title {
+        font-size: 1.2rem;
+    }
+    .news-source {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    /* Force the product grid to stack items vertically on small phones */
+    .product-grid {
+        grid-template-columns: 1fr; /* Changed to a single column to stack items */
+        gap: 1rem; /* Adjust gap for better spacing */
+        margin: 10px; /* Add margin to prevent sticking to edges */
+        padding: 10px; /* Adjust padding */
+    }
+    
+    /* Ensure the crop cards don't have too much space between them */
+    .crop-scroll {
+        gap: 15px; /* Reduced the gap for a tighter fit on mobile */
+        padding: 10px;
+    }
+
+    /* Make the crop card width more flexible for smaller screens */
+    .crop-scroll a {
+        width: 120px; /* Adjusted width to ensure more cards are visible */
+    }
+}
 
 @media (max-width: 768px) {
     .footer-section {
