@@ -73,3 +73,48 @@ h4 {
     font-weight: 500;
     color: #4a148c;
 }
+
+/* ------------------------------------------- */
+/* Responsive Design */
+/* ------------------------------------------- */
+
+/* Adjustments for screens up to 768px (tablets and mobile devices) */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 0; /* Reduced vertical padding for smaller screens */
+    }
+
+    .container {
+        padding: 0 15px; /* Added horizontal padding to prevent content from touching the edges */
+    }
+    
+    .message-box {
+        padding: 15px; /* Reduced padding inside message boxes */
+    }
+    
+    h2 {
+        font-size: 1.8rem; /* Reduced heading font size */
+        margin-bottom: 20px;
+    }
+    
+    h4 {
+        font-size: 1.2rem; /* Reduced subheading font size */
+        margin-top: 20px;
+    }
+
+    /* Make input fields and buttons full width to be easier to tap */
+    .reply-form textarea,
+    .reply-form input[type="number"],
+    .btn-primary {
+        width: 100%;
+        box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+    }
+    
+    .reply-form textarea {
+        height: 120px; /* Set a fixed height for the textarea on smaller screens */
+    }
+    
+    .btn-primary {
+        margin-top: 10px; /* Add some top margin for separation */
+    }
+}
