@@ -23,6 +23,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import get_user_model
 from .models import FarmerWallet, Transaction, PayoutRequest
 from .models import Offer, MarketPrice,MarketplaceProduct
+from .models import LogActivity
+
 User = get_user_model()
 
 def register_view(request):
@@ -884,3 +886,26 @@ def buy_category_product_now(request):
     
     # If the request is not POST, handle as an error or redirect
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+# Logic for user activity logging
+@login_required
+def user_activity_log(request):
+    """
+    Displays the activity log for the current user.
+    """
+    user_activities = LogActivity.objects.filter(user=request.user).order_by('-timestamp')
+    context = {
+        'activities': user_activities
+    }
+    return render(request, 'user_activity_log.html', context)
+
+@staff_member_required
+def admin_activity_log(request):
+    """
+    Displays a comprehensive log of all user activities for administrators.
+    """
+    all_activities = LogActivity.objects.all().order_by('-timestamp')
+    context = {
+        'activities': all_activities
+    }
+    return render(request, 'admin_activity_log.html', context)

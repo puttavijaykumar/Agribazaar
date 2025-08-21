@@ -6,6 +6,7 @@ from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selec
 from .views import download_transaction_pdf,farmer_account
 from .views import crop_detail_view,search_results,product_detail,negotiate_product,view_marketplace_product,send_negotiation_reply
 from .views import negotiation_inbox,add_to_cart,monitor_negotiations,view_cart,buy_product,checkout_buy_now
+from .views import user_activity_log,admin_activity_log
 from accounts.views import home
 from .views import buy_category_product_now,add_to_cart_category_product,view_cart_category_product
 from django.contrib.auth import views as auth_views
@@ -46,7 +47,8 @@ urlpatterns = [
     path('category/cart/', view_cart_category_product, name='view_cart_category_product'),
     path('category/<str:category>/', category_products, name='category_products'),
     path('category/product/buy',buy_category_product_now, name='buy_category_product_now'),
-
+    path('activity/me/', user_activity_log, name='user_activity_log'),
+    path('admin/activities/', admin_activity_log, name='admin_activity_log'),
 ]
 
 

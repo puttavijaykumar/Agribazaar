@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Activity Log</title>
+    <link rel="stylesheet" href="{% static 'css/user_activity.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2 class="title">My Activity Log</h2>
+        <div class="activity-list">
+            {% if activities %}
+                {% for activity in activities %}
+                <div class="activity-item">
+                    <div class="activity-header">
+                        <span class="activity-type">{{ activity.activity_type }}</span>
+                        <span class="activity-timestamp">{{ activity.timestamp|date:"F d, Y, P" }}</span>
+                    </div>
+                    <p class="activity-description">{{ activity.description }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+            <p class="no-activity-message">No activity has been logged yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
