@@ -178,3 +178,18 @@ class NegotiationMessage(models.Model):
 
     def __str__(self):
         return f"{self.sender.username} at {self.timestamp.strftime('%Y-%m-%d %H:%M')}"
+
+
+#Model for moniter user logging activity
+class LogActivity(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='activities')
+    activity_type = models.CharField(max_length=50) # e.g., 'Product Listed', 'Login', 'Negotiation Started'
+    description = models.TextField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-timestamp'] # Order activities from newest to oldest
+        verbose_name_plural = "User Activities"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.activity_type} at {self.timestamp}"
