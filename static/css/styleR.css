@@ -82,3 +82,54 @@ button:hover {
 html {
     scroll-behavior: smooth;
 }
+
+/* ------------------------------------------- */
+/* Responsive Design */
+/* ------------------------------------------- */
+
+/* Adjustments for screens up to 600px (common for most mobile phones) */
+@media (max-width: 600px) {
+    body {
+        padding: 15px; /* Reduce padding around the body */
+    }
+
+    .container {
+        padding: 20px; /* Reduce container padding */
+        border-radius: 8px; /* Slightly smaller border-radius */
+    }
+
+    h1 {
+        font-size: 2rem; /* Reduce heading font size for smaller screens */
+        margin-bottom: 15px;
+    }
+
+    form input {
+        padding: 8px; /* Slightly smaller input padding */
+        margin: 8px 0;
+        font-size: 15px;
+    }
+
+    button {
+        padding: 10px; /* Slightly smaller button padding */
+        font-size: 16px;
+    }
+
+    .logo {
+        width: 80px; /* Make logo smaller on mobile */
+    }
+
+    .login-text {
+        font-size: 13px; /* Smaller font size for login text */
+    }
+}
+
+/* Adjustments for screens up to 400px (very small phones) */
+@media (max-width: 400px) {
+    .container {
+        padding: 15px; /* Further reduce container padding */
+    }
+
+    h1 {
+        font-size: 1.8rem; /* Even smaller heading */
+    }
+}
