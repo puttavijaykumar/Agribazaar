@@ -204,3 +204,73 @@ body {
 }
 
 /* Rest of your existing button styles */
+
+/* ------------------------------------------- */
+/* Responsive Design Media Queries */
+/* ------------------------------------------- */
+
+/* Adjustments for tablets (up to 768px wide) */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem 1rem; /* Reduce navbar padding */
+    }
+
+    .nav-title {
+        font-size: 1.3rem; /* Reduce navbar title font size */
+    }
+
+    .products-wrapper {
+        padding: 15px; /* Reduce main padding around products */
+        gap: 15px; /* Reduce gap between product cards */
+    }
+
+    .product-box {
+        width: 100%; /* Make product cards take full width on smaller screens */
+        max-width: 300px; /* Limit max width for readability on slightly larger tablets */
+        margin: auto; /* Center the cards when they stack */
+    }
+
+    .product-details {
+        padding: 10px; /* Reduce padding inside product details */
+    }
+
+    .product-details h3 {
+        font-size: 16px; /* Adjust product title font size */
+    }
+
+    .description {
+        font-size: 13px; /* Adjust description font size */
+    }
+
+    .add-btn, .buy-btn {
+        font-size: 13px; /* Adjust button font size */
+        padding: 8px; /* Adjust button padding */
+    }
+}
+
+/* Adjustments for mobile phones (up to 480px wide) */
+@media (max-width: 480px) {
+    .navbar {
+        flex-direction: column; /* Stack navbar items vertically */
+        align-items: flex-start; /* Align stacked items to the start */
+        padding: 0.8rem 1rem;
+    }
+    
+    .nav-title {
+        margin-bottom: 0.5rem; /* Add space below title when stacked */
+    }
+
+    .products-wrapper {
+        padding: 10px; /* Further reduce padding */
+        gap: 10px; /* Further reduce gap */
+    }
+
+    .product-box {
+        max-width: 280px; /* A tighter max-width for very small phones */
+    }
+
+    .product-actions {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 8px; /* Reduce gap between stacked buttons */
+    }
+}
