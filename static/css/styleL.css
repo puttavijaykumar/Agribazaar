@@ -79,3 +79,22 @@ body {
 .login-container a:hover {
     text-decoration: underline;
 }
+/* ------------------------------------------- */
+/* Responsive Design */
+/* ------------------------------------------- */
+
+/* Adjustments for screens up to 768px (tablets and mobile devices) */
+@media (max-width: 768px) {
+    .login-container {
+        width: 90%; /* Make the container fluid to fit the screen */
+        padding: 20px;
+    }
+
+    .login-container h2 {
+        font-size: 20px; /* Reduce heading font size */
+    }
+
+    .login-container button {
+        font-size: 16px; /* Reduce button font size */
+    }
+}

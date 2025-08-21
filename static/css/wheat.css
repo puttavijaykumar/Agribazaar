@@ -71,3 +71,38 @@ body {
     text-decoration: none;
     color: inherit;
 }
+
+
+/* ... (Your existing code here) ... */
+
+/* Responsive Design */
+/* Adjustments for tablets and medium-sized screens */
+@media (max-width: 992px) {
+    .product-grid {
+        gap: 15px; /* Reduce the gap between product cards */
+    }
+
+    .product-card {
+        width: 220px; /* Slightly reduce card width */
+    }
+}
+
+/* Adjustments for mobile phones */
+@media (max-width: 768px) {
+    .product-grid {
+        /* This will make the cards stack vertically on a single column */
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .product-card {
+        width: 100%; /* Make the product card take up full width */
+        max-width: 350px; /* Set a max-width to prevent it from getting too large on tablets */
+    }
+
+    .search-heading {
+        font-size: 20px; /* Reduce heading font size */
+        margin-top: 20px;
+    }
+}

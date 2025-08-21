@@ -108,3 +108,50 @@ header nav ul li a:hover {
     border-color: #856404;
     color: #fff3cd;
 }
+
+/* ... Existing CSS Code ... */
+
+/* Media query for tablets and smaller desktops (up to 992px) */
+@media (max-width: 992px) {
+    .container.my-5 {
+        padding: 1rem; /* Reduce padding to save space */
+    }
+
+    .card {
+        flex-direction: column; /* Stack product image and details */
+        align-items: center; /* Center items for a cleaner look */
+    }
+
+    .card-title {
+        font-size: 20px; /* Reduce font size for smaller screens */
+    }
+}
+
+/* Media query for mobile phones (up to 768px) */
+@media (max-width: 768px) {
+    .container.my-5 {
+        padding: 0.5rem; /* Further reduce padding on mobile */
+    }
+    
+    .card-title {
+        font-size: 18px; /* Further reduce font size */
+    }
+
+    .negotiation-history {
+        margin-top: 1rem; /* Reduce top margin */
+        padding: 1rem; /* Reduce inner padding */
+    }
+
+    /* Stack buttons for better tap targets on mobile */
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #add-to-cart.btn-success,
+    #add-to-buy.btn-primary {
+        width: 100%;
+        margin-bottom: 0.5rem; /* Add space between stacked buttons */
+        padding: 10px; /* Adjust button padding */
+    }
+}
