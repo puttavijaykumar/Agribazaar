@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Activity Log</title>
+    <link rel="stylesheet" href="{% static 'css/admin_activity.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2 class="title">Admin Activity Log</h2>
+        {% if activities %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Activity Type</th>
+                        <th>Description</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in activities %}
+                    <tr>
+                        <td data-label="User">{{ activity.user.username }}</td>
+                        <td data-label="Activity Type">{{ activity.activity_type }}</td>
+                        <td data-label="Description">{{ activity.description }}</td>
+                        <td data-label="Timestamp">{{ activity.timestamp|date:"F d, Y, P" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="no-activity-message">No activity has been logged yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
