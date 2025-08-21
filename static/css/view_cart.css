@@ -24,3 +24,62 @@
     text-align: center;
     padding: 0.375rem 0.75rem;
 }
+
+
+/* Media query for smaller screens, such as tablets and mobile devices */
+@media (max-width: 768px) {
+    /* Adjust padding and font size for better mobile display */
+    .container {
+        padding: 0 15px; /* Add horizontal padding to prevent content from hitting the edges */
+    }
+
+    /* Change flex direction to stack cart items vertically */
+    .cart-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .cart-item img {
+        margin-bottom: 10px; /* Add space between image and text on mobile */
+    }
+
+    /* Make buttons and quantity sections full width on mobile */
+    .btn-outline-secondary,
+    .btn-outline-danger {
+        width: 100%;
+        margin-bottom: 5px; /* Add margin for spacing between buttons */
+    }
+
+    .quantity-section {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    /* Ensure input group and form control are styled for mobile */
+    .input-group {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .form-control {
+        flex-grow: 1; /* Allow the input to grow */
+    }
+}
+
+/* Media query for very small screens, like smaller mobile phones */
+@media (max-width: 480px) {
+    /* Further reduce padding and font sizes for a more compact view */
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .cart-item {
+        padding: 10px;
+    }
+
+    .quantity-section {
+        padding: 6px 10px;
+    }
+}
