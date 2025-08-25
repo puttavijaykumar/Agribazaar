@@ -406,6 +406,13 @@ from .models import CartItem
 
 @login_required
 def add_to_cart(request):
+    product = get_object_or_404(product_farmer, id=product_id)
+    if request.user.is_authenticated:
+        LogActivity.objects.create(
+            user=request.user,
+            activity_type='Cart Action',
+            description=f'Added "{product.name}" to cart'
+        )
     try:
         data = json.loads(request.body)
         product_id = data.get('product_id')
@@ -580,7 +587,12 @@ ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
 
 def search_results(request):
     query = request.GET.get('q', '')
-    
+    if request.user.is_authenticated and query:
+        LogActivity.objects.create(
+            user=request.user,
+            activity_type='Search Query',
+            description=f'Searched for: "{query}"'
+        )
     if any(word in query.lower() for word in ABUSIVE_WORDS):
         return render(request, 'search_results.html', {
             'products': [],
@@ -647,6 +659,12 @@ def search_results(request):
     
 def product_detail(request, id):
     product = get_object_or_404(MarketplaceProduct, id=id)
+    if request.user.is_authenticated:
+        LogActivity.objects.create(
+            user=request.user,
+            activity_type='Product View',
+            description=f'Viewed product: {product.name}'
+        )
     return render(request, 'product_detail.html', {'product': product})
 
 #NEGOTIATION
