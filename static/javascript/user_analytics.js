@@ -1,6 +1,6 @@
 // user_analytics.js
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/accounts/api/activity-trends/?type=Login')
+    fetch('/api/activity-trends/?type=Login')
         .then(response => response.json())
         .then(data => {
             const ctx = document.getElementById('activityChart').getContext('2d');
