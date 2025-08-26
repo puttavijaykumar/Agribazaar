@@ -10,6 +10,9 @@
 <body>
     <div class="container">
         <h2 class="title">My Activity Log</h2>
+        <div class="analytics-link-container">
+            <a href="{% url 'user_analytics' %}" class="btn btn-primary">View My Analytics Dashboard</a>
+        </div>
         <div class="activity-list">
             {% if activities %}
                 {% for activity in activities %}
