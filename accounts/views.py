@@ -958,3 +958,42 @@ def get_activity_trends_data(request):
     
 def user_analytics_dashboard(request):
     return render(request, 'user_analytics.html')
+
+@login_required
+def get_activity_breakdown_data(request):
+    """
+    Returns a JSON object with a breakdown of a user's activity types.
+    """
+    if request.user.is_authenticated:
+        activity_breakdown = LogActivity.objects.filter(
+            user=request.user
+        ).values('activity_type').annotate(total=Count('id')).order_by('activity_type')
+        
+        labels = [item['activity_type'] for item in activity_breakdown]
+        data = [item['total'] for item in activity_breakdown]
+        
+        return JsonResponse({
+            'labels': labels,
+            'data': data,
+        })
+    return JsonResponse({'error': 'Unauthorized'}, status=401)
+
+@login_required
+def get_most_viewed_products_data(request):
+    """
+    Returns a JSON object with the most viewed products for the current user.
+    """
+    if request.user.is_authenticated:
+        viewed_products = LogActivity.objects.filter(
+            user=request.user, 
+            activity_type='Product View'
+        ).values('description').annotate(view_count=Count('id')).order_by('-view_count')[:10] # Top 10 viewed products
+        
+        labels = [item['description'] for item in viewed_products]
+        data = [item['view_count'] for item in viewed_products]
+        
+        return JsonResponse({
+            'labels': labels,
+            'data': data,
+        })
+    return JsonResponse({'error': 'Unauthorized'}, status=401)
