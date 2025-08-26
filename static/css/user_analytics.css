@@ -29,18 +29,12 @@ body {
 /* New container for the entire dashboard layout */
 .dashboard-grid {
     display: grid;
-    /* Create two columns on large screens */
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px; /* Space between the charts */
-    max-width: 1200px; /* Max width for the entire dashboard */
-    margin: 30px auto;
+    grid-template-columns: repeat(3, 1fr); /* 3 charts per row */
+    gap: 20px;
     padding: 20px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.chart-wrapper {
+.chart-container {
     background-color: #ffffff;
     padding: 25px;
     border-radius: 12px;
