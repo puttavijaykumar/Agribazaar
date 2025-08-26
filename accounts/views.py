@@ -927,3 +927,33 @@ def admin_activity_log(request):
         'activities': all_activities
     }
     return render(request, 'admin_activity_log.html', context)
+
+@login_required
+def get_activity_trends_data(request):
+    """
+    Returns a JSON object with a count of activities over the last 30 days.
+    """
+    activity_type = request.GET.get('type', 'Login') # Default to 'Login'
+    
+    end_date = timezone.now()
+    start_date = end_date - timedelta(days=30)
+    
+    # Query and annotate the data to get a daily count
+    daily_activities = LogActivity.objects.filter(
+        user=request.user, 
+        activity_type=activity_type,
+        timestamp__range=[start_date, end_date]
+    ).extra(select={'day': 'date(timestamp)'}).values('day').annotate(count=Count('id')).order_by('day')
+    
+    # Format data for Chart.js
+    labels = [activity['day'].strftime('%Y-%m-%d') for activity in daily_activities]
+    data = [activity['count'] for activity in daily_activities]
+    
+    return JsonResponse({
+        'labels': labels,
+        'data': data,
+        'activity_type': activity_type
+    })
+    
+def user_analytics_dashboard(request):
+    return render(request, 'user_analytics.html')
