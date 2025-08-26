@@ -26,9 +26,21 @@ body {
 .btn-primary:hover {
     background-color: #0056b3; /* Darker shade on hover */
 }
-.chart-container {
-    max-width: 800px;
-    margin: 50px auto;
+/* New container for the entire dashboard layout */
+.dashboard-grid {
+    display: grid;
+    /* Create two columns on large screens */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px; /* Space between the charts */
+    max-width: 1200px; /* Max width for the entire dashboard */
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chart-wrapper {
     background-color: #ffffff;
     padding: 25px;
     border-radius: 12px;
@@ -44,9 +56,15 @@ h2 {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .chart-container {
-        width: 95%;
-        margin: 20px auto;
+    /* Stack charts on a single column for mobile */
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    .chart-wrapper {
         padding: 15px;
     }
 
