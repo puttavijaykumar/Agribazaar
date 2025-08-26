@@ -411,7 +411,7 @@ def add_to_cart(request):
         LogActivity.objects.create(
             user=request.user,
             activity_type='Cart Action',
-            description=f'Added "{product.name}" to cart'
+            description=f'Added "{product.productName}" to cart'
         )
     try:
         data = json.loads(request.body)
@@ -663,7 +663,7 @@ def product_detail(request, id):
         LogActivity.objects.create(
             user=request.user,
             activity_type='Product View',
-            description=f'Viewed product: {product.name}'
+            description=f'Viewed product: {product.productName}'
         )
     return render(request, 'product_detail.html', {'product': product})
 
@@ -928,6 +928,7 @@ def admin_activity_log(request):
     }
     return render(request, 'admin_activity_log.html', context)
 
+from django.db.models import Count
 @login_required
 def get_activity_trends_data(request):
     """
