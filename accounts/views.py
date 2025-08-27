@@ -907,7 +907,6 @@ def buy_category_product_now(request):
 
 # Logic for user activity logging
 @login_required
-@login_required
 def user_activity_log(request):
     """
     Displays the activity log for the current user with pagination and filtering.
