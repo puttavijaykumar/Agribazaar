@@ -93,6 +93,7 @@ class MarketPrice(models.Model):
     price_per_kg = models.DecimalField(max_digits=10, decimal_places=2)
     last_updated = models.DateTimeField(auto_now=True)
 
+    
     def __str__(self):
         return f"{self.product_name} - ₹{self.price_per_kg}/kg"
     
@@ -104,6 +105,8 @@ class MarketplaceProduct(models.Model):
         ('equipment', 'Equipment'),
         ('organic', 'Organic'),
     ]
+    
+ 
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -186,9 +189,10 @@ class LogActivity(models.Model):
     activity_type = models.CharField(max_length=50) # e.g., 'Product Listed', 'Login', 'Negotiation Started'
     description = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-
+    
+    
     class Meta:
-        ordering = ['-timestamp'] # Order activities from newest to oldest
+        ordering = ['-timestamp']
         verbose_name_plural = "User Activities"
 
     def __str__(self):
