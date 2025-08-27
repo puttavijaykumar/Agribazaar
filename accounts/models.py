@@ -190,6 +190,7 @@ class LogActivity(models.Model):
     description = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     
+    product_farmer = models.ForeignKey(product_farmer, on_delete=models.CASCADE, null=True, blank=True)
     
     class Meta:
         ordering = ['-timestamp']
