@@ -65,28 +65,37 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Error fetching breakdown data:', error));
     // --- Bar Chart: Most Viewed Products ---
-    fetch('/api/most-viewed-products/')
-        .then(response => response.json())
-        .then(data => {
-            if (data.labels.length > 0) {
-                const ctx = document.getElementById('barChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: 'Views',
-                            data: data.data,
-                            backgroundColor: 'rgba(75, 192, 192, 0.8)',
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
-                    }
-                });
-            }
-        })
-        .catch(error => console.error('Error fetching product data:', error));
+    // --- Bar Chart: Most Viewed Products ---
+    fetch('/api/most-viewed-products/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.labels.length > 0) {
+                const ctx = document.getElementById('barChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Views',
+                            data: data.data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.8)',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                ticks: {
+                                    maxRotation: 90,
+                                    minRotation: 90
+                                }
+                            },
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching product data:', error));
 });
