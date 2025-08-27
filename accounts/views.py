@@ -656,16 +656,41 @@ def search_results(request):
         'query': query,
         'request': request
     })
+
+from django.http import HttpResponseNotFound
+@login_required
+def product_detail(request, product_type, id):
+    product = None
     
-def product_detail(request, id):
-    product = get_object_or_404(MarketplaceProduct, id=id)
+    # Logic to handle different product types
+    if product_type == 'farmer':
+        product = get_object_or_404(product_farmer, id=id)
+        product_name_for_log = product.productName
+    elif product_type == 'marketplace':
+        product = get_object_or_404(MarketplaceProduct, id=id)
+        product_name_for_log = product.name
+    elif product_type == 'marketprice':
+        product = get_object_or_404(MarketPrice, id=id)
+        product_name_for_log = product.product_name
+    else:
+        # Handle invalid product type with a 404 response
+        return HttpResponseNotFound('Invalid product type')
+        
+    # Log the product view activity for an authenticated user
     if request.user.is_authenticated:
         LogActivity.objects.create(
             user=request.user,
             activity_type='Product View',
-            description=f'Viewed product: {product.productName}'
+            description=f'Viewed {product_type} product: {product_name_for_log}'
         )
-    return render(request, 'product_detail.html', {'product': product})
+    
+    context = {
+        'product': product,
+        'product_type': product_type,
+    }
+    
+    return render(request, 'product_detail.html', context)
+
 
 #NEGOTIATION
 from django.utils import timezone
