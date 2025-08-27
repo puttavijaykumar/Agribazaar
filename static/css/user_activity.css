@@ -23,6 +23,27 @@ body {
     margin-bottom: 25px;
 }
 
+/* --- New: Styling for the Filter Form --- */
+.filter-container {
+    margin-bottom: 20px;
+    text-align: right; /* Align the filter to the right */
+}
+
+.filter-container select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+}
+
+.filter-container select:focus {
+    outline: none;
+    border-color: #2e7d32;
+    box-shadow: 0 0 5px rgba(46, 125, 50, 0.2);
+}
+
 .activity-list {
     display: flex;
     flex-direction: column;
@@ -51,7 +72,7 @@ body {
 
 .activity-type {
     font-weight: bold;
-    color: #2e7d32; /* A shade of green for activity type */
+    color: #2e7d32;
 }
 
 .activity-timestamp {
@@ -71,7 +92,38 @@ body {
     font-style: italic;
 }
 
-/* Responsive adjustments */
+/* --- New: Styling for Pagination --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.pagination a, .pagination .current {
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.pagination a:hover {
+    background-color: #dee2e6;
+    transform: translateY(-1px);
+}
+
+.pagination .current {
+    background-color: #2e7d32;
+    color: white;
+    font-weight: bold;
+    cursor: default;
+}
+
+/* --- Responsive adjustments --- */
 @media (max-width: 768px) {
     .container {
         padding: 15px;
@@ -88,5 +140,16 @@ body {
 
     .activity-timestamp {
         margin-top: 5px;
+    }
+
+    /* Adjust filter and pagination on mobile */
+    .filter-container {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        gap: 8px;
     }
 }
