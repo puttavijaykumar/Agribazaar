@@ -549,7 +549,15 @@ def category_products(request, category):
     valid_categories = dict(MarketplaceProduct.CATEGORY_CHOICES).keys()
     if category not in valid_categories:
         return render(request, '404.html', status=404)  # Optional: handle invalid category
-
+    
+    # Log the category view activity here
+    if request.user.is_authenticated:
+        LogActivity.objects.create(
+            user=request.user,
+            activity_type='Category View',
+            description=f'Viewed products in category: {category}',
+            # No product foreign key needed here, as it's a category view
+        )
     # Filter products by the given category (case-insensitive)
     products = MarketplaceProduct.objects.filter(category__iexact=category)
 
@@ -568,6 +576,13 @@ def crop_detail_view(request, crop_name):
     else:
         farmer_products = product_farmer.objects.filter(productName__iexact=crop_name)
         market_products = MarketplaceProduct.objects.filter(name__icontains=crop_name)
+    # Log the activity here
+    if request.user.is_authenticated:
+        LogActivity.objects.create(
+            user=request.user,
+            activity_type='Category View',
+            description=f'Viewed crop category: {crop_name}'
+        )
 
     context = {
         'crop_name': crop_name.title(),
@@ -699,7 +714,16 @@ from .models import NegotiationSetting, Negotiation, NegotiationMessage
 def negotiate_product(request, product_id):
     product = get_object_or_404(product_farmer, id=product_id)
     user = request.user
-
+    
+    # Log the product view activity here
+    if request.user.is_authenticated:
+        LogActivity.objects.create(
+            user=request.user,
+            activity_type='Product View',
+            description=f'Viewed product for negotiation: {product.productName}',
+            product_farmer=product
+        )
+        
     # Get or create Negotiation instance for this user and product
     negotiation, created = Negotiation.objects.get_or_create(
         buyer=user,
@@ -1026,17 +1050,19 @@ def get_activity_breakdown_data(request):
 @login_required
 def get_most_viewed_products_data(request):
     """
-    Returns a JSON object with the most viewed products for the current user.
+    Returns a JSON object with the most viewed products for the current user,
+    including both specific product views and category views.
     """
     if request.user.is_authenticated:
+        # Filter for multiple activity types
         viewed_products = LogActivity.objects.filter(
-            user=request.user, 
-            activity_type='Product View'
-        ).values('description').annotate(view_count=Count('id')).order_by('-view_count')[:10] # Top 10 viewed products
+            user=request.user,
+            activity_type__in=['Product View', 'Category View', 'Negotiation Started']
+        ).values('description').annotate(view_count=Count('id')).order_by('-view_count')[:10]
         
         labels = [item['description'] for item in viewed_products]
         data = [item['view_count'] for item in viewed_products]
-        
+
         return JsonResponse({
             'labels': labels,
             'data': data,
