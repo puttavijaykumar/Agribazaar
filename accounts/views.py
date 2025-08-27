@@ -907,15 +907,36 @@ def buy_category_product_now(request):
 
 # Logic for user activity logging
 @login_required
+@login_required
 def user_activity_log(request):
     """
-    Displays the activity log for the current user.
+    Displays the activity log for the current user with pagination and filtering.
     """
-    user_activities = LogActivity.objects.filter(user=request.user).order_by('-timestamp')
+    activity_type_filter = request.GET.get('type')
+    
+    if activity_type_filter:
+        user_activities = LogActivity.objects.filter(
+            user=request.user,
+            activity_type=activity_type_filter
+        ).order_by('-timestamp')
+    else:
+        user_activities = LogActivity.objects.filter(
+            user=request.user
+        ).order_by('-timestamp')
+        
+    paginator = Paginator(user_activities, 20)  # Show 20 activities per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    activity_types = LogActivity.objects.values_list('activity_type', flat=True).distinct()
+
     context = {
-        'activities': user_activities
+        'page_obj': page_obj,
+        'activity_types': activity_types,
+        'selected_type': activity_type_filter
     }
     return render(request, 'user_activity_log.html', context)
+
 
 @staff_member_required
 def admin_activity_log(request):

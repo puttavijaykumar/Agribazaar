@@ -29,12 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching login data:', error));
 
     // --- Pie Chart: Activity Breakdown ---
-    fetch('/api/activity-breakdown/')
+     fetch('/api/activity-breakdown/')
         .then(response => response.json())
         .then(data => {
             if (data.labels.length > 0) {
                 const ctx = document.getElementById('pieChart').getContext('2d');
-                new Chart(ctx, {
+                const pieChart = new Chart(ctx, {
                     type: 'pie',
                     data: {
                         labels: data.labels,
@@ -49,12 +49,21 @@ document.addEventListener('DOMContentLoaded', function() {
                             ]
                         }]
                     },
-                    options: { responsive: true }
+                    options: {
+                        responsive: true,
+                        onClick: (event, activeElements) => {
+                            if (activeElements.length > 0) {
+                                const clickedIndex = activeElements[0].index;
+                                const label = data.labels[clickedIndex];
+                                // Redirect to the activity log page with a filter
+                                window.location.href = `/accounts/activity/me/?type=${encodeURIComponent(label)}`;
+                            }
+                        }
+                    }
                 });
             }
         })
         .catch(error => console.error('Error fetching breakdown data:', error));
-
     // --- Bar Chart: Most Viewed Products ---
     fetch('/api/most-viewed-products/')
         .then(response => response.json())
