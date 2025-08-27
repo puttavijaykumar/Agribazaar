@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 const clickedIndex = activeElements[0].index;
                                 const label = data.labels[clickedIndex];
                                 // Redirect to the activity log page with a filter
-                                window.location.href = `activity/me/?type=${encodeURIComponent(label)}`;
+                                window.location.href = `/activity/me/?type=${encodeURIComponent(label)}`;
                             }
                         }
                     }
