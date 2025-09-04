@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching login data:', error));
 
     // --- Pie Chart: Activity Breakdown ---
-     fetch('/api/activity-breakdown/')
+    fetch('/api/activity-breakdown/')
         .then(response => response.json())
         .then(data => {
             if (data.labels.length > 0) {
@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             if (activeElements.length > 0) {
                                 const clickedIndex = activeElements[0].index;
                                 const label = data.labels[clickedIndex];
-                                // Redirect to the activity log page with a filter
                                 window.location.href = `/activity/me/?type=${encodeURIComponent(label)}`;
                             }
                         }
@@ -64,38 +63,38 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => console.error('Error fetching breakdown data:', error));
+    
     // --- Bar Chart: Most Viewed Products ---
-    // --- Bar Chart: Most Viewed Products ---
-    fetch('/api/most-viewed-products/')
-        .then(response => response.json())
-        .then(data => {
-            if (data.labels.length > 0) {
-                const ctx = document.getElementById('barChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: 'Views',
-                            data: data.data,
-                            backgroundColor: 'rgba(75, 192, 192, 0.8)',
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                ticks: {
-                                    maxRotation: 90,
-                                    minRotation: 90
-                                }
-                            },
-                            y: { beginAtZero: true }
-                        }
-                    }
-                });
-            }
-        })
-        .catch(error => console.error('Error fetching product data:', error));
+    fetch('/api/most-viewed-products/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.labels.length > 0) {
+                const ctx = document.getElementById('barChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Views',
+                            data: data.data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.8)',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                ticks: {
+                                    maxRotation: 90,
+                                    minRotation: 90
+                                }
+                            },
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching product data:', error));
 });
