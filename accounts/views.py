@@ -567,16 +567,46 @@ def category_products(request, category):
         'products': products
     })
     
+# def crop_detail_view(request, crop_name):
+#     crop_name_lower = crop_name.lower()
+
+#     if crop_name_lower == "vegetable" or crop_name_lower == "vegetables":
+#         farmer_products = product_farmer.objects.filter(category__iexact="vegetables")
+#         market_products = MarketplaceProduct.objects.filter(category__iexact="Vegetables")
+#     else:
+#         farmer_products = product_farmer.objects.filter(productName__iexact=crop_name)
+#         market_products = MarketplaceProduct.objects.filter(name__icontains=crop_name)
+#     # Log the activity here
+#     if request.user.is_authenticated:
+#         LogActivity.objects.create(
+#             user=request.user,
+#             activity_type='Category View',
+#             description=f'Viewed crop category: {crop_name}'
+#         )
+
+#     context = {
+#         'crop_name': crop_name.title(),
+#         'farmer_products': farmer_products,
+#         'market_products': market_products
+#     }
+
+#     return render(request, f"crops/{crop_name}.html", context)
+
 def crop_detail_view(request, crop_name):
     crop_name_lower = crop_name.lower()
 
-    if crop_name_lower == "vegetable" or crop_name_lower == "vegetables":
+    if crop_name_lower in ["vegetable", "vegetables"]:
         farmer_products = product_farmer.objects.filter(category__iexact="vegetables")
         market_products = MarketplaceProduct.objects.filter(category__iexact="Vegetables")
+
+    elif crop_name_lower == "rice":
+        farmer_products = product_farmer.objects.filter(category__iexact="grains")
+        market_products = MarketplaceProduct.objects.filter(category__iexact="Grains")
+
     else:
-        farmer_products = product_farmer.objects.filter(productName__iexact=crop_name)
+        farmer_products = product_farmer.objects.filter(productName__icontains=crop_name)
         market_products = MarketplaceProduct.objects.filter(name__icontains=crop_name)
-    # Log the activity here
+
     if request.user.is_authenticated:
         LogActivity.objects.create(
             user=request.user,
@@ -591,7 +621,6 @@ def crop_detail_view(request, crop_name):
     }
 
     return render(request, f"crops/{crop_name}.html", context)
-
 
 # Smart Search Functionality
 import re
