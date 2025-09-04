@@ -626,11 +626,22 @@ def crop_detail_view(request, crop_name):
 import re
 from cloudinary import CloudinaryImage, CloudinaryVideo 
 from django.views.decorators.http import require_POST
+from django.contrib.postgres.search import TrigramSimilarity
 
 ABUSIVE_WORDS = ['xnxx', 'sex', 'baustard','blowjob','sexy','fuck','fuck off']
 
 def search_results(request):
     query = request.GET.get('q', '')
+    
+    # If no query, return empty results
+    if not query:
+        return render(request, 'search_results.html', {
+            'query': query,
+            'valid_farmer_products': [],
+            'marketplace_products': [],
+        })
+        
+        
     if request.user.is_authenticated and query:
         LogActivity.objects.create(
             user=request.user,
@@ -647,8 +658,12 @@ def search_results(request):
             'request': request
         })
 
-    farmer_products_all = product_farmer.objects.filter(productName__icontains=query)
-
+    # farmer_products_all = product_farmer.objects.filter(productName__icontains=query)
+    farmer_products_all = product_farmer.objects.annotate(
+        similarity=TrigramSimilarity('productName', query)
+    ).filter(similarity__gt=0.2).order_by('-similarity')
+    
+    
     now = timezone.now()
     valid_farmer_products = []
 
@@ -667,8 +682,13 @@ def search_results(request):
             # If no negotiation setting linked, assume product is valid
             valid_farmer_products.append(product)
 
-    marketplace_products = MarketplaceProduct.objects.filter(name__icontains=query)
-
+    # marketplace_products = MarketplaceProduct.objects.filter(name__icontains=query)
+    
+    # 🔹 Changed from icontains → TrigramSimilarity
+    marketplace_products = MarketplaceProduct.objects.annotate(
+        similarity=TrigramSimilarity('name', query)
+    ).filter(similarity__gt=0.2).order_by('-similarity')
+    
     # Normalize both model instances into a unified dictionary format
     def normalize_product(obj, source):
         return {
