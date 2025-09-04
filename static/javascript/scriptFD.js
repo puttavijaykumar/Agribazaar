@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("farmerActivityBox").addEventListener("click", function () {
         navigateToPage("/farmer/my-products/");  // Navigate to the new dashboard
     });
-    
+
     function navigateToPage(url) {
         window.location.href = url;
     }
