@@ -2,31 +2,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Analytics Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="{% static 'css/user_analytics.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{% static 'css/user_analytics.css' %}">
 </head>
 <body>
-    <div class="dashboard-grid">
-        <div class="chart-container">
-            <h2>My Activity Trends</h2>
-            <canvas id="activityChart"></canvas>
-        </div>
+    <div class="dashboard-grid">
+        <div class="chart-wrapper">
+            <h2>My Activity Trends</h2>
+            <canvas id="activityChart"></canvas>
+        </div>
 
-        <div class="chart-container">
-            <h2>Activity Breakdown</h2>
-            <canvas id="pieChart"></canvas>
-        </div>
+        <div class="chart-wrapper">
+            <h2>Activity Breakdown</h2>
+            <canvas id="pieChart"></canvas>
+        </div>
 
-        <div class="chart-container">
-            <h2>Most Viewed Products</h2>
-            <canvas id="barChart"></canvas>
-        </div>
-    </div>
-
-
-    <script src="{% static 'javascript/user_analytics.js' %}"></script>
+        <div class="chart-wrapper">
+            <h2>Most Viewed Products</h2>
+            <canvas id="barChart"></canvas>
+        </div>
+    </div>
+    <script src="{% static 'javascript/user_analytics.js' %}"></script>
 </body>
 </html>
