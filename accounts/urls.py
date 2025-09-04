@@ -6,7 +6,7 @@ from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selec
 from .views import download_transaction_pdf,farmer_account
 from .views import crop_detail_view,search_results,product_detail,negotiate_product,view_marketplace_product,send_negotiation_reply
 from .views import negotiation_inbox,add_to_cart,monitor_negotiations,view_cart,buy_product,checkout_buy_now
-from .views import user_activity_log,admin_activity_log,get_activity_trends_data,user_analytics_dashboard,get_activity_breakdown_data,get_most_viewed_products_data
+from .views import user_activity_log,admin_activity_log,get_activity_trends_data,user_analytics_dashboard,get_activity_breakdown_data,get_most_viewed_products_data,farmer_products_view
 from .models import LogActivity
 from accounts.views import home
 from .views import buy_category_product_now,add_to_cart_category_product,view_cart_category_product
@@ -55,7 +55,7 @@ urlpatterns = [
     path('analytics/', user_analytics_dashboard, name='user_analytics'),
     path('api/activity-breakdown/', get_activity_breakdown_data, name='api_activity_breakdown'),
     path('api/most-viewed-products/', get_most_viewed_products_data, name='api_most_viewed_products'),
-
+    path('farmer/my-products/', farmer_products_view, name='farmer_products_view'),
 
 ]
 
