@@ -1068,3 +1068,29 @@ def get_most_viewed_products_data(request):
             'data': data,
         })
     return JsonResponse({'error': 'Unauthorized'}, status=401)
+
+@login_required
+def farmer_products_view(request):
+    """
+    Displays a list of products uploaded by the logged-in farmer.
+    Handles POST requests to remove a product.
+    """
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        if product_id:
+            try:
+                # Ensure the product belongs to the current user before deleting
+                product = get_object_or_404(product_farmer, id=product_id, product_farmer=request.user)
+                product.delete()
+                messages.success(request, f"Product '{product.productName}' has been removed.")
+            except:
+                messages.error(request, "An error occurred while removing the product.")
+            return redirect('farmer_products_view')
+    
+    # On a GET request, display the products
+    farmer_products = product_farmer.objects.filter(product_farmer=request.user).order_by('-uploaded_at')
+    
+    context = {
+        'farmer_products': farmer_products,
+    }
+    return render(request, 'farmer_products_view.html', context)

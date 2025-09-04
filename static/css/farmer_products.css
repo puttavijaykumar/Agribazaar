@@ -1,0 +1,97 @@
+/* farmer_products.css */
+
+body {
+    font-family: sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+.product-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+}
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.product-info {
+    padding: 15px;
+}
+.product-info h4 {
+    margin: 0 0 10px 0;
+}
+.btn-remove {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-remove:hover {
+    background-color: #c82333;
+}
+
+/* ------------------------------------------- */
+/* Responsive Adjustments */
+/* ------------------------------------------- */
+
+/* Tablets and medium-sized screens */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    .product-grid {
+        gap: 15px;
+    }
+    .product-card {
+        max-width: 100%; /* Ensure cards don't get too wide on a single-column layout */
+    }
+    .product-image {
+        height: 180px;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    .container {
+        padding: 10px;
+    }
+    .product-grid {
+        /* This will force cards to stack in a single column */
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .product-image {
+        height: 150px;
+    }
+    .product-info {
+        padding: 10px;
+    }
+    .product-info h4 {
+        font-size: 1rem;
+    }
+}
