@@ -29,56 +29,41 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching login data:', error));
 
     // --- Pie Chart: Activity Breakdown ---
-fetch('/api/activity-breakdown/')
-    .then(response => response.json())
-    .then(data => {
-        if (data.labels.length > 0) {
-            const ctx = document.getElementById('pieChart').getContext('2d');
-            const pieChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        data: data.data,
-                        backgroundColor: [
-                            '#FF6384',
-                            '#36A2EB',
-                            '#FFCE56',
-                            '#4BC0C0',
-                            '#9966FF'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    // The following changes will fix the overflow issue
-                    layout: {
-                        padding: {
-                            top: 20,
-                            bottom: 20,
-                            left: 10,
-                            right: 10
-                        }
+    fetch('/api/activity-breakdown/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.labels.length > 0) {
+                const ctx = document.getElementById('pieChart').getContext('2d');
+                const pieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.data,
+                            backgroundColor: [
+                                '#FF6384',
+                                '#36A2EB',
+                                '#FFCE56',
+                                '#4BC0C0',
+                                '#9966FF'
+                            ]
+                        }]
                     },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom', // Move legend to the bottom to free up horizontal space
-                        }
-                    },
-                    onClick: (event, activeElements) => {
-                        if (activeElements.length > 0) {
-                            const clickedIndex = activeElements[0].index;
-                            const label = data.labels[clickedIndex];
-                            window.location.href = `/activity/me/?type=${encodeURIComponent(label)}`;
+                    options: {
+                        responsive: true,
+                        onClick: (event, activeElements) => {
+                            if (activeElements.length > 0) {
+                                const clickedIndex = activeElements[0].index;
+                                const label = data.labels[clickedIndex];
+                                window.location.href = `/activity/me/?type=${encodeURIComponent(label)}`;
+                            }
                         }
                     }
-                }
-            });
-        }
-    })
-    .catch(error => console.error('Error fetching breakdown data:', error));
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching breakdown data:', error));
+    
     // --- Bar Chart: Most Viewed Products ---
     fetch('/api/most-viewed-products/')
         .then(response => response.json())
