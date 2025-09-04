@@ -19,7 +19,7 @@ class CustomUser(AbstractUser):
     
     def __str__(self):
         # return f" Username: {self.username}, Email: {self.email}, Phone: {self.phone_number}, roles: {', '.join(role.name for role in self.roles.all())}"
-        return f"{self.productName} - {self.farmer.username}"
+        return self.username
     @property
     def is_farmer(self):
         return self.roles.filter(name="Farmer").exists()
