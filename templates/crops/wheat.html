@@ -9,11 +9,18 @@
 <body>
     <h2 class="search-heading">Search Results for "<strong>{{ crop_name|lower }}</strong>"</h2>
 
+    <!-- Farmer Products -->
     <div class="product-grid">
         {% for product in farmer_products %}
             <a href="{% url 'negotiate_product' product.id %}" class="product-link">
                 <div class="product-card">
-                    <img src="{% static 'images/rice.jpeg' %}" alt="{{ product.productName }}" class="product-image">
+                    
+                    {% if product.images %}
+                        <img src="{{ product.images.url }}" alt="{{ product.productName }}" class="product-image">
+                    {% else %}
+                        <img src="{% static 'images/default_crop.jpg' %}" alt="No Image" class="product-image">
+                    {% endif %}
+
                     <div class="product-info">
                         <h4>{{ product.productName }}</h4>
                         <p class="price">₹{{ product.price }}</p>
@@ -22,22 +29,33 @@
                     </div>
                 </div>
             </a>
+        {% empty %}
+            <p>No farmer products found for {{ crop_name }}.</p>
         {% endfor %}
     </div>
 
+    <!-- Marketplace Products -->
     <div class="product-grid">
         {% for product in market_products %}
             <a href="{% url 'view_marketplace_product' product.id %}" class="product-link">
                 <div class="product-card">
-                    <img src="{% static 'images/rice.jpeg' %}" alt="{{ product.name }}" class="product-image">
+
+                    {% if product.images_market %}
+                        <img src="{{ product.images_market.url }}" alt="{{ product.name }}" class="product-image">
+                    {% else %}
+                        <img src="{% static 'images/default_crop.jpg' %}" alt="No Image" class="product-image">
+                    {% endif %}
+
                     <div class="product-info">
                         <h4>{{ product.name }}</h4>
                         <p class="price">₹{{ product.price }}</p>
-                        <p>Qty: {{ product.quantity }}</p>
+                        <p>Qty: {{ product.stock }}</p>
                         <span class="badge-market">Marketplace</span>
                     </div>
                 </div>
             </a>
+        {% empty %}
+            <p>No marketplace products found for {{ crop_name }}.</p>
         {% endfor %}
     </div>
 </body>

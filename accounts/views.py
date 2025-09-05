@@ -600,8 +600,20 @@ def crop_detail_view(request, crop_name):
         market_products = MarketplaceProduct.objects.filter(category__iexact="Vegetables")
 
     elif crop_name_lower == "rice":
-        farmer_products = product_farmer.objects.filter(category__iexact="grains")
-        market_products = MarketplaceProduct.objects.filter(category__iexact="Grains")
+        farmer_products = product_farmer.objects.filter(productName__icontains="rice")
+        market_products = MarketplaceProduct.objects.filter(name__icontains="rice")
+    
+    elif crop_name_lower == "wheat":
+        farmer_products = product_farmer.objects.filter(productName__icontains="wheat")
+        market_products = MarketplaceProduct.objects.filter(name__icontains="wheat")
+    
+    elif crop_name_lower == "maize":
+        farmer_products = product_farmer.objects.filter(productName__icontains="maize")
+        market_products = MarketplaceProduct.objects.filter(name__icontains="maize")
+
+    elif crop_name_lower == "sugarcane":
+        farmer_products = product_farmer.objects.filter(productName__icontains="sugarcane")
+        market_products = MarketplaceProduct.objects.filter(name__icontains="sugarcane")
 
     else:
         farmer_products = product_farmer.objects.filter(productName__icontains=crop_name)
