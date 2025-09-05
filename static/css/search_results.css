@@ -120,3 +120,9 @@
         font-size: 0.95rem;
     }
 }
+
+/* 🔥 Fix: remove underline for product links */
+a {
+    text-decoration: none !important;
+    color: inherit !important;
+}
