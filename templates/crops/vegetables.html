@@ -33,7 +33,7 @@
         {% for product in market_products %}
             <a href="{% url 'view_marketplace_product' product.id %}" class="product-link">
                 <div class="product-card">
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                    <img src="{{ product.images_market.url }}" alt="{{ product.name }}" class="product-image">
                     <div class="product-info">
                         <h4>{{ product.name }}</h4>
                         <p class="price">₹{{ product.price }}</p>
