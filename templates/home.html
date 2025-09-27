@@ -67,6 +67,7 @@
 <div class="news-ticker">
     <div class="news-track">
         {% for news in farming_news %}
+        <a href="{{ news.url }}" target="_blank" rel="noopener noreferrer" class="news-link">
         <div class="news-card">
             <div class="news-content">
                 <h3 class="news-title">{{ news.title }}</h3>
@@ -77,10 +78,10 @@
                 </div>
             </div>
         </div>
+        </a>
         {% endfor %}
     </div>
 </div>
-
 
 <!-- Top Offers Section -->
 <div class="offers-section text-center mb-0">

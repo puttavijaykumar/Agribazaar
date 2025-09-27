@@ -169,6 +169,7 @@ def home(request):
             farming_news.append({
                 "title": article["title"],
                 "summary": article["description"] or "",
+                "url": article["url"],  # Add this line to get the article URL
             })
             
     market_prices = cache.get('market_prices')
