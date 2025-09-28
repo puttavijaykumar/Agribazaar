@@ -254,21 +254,29 @@ a.disabled-link {
     display: inline-block; /* Crucial for horizontal layout */
 }
 
-/* Remove the grid container and use Flexbox instead */
+/* In your CSS file for the offers section */
+
+/* Parent container should use Flexbox for alignment */
 .product-grid {
     display: flex;
-    flex-wrap: nowrap; /* Prevent items from wrapping to a new line */
+    flex-wrap: nowrap;
     gap: 1.5rem;
     margin: 20px;
     padding: 20px;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    background-color:#bbdefb;
+    background-color: #bbdefb;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
+    /* Set alignment for uniform height */
+    align-items: stretch;
 }
+
+/* Individual offer item */
 .product-item {
-    background-color: #bbdefb;
+    /* The key change: fixed width and height */
+    width: 250px;
+    height: 200px; /* Adjust this value as needed for your content */
+    
+    background-color: #ffffff;
     border-left: 6px solid #43a047;
     padding: 16px;
     border-radius: 10px;
@@ -276,15 +284,28 @@ a.disabled-link {
     font-weight: 500;
     color: #0c0b0b;
     transition: transform 0.2s ease;
-    /* Enforce uniform size */
-    width: 250px; /* Fixed width */
-    height: 150px; /* Fixed height, adjust as needed */
-    flex-shrink: 0; /* Prevent the items from shrinking */
+    
+    /* Use Flexbox to align content within the fixed box */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    
+    /* Prevent text from overflowing and stretching the box */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
 }
 
+/* Rest of your CSS */
+.product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+.product-item h4,
+.product-item p {
+    margin: 0;
+}
 .product-item small {
     display: block;
     margin-top: 5px;
