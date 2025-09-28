@@ -15,10 +15,16 @@
             <div class="product-grid">
                 {% for product in products %}
                     <div class="product-card">
-                        <img src="{{ product.images.url|default_if_none:product.images_market.url }}" alt="{{ product.name|default_if_none:product.productName }}">
-                        <h3>{{ product.name|default_if_none:product.productName }}</h3>
+                        {% if product.images %}
+                            <img src="{{ product.images.url }}" alt="{{ product.productName }}">
+                        {% elif product.images_market %}
+                            <img src="{{ product.images_market.url }}" alt="{{ product.name }}">
+                        {% endif %}
+                        
+                        <h3>{{ product.productName|default_if_none:product.name }}</h3>
                         <p class="original-price">Original Price: ₹{{ product.price }}</p>
                         <p class="discounted-price">Offer Price: ₹{{ product.discounted_price|floatformat:2 }}</p>
+                        
                         <a href="{% if product.model_name == 'product_farmer' %}{% url 'buy_product' %}{% else %}{% url 'buy_category_product_now' %}{% endif %}?product_id={{ product.id }}&product_type={{ product.model_name }}" class="btn-buy">Buy Now</a>
                     </div>
                 {% endfor %}
