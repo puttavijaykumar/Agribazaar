@@ -142,6 +142,8 @@ def verify_otp(request):
     return render(request, "otp/verify_otp.html")  # your template
         
 import requests
+from django.core.cache import cache
+
 def home(request):
     category_icons = [
         {'category': 'seeds', 'icon': '🌱'},
@@ -184,8 +186,13 @@ def home(request):
             market_prices = []
             
             for record in data.get('records', []):
+                commodity_name = record.get('commodity', 'N/A')
+                # Create a URL-safe string
+                url_safe_commodity = commodity_name.replace('(', '').replace(')', '').replace(' ', '-').replace('/', '-').lower()
+                
                 market_prices.append({
-                    'commodity': record.get('commodity', 'N/A'),
+                    'commodity': commodity_name,
+                    'commodity_url': url_safe_commodity, # Add this line to the dictionary
                     'min_price': record.get('min_price', 0),
                     'max_price': record.get('max_price', 0),
                     'market': record.get('market', 'N/A'),
