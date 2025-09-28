@@ -88,9 +88,15 @@
     <h2>Top Offers</h2>
     <div class="product-grid">
         {% for offer in offers %}
-        <a href="{% url 'negotiate_product' product_id=offer.product.id %}" class="offer-link">
+        <a href="{% url 'discounted_products' offer_id=offer.id %}" class="offer-link">
             <div class="product-item">
-                <span class="emoji">{% if offer.product.category == 'grains' %}🌾{% elif offer.product.category == 'vegetables' %}🍅{% else %}📦{% endif %}</span>
+                <span class="emoji">
+                    {% if offer.product.category == 'grains' %}🌾
+                    {% elif offer.product.category == 'vegetables' %}🍅
+                    {% elif offer.product.category == 'fruits' %}🍏
+                    {% else %}📦
+                    {% endif %}
+                </span>
                 <h4>{{ offer.product.productName }} - {{ offer.discount }}% Off</h4>
                 <p>{{ offer.description }}</p>
             </div>
