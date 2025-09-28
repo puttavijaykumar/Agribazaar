@@ -126,13 +126,14 @@
     {% endfor %}
     </div>
 </div>
-<!-- Live Market Prices -->
+
 <!-- Live Market Prices Section -->
 <div class="market-prices-section text-center mt-0">
     <h2>Live Market Prices</h2>
     <div class="price-ticker"> 
         <div class="ticker-content">
             {% for price in market_prices %}
+            <a href="{% url 'market_price_detail' commodity_name=price.commodity %}" class="price-link">
             <div class="price-item">
                 <span class="commodity">{{ price.commodity }}</span>
                 <span class="market">({{ price.market }}, {{ price.state }})</span>
@@ -140,6 +141,7 @@
                     ₹{{ price.min_price }} - ₹{{ price.max_price }}
                 </span>
             </div>
+            </a>
             {% if not forloop.last %} • {% endif %}
             {% empty %}
             <div class="text-muted">No market prices available at the moment.</div>

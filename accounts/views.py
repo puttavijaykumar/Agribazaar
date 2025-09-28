@@ -207,13 +207,13 @@ def home(request):
    
 # accounts/views.py
 
-# accounts/views.py
-
-# accounts/views.py
-
-# accounts/views.py
-
-# accounts/views.py
+def market_price_detail(request, commodity_name):
+    # You would add logic here to fetch more data about this commodity
+    # For now, we'll just pass the name to the template
+    context = {
+        'commodity_name': commodity_name,
+    }
+    return render(request, 'market_price_detail.html', context)
 
 # accounts/views.py
 
