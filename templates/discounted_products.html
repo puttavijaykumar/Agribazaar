@@ -17,8 +17,11 @@
                     <div class="product-card">
                         {% if product.images %}
                             <img src="{{ product.images.url }}" alt="{{ product.productName }}">
-                    
-                        <h3>{{ product.productName}}</h3>
+                        {% elif product.images_market %}
+                            <img src="{{ product.images_market.url }}" alt="{{ product.name }}">
+                        {% endif %}
+                        
+                        <h3>{{ product.productName|default_if_none:product.name }}</h3>
                         <p class="original-price">Original Price: ₹{{ product.price }}</p>
                         <p class="discounted-price">Offer Price: ₹{{ product.discounted_price|floatformat:2 }}</p>
                         

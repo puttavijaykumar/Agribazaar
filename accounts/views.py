@@ -211,6 +211,8 @@ def home(request):
 
 # accounts/views.py
 
+# accounts/views.py
+
 from django.shortcuts import render, get_object_or_404
 from django.db.models import F, DecimalField, ExpressionWrapper, Value
 from .models import Offer, MarketplaceProduct, product_farmer
@@ -227,19 +229,26 @@ def discounted_products(request, offer_id):
         output_field=DecimalField(max_digits=10, decimal_places=2)
     )
     
-    # Query ONLY the farmer product linked to the offer
-    farmer_product = product_farmer.objects.filter(
-        id=offer.product_id
+    # Query Marketplace products that match the offer's product_type
+    marketplace_products = MarketplaceProduct.objects.filter(
+        name__iexact=offer.product_type
     ).annotate(
         discounted_price=discount_expression
-    ).first()
+    )
     
-    # Create a list with the single discounted product
-    products_with_discount = [farmer_product] if farmer_product else []
+    # Query Farmer products that match the offer's product_type
+    farmer_products = product_farmer.objects.filter(
+        productName__iexact=offer.product_type
+    ).annotate(
+        discounted_price=discount_expression
+    )
+    
+    # Combine the results into a single list
+    combined_products = list(marketplace_products) + list(farmer_products)
     
     context = {
         'offer': offer,
-        'products': products_with_discount,
+        'products': combined_products,
     }
     return render(request, 'discounted_products.html', context)
 
