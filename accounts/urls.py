@@ -9,7 +9,7 @@ from .views import negotiation_inbox,add_to_cart,monitor_negotiations,view_cart,
 from .views import user_activity_log,admin_activity_log,get_activity_trends_data,user_analytics_dashboard,get_activity_breakdown_data,get_most_viewed_products_data,farmer_products_view
 from .models import LogActivity
 from accounts.views import home
-from .views import buy_category_product_now,add_to_cart_category_product,view_cart_category_product
+from .views import buy_category_product_now,add_to_cart_category_product,view_cart_category_product,discounted_products
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -56,6 +56,7 @@ urlpatterns = [
     path('api/activity-breakdown/', get_activity_breakdown_data, name='api_activity_breakdown'),
     path('api/most-viewed-products/', get_most_viewed_products_data, name='api_most_viewed_products'),
     path('farmer/my-products/', farmer_products_view, name='farmer_products_view'),
+    path('offers/<int:offer_id>/', discounted_products, name='discounted_products'),
 
 ]
 
