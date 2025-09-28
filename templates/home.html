@@ -90,15 +90,16 @@
         {% for offer in offers %}
         <a href="{% url 'discounted_products' offer_id=offer.id %}" class="offer-link">
             <div class="product-item">
-                🌾 {{ offer.product_type }} - {{ offer.discount }}% Off <br>
-                <small>{{ offer.description }}</small>
+                <span class="emoji">{% if offer.product.category == 'grains' %}🌾{% elif offer.product.category == 'vegetables' %}🍅{% else %}📦{% endif %}</span>
+                <h4>{{ offer.product.productName }} - {{ offer.discount }}% Off</h4>
+                <p>{{ offer.description }}</p>
             </div>
         </a>
         {% empty %}
         <p class="text-muted">No current offers available.</p>
         {% endfor %}
     </div>
-</div> 
+</div>
 
 <!-- Explore Crops Section -->
 <div class="crop-section text-center mt-0">
