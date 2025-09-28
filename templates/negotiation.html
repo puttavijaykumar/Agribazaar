@@ -85,13 +85,16 @@
                         <button id="add-to-cart" data-product-id="{{ product.id }}" data-product-type="ProductFarmer" class="btn btn-success w-100 py-2">Add to Cart</button>
                     </div>
                     <div class="col-md-6">
-                        <form method="POST" action="{% url 'buy_product' %}">
-                            {% csrf_token %}
-                            <input type="hidden" id="product-id-buy-now" name="product_id" value="{{ product.id }}">
-                            <input type="hidden" id="product-type-buy-now" name="product_type" value="ProductFarmer">
-                            <input type="hidden" id="negotiated-price" name="price" value="{% if latest_proposed_price %}{{ latest_proposed_price }}{% else %}{{ discounted_price|floatformat:2 }}{% endif %}">
-                            <button type="submit" id="add-to-buy" class="btn btn-primary w-100 py-2">Buy Now</button>
-                        </form>
+                                <form method="POST" action="{% url 'buy_product' %}" class="h-100">
+                                {% csrf_token %}
+                                <input type="hidden" id="product-id-buy-now" name="product_id" value="{{ product.id }}">
+                                <input type="hidden" id="product-type-buy-now" name="product_type" value="ProductFarmer">
+                                <input type="hidden" id="negotiated-price" name="price" 
+                                    value="{% if latest_proposed_price %}{{ latest_proposed_price }}{% else %}{{ discounted_price|floatformat:2 }}{% endif %}">
+                                <button type="submit" id="add-to-buy" class="btn btn-primary w-100 py-2 h-100">
+                                    Buy Now
+                                </button>
+                           </form>
                     </div>
                 </div>
             </div>
