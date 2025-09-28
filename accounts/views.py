@@ -209,18 +209,20 @@ def home(request):
 
 # accounts/views.py
 
+# accounts/views.py
+
 from django.shortcuts import render, get_object_or_404
-from django.db.models import F, DecimalField, ExpressionWrapper, Value # Import necessary components
+from django.db.models import F, DecimalField, ExpressionWrapper, Value
 from .models import Offer, MarketplaceProduct, product_farmer
 
 def discounted_products(request, offer_id):
     offer = get_object_or_404(Offer, id=offer_id)
     
-    # 1. Calculate the discount factor as a Python Decimal value
+    # Calculate the discount factor as a Python Decimal value
     discount_factor_value = 1 - (offer.discount / 100)
     
-    # 2. Define the Expression for the discount calculation
-    # We use ExpressionWrapper to ensure the output type is DecimalField
+    # Define the Expression for the discount calculation
+    # Use ExpressionWrapper to ensure the output type is DecimalField
     discount_expression = ExpressionWrapper(
         F('price') * Value(discount_factor_value),
         output_field=DecimalField(max_digits=10, decimal_places=2) # Match your model's price field structure
@@ -233,7 +235,7 @@ def discounted_products(request, offer_id):
         discounted_price=discount_expression
     )
     
-    # Query Farmer products and apply discount (reusing the same expression)
+    # Query Farmer products and apply discount
     farmer_products = product_farmer.objects.filter(
         category__iexact=offer.product_type
     ).annotate(
@@ -248,6 +250,7 @@ def discounted_products(request, offer_id):
         'products': combined_products,
     }
     return render(request, 'discounted_products.html', context)
+
 
 @login_required(login_url='/login/')
 def default_dashboard(request):
