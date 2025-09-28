@@ -20,8 +20,12 @@
                         {% elif product.images_market %}
                             <img src="{{ product.images_market.url }}" alt="{{ product.name }}">
                         {% endif %}
-                        
-                        <h3>{{ product.productName|default_if_none:product.name }}</h3>
+                            {% if product.productName %}
+                                <h3>{{ product.productName }}</h3>
+                            {% elif product.name %}
+                                <h3>{{ product.name }}</h3>
+                            {% endif %}
+                            
                         <p class="original-price">Original Price: ₹{{ product.price }}</p>
                         <p class="discounted-price">Offer Price: ₹{{ product.discounted_price|floatformat:2 }}</p>
                         
