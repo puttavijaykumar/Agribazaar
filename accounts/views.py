@@ -840,16 +840,18 @@ def negotiate_product(request, product_id):
         )
     
     # Check for the 'discount_percent' URL parameter
-    discount_percent_str = request.GET.get('discount_percent', '0')
-    try:
-        discount_percent = int(discount_percent_str)
-        if 0 <= discount_percent <= 100:
-            discount_factor = 1 - (discount_percent / 100)
-            discounted_price = product.price * discount_factor
-        else:
-            discounted_price = product.price
-    except (ValueError, TypeError):
-        discounted_price = product.price
+    discount_percent_str = request.GET.get('discount_percent')
+    
+    discounted_price = product.price # Start with the original price
+    
+    if discount_percent_str:
+        try:
+            discount_percent = float(discount_percent_str)
+            if 0 < discount_percent <= 100:
+                discount_factor = 1 - (discount_percent / 100)
+                discounted_price = product.price * discount_factor
+        except (ValueError, TypeError):
+            pass
         
     # Get or create Negotiation instance for this user and product
     negotiation, created = Negotiation.objects.get_or_create(
@@ -898,6 +900,15 @@ def negotiate_product(request, product_id):
     messages_history = NegotiationMessage.objects.filter(
         negotiation=negotiation
     ).order_by('timestamp')
+    
+    latest_proposed_price = None
+    latest_message = messages_history.filter(proposed_price__isnull=False).last()
+    if latest_message:
+        latest_proposed_price = latest_message.proposed_price
+    
+    # Use the calculated discounted_price if there's no latest proposed price from a negotiation
+    final_display_price = latest_proposed_price if latest_proposed_price else discounted_price
+
 
     context = {
         'product': product,
@@ -907,7 +918,8 @@ def negotiate_product(request, product_id):
         'messages_history': messages_history,
         'max_reached': max_reached,
         'negotiation_expired': negotiation_expired,
-        'discounted_price': discounted_price, # Add this to the context
+        'final_display_price': final_display_price, # Add this to the context
+        'original_price': product.price, # Pass the original price for display
     }
     return render(request, 'negotiation.html', context)
 
