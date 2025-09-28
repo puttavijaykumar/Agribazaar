@@ -216,39 +216,25 @@ from django.db.models import F, DecimalField, ExpressionWrapper, Value
 from .models import Offer, MarketplaceProduct, product_farmer
 
 def discounted_products(request, offer_id):
-    offer = get_object_or_404(Offer, id=offer_id)
+    # Get all active offers
+    active_offers = Offer.objects.filter(active=True)
     
-    # Calculate the discount factor as a Python Decimal value
-    discount_factor_value = 1 - (offer.discount / 100)
+    # Create a list to store all the discounted products
+    products_with_discounts = []
     
-    # Define the Expression for the discount calculation
-    # Use ExpressionWrapper to ensure the output type is DecimalField
-    discount_expression = ExpressionWrapper(
-        F('price') * Value(discount_factor_value),
-        output_field=DecimalField(max_digits=10, decimal_places=2) # Match your model's price field structure
-    )
-    
-    # Query Marketplace products and apply discount
-    marketplace_products = MarketplaceProduct.objects.filter(
-        category__iexact=offer.product_type
-    ).annotate(
-        discounted_price=discount_expression
-    )
-    
-    # Query Farmer products and apply discount
-    farmer_products = product_farmer.objects.filter(
-        category__iexact=offer.product_type
-    ).annotate(
-        discounted_price=discount_expression
-    )
-    
-    # Combine the results into a single list
-    combined_products = list(marketplace_products) + list(farmer_products)
-    
+    for offer in active_offers:
+        # Get the product linked to the offer
+        product = offer.product
+        
+        # Calculate the discounted price on the fly
+        product.discounted_price = product.price * (1 - offer.discount / 100)
+        
+        products_with_discounts.append(product)
+        
     context = {
-        'offer': offer,
-        'products': combined_products,
+        'products': products_with_discounts,
     }
+
     return render(request, 'discounted_products.html', context)
 
 
