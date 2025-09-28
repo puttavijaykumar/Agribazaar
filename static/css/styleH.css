@@ -125,6 +125,35 @@ a.disabled-link {
     text-decoration: none;
     cursor: not-allowed;
 }
+
+/* ------------------------------------------- */
+/* Responsive Adjustments */
+/* ------------------------------------------- */
+
+/* Adjustments for smaller screens (e.g., tablets and mobile) */
+@media (max-width: 768px) {
+    .categories {
+        gap: 15px; /* Reduce gap for smaller screens */
+    }
+    .category-button {
+        font-size: 1.2rem; /* Reduce font size */
+        padding: 8px 18px; /* Reduce padding */
+    }
+}
+
+/* Adjustments for mobile phones */
+@media (max-width: 480px) {
+    .categories {
+        gap: 10px; /* Reduce gap even more */
+        padding: 15px 0 20px 0;
+    }
+    .category-button {
+        font-size: 1rem; /* Smaller font size for mobile */
+        padding: 6px 14px; /* Smaller padding */
+        min-width: 120px; /* Ensure a minimum width to prevent stacking issues */
+    }
+}
+
 .news-link {
     text-decoration: none;
     color: inherit;
