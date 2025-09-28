@@ -205,6 +205,36 @@ def home(request):
         'farming_news': farming_news,
     })
    
+from django.db.models import F
+def discounted_products(request, offer_id):
+    offer = get_object_or_404(Offer, id=offer_id)
+    
+    # Calculate the discount factor
+    discount_factor = 1 - (offer.discount / 100)
+    
+    # Query Marketplace products and apply discount
+    marketplace_products = MarketplaceProduct.objects.filter(
+        category__iexact=offer.product_type
+    ).annotate(
+        discounted_price=F('price') * discount_factor
+    )
+    
+    # Query Farmer products and apply discount
+    farmer_products = product_farmer.objects.filter(
+        category__iexact=offer.product_type
+    ).annotate(
+        discounted_price=F('price') * discount_factor
+    )
+    
+    # Combine the results into a single list
+    combined_products = list(marketplace_products) + list(farmer_products)
+    
+    context = {
+        'offer': offer,
+        'products': combined_products,
+    }
+    return render(request, 'discounted_products.html', context)
+
 
 @login_required(login_url='/login/')
 def default_dashboard(request):
