@@ -196,7 +196,10 @@ a.disabled-link {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;     /* Firefox */
 }
-
+.news-link, a {
+    text-decoration: none;
+    color: inherit;
+}
 /* Mobile tweaks */
 @media (max-width: 768px) {
     .news-title {
