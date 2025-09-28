@@ -205,25 +205,31 @@ def home(request):
         'farming_news': farming_news,
     })
    
-from django.db.models import F
+# accounts/views.py
+
+from django.shortcuts import render, get_object_or_404
+from django.db.models import F, DecimalField # Import DecimalField
+from .models import Offer, MarketplaceProduct, product_farmer
+
 def discounted_products(request, offer_id):
     offer = get_object_or_404(Offer, id=offer_id)
     
-    # Calculate the discount factor
+    # Calculate the discount factor as a Decimal
     discount_factor = 1 - (offer.discount / 100)
     
     # Query Marketplace products and apply discount
+    # Use output_field to explicitly set the type of the result
     marketplace_products = MarketplaceProduct.objects.filter(
         category__iexact=offer.product_type
     ).annotate(
-        discounted_price=F('price') * discount_factor
+        discounted_price=F('price') * discount_factor, output_field=DecimalField()
     )
     
     # Query Farmer products and apply discount
     farmer_products = product_farmer.objects.filter(
         category__iexact=offer.product_type
     ).annotate(
-        discounted_price=F('price') * discount_factor
+        discounted_price=F('price') * discount_factor, output_field=DecimalField()
     )
     
     # Combine the results into a single list
@@ -234,7 +240,6 @@ def discounted_products(request, offer_id):
         'products': combined_products,
     }
     return render(request, 'discounted_products.html', context)
-
 
 @login_required(login_url='/login/')
 def default_dashboard(request):
