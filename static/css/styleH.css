@@ -274,7 +274,7 @@ a.disabled-link {
 .product-item {
     /* The key change: fixed width and height */
     width: 250px;
-    height: 200px; /* Adjust this value as needed for your content */
+    height: 150px; /* Adjust this value as needed for your content */
     
     background-color: #ffffff;
     border-left: 6px solid #43a047;
