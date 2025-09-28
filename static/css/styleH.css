@@ -260,22 +260,24 @@ a.disabled-link {
 .product-grid {
     display: flex;
     flex-wrap: nowrap;
-    gap: 1.5rem;
+    justify-content: space-between; /* This is the key change for spacing */
+    gap: 1rem; /* Adjust gap for responsiveness */
     margin: 20px;
     padding: 20px;
     background-color: #bbdefb;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
-    /* Set alignment for uniform height */
     align-items: stretch;
+    overflow-x: auto; /* Allows horizontal scrolling on small screens */
+    padding-bottom: 10px;
 }
 
 /* Individual offer item */
+/* Individual offer item */
 .product-item {
-    /* The key change: fixed width and height */
+    min-width: 200px; /* Ensure a minimum size */
     width: 250px;
-    height: 150px; /* Adjust this value as needed for your content */
-    
+    height: 200px;
     background-color: #bbdefb;
     border-left: 6px solid #43a047;
     padding: 16px;
@@ -284,13 +286,9 @@ a.disabled-link {
     font-weight: 500;
     color: #0c0b0b;
     transition: transform 0.2s ease;
-    
-    /* Use Flexbox to align content within the fixed box */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    
-    /* Prevent text from overflowing and stretching the box */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
@@ -317,7 +315,25 @@ a.disabled-link {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
-
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .offers-section {
+        overflow-x: scroll; /* Force horizontal scroll for better mobile view */
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+        padding-bottom: 20px;
+    }
+    .product-grid {
+        justify-content: flex-start;
+        gap: 1rem;
+        flex-wrap: nowrap;
+    }
+    .product-item {
+        width: 200px; /* Adjust width for mobile screens */
+        height: 180px;
+        flex-shrink: 0;
+    }
+}
 /* --- Crop Image Cards --- */
 .crop-section {
     background: linear-gradient(rgba(153, 252, 130, 0.85), rgba(153, 252, 130, 0.85)),   
