@@ -42,8 +42,8 @@
                 
                 <p><strong>Original Price:</strong> ₹{{ product.price }}</p>
 
-                {% if discounted_price and discounted_price != product.price %}
-                    <p class="updated-price"><strong>Offer Price:</strong> ₹{{ discounted_price|floatformat:2 }}</p>
+                {% if final_display_price and final_display_price != product.price %}
+                    <p class="updated-price"><strong>Offer Price:</strong> ₹{{ final_display_price|floatformat:2 }}</p>
                 {% endif %}
                 
                 <p><strong>Quantity:</strong> {{ product.quantity }}kg</p>
