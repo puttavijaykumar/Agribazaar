@@ -133,7 +133,7 @@
     <div class="price-ticker">
         <div class="ticker-content">
             {% for price in market_prices %}
-            <a href="{% url 'market_price_detail' commodity_name=price.url_safe_commodity  %}" class="price-link">
+            {% comment %} <a href="{% url 'market_price_detail' commodity_name=price.url_safe_commodity  %}" class="price-link"> {% endcomment %}
             <div class="price-item">
                 <span class="commodity">{{ price.commodity }}</span>
                 <span class="market">({{ price.market }}, {{ price.state }})</span>
@@ -141,7 +141,7 @@
                     ₹{{ price.min_price }} - ₹{{ price.max_price }}
                 </span>
             </div>
-            </a>
+            {% comment %} </a> {% endcomment %}
             {% if not forloop.last %} • {% endif %}
             {% empty %}
             <div class="text-muted">No market prices available at the moment.</div>
