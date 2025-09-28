@@ -838,6 +838,18 @@ def negotiate_product(request, product_id):
             description=f'Viewed product for negotiation: {product.productName}',
             product_farmer=product
         )
+    
+    # Check for the 'discount_percent' URL parameter
+    discount_percent_str = request.GET.get('discount_percent', '0')
+    try:
+        discount_percent = int(discount_percent_str)
+        if 0 <= discount_percent <= 100:
+            discount_factor = 1 - (discount_percent / 100)
+            discounted_price = product.price * discount_factor
+        else:
+            discounted_price = product.price
+    except (ValueError, TypeError):
+        discounted_price = product.price
         
     # Get or create Negotiation instance for this user and product
     negotiation, created = Negotiation.objects.get_or_create(
@@ -895,6 +907,7 @@ def negotiate_product(request, product_id):
         'messages_history': messages_history,
         'max_reached': max_reached,
         'negotiation_expired': negotiation_expired,
+        'discounted_price': discounted_price, # Add this to the context
     }
     return render(request, 'negotiation.html', context)
 
