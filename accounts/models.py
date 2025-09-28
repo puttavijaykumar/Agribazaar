@@ -80,13 +80,13 @@ class PayoutRequest(models.Model):
     request_date = models.DateTimeField(auto_now_add=True)
     
 class Offer(models.Model):
-    product_type = models.CharField(max_length=100)
+    product = models.ForeignKey('product_farmer', on_delete=models.CASCADE)
     discount = models.IntegerField()  # percentage
     description = models.TextField()
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.product_type} - {self.discount}% Off"
+        return f"{self.product.productName} - {self.discount}% Off"
 
 class MarketPrice(models.Model):
     product_name = models.CharField(max_length=100)
