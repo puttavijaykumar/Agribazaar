@@ -228,15 +228,19 @@ a.disabled-link {
 }
 
 /* --- Offers Section --- */
+/* --- Offers Section --- */
 .offers-section{
-    background: #bbdefb; /* Warm parchment color */
-    box-shadow: 0 -5px 15px rgba(44,95,45,0.05); /* Soft green shadow above */
+    background: #bbdefb;
+    box-shadow: 0 -5px 15px rgba(44,95,45,0.05);
     background-size: 40px 40px;
     opacity: 0.95;
     padding: 0;
+    overflow-x: auto; /* Allow horizontal scrolling */
+    white-space: nowrap; /* Prevent content from wrapping */
+    padding-bottom: 10px; /* Add padding to prevent the scrollbar from overlapping content */
 }
 .offers-section h2 {
-    color: #090b09; 
+    color: #090b09;
     text-align: left;
     font-size: 2rem;
     font-weight: bold;
@@ -246,30 +250,39 @@ a.disabled-link {
 /* New CSS to remove underlines from links within the offers section */
 .offers-section a {
     text-decoration: none;
-    color: inherit; /* This ensures the text color remains the same */
+    color: inherit;
+    display: inline-block; /* Crucial for horizontal layout */
 }
 
+/* Remove the grid container and use Flexbox instead */
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: nowrap; /* Prevent items from wrapping to a new line */
     gap: 1.5rem;
     margin: 20px;
     padding: 20px;
-    margin-bottom: 10px;  
-    padding-bottom: 10px; 
-    background-color:#bbdefb; 
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    background-color:#bbdefb;
     border-radius: 12px;
-    box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1); /* soft green shadow */
+    box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
 }
 .product-item {
     background-color: #bbdefb;
-    border-left:  6px solid #43a047; 
+    border-left: 6px solid #43a047;
     padding: 16px;
     border-radius: 10px;
     font-size: 16px;
     font-weight: 500;
     color: #0c0b0b;
     transition: transform 0.2s ease;
+    /* Enforce uniform size */
+    width: 250px; /* Fixed width */
+    height: 150px; /* Fixed height, adjust as needed */
+    flex-shrink: 0; /* Prevent the items from shrinking */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .product-item small {
