@@ -30,7 +30,8 @@
                         <p class="original-price">Original Price: ₹{{ product.price }}</p>
                         <p class="discounted-price">Offer Price: ₹{{ product.discounted_price|floatformat:2 }}</p>
                         
-                        <a href="{% url 'negotiate_product' product_id=product.id %}" class="btn-buy">Negotiate Price</a>                    </div>
+                        <a href="{% url 'negotiate_product' product_id=product.id %}?discount_percent={{ offer.discount }}" class="btn-buy">Negotiate Price</a>  
+                    </div>
                 {% endfor %}
             </div>
         {% else %}
