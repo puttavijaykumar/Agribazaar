@@ -125,6 +125,10 @@ a.disabled-link {
     text-decoration: none;
     cursor: not-allowed;
 }
+.news-link {
+    text-decoration: none;
+    color: inherit;
+}
 .news-ticker {
     overflow-x: auto;
     white-space: nowrap;
@@ -238,6 +242,13 @@ a.disabled-link {
     font-weight: bold;
     margin-bottom: 0px;
 }
+
+/* New CSS to remove underlines from links within the offers section */
+.offers-section a {
+    text-decoration: none;
+    color: inherit; /* This ensures the text color remains the same */
+}
+
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
