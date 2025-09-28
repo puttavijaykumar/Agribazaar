@@ -215,6 +215,8 @@ def home(request):
 
 # accounts/views.py
 
+# accounts/views.py
+
 from django.shortcuts import render, get_object_or_404
 from django.db.models import F, DecimalField, ExpressionWrapper, Value
 from .models import Offer, MarketplaceProduct, product_farmer
@@ -222,7 +224,7 @@ from .models import Offer, MarketplaceProduct, product_farmer
 def discounted_products(request, offer_id):
     offer = get_object_or_404(Offer, id=offer_id)
     
-    # Get the product's category from the Foreign Key relationship
+    # Get the category from the product linked to the offer
     product_category = offer.product.category
     
     # Calculate the discount factor as a Python Decimal value
@@ -234,14 +236,14 @@ def discounted_products(request, offer_id):
         output_field=DecimalField(max_digits=10, decimal_places=2)
     )
     
-    # Query Marketplace products and apply discount
+    # Query Marketplace products that match the offer's product_category
     marketplace_products = MarketplaceProduct.objects.filter(
         category__iexact=product_category
     ).annotate(
         discounted_price=discount_expression
     )
     
-    # Query Farmer products and apply discount
+    # Query Farmer products that match the offer's product_category
     farmer_products = product_farmer.objects.filter(
         category__iexact=product_category
     ).annotate(
