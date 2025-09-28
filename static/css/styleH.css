@@ -261,7 +261,7 @@ a.disabled-link {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between; /* This is the key change for spacing */
-    gap: 1rem; /* Adjust gap for responsiveness */
+    gap: 3rem; /* Adjust gap for responsiveness */
     margin: 20px;
     padding: 20px;
     background-color: #bbdefb;
