@@ -87,7 +87,6 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 /* Category Buttons */
-/* Category Buttons */
 .categories {
     display: flex;
     justify-content: center;
@@ -95,7 +94,7 @@
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
-    gap: 1px;
+    gap: 15px;
     margin-top: 0 !important; /* Add this line */
     background: #c8e6c9;
     z-index: 2; /* Ensures categories stay above carousel */
