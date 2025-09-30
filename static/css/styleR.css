@@ -13,7 +13,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Changed from height to min-height */
     padding: 20px;
 }
 
@@ -27,6 +27,9 @@ body {
     backdrop-filter: blur(10px);
     text-align: center;
     box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+    /* Add max-height and overflow for very small screens */
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 /* Heading */
@@ -42,6 +45,7 @@ form input {
     border-radius: 5px;
     border: none;
     font-size: 16px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
 }
 
 /* Button Styling */
@@ -54,11 +58,13 @@ button {
     width: 100%;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
 button:hover {
     background: #45a049;
+    transform: translateY(-2px);
 }
 
 /* Login Text */
@@ -90,46 +96,46 @@ html {
 /* Adjustments for screens up to 600px (common for most mobile phones) */
 @media (max-width: 600px) {
     body {
-        padding: 15px; /* Reduce padding around the body */
+        padding: 15px;
     }
 
     .container {
-        padding: 20px; /* Reduce container padding */
-        border-radius: 8px; /* Slightly smaller border-radius */
+        padding: 20px;
+        border-radius: 8px;
     }
 
     h1 {
-        font-size: 2rem; /* Reduce heading font size for smaller screens */
+        font-size: 2rem;
         margin-bottom: 15px;
     }
 
     form input {
-        padding: 8px; /* Slightly smaller input padding */
+        padding: 8px;
         margin: 8px 0;
         font-size: 15px;
     }
 
     button {
-        padding: 10px; /* Slightly smaller button padding */
+        padding: 10px;
         font-size: 16px;
     }
 
     .logo {
-        width: 80px; /* Make logo smaller on mobile */
+        width: 80px;
     }
 
     .login-text {
-        font-size: 13px; /* Smaller font size for login text */
+        font-size: 13px;
     }
 }
 
 /* Adjustments for screens up to 400px (very small phones) */
 @media (max-width: 400px) {
     .container {
-        padding: 15px; /* Further reduce container padding */
+        padding: 15px;
     }
 
     h1 {
-        font-size: 1.8rem; /* Even smaller heading */
+        font-size: 1.8rem;
     }
 }
