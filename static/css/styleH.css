@@ -89,7 +89,10 @@
 .categories {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
     gap: 15px;
     margin-top: 0 !important; /* Add this line */
     background: #c8e6c9;
@@ -113,6 +116,9 @@
     cursor: pointer;
     text-decoration: none;
     text-align: center; /* Center text within the button */
+    /* Ensure uniform size and prevent shrinking */
+    flex-shrink: 0;
+    min-width: 150px; /* Adjust as needed */
 
 }
 
@@ -135,27 +141,24 @@ a.disabled-link {
 /* Adjustments for smaller screens (e.g., tablets and mobile) */
 @media (max-width: 768px) {
     .categories {
-        gap: 15px; /* Reduce gap for smaller screens */
+        justify-content: flex-start; /* Align to the start for a scrolling effect */
     }
     .category-button {
-        font-size: 1.2rem; /* Reduce font size */
-        padding: 8px 18px; /* Reduce padding */
+        font-size: 1.2rem;
+        padding: 8px 18px;
     }
 }
 
-/* Adjustments for mobile phones */
-@media (max-width: 480px) {
-    .categories {
-        gap: 10px; /* Reduce gap even more */
-        padding: 15px 0 20px 0;
-    }
-    .category-button {
-        font-size: 1rem; /* Smaller font size for mobile */
-        padding: 6px 14px; /* Smaller padding */
-        min-width: 120px; /* Ensure a minimum width to prevent stacking issues */
-    }
+/* Hide scrollbar */
+.categories::-webkit-scrollbar {
+    display: none;
+}
+.categories {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
 }
 
+/* --- News Ticker Section --- */
 .news-link {
     text-decoration: none;
     color: inherit;
