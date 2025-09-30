@@ -91,12 +91,15 @@
 .categories {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 140px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    gap: 1px;
     margin-top: 0 !important; /* Add this line */
-    background: #06d340;
+    background: #c8e6c9;
     z-index: 2; /* Ensures categories stay above carousel */
-    padding: 20px 0 30px 0; /* Added bottom padding */
+    padding: 20px 0 30px 0;  /* Added bottom padding */
 }
 
 .category-button {
@@ -114,6 +117,10 @@
     transition: background 0.3s ease, transform 0.2s ease;
     cursor: pointer;
     text-decoration: none;
+    text-align: center; /* Center text within the button */
+    /* Ensure uniform size and prevent shrinking */
+    flex-shrink: 0;
+    min-width: 150px; /* Adjust as needed */
 }
 
 .category-button:hover {
@@ -126,6 +133,30 @@ a.disabled-link {
     opacity: 0.6;
     text-decoration: none;
     cursor: not-allowed;
+}
+
+/* ------------------------------------------- */
+/* Responsive Adjustments */
+/* ------------------------------------------- */
+
+/* Adjustments for smaller screens (e.g., tablets and mobile) */
+@media (max-width: 768px) {
+    .categories {
+        justify-content: flex-start; /* Align to the start for a scrolling effect */
+    }
+    .category-button {
+        font-size: 1.2rem;
+        padding: 8px 18px;
+    }
+}
+
+/* Hide scrollbar */
+.categories::-webkit-scrollbar {
+    display: none;
+}
+.categories {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
 }
 
 /* Common Styles */
@@ -146,6 +177,8 @@ a.disabled-link {
     display: inline-block;
     margin-top: 10px;
 }
+
+!-- Banner Styles */
 
 /* Banner Container */
 .banner-container {
