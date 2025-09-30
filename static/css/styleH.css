@@ -93,7 +93,7 @@
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
-    gap: 15px;
+    gap: 140px;
     margin-top: 0 !important; /* Add this line */
     background: #c8e6c9;
     z-index: 2; /* Ensures categories stay above carousel */
