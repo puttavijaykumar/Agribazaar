@@ -90,7 +90,7 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 140px;
+    gap: 15px;
     margin-top: 0 !important; /* Add this line */
     background: #c8e6c9;
     z-index: 2; /* Ensures categories stay above carousel */
