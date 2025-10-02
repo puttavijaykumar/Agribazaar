@@ -413,6 +413,9 @@ def download_transaction_pdf(request):
     pdf.showPage()
     pdf.save()
     return response
+import requests
+from requests.exceptions import Timeout, RequestException
+from django.core.cache import cache
 
 @login_required
 def buyer_dashboard(request):
@@ -432,12 +435,14 @@ def buyer_dashboard(request):
     ]
     offers = Offer.objects.filter(active=True)
     market_prices = cache.get('market_prices')
+    
     if not market_prices:
         api_key = "579b464db66ec23bdd0000018d6f8bafc93d4a3863116e69aee5d22b"
         api_url = f"https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key={api_key}&format=json&limit=10"
         
         try:
-            response = requests.get(api_url)
+            # Add explicit timeout - 5s connection, 20s read (total <25s, within Vercel's 30s limit)
+            response = requests.get(api_url, timeout=(5, 20))
             response.raise_for_status()
             data = response.json()
             market_prices = []
@@ -451,19 +456,48 @@ def buyer_dashboard(request):
                     'state': record.get('state', 'N/A')
                 })
             
-            cache.set('market_prices', market_prices, 60 * 15)  # Cache for 15 minutes
+            # Cache for 15 minutes on success
+            cache.set('market_prices', market_prices, 60 * 15)
+            
+        except Timeout:
+            # Handle timeout specifically - provide fallback data
+            market_prices = [
+                {
+                    'commodity': 'Data Unavailable',
+                    'min_price': 'N/A',
+                    'max_price': 'N/A', 
+                    'market': 'API Timeout',
+                    'state': 'Please refresh page'
+                }
+            ]
+            # Cache fallback data for shorter duration (5 minutes)
+            cache.set('market_prices', market_prices, 60 * 5)
+            
+        except RequestException as e:
+            # Handle other request exceptions (network issues, etc.)
+            market_prices = [
+                {
+                    'commodity': 'Service Unavailable',
+                    'min_price': 'N/A',
+                    'max_price': 'N/A',
+                    'market': 'API Error',
+                    'state': 'Try again later'
+                }
+            ]
+            # Cache error response for shorter duration
+            cache.set('market_prices', market_prices, 60 * 5)
             
         except Exception as e:
+            # Fallback for any other unexpected errors
             market_prices = []
 
-    return render(request, "buyer_dashboard.html" ,{
+    return render(request, "buyer_dashboard.html", {
         'offers': offers,
         'market_prices': market_prices,
-        'category_icons':category_icons,
+        'category_icons': category_icons,
         'crop_images': crop_images,
     })
-    
-    
+
 from .models import CartItem
 
 
