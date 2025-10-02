@@ -100,68 +100,20 @@
       {% endif %} {% endfor %}
     </div>
 
-    <!-- Banner / Carousel -->
-    <div class="banner-container">
-  {% for banner in organic_banners %}
-    <a href="{% url 'banner_detail' banner.page_slug %}">
-      <div class="banner-organic floating-banner">
-        <h2>{{ banner.title }}</h2>
-        <p>{{ banner.subtitle }}</p>
-      </div>
-    </a>
-  {% endfor %}
-</div>
+  <!-- Banner / Carousel -->
+  <div class="banner-container">
+    {% for banner in organic_banners %}
+      <a href="{% url 'banner_detail' banner.page_slug %}">
+        <div class="banner-organic floating-banner">
+          <h2>{{ banner.title }}</h2>
+          <p>{{ banner.subtitle }}</p>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
 
 
-      <!-- Banner 2 - Farm Equipment -->
-      <div class="banner-equipment floating-banner">
-        <nav class="nav-equipment">
-          <a href="#">Tractors</a>
-          <a href="#">Irrigation</a>
-          <a href="#">Tools</a>
-          <a href="#">Safety Gear</a>
-          <a href="#">Spare Parts</a>
-        </nav>
-        <div class="offer-equipment">
-          <h3>Modern Farming Equipment</h3>
-          <p>Get 10% Instant Discount on John Deere Products</p>
-          <button>Shop Now</button>
-        </div>
-      </div>
 
-      <!-- Banner 3 - Harvest Sale -->
-      <div class="banner-harvest floating-banner">
-        <nav class="nav-harvest">
-          <a href="#">Fresh Produce</a>
-          <a href="#">Storage Solutions</a>
-          <a href="#">Organic Fertilizers</a>
-          <a href="#">Farm Recipes</a>
-          <a href="#">Seasonal Offers</a>
-        </nav>
-        <div class="harvest-deal">
-          <h2>Seasonal Harvest Sale</h2>
-          <p>Up to 30% OFF on Storage Containers &amp; Processing Equipment</p>
-          <div class="discount-badge">Limited Time Offer</div>
-        </div>
-      </div>
-      {% comment %} Solar offer {% endcomment %}
-      <div class="banner-sustainable floating-banner">
-        <nav class="nav-sustainable">
-          <a href="#">Solar Tools</a>
-          <a href="#">Water Saving</a>
-          <a href="#">Eco Packaging</a>
-          <a href="#">Green Energy</a>
-          <a href="#">Certification</a>
-        </nav>
-        <div class="sustainable-offer">
-          <h2>Sustainable Farming Solutions</h2>
-          <p>Get government subsidies up to 40% on eco-friendly equipment</p>
-          <div class="sustainable-badge">
-            Eco-Friendly Certification Available
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- Explore crop section-->
     <div class="crop-section text-center mt-0">
       <h2>Explore Crops</h2>
