@@ -143,6 +143,11 @@ def verify_otp(request):
         
 import requests
 from django.core.cache import cache
+import requests
+from requests.exceptions import Timeout, RequestException
+from django.core.cache import cache
+import concurrent.futures
+import threading
 
 def home(request):
     category_icons = [
@@ -159,59 +164,119 @@ def home(request):
         {'crop': 'sugarcane', 'image': 'sugarcane.jpeg'},
         {'crop': 'vegetables', 'image': 'vegetables.jpg'}
     ]
+    
     offers = Offer.objects.filter(active=True)
     prices = MarketPrice.objects.all()
-    url = 'https://newsapi.org/v2/everything?q=farming%20agriculture&apiKey=f986edd1afe64a47988b934616f61f81&pageSize=3&language=en'
-    response = requests.get(url)
-    news_data = response.json()
-
-    farming_news = []
-    if news_data.get("status") == "ok":
-        for article in news_data["articles"]:
-            farming_news.append({
-                "title": article["title"],
-                "summary": article["description"] or "",
-                "url": article["url"],  # Add this line to get the article URL
-            })
-            
+    
+    # Get cached data first
+    farming_news = cache.get('farming_news_cache')
     market_prices = cache.get('market_prices')
-    if not market_prices:
-        api_key = "579b464db66ec23bdd0000018d6f8bafc93d4a3863116e69aee5d22b"
-        api_url = f"https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key={api_key}&format=json&limit=10"
-        
+    
+    # Function to fetch news data
+    def fetch_news_data():
         try:
-            response = requests.get(api_url)
+            url = 'https://newsapi.org/v2/everything?q=farming%20agriculture&apiKey=f986edd1afe64a47988b934616f61f81&pageSize=3&language=en'
+            response = requests.get(url, timeout=(3, 12))  # 3s connection, 12s read
+            response.raise_for_status()
+            news_data = response.json()
+            
+            news_articles = []
+            if news_data.get("status") == "ok":
+                for article in news_data["articles"]:
+                    news_articles.append({
+                        "title": article["title"],
+                        "summary": article["description"] or "",
+                        "url": article["url"],
+                    })
+            return news_articles
+            
+        except (Timeout, RequestException) as e:
+            return [{"title": "News Unavailable", "summary": "Unable to fetch news", "url": "#"}]
+        except Exception as e:
+            return []
+    
+    # Function to fetch market prices
+    def fetch_market_data():
+        try:
+            api_key = "579b464db66ec23bdd0000018d6f8bafc93d4a3863116e69aee5d22b"
+            api_url = f"https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key={api_key}&format=json&limit=10"
+            
+            response = requests.get(api_url, timeout=(3, 12))  # 3s connection, 12s read
             response.raise_for_status()
             data = response.json()
-            market_prices = []
+            prices = []
             
             for record in data.get('records', []):
                 commodity_name = record.get('commodity', 'N/A')
-                # Create a URL-safe string
                 url_safe_commodity = commodity_name.replace('(', '').replace(')', '').replace(' ', '-').replace('/', '-').lower()
                 
-                market_prices.append({
+                prices.append({
                     'commodity': commodity_name,
-                    'commodity_url': url_safe_commodity, # Add this line to the dictionary
+                    'commodity_url': url_safe_commodity,
                     'min_price': record.get('min_price', 0),
                     'max_price': record.get('max_price', 0),
                     'market': record.get('market', 'N/A'),
                     'state': record.get('state', 'N/A')
                 })
+            return prices
             
-            cache.set('market_prices', market_prices, 60 * 15)  # Cache for 15 minutes
-            
+        except (Timeout, RequestException) as e:
+            return [{"commodity": "Data Unavailable", "min_price": "N/A", "max_price": "N/A", 
+                    "market": "API Timeout", "state": "Try again later", "commodity_url": "unavailable"}]
         except Exception as e:
-            market_prices = []
+            return []
+    
+    # Make API calls concurrently only if data is not cached
+    if not farming_news or not market_prices:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+            # Submit both API calls simultaneously
+            futures = {}
+            
+            if not farming_news:
+                futures['news'] = executor.submit(fetch_news_data)
+            if not market_prices:
+                futures['market'] = executor.submit(fetch_market_data)
+            
+            # Wait for both calls with 20-second total timeout
+            try:
+                for future in concurrent.futures.as_completed(futures.values(), timeout=20):
+                    pass  # Just wait for completion
+                    
+                # Get results
+                if 'news' in futures:
+                    farming_news = futures['news'].result()
+                    cache.set('farming_news_cache', farming_news, 60 * 10)  # Cache for 10 minutes
+                    
+                if 'market' in futures:
+                    market_prices = futures['market'].result()
+                    cache.set('market_prices', market_prices, 60 * 15)  # Cache for 15 minutes
+                    
+            except concurrent.futures.TimeoutError:
+                # Handle timeout - use fallback data
+                if not farming_news:
+                    farming_news = [{"title": "News Service Timeout", "summary": "Please refresh", "url": "#"}]
+                    cache.set('farming_news_cache', farming_news, 60 * 5)  # Cache fallback for 5 mins
+                    
+                if not market_prices:
+                    market_prices = [{"commodity": "Market Data Timeout", "min_price": "N/A", 
+                                    "max_price": "N/A", "market": "Please refresh", "state": "N/A", 
+                                    "commodity_url": "timeout"}]
+                    cache.set('market_prices', market_prices, 60 * 5)  # Cache fallback for 5 mins
+    
+    # Ensure we have default values if nothing was fetched
+    if not farming_news:
+        farming_news = []
+    if not market_prices:
+        market_prices = []
 
-    return render(request, "home.html",{
-        'category_icons':category_icons,
+    return render(request, "home.html", {
+        'category_icons': category_icons,
         'offers': offers,
         'market_prices': market_prices,
         'crop_images': crop_images,
         'farming_news': farming_news,
     })
-   
+
 # accounts/views.py
 
 def market_price_detail(request, commodity_name):
