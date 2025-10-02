@@ -382,44 +382,109 @@ a.disabled-link {
     margin: 0;
     padding: 0;
 }
-
-.product-grid {
-    margin: 10px 20px 5px 20px;
-    padding: 10px 20px;
+/* ------------------------------------------- */
+/* Top Offers Section - Base Styles */
+/* ------------------------------------------- */
+.offers-section {
+    background: #bbdefb;
+    box-shadow: 0 -5px 15px rgba(44,95,45,0.05);
+    padding: 0;
+    
+    /* The key changes for horizontal scrolling: */
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    
+    /* Hide the scrollbar */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.offers-section::-webkit-scrollbar {
+    display: none;
 }
 
-/* Product Grid */
+.offers-section h2 {
+    color: #090b09;
+    text-align: left;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    display: flex;
+    flex-wrap: nowrap; /* Prevent items from wrapping */
+    justify-content: space-between;
     gap: 1.5rem;
     margin: 20px;
     padding: 20px;
-    background-color: #f5fdf5;
+    background-color: #bbdefb;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
+    align-items: stretch;
 }
+
 .product-item {
+    min-width: 200px;
+    width: 250px;
+    height: 200px;
+    flex-shrink: 0;
     background-color: #ffffff;
-    border-left: 6px solid #4CAF50;
+    border-left: 6px solid #43a047;
     padding: 16px;
     border-radius: 10px;
-    font-size: 1rem;
+    font-size: 16px;
     font-weight: 500;
-    color: #333;
+    color: #0c0b0b;
     transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
 }
-.product-item small {
-    display: block;
-    margin-top: 5px;
-    font-size: 0.8rem;
-    color: #666;
-}
+
+/* Rest of your CSS */
 .product-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
 
+.product-item h4,
+.product-item p {
+    margin: 0;
+}
+.product-item small {
+    display: block;
+    margin-top: 5px;
+    font-size: 13px;
+    color: #181717;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .offers-section {
+        overflow-x: scroll; /* Force horizontal scroll for better mobile view */
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+        padding-bottom: 20px;
+    }
+    .product-grid {
+        justify-content: flex-start;
+        gap: 1rem;
+        flex-wrap: nowrap;
+    }
+    .product-item {
+        width: 200px; /* Adjust width for mobile screens */
+        height: 180px;
+        flex-shrink: 0;
+    }
+}
 /* Market Prices */
 .market-prices-section{
     background: #d3eb73; /* Light green background */
