@@ -1243,3 +1243,19 @@ def farmer_products_view(request):
         'farmer_products': farmer_products,
     }
     return render(request, 'farmer_products_view.html', context)
+
+
+# When clicking a banner, it should load banner details + related products.
+from django.shortcuts import render, get_object_or_404
+from .models import Banner, Product
+
+def banner_detail(request, slug):
+    banner = get_object_or_404(Banner, page_slug=slug)
+
+    # fetch products linked to this banner’s category
+    products = Product.objects.filter(category=banner.related_category)
+
+    return render(request, "banner_detail.html", {
+        "banner": banner,
+        "products": products,
+    })

@@ -198,3 +198,47 @@ class LogActivity(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.activity_type} at {self.timestamp}"
+    
+    
+class Banner(models.Model):
+    SECTION_CHOICES = [
+        ('organic', 'Organic Farming'),
+        ('equipment', 'Modern Farming Equipment'),
+        ('harvest', 'Seasonal Harvest Sale'),
+        ('sustainable', 'Sustainable Farming Solutions'),
+    ]
+
+    section = models.CharField(max_length=20, choices=SECTION_CHOICES)
+    title = models.CharField(max_length=100)
+    subtitle = models.CharField(max_length=200, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    discount_badge = models.CharField(max_length=100, blank=True, null=True)
+    image = CloudinaryField(blank=True, null=True)  # Cloudinary
+    page_slug = models.SlugField(unique=True)
+
+    #  link banners to category name (so we can fetch products)
+    related_category = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.get_section_display()} - {self.title}"
+
+
+class Product(models.Model):
+    CATEGORY_CHOICES = [
+        ('organic', 'Organic Products'),
+        ('equipment', 'Farm Equipment'),
+        ('harvest', 'Harvest Produce'),
+        ('sustainable', 'Sustainable Tools'),
+    ]
+
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField()
+    image = CloudinaryField(blank=True, null=True)  # Cloudinary
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+
+    def __str__(self):
+        return self.name
+
+
