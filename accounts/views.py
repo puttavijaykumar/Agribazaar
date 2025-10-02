@@ -462,6 +462,8 @@ def buyer_dashboard(request):
         'category_icons':category_icons,
         'crop_images': crop_images,
     })
+    
+    
 from .models import CartItem
 
 
