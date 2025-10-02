@@ -368,20 +368,6 @@ a.disabled-link {
     text-align: center;
 }
 
-/* removing space  */
-.offers-section,
-.crop-section {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.offers-section h2,
-.crop-section h2,
-.offers-section p,
-.crop-section p {
-    margin: 0;
-    padding: 0;
-}
 /* --- Offers Section --- */
 .offers-section {
     background: #bbdefb;
