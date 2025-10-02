@@ -410,26 +410,32 @@ a.disabled-link {
     display: inline-block;
 }
 
-/* Parent container should use Flexbox for alignment */
+/* Parent container should use Flexbox for horizontal scrolling */
 .product-grid {
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    gap: 1.5rem; /* Adjust gap for spacing */
+    flex-wrap: nowrap; /* This is the key change to prevent wrapping */
+    justify-content: flex-start;
+    gap: 1.5rem; /* Space between the offers */
     margin: 20px;
     padding: 20px;
     background-color: #bbdefb;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
     align-items: stretch;
+    
+    /* Enable horizontal scrolling on mobile */
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Individual offer item */
 .product-item {
+    min-width: 200px;
     width: 250px;
     height: 200px;
-    flex-shrink: 0; /* Prevent the items from shrinking */
-    background-color: #ffffff;
+    flex-shrink: 0; /* Prevents the items from shrinking */
+    background-color: #bbdefb;
     border-left: 6px solid #43a047;
     padding: 16px;
     border-radius: 10px;
@@ -444,7 +450,6 @@ a.disabled-link {
     text-overflow: ellipsis;
     white-space: normal;
 }
-
 .product-item small {
     display: block;
     margin-top: 5px;
