@@ -501,7 +501,13 @@ def buyer_dashboard(request):
     ]
     offers = Offer.objects.filter(active=True)
     market_prices = cache.get('market_prices')
-    banners = Banner.objects.all().order_by('section')  # Order by section for consistent display
+    
+    
+    # DEBUG: Check if banners exist
+    banners = Banner.objects.all()
+    print(f"DEBUG: Found {banners.count()} banners in database")
+    for banner in banners:
+        print(f"Banner: {banner.title} - Slug: {banner.page_slug}")
 
     if not market_prices:
         api_key = "579b464db66ec23bdd0000018d6f8bafc93d4a3863116e69aee5d22b"

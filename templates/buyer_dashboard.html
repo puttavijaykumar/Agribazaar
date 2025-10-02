@@ -102,10 +102,9 @@
 
   <!-- Banner / Carousel -->
   <!-- Banner / Carousel Section -->
-    <!-- Banner / Carousel Section -->
 <div class="banner-container">
   {% for banner in banners %}
-    <a href="{% url 'banner_detail' banner.page_slug %}" class="banner-link">
+    <a href="{% url 'banner_detail' slug=banner.page_slug %}" class="banner-link">
       <div class="banner-card banner-{{ banner.section }} floating-banner">
         <div class="banner-content">
           <h2>{{ banner.title }}</h2>
@@ -132,14 +131,11 @@
       </div>
     </a>
   {% empty %}
-    <!-- Fallback if no banners exist -->
     <div class="no-banners">
       <p>No promotional banners available at the moment.</p>
     </div>
   {% endfor %}
 </div>
-
-
 
     <!-- Explore crop section-->
     <div class="crop-section text-center mt-0">
