@@ -481,6 +481,7 @@ def download_transaction_pdf(request):
 import requests
 from requests.exceptions import Timeout, RequestException
 from django.core.cache import cache
+from .models import Offer, Banner  # Add Banner import
 
 @login_required
 def buyer_dashboard(request):
@@ -500,7 +501,8 @@ def buyer_dashboard(request):
     ]
     offers = Offer.objects.filter(active=True)
     market_prices = cache.get('market_prices')
-    
+    banners = Banner.objects.all().order_by('section')  # Order by section for consistent display
+
     if not market_prices:
         api_key = "579b464db66ec23bdd0000018d6f8bafc93d4a3863116e69aee5d22b"
         api_url = f"https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key={api_key}&format=json&limit=10"
@@ -561,6 +563,8 @@ def buyer_dashboard(request):
         'market_prices': market_prices,
         'category_icons': category_icons,
         'crop_images': crop_images,
+        'banners': banners,  # Add banners to context
+
     })
 
 from .models import CartItem
