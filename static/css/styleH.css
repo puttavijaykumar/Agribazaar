@@ -290,25 +290,30 @@ a.disabled-link {
 }
 
 /* Parent container should use Flexbox for alignment */
+/* Parent container should use Flexbox for horizontal scrolling */
 .product-grid {
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    gap: 1.5rem; /* Adjust gap for spacing */
-    margin: 20px;
+    flex-wrap: nowrap; /* Prevents items from wrapping to a new line */
+    justify-content: flex-start; /* Aligns items to the left */
+    gap: 1.5rem; /* Space between the chart containers */
     padding: 20px;
     background-color: #bbdefb;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
     align-items: stretch;
+    
+    /* These properties are crucial for scrolling on mobile */
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Individual offer item */
 .product-item {
     width: 250px;
     height: 200px;
-    flex-shrink: 0; /* Prevent the items from shrinking */
-    background-color: #bbdefb;
+    flex-shrink: 0; /* Prevents the items from shrinking */
+    background-color: #ffffff;
     border-left: 6px solid #43a047;
     padding: 16px;
     border-radius: 10px;
