@@ -372,7 +372,9 @@ a.disabled-link {
 .offers-section {
     background: #bbdefb;
     box-shadow: 0 -5px 15px rgba(44,95,45,0.05);
-    padding: 20px; /* Added padding to the main section */
+    background-size: 40px 40px;
+    opacity: 0.95;
+    padding: 0;
     
     /* These properties enable horizontal scrolling */
     overflow-x: auto;
@@ -385,7 +387,7 @@ a.disabled-link {
     text-align: left;
     font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 20px; /* Added margin to separate the heading from the grid */
+    margin-bottom: 0px; /* Added margin to separate the heading from the grid */
 }
 
 /* Remove underlines from links within the offers section */
@@ -402,17 +404,20 @@ a.disabled-link {
 /* Parent container should use Flexbox for horizontal scrolling */
 .product-grid {
     display: flex;
-    flex-wrap: nowrap; /* Prevents items from wrapping to a new line */
+    flex-wrap: nowrap; /* This is the key change to prevent wrapping */
     justify-content: flex-start;
     gap: 1.5rem; /* Space between the offers */
+    margin: 20px;
+    padding: 20px;
     background-color: #bbdefb;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
     align-items: stretch;
     
-    /* Ensure the grid itself has no extra padding or margin */
-    margin: 0;
-    padding: 0;
+    /* Enable horizontal scrolling on mobile */
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Individual offer item */
