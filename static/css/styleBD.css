@@ -372,47 +372,47 @@ a.disabled-link {
 .offers-section {
     background: #bbdefb;
     box-shadow: 0 -5px 15px rgba(44,95,45,0.05);
-    background-size: 40px 40px;
-    opacity: 0.95;
-    padding: 0;
+    padding: 20px; /* Added padding to the main section */
     
     /* These properties enable horizontal scrolling */
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
 }
+
 .offers-section h2 {
     color: #090b09;
     text-align: left;
     font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 0px;
+    margin-bottom: 20px; /* Added margin to separate the heading from the grid */
 }
 
-/* New CSS to remove underlines from links within the offers section */
+/* Remove underlines from links within the offers section */
 .offers-section a {
     text-decoration: none;
     color: inherit;
     display: inline-block;
 }
+.offers-section a:hover {
+    color: #0c0b0b; /* Prevents text color from changing on hover */
+}
+
 
 /* Parent container should use Flexbox for horizontal scrolling */
 .product-grid {
     display: flex;
-    flex-wrap: nowrap; /* This is the key change to prevent wrapping */
+    flex-wrap: nowrap; /* Prevents items from wrapping to a new line */
     justify-content: flex-start;
     gap: 1.5rem; /* Space between the offers */
-    margin: 20px;
-    padding: 20px;
     background-color: #bbdefb;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
     align-items: stretch;
     
-    /* Enable horizontal scrolling on mobile */
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+    /* Ensure the grid itself has no extra padding or margin */
+    margin: 0;
+    padding: 0;
 }
 
 /* Individual offer item */
@@ -421,7 +421,7 @@ a.disabled-link {
     width: 250px;
     height: 200px;
     flex-shrink: 0; /* Prevents the items from shrinking */
-    background-color: #bbdefb;
+    background-color: #ffffff;
     border-left: 6px solid #43a047;
     padding: 16px;
     border-radius: 10px;
@@ -436,6 +436,7 @@ a.disabled-link {
     text-overflow: ellipsis;
     white-space: normal;
 }
+
 .product-item small {
     display: block;
     margin-top: 5px;
