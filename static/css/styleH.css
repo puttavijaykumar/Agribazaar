@@ -261,27 +261,18 @@ a.disabled-link {
     }
 }
 
-/* ------------------------------------------- */
-/* Top Offers Section - Base Styles */
-/* ------------------------------------------- */
-.offers-section {
+/* --- Offers Section --- */
+/* --- Offers Section --- */
+.offers-section{
     background: #bbdefb;
     box-shadow: 0 -5px 15px rgba(44,95,45,0.05);
+    background-size: 40px 40px;
+    opacity: 0.95;
     padding: 0;
-    
-    /* The key changes for horizontal scrolling: */
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    
-    /* Hide the scrollbar */
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    overflow-x: auto; /* Allow horizontal scrolling */
+    white-space: nowrap; /* Prevent content from wrapping */
+    padding-bottom: 10px; /* Add padding to prevent the scrollbar from overlapping content */
 }
-.offers-section::-webkit-scrollbar {
-    display: none;
-}
-
 .offers-section h2 {
     color: #090b09;
     text-align: left;
@@ -290,25 +281,38 @@ a.disabled-link {
     margin-bottom: 0px;
 }
 
+/* New CSS to remove underlines from links within the offers section */
+.offers-section a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block; /* Crucial for horizontal layout */
+}
+
+/* In your CSS file for the offers section */
+
+/* Parent container should use Flexbox for alignment */
 .product-grid {
     display: flex;
-    flex-wrap: nowrap; /* Prevent items from wrapping */
-    justify-content: space-between;
-    gap: 1.5rem;
+    flex-wrap: nowrap;
+    justify-content: space-between; /* This is the key change for spacing */
+    gap: 3rem; /* Adjust gap for responsiveness */
     margin: 20px;
     padding: 20px;
     background-color: #bbdefb;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
     align-items: stretch;
+    overflow-x: auto; /* Allows horizontal scrolling on small screens */
+    padding-bottom: 10px;
 }
 
+/* Individual offer item */
+/* Individual offer item */
 .product-item {
-    min-width: 200px;
+    min-width: 200px; /* Ensure a minimum size */
     width: 250px;
     height: 200px;
-    flex-shrink: 0;
-    background-color: #ffffff;
+    background-color: #bbdefb;
     border-left: 6px solid #43a047;
     padding: 16px;
     border-radius: 10px;
