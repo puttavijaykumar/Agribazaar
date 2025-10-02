@@ -262,16 +262,17 @@ a.disabled-link {
 }
 
 /* --- Offers Section --- */
-/* --- Offers Section --- */
-.offers-section{
+.offers-section {
     background: #bbdefb;
     box-shadow: 0 -5px 15px rgba(44,95,45,0.05);
     background-size: 40px 40px;
     opacity: 0.95;
     padding: 0;
-    overflow-x: auto; /* Allow horizontal scrolling */
-    white-space: nowrap; /* Prevent content from wrapping */
-    padding-bottom: 10px; /* Add padding to prevent the scrollbar from overlapping content */
+    
+    /* These properties enable horizontal scrolling */
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
 }
 .offers-section h2 {
     color: #090b09;
@@ -285,34 +286,29 @@ a.disabled-link {
 .offers-section a {
     text-decoration: none;
     color: inherit;
-    display: inline-block; /* Crucial for horizontal layout */
+    display: inline-block;
 }
-
-/* In your CSS file for the offers section */
 
 /* Parent container should use Flexbox for alignment */
 .product-grid {
     display: flex;
     flex-wrap: nowrap;
-    justify-content: space-between; /* This is the key change for spacing */
-    gap: 3rem; /* Adjust gap for responsiveness */
+    justify-content: space-between;
+    gap: 1.5rem; /* Adjust gap for spacing */
     margin: 20px;
     padding: 20px;
     background-color: #bbdefb;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
     align-items: stretch;
-    overflow-x: auto; /* Allows horizontal scrolling on small screens */
-    padding-bottom: 10px;
 }
 
 /* Individual offer item */
-/* Individual offer item */
 .product-item {
-    min-width: 200px; /* Ensure a minimum size */
     width: 250px;
     height: 200px;
-    background-color: #bbdefb;
+    flex-shrink: 0; /* Prevent the items from shrinking */
+    background-color: #ffffff;
     border-left: 6px solid #43a047;
     padding: 16px;
     border-radius: 10px;
@@ -328,16 +324,6 @@ a.disabled-link {
     white-space: normal;
 }
 
-/* Rest of your CSS */
-.product-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
-}
-
-.product-item h4,
-.product-item p {
-    margin: 0;
-}
 .product-item small {
     display: block;
     margin-top: 5px;
@@ -349,7 +335,11 @@ a.disabled-link {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
-/* Responsive adjustments */
+
+/* ------------------------------------------- */
+/* Responsive Adjustments */
+/* ------------------------------------------- */
+
 @media (max-width: 768px) {
     .offers-section {
         overflow-x: scroll; /* Force horizontal scroll for better mobile view */
