@@ -9,5 +9,10 @@
             "src": "/(.*)",
             "dest": "agribazaar/wsgi.py"
         }
-    ]
+    ],
+    "functions": {
+        "agribazaar/wsgi.py": {
+            "maxDuration": 30
+        }
+    }
 }
