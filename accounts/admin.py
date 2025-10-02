@@ -21,6 +21,7 @@ admin.site.register(product_farmer)
 admin.site.register(Negotiation)
 admin.site.register(NegotiationMessage)
 admin.site.register(NegotiationSetting)
+from .models import Banner
 
 
 @admin.register(MarketplaceProduct)
@@ -33,3 +34,12 @@ class LogActivityAdmin(admin.ModelAdmin):
     list_filter = ['activity_type', 'timestamp', 'user']
     search_fields = ['user__username', 'description']
     readonly_fields = ['user', 'activity_type', 'description', 'timestamp']
+    
+    
+    
+@admin.register(Banner)
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ('title', 'section', 'page_slug', 'discount_badge')
+    list_filter = ('section',)
+    search_fields = ('title', 'subtitle')
+    prepopulated_fields = {'page_slug': ('title',)}
