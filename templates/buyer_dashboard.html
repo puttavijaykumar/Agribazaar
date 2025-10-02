@@ -193,7 +193,6 @@
     </div>
 
     <!-- Top Offers Section -->
-    <h2>Top Offers</h2>
     <div class="product-grid">
         {% for offer in offers %}
         <a href="{% url 'discounted_products' offer_id=offer.id %}" class="offer-link">
