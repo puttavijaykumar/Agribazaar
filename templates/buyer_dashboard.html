@@ -101,16 +101,40 @@
     </div>
 
   <!-- Banner / Carousel -->
-  <div class="banner-container">
-    {% for banner in banners %}
-      <a href="{% url 'banner_detail' banner.page_slug %}">
-        <div class="banner-organic floating-banner">
-          <h2>{{ banner.title }}</h2>
-          <p>{{ banner.subtitle }}</p>
+  <!-- Banner / Carousel Section -->
+    <div class="banner-container">
+      {% for banner in banners %}
+        <div class="banner-card banner-{{ banner.section }} floating-banner" onclick="location.href='{% url 'banner_detail' banner.page_slug %}'">
+          <div class="banner-content">
+            <h2>{{ banner.title }}</h2>
+            <p>{{ banner.subtitle }}</p>
+            
+            {% if banner.description %}
+              <p class="banner-description">{{ banner.description }}</p>
+            {% endif %}
+            
+            {% if banner.discount_badge %}
+              <span class="discount-badge">{{ banner.discount_badge }}</span>
+            {% endif %}
+            
+            {% if banner.image %}
+              <div class="banner-image">
+                <img src="{{ banner.image.url }}" alt="{{ banner.title }}" loading="lazy">
+              </div>
+            {% endif %}
+            
+            <button class="banner-btn" type="button">Shop Now</button>
+          </div>
+          
+          <div class="banner-overlay"></div>
         </div>
-      </a>
-    {% endfor %}
-  </div>
+      {% empty %}
+        <!-- Fallback if no banners exist -->
+        <div class="no-banners">
+          <p>No promotional banners available at the moment.</p>
+        </div>
+      {% endfor %}
+    </div>
 
 
     <!-- Explore crop section-->
