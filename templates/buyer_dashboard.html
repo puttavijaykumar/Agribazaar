@@ -102,7 +102,7 @@
 
   <!-- Banner / Carousel -->
   <div class="banner-container">
-    {% for banner in organic_banners %}
+    {% for banner in banners %}
       <a href="{% url 'banner_detail' banner.page_slug %}">
         <div class="banner-organic floating-banner">
           <h2>{{ banner.title }}</h2>
