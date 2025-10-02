@@ -101,23 +101,17 @@
     </div>
 
     <!-- Banner / Carousel -->
-    <div class="banner-container" id="bannerContainer mb-0">
-      <!-- Banner 1 - Organic Farming -->
+    <div class="banner-container">
+  {% for banner in organic_banners %}
+    <a href="{% url 'banner_detail' banner.page_slug %}">
       <div class="banner-organic floating-banner">
-        <nav class="nav-organic">
-          <a href="#">Organic Seeds</a>
-          <a href="#">Fertilizers</a>
-          <a href="#">Farming Tools</a>
-          <a href="#">Harvest Storage</a>
-          <a href="#">Livestock</a>
-          <a href="#">Seasonal Produce</a>
-        </nav>
-        <div class="main-banner-organic">
-          <h2>Best of Organic Farming</h2>
-          <p>Get premium quality seeds &amp; equipment</p>
-          <div class="discount-badge">15% OFF on First Order</div>
-        </div>
+        <h2>{{ banner.title }}</h2>
+        <p>{{ banner.subtitle }}</p>
       </div>
+    </a>
+  {% endfor %}
+</div>
+
 
       <!-- Banner 2 - Farm Equipment -->
       <div class="banner-equipment floating-banner">
