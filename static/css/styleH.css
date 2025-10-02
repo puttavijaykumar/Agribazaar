@@ -313,7 +313,7 @@ a.disabled-link {
     width: 250px;
     height: 200px;
     flex-shrink: 0; /* Prevents the items from shrinking */
-    background-color: #ffffff;
+    background-color: #bbdefb;
     border-left: 6px solid #43a047;
     padding: 16px;
     border-radius: 10px;
