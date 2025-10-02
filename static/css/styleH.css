@@ -289,20 +289,20 @@ a.disabled-link {
     display: inline-block;
 }
 
-/* Parent container should use Flexbox for alignment */
 /* Parent container should use Flexbox for horizontal scrolling */
 .product-grid {
     display: flex;
-    flex-wrap: nowrap; /* Prevents items from wrapping to a new line */
-    justify-content: flex-start; /* Aligns items to the left */
-    gap: 1.5rem; /* Space between the chart containers */
+    flex-wrap: nowrap; /* This is the key change to prevent wrapping */
+    justify-content: flex-start;
+    gap: 1.5rem; /* Space between the offers */
+    margin: 20px;
     padding: 20px;
     background-color: #bbdefb;
     border-radius: 12px;
     box-shadow: 0 4px 14px rgba(67, 160, 71, 0.1);
     align-items: stretch;
     
-    /* These properties are crucial for scrolling on mobile */
+    /* Enable horizontal scrolling on mobile */
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
@@ -310,6 +310,7 @@ a.disabled-link {
 
 /* Individual offer item */
 .product-item {
+    min-width: 200px;
     width: 250px;
     height: 200px;
     flex-shrink: 0; /* Prevents the items from shrinking */
@@ -328,7 +329,6 @@ a.disabled-link {
     text-overflow: ellipsis;
     white-space: normal;
 }
-
 .product-item small {
     display: block;
     margin-top: 5px;
