@@ -382,27 +382,19 @@ a.disabled-link {
     margin: 0;
     padding: 0;
 }
-/* ------------------------------------------- */
-/* Top Offers Section - Base Styles */
-/* ------------------------------------------- */
+/* --- Offers Section --- */
 .offers-section {
     background: #bbdefb;
     box-shadow: 0 -5px 15px rgba(44,95,45,0.05);
+    background-size: 40px 40px;
+    opacity: 0.95;
     padding: 0;
     
-    /* The key changes for horizontal scrolling: */
+    /* These properties enable horizontal scrolling */
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
-    
-    /* Hide the scrollbar */
-    -ms-overflow-style: none;
-    scrollbar-width: none;
 }
-.offers-section::-webkit-scrollbar {
-    display: none;
-}
-
 .offers-section h2 {
     color: #090b09;
     text-align: left;
@@ -411,11 +403,19 @@ a.disabled-link {
     margin-bottom: 0px;
 }
 
+/* New CSS to remove underlines from links within the offers section */
+.offers-section a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+}
+
+/* Parent container should use Flexbox for alignment */
 .product-grid {
     display: flex;
-    flex-wrap: nowrap; /* Prevent items from wrapping */
+    flex-wrap: nowrap;
     justify-content: space-between;
-    gap: 1.5rem;
+    gap: 1.5rem; /* Adjust gap for spacing */
     margin: 20px;
     padding: 20px;
     background-color: #bbdefb;
@@ -424,11 +424,11 @@ a.disabled-link {
     align-items: stretch;
 }
 
+/* Individual offer item */
 .product-item {
-    min-width: 200px;
     width: 250px;
     height: 200px;
-    flex-shrink: 0;
+    flex-shrink: 0; /* Prevent the items from shrinking */
     background-color: #ffffff;
     border-left: 6px solid #43a047;
     padding: 16px;
@@ -445,16 +445,6 @@ a.disabled-link {
     white-space: normal;
 }
 
-/* Rest of your CSS */
-.product-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
-}
-
-.product-item h4,
-.product-item p {
-    margin: 0;
-}
 .product-item small {
     display: block;
     margin-top: 5px;
@@ -466,7 +456,11 @@ a.disabled-link {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
-/* Responsive adjustments */
+
+/* ------------------------------------------- */
+/* Responsive Adjustments */
+/* ------------------------------------------- */
+
 @media (max-width: 768px) {
     .offers-section {
         overflow-x: scroll; /* Force horizontal scroll for better mobile view */
@@ -485,6 +479,7 @@ a.disabled-link {
         flex-shrink: 0;
     }
 }
+
 /* Market Prices */
 .market-prices-section{
     background: #d3eb73; /* Light green background */
