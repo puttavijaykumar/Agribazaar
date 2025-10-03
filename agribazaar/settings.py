@@ -26,6 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-yu6h+kl*e$m^+walqvybzv4iz76=0o&g=c(uy&ejp_s=340er*'
 
+
 # CLOUDINARY_STORAGE = {
 #     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
 #     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
@@ -117,7 +118,7 @@ WSGI_APPLICATION = 'agribazaar.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')#render secrete key from environment variable
+SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')#render secrete key from environment variable
 # SECURITY WARNING: don't run with debug turned on in production!
 
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
