@@ -21,7 +21,6 @@ admin.site.register(product_farmer)
 admin.site.register(Negotiation)
 admin.site.register(NegotiationMessage)
 admin.site.register(NegotiationSetting)
-admin.site.register(Banner)
 admin.site.register(Product)
 
 from .models import Banner
