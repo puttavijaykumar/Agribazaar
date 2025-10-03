@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import CustomUser,Role
 from django.contrib.auth.admin import UserAdmin
 from .models import Offer, MarketPrice,MarketplaceProduct,product_farmer
-from .models import Negotiation,NegotiationMessage,NegotiationSetting,LogActivity
+from .models import Negotiation,NegotiationMessage,NegotiationSetting,LogActivity,Banner,Product
 
 
 class CustomUserAdmin(UserAdmin):
@@ -21,6 +21,9 @@ admin.site.register(product_farmer)
 admin.site.register(Negotiation)
 admin.site.register(NegotiationMessage)
 admin.site.register(NegotiationSetting)
+admin.site.register(Banner)
+admin.site.register(Product)
+
 from .models import Banner
 
 
