@@ -1,0 +1,602 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} - AgriBazaar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/styleH.css' %}">
+    <style>
+        .region-hero {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 40%, #4caf50 80%, #66bb6a 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .region-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="india" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M30 15 Q35 10 40 15 Q45 20 40 25 Q35 30 30 25 Q25 20 30 15" fill="white" opacity="0.08"/><circle cx="15" cy="45" r="5" fill="white" opacity="0.05"/><rect x="45" y="40" width="8" height="8" fill="white" opacity="0.06"/></pattern></defs><rect width="100" height="100" fill="url(%23india)"/></svg>') repeat;
+        }
+        
+        .region-card {
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+            transition: all 0.4s ease;
+            border: 3px solid transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .region-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.18);
+            border-color: #28a745;
+        }
+        .region-card.active {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #e8f5e8, #f1f9f1);
+        }
+        
+        .region-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 25px;
+            box-shadow: 0 15px 30px rgba(40, 167, 69, 0.3);
+            position: relative;
+        }
+        .region-icon::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            z-index: -1;
+            opacity: 0.2;
+        }
+        
+        .crop-tag {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 3px;
+            display: inline-block;
+            box-shadow: 0 3px 8px rgba(40, 167, 69, 0.2);
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            height: 100%;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        
+        .map-container {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            border-left: 5px solid #28a745;
+            border-radius: 0 15px 15px 0;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            background: #e8f5e8;
+            transform: translateX(10px);
+        }
+        
+        .info-highlight {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.2);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .region-hero {
+                padding: 60px 0;
+            }
+            .region-card {
+                padding: 25px;
+                margin-bottom: 20px;
+                border-radius: 20px;
+            }
+            .region-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+                border-radius: 20px;
+            }
+            .map-container {
+                padding: 25px;
+                border-radius: 15px;
+            }
+            .stats-card {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .region-hero {
+                padding: 40px 0;
+            }
+            .region-hero h1 {
+                font-size: 2.5rem;
+            }
+            .region-card {
+                padding: 20px;
+                margin: 15px;
+                border-radius: 15px;
+            }
+            .feature-card {
+                padding: 20px;
+            }
+            .crop-tag {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">AgriBazaar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="{% url 'home' %}"><i class="bi bi-house me-1"></i>Home</a>
+                    {% if user.is_authenticated %}
+                        <a class="nav-link" href="{% url 'buyer_dashboard' %}"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="region-hero position-relative">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-10">
+                    <h1 class="display-3 fw-bold mb-4">
+                        <i class="bi bi-geo-alt me-3"></i>{{ page_title }}
+                    </h1>
+                    <p class="lead mb-4 fs-4">Discover India's diverse agricultural landscape across four major regions</p>
+                    <p class="mb-5 opacity-90 fs-5">From the wheat fields of Punjab to the spice gardens of Kerala, explore the rich agricultural heritage of India</p>
+                    
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="map-container">
+                                <i class="bi bi-map display-1 text-success mb-3"></i>
+                                <h4 class="text-success mb-3">Interactive Agricultural Map</h4>
+                                <p class="text-muted">Explore regional specialties, climate zones, and major crops across India's agricultural regions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regional Statistics -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6 text-success fw-bold">Agricultural Overview</h2>
+                <p class="lead text-muted">India's agricultural diversity at a glance</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-card">
+                        <i class="bi bi-globe-asia-australia text-success display-4 mb-3"></i>
+                        <h3 class="text-success">4 Regions</h3>
+                        <p class="text-muted mb-0">Major agricultural zones covering diverse climates and crops</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-card">
+                        <i class="bi bi-rulers text-success display-4 mb-3"></i>
+                        <h3 class="text-success">140M Ha</h3>
+                        <p class="text-muted mb-0">Total agricultural land across all regions</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-card">
+                        <i class="bi bi-speedometer text-success display-4 mb-3"></i>
+                        <h3 class="text-success">50+</h3>
+                        <p class="text-muted mb-0">Major crops grown across different regions</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-card">
+                        <i class="bi bi-people text-success display-4 mb-3"></i>
+                        <h3 class="text-success">120M</h3>
+                        <p class="text-muted mb-0">Farming families across all regions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regional Cards -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6 text-success fw-bold">Explore India's Agricultural Regions</h2>
+                <p class="lead text-muted">Click on any region to discover its agricultural specialties</p>
+            </div>
+
+            <div class="row g-4">
+                {% for region in regions %}
+                <div class="col-lg-6 col-md-6">
+                    <div class="region-card h-100" onclick="selectRegion('{{ region }}')">
+                        {% if region == 'North India' %}
+                            <div class="text-center">
+                                <div class="region-icon">
+                                    <i class="bi bi-snow"></i>
+                                </div>
+                                <h3 class="text-success mb-3">{{ region }}</h3>
+                                <p class="text-muted mb-4">The breadbasket of India, known for wheat, rice, and sugarcane production with modern agricultural practices.</p>
+                                
+                                <div class="mb-4">
+                                    <h6 class="text-success mb-3">Major Crops:</h6>
+                                    <div class="crop-tags">
+                                        <span class="crop-tag">Wheat</span>
+                                        <span class="crop-tag">Rice</span>
+                                        <span class="crop-tag">Sugarcane</span>
+                                        <span class="crop-tag">Cotton</span>
+                                        <span class="crop-tag">Mustard</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row text-start">
+                                    <div class="col-6">
+                                        <h6 class="text-success">States:</h6>
+                                        <small class="text-muted">Punjab, Haryana, UP, Rajasthan, HP</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6 class="text-success">Climate:</h6>
+                                        <small class="text-muted">Continental, Semi-arid</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        {% elif region == 'South India' %}
+                            <div class="text-center">
+                                <div class="region-icon">
+                                    <i class="bi bi-brightness-high"></i>
+                                </div>
+                                <h3 class="text-success mb-3">{{ region }}</h3>
+                                <p class="text-muted mb-4">Tropical paradise known for rice, spices, coconut, and plantation crops with rich biodiversity.</p>
+                                
+                                <div class="mb-4">
+                                    <h6 class="text-success mb-3">Major Crops:</h6>
+                                    <div class="crop-tags">
+                                        <span class="crop-tag">Rice</span>
+                                        <span class="crop-tag">Coffee</span>
+                                        <span class="crop-tag">Spices</span>
+                                        <span class="crop-tag">Coconut</span>
+                                        <span class="crop-tag">Tea</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row text-start">
+                                    <div class="col-6">
+                                        <h6 class="text-success">States:</h6>
+                                        <small class="text-muted">TN, KA, AP, TS, KL</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6 class="text-success">Climate:</h6>
+                                        <small class="text-muted">Tropical, Monsoon</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        {% elif region == 'West India' %}
+                            <div class="text-center">
+                                <div class="region-icon">
+                                    <i class="bi bi-sun"></i>
+                                </div>
+                                <h3 class="text-success mb-3">{{ region }}</h3>
+                                <p class="text-muted mb-4">Industrial and agricultural hub famous for cotton, sugarcane, and diverse horticulture crops.</p>
+                                
+                                <div class="mb-4">
+                                    <h6 class="text-success mb-3">Major Crops:</h6>
+                                    <div class="crop-tags">
+                                        <span class="crop-tag">Cotton</span>
+                                        <span class="crop-tag">Sugarcane</span>
+                                        <span class="crop-tag">Soybean</span>
+                                        <span class="crop-tag">Grapes</span>
+                                        <span class="crop-tag">Onion</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row text-start">
+                                    <div class="col-6">
+                                        <h6 class="text-success">States:</h6>
+                                        <small class="text-muted">Maharashtra, Gujarat, MP, Goa</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6 class="text-success">Climate:</h6>
+                                        <small class="text-muted">Semi-arid, Tropical</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        {% elif region == 'East India' %}
+                            <div class="text-center">
+                                <div class="region-icon">
+                                    <i class="bi bi-cloud-rain"></i>
+                                </div>
+                                <h3 class="text-success mb-3">{{ region }}</h3>
+                                <p class="text-muted mb-4">Rice bowl of India with abundant rainfall, known for rice, jute, tea, and fish cultivation.</p>
+                                
+                                <div class="mb-4">
+                                    <h6 class="text-success mb-3">Major Crops:</h6>
+                                    <div class="crop-tags">
+                                        <span class="crop-tag">Rice</span>
+                                        <span class="crop-tag">Jute</span>
+                                        <span class="crop-tag">Tea</span>
+                                        <span class="crop-tag">Mustard</span>
+                                        <span class="crop-tag">Potato</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row text-start">
+                                    <div class="col-6">
+                                        <h6 class="text-success">States:</h6>
+                                        <small class="text-muted">WB, Bihar, Odisha, Jharkhand</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6 class="text-success">Climate:</h6>
+                                        <small class="text-muted">Humid, Monsoon</small>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Regional Features -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h2 class="display-6 text-success fw-bold mb-4">Regional Agricultural Features</h2>
+                    
+                    <div class="feature-card">
+                        <h5 class="text-success mb-2">
+                            <i class="bi bi-thermometer-half me-2"></i>Diverse Climate Zones
+                        </h5>
+                        <p class="mb-0">Each region offers unique climatic conditions supporting different crop varieties, from tropical to temperate zones.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h5 class="text-success mb-2">
+                            <i class="bi bi-droplet me-2"></i>Varied Irrigation Systems
+                        </h5>
+                        <p class="mb-0">From monsoon-dependent agriculture to canal irrigation and modern drip systems across regions.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h5 class="text-success mb-2">
+                            <i class="bi bi-gear me-2"></i>Traditional & Modern Practices
+                        </h5>
+                        <p class="mb-0">Blend of ancient farming wisdom with modern agricultural technology and scientific methods.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h5 class="text-success mb-2">
+                            <i class="bi bi-truck me-2"></i>Regional Supply Chains
+                        </h5>
+                        <p class="mb-0">Well-established networks connecting rural farmers with urban markets and processing centers.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h5 class="text-success mb-2">
+                            <i class="bi bi-award me-2"></i>Specialty Products
+                        </h5>
+                        <p class="mb-0">Each region is renowned for specific products like Basmati rice, Alphonso mangoes, and Darjeeling tea.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="info-highlight">
+                        <h5 class="mb-3">
+                            <i class="bi bi-info-circle me-2"></i>AgriBazaar Coverage
+                        </h5>
+                        <p class="mb-3">We serve farmers and buyers across all four major regions of India, connecting rural producers with urban consumers.</p>
+                        
+                        <div class="mb-3">
+                            <small class="opacity-75">Regional Presence:</small>
+                            <ul class="list-unstyled mt-2 small">
+                                <li>• 28 States & 8 Union Territories</li>
+                                <li>• 500+ Agricultural Districts</li>
+                                <li>• 50,000+ Pin codes covered</li>
+                                <li>• Multilingual support</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="stats-card">
+                        <h6 class="text-success">Quick Facts</h6>
+                        <hr>
+                        <div class="row text-start">
+                            <div class="col-6">
+                                <small class="text-muted d-block">Total Districts:</small>
+                                <strong class="text-success">766</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block">Crop Seasons:</small>
+                                <strong class="text-success">Kharif, Rabi</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block">Major Rivers:</small>
+                                <strong class="text-success">Ganga, Godavari</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block">Soil Types:</small>
+                                <strong class="text-success">8 Major Types</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-card">
+                        <h6 class="text-success">Regional Support</h6>
+                        <hr>
+                        <p class="small text-muted mb-3">Get region-specific agricultural advice and market information</p>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'help_center' %}" class="btn btn-outline-success btn-sm">
+                                <i class="bi bi-question-circle me-1"></i>Regional Help
+                            </a>
+                            <a href="#" class="btn btn-outline-info btn-sm">
+                                <i class="bi bi-telephone me-1"></i>Local Support
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regional Contact -->
+    <section class="py-5 bg-success text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h3 class="mb-4">Looking for Region-Specific Products or Services?</h3>
+                    <p class="lead mb-4">Connect with local farmers, suppliers, and agricultural experts in your region through AgriBazaar's regional network.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-telephone fs-3 me-3"></i>
+                                <div>
+                                    <h6 class="mb-1">Regional Support</h6>
+                                    <p class="mb-0">+91-9876543210</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope fs-3 me-3"></i>
+                                <div>
+                                    <h6 class="mb-1">Regional Queries</h6>
+                                    <p class="mb-0">regions@agribazaar.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-geo-alt fs-3 me-3"></i>
+                                <div>
+                                    <h6 class="mb-1">Local Offices</h6>
+                                    <p class="mb-0">28 States Covered</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 text-center">
+                    <a href="{% url 'farmer_dashboard' %}" class="btn btn-light btn-lg px-4 py-3 me-2 mb-2">
+                        <i class="bi bi-person-workspace me-2"></i>Join as Farmer
+                    </a>
+                    <a href="{% url 'buyer_dashboard' %}" class="btn btn-outline-light btn-lg px-4 py-3 mb-2">
+                        <i class="bi bi-cart4 me-2"></i>Find Products
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Home -->
+    <div class="container text-center py-4">
+        <a href="{% url 'home' %}" class="btn btn-outline-success btn-lg">
+            <i class="bi bi-arrow-left me-2"></i>Back to Home
+        </a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function selectRegion(regionName) {
+            // Remove active class from all cards
+            document.querySelectorAll('.region-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to clicked card
+            event.currentTarget.classList.add('active');
+            
+            // Show region-specific information (could be expanded)
+            console.log('Selected region:', regionName);
+            
+            // You could add more interactive features here
+            // Like showing region-specific products, weather, etc.
+        }
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to crop tags
+            document.querySelectorAll('.crop-tag').forEach(tag => {
+                tag.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.1)';
+                });
+                tag.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

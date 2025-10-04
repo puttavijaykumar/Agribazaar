@@ -1511,7 +1511,7 @@ def help_center(request):
 def language_settings(request):
     return render(request, 'pages/language.html', {
         'page_title': 'Language Settings',
-        'available_languages': ['English', 'Hindi', 'Tamil', 'Telugu']
+        'available_languages': ['English', 'Hindi',  'Telugu']
     })
 
 def region_india(request):
