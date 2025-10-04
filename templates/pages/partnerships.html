@@ -1,0 +1,544 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} - AgriBazaar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/styleH.css' %}">
+    <style>
+        .partnership-hero {
+            background: linear-gradient(135deg, #1a5f3a 0%, #28a745 50%, #4caf50 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .partnership-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="2" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="2" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="1.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="1.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="1.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        .partnership-card {
+            transition: all 0.4s ease;
+            border: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        .partnership-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .partnership-type {
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-left: 4px solid #28a745;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 0 10px 10px 0;
+        }
+        .benefit-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        .process-step {
+            position: relative;
+        }
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(to bottom, #28a745, #20c997);
+            z-index: 1;
+        }
+        .process-step:last-child::before {
+            display: none;
+        }
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        .stats-counter {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .testimonial-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            font-size: 5rem;
+            color: #28a745;
+            font-family: serif;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">AgriBazaar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="{% url 'home' %}"><i class="bi bi-house me-1"></i>Home</a>
+                    {% if user.is_authenticated %}
+                        <a class="nav-link" href="{% url 'buyer_dashboard' %}"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="partnership-hero position-relative">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h1 class="display-3 fw-bold mb-4">
+                        <i class="bi bi-people-fill me-3"></i>{{ page_content.heading }}
+                    </h1>
+                    <p class="lead mb-4 fs-4">{{ page_content.description }}</p>
+                    <p class="mb-5 opacity-90">Join India's largest agricultural marketplace and scale your farming operations to new heights with our comprehensive partnership programs.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="#partnership-types" class="btn btn-light btn-lg px-4 py-3">
+                            <i class="bi bi-arrow-right me-2"></i>Explore Partnerships
+                        </a>
+                        <a href="#contact" class="btn btn-outline-light btn-lg px-4 py-3">
+                            <i class="bi bi-telephone me-2"></i>Schedule Meeting
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-center">
+                    <div class="d-inline-block position-relative">
+                        <div class="bg-white bg-opacity-20 rounded-circle p-5" style="width: 300px; height: 300px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-diagram-3 display-1"></i>
+                        </div>
+                        <div class="position-absolute top-0 start-0">
+                            <i class="bi bi-geo-alt text-warning fs-1"></i>
+                        </div>
+                        <div class="position-absolute bottom-0 end-0">
+                            <i class="bi bi-graph-up-arrow text-info fs-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 mb-4">
+                    <div class="stats-counter">200+</div>
+                    <h5 class="text-success">Active Partners</h5>
+                    <p class="text-muted">Large-scale farm partnerships</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stats-counter">50K+</div>
+                    <h5 class="text-success">Hectares Covered</h5>
+                    <p class="text-muted">Across partnership network</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stats-counter">₹500Cr+</div>
+                    <h5 class="text-success">Revenue Generated</h5>
+                    <p class="text-muted">For partner farms annually</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stats-counter">95%</div>
+                    <h5 class="text-success">Satisfaction Rate</h5>
+                    <p class="text-muted">Partner retention success</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partnership Types -->
+    <section id="partnership-types" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 text-success fw-bold">Partnership Opportunities</h2>
+                <p class="lead text-muted">Choose the partnership model that aligns with your farming goals</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="partnership-type h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-trophy text-success fs-1 me-3"></i>
+                            <div>
+                                <h4 class="text-success mb-1">Premium Partnership</h4>
+                                <small class="text-muted">For established large-scale farms</small>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Dedicated account management</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Priority marketplace placement</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Guaranteed purchase agreements</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Advanced analytics dashboard</li>
+                        </ul>
+                        <div class="mt-3">
+                            <span class="badge bg-success fs-6">Minimum 1000+ hectares</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="partnership-type h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-graph-up text-success fs-1 me-3"></i>
+                            <div>
+                                <h4 class="text-success mb-1">Growth Partnership</h4>
+                                <small class="text-muted">For expanding medium farms</small>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Scaling support and guidance</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Technology integration assistance</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Market access facilitation</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Financial planning support</li>
+                        </ul>
+                        <div class="mt-3">
+                            <span class="badge bg-info fs-6">Minimum 500+ hectares</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="partnership-type h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-people text-success fs-1 me-3"></i>
+                            <div>
+                                <h4 class="text-success mb-1">Cooperative Partnership</h4>
+                                <small class="text-muted">For farmer cooperatives & groups</small>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Collective bargaining power</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Shared resources and equipment</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Group training programs</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Consolidated logistics</li>
+                        </ul>
+                        <div class="mt-3">
+                            <span class="badge bg-warning text-dark fs-6">10+ member farms</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="partnership-type h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-gear text-success fs-1 me-3"></i>
+                            <div>
+                                <h4 class="text-success mb-1">Technology Partnership</h4>
+                                <small class="text-muted">For tech-forward operations</small>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>AI-powered crop monitoring</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>IoT sensor integration</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Precision agriculture tools</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Data-driven insights</li>
+                        </ul>
+                        <div class="mt-3">
+                            <span class="badge bg-secondary fs-6">Technology adoption ready</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-5 bg-success text-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Partnership Benefits</h2>
+                <p class="lead opacity-90">Comprehensive support for your farming success</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <div class="benefit-icon mx-auto bg-white text-success">
+                            <i class="bi bi-currency-rupee"></i>
+                        </div>
+                        <h4 class="mb-3">Financial Benefits</h4>
+                        <ul class="list-unstyled text-start">
+                            <li class="mb-2">• Guaranteed minimum pricing</li>
+                            <li class="mb-2">• Advance payment options</li>
+                            <li class="mb-2">• Crop insurance support</li>
+                            <li class="mb-2">• Credit facility access</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <div class="benefit-icon mx-auto bg-white text-success">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                        <h4 class="mb-3">Operational Support</h4>
+                        <ul class="list-unstyled text-start">
+                            <li class="mb-2">• Quality control assistance</li>
+                            <li class="mb-2">• Logistics management</li>
+                            <li class="mb-2">• Storage facility access</li>
+                            <li class="mb-2">• Processing support</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <div class="benefit-icon mx-auto bg-white text-success">
+                            <i class="bi bi-mortarboard"></i>
+                        </div>
+                        <h4 class="mb-3">Knowledge Transfer</h4>
+                        <ul class="list-unstyled text-start">
+                            <li class="mb-2">• Expert consultation</li>
+                            <li class="mb-2">• Training programs</li>
+                            <li class="mb-2">• Best practice sharing</li>
+                            <li class="mb-2">• Research collaboration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partnership Process -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 text-success fw-bold">Partnership Process</h2>
+                <p class="lead text-muted">Simple steps to join our partnership network</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 mb-4 process-step">
+                    <div class="text-center">
+                        <div class="step-number">1</div>
+                        <h5>Initial Consultation</h5>
+                        <p class="text-muted">Discuss your farming operations and goals with our partnership team</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-4 process-step">
+                    <div class="text-center">
+                        <div class="step-number">2</div>
+                        <h5>Farm Assessment</h5>
+                        <p class="text-muted">Comprehensive evaluation of your farm's capabilities and potential</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-4 process-step">
+                    <div class="text-center">
+                        <div class="step-number">3</div>
+                        <h5>Partnership Design</h5>
+                        <p class="text-muted">Customize partnership agreement based on your specific needs</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-4 process-step">
+                    <div class="text-center">
+                        <div class="step-number">4</div>
+                        <h5>Launch & Support</h5>
+                        <p class="text-muted">Begin partnership with dedicated onboarding and ongoing support</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 text-success fw-bold">Partner Success Stories</h2>
+                <p class="lead text-muted">What our partners say about their experience</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://via.placeholder.com/60x60" alt="Partner" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-1 text-success">Ramesh Agro Farms</h6>
+                                <small class="text-muted">Premium Partner since 2023</small>
+                            </div>
+                        </div>
+                        <p class="mb-3">AgriBazaar's partnership program transformed our 2000-hectare operation. The guaranteed pricing and market access increased our revenue by 45% in the first year.</p>
+                        <div class="text-warning">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://via.placeholder.com/60x60" alt="Partner" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-1 text-success">Green Valley Cooperative</h6>
+                                <small class="text-muted">Cooperative Partner since 2022</small>
+                            </div>
+                        </div>
+                        <p class="mb-3">Our 25-member cooperative found new markets and better prices through AgriBazaar. The collective bargaining power has been a game-changer for all our farmers.</p>
+                        <div class="text-warning">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5 bg-success text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4">
+                    <h2 class="display-5 fw-bold mb-4">Ready to Partner with Us?</h2>
+                    <p class="lead mb-4">Take the first step towards scaling your farming operations with India's most trusted agricultural marketplace.</p>
+                    
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-telephone fs-3 me-3"></i>
+                        <div>
+                            <h6 class="mb-1">Phone</h6>
+                            <p class="mb-0">+91-9876543210</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-envelope fs-3 me-3"></i>
+                        <div>
+                            <h6 class="mb-1">Email</h6>
+                            <p class="mb-0">partnerships@agribazaar.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <h4 class="text-success mb-4">Request Partnership Information</h4>
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-dark">Farm Name *</label>
+                                        <input type="text" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-dark">Contact Person *</label>
+                                        <input type="text" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-dark">Phone Number *</label>
+                                        <input type="tel" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-dark">Email Address *</label>
+                                        <input type="email" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-dark">Farm Size (Hectares) *</label>
+                                        <input type="number" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-dark">Partnership Type *</label>
+                                        <select class="form-select" required>
+                                            <option value="">Select type</option>
+                                            <option>Premium Partnership</option>
+                                            <option>Growth Partnership</option>
+                                            <option>Cooperative Partnership</option>
+                                            <option>Technology Partnership</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-dark">Message</label>
+                                    <textarea class="form-control" rows="4" placeholder="Tell us about your farming operations and partnership interests..."></textarea>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="bi bi-send me-2"></i>Send Partnership Request
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Home Button -->
+    <div class="container text-center py-4">
+        <a href="{% url 'home' %}" class="btn btn-outline-success btn-lg">
+            <i class="bi bi-arrow-left me-2"></i>Back to Home
+        </a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
