@@ -11,6 +11,8 @@ from .models import LogActivity
 from accounts.views import home
 from .views import buy_category_product_now,add_to_cart_category_product,view_cart_category_product,discounted_products,market_price_detail,banner_detail
 from django.contrib.auth import views as auth_views
+# Footer views functions
+from .views import about_agribazaar,careers,press_releases,agri_science,linkedin_link,twitter_link,instagram_link,sell_on_agribazaar,become_supplier,farm_partnerships,advertise_products,your_account,purchase_protection,help_center,language_settings,region_india,agri_web_services,farm_equipment,returns_centre
 
 urlpatterns = [
     path('', home, name='home'),
@@ -60,7 +62,37 @@ urlpatterns = [
     path('market-price/<str:commodity_name>/', market_price_detail, name='market_price_detail'),
     path("banner/<slug:slug>/", banner_detail, name="banner_detail"),
 
-
+    # Footer URL patterns
+    # Footer Navigation URLs - Get to Know Us
+    path('about/', about_agribazaar, name='about_agribazaar'),
+    path('careers/', careers, name='careers'),
+    path('press-releases/', press_releases, name='press_releases'),
+    path('agri-science/', agri_science, name='agri_science'),
+    
+    # Footer Navigation URLs - Social Media Links
+    path('social/facebook/', linkedin_link, name='linkedin_link'),
+    path('social/twitter/', twitter_link, name='twitter_link'),
+    path('social/instagram/', instagram_link, name='instagram_link'),
+    path('social/linkedin/', linkedin_link, name='linkedin_link'),
+    
+    # Footer Navigation URLs - Make Money with Us
+    path('sell/', sell_on_agribazaar, name='sell_on_agribazaar'),
+    path('supplier/', become_supplier, name='become_supplier'),
+    path('partnerships/', farm_partnerships, name='farm_partnerships'),
+    path('advertise/', advertise_products, name='advertise_products'),
+    
+    # Footer Navigation URLs - Let Us Help You
+    path('account/', your_account, name='your_account'),
+    path('returns/', returns_centre, name='returns_centre'),
+    path('protection/', purchase_protection, name='purchase_protection'),
+    path('help/', help_center, name='help_center'),
+    
+    # Footer Navigation URLs - Bottom Footer Links
+    path('language/', language_settings, name='language_settings'),
+    path('region/india/', region_india, name='region_india'),
+    path('services/', agri_web_services, name='agri_web_services'),
+    path('equipment/', farm_equipment, name='farm_equipment'),
+    
 ]
 
 
