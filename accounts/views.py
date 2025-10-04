@@ -1368,3 +1368,174 @@ def banner_detail(request, slug):
         "banner": banner,
         "products": products,
     })
+
+# Footer section
+# Get to Know Us Views
+def about_agribazaar(request):
+    context = {
+        'page_title': 'About AgriBazaar',
+        'page_content': {
+            'heading': 'About AgriBazaar',
+            'mission': 'Connecting farmers directly with buyers to ensure fair prices and quality products.',
+            'vision': 'To revolutionize agriculture through technology and create sustainable farming communities.',
+            'values': ['Quality', 'Sustainability', 'Fair Trade', 'Innovation']
+        }
+    }
+    return render(request, 'pages/about.html', context)
+
+def careers(request):
+    context = {
+        'page_title': 'Careers at AgriBazaar',
+        'page_content': {
+            'heading': 'Join Our Team',
+            'description': 'Be part of the agricultural revolution. We offer exciting opportunities in tech, agriculture, and business.',
+            'positions': [
+                'Full Stack Developer',
+                'Agricultural Specialist',
+                'Business Development Manager',
+                'Data Analyst'
+            ]
+        }
+    }
+    return render(request, 'pages/careers.html', context)
+
+def press_releases(request):
+    context = {
+        'page_title': 'Press Releases',
+        'page_content': {
+            'heading': 'Latest News',
+            'description': 'Stay updated with our latest announcements and achievements.',
+        }
+    }
+    return render(request, 'pages/press_releases.html', context)
+
+def agri_science(request):
+    context = {
+        'page_title': 'Agricultural Science',
+        'page_content': {
+            'heading': 'Research & Innovation',
+            'description': 'Discover the latest in agricultural research and sustainable farming practices.',
+        }
+    }
+    return render(request, 'pages/agri_science.html', context)
+
+# Social Media Redirects
+def linkedin_link(request):
+    return redirect('https://www.linkedin.com/in/vijaykumar-putta/')
+
+def twitter_link(request):
+    return redirect('https://x.com/Vijaykumar81830')
+
+def instagram_link(request):
+    return redirect('https://www.instagram.com/_putta.vijay_/')
+
+# Make Money with Us Views
+def sell_on_agribazaar(request):
+    context = {
+        'page_title': 'Sell on AgriBazaar',
+        'page_content': {
+            'heading': 'Start Selling Today',
+            'description': 'Join thousands of farmers already selling on our platform.',
+            'benefits': ['Direct access to buyers', 'Fair pricing', 'Quick payments', 'Marketing support']
+        }
+    }
+    return render(request, 'pages/sell.html', context)
+
+def become_supplier(request):
+    context = {
+        'page_title': 'Become a Supplier',
+        'page_content': {
+            'heading': 'Partner with Us',
+            'description': 'Become a certified supplier and reach more customers.',
+        }
+    }
+    return render(request, 'pages/supplier.html', context)
+
+def farm_partnerships(request):
+    context = {
+        'page_title': 'Farm Partnerships',
+        'page_content': {
+            'heading': 'Strategic Partnerships',
+            'description': 'Exclusive partnership opportunities for large-scale farms.',
+        }
+    }
+    return render(request, 'pages/partnerships.html', context)
+
+def advertise_products(request):
+    context = {
+        'page_title': 'Advertise Your Products',
+        'page_content': {
+            'heading': 'Boost Your Sales',
+            'description': 'Increase visibility with our targeted advertising solutions.',
+        }
+    }
+    return render(request, 'pages/advertise.html', context)
+
+# Let Us Help You Views
+@login_required
+def your_account(request):
+    return redirect('buyer_dashboard')
+
+def returns_centre(request):
+    context = {
+        'page_title': 'Returns Centre',
+        'page_content': {
+            'heading': 'Easy Returns & Refunds',
+            'description': 'Our hassle-free return policy ensures customer satisfaction.',
+        }
+    }
+    return render(request, 'pages/returns.html', context)
+
+def purchase_protection(request):
+    context = {
+        'page_title': '100% Purchase Protection',
+        'page_content': {
+            'heading': 'Your Purchases Are Protected',
+            'description': 'Every purchase is backed by our comprehensive protection guarantee.',
+        }
+    }
+    return render(request, 'pages/protection.html', context)
+
+def help_center(request):
+    context = {
+        'page_title': 'Help Center',
+        'page_content': {
+            'heading': 'How Can We Help?',
+            'description': 'Find answers to common questions and get support.',
+            'topics': ['Account Management', 'Orders & Payments', 'Product Questions', 'Technical Support']
+        }
+    }
+    return render(request, 'pages/help.html', context)
+
+# Bottom Footer Views
+def language_settings(request):
+    return render(request, 'pages/language.html', {
+        'page_title': 'Language Settings',
+        'available_languages': ['English', 'Hindi', 'Tamil', 'Telugu']
+    })
+
+def region_india(request):
+    return render(request, 'pages/region.html', {
+        'page_title': 'India Region',
+        'regions': ['North India', 'South India', 'West India', 'East India']
+    })
+
+def agri_web_services(request):
+    context = {
+        'page_title': 'Agri Web Services',
+        'page_content': {
+            'heading': 'Digital Solutions for Agriculture',
+            'services': ['Farm Management Software', 'Weather Monitoring', 'Crop Advisory', 'Market Analysis']
+        }
+    }
+    return render(request, 'pages/web_services.html', context)
+
+def farm_equipment(request):
+    context = {
+        'page_title': 'Farm Equipment',
+        'page_content': {
+            'heading': 'Quality Equipment for Modern Farming',
+            'categories': ['Tractors', 'Irrigation Systems', 'Harvesting Equipment', 'Processing Machinery']
+        }
+    }
+    return render(request, 'pages/equipment.html', context)

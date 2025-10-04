@@ -152,6 +152,7 @@
 
 
 <!-- Add this before the closing </body> tag -->
+<!-- Add this before the closing </body> tag -->
 <footer class="footer-section bg-dark text-light mt-0">
     <div class="container">
         <div class="row g-4">
@@ -159,10 +160,10 @@
             <div class="col-6 col-md-3">
                 <h5 class="footer-heading mb-3 text-success">Get to Know Us</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-light text-decoration-none">About AgriBazaar</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">Careers</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">Press Releases</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">Agri Science</a></li>
+                    <li><a href="{% url 'about_agribazaar' %}" class="text-light text-decoration-none">About AgriBazaar</a></li>
+                    <li><a href="{% url 'careers' %}" class="text-light text-decoration-none">Careers</a></li>
+                    <li><a href="{% url 'press_releases' %}" class="text-light text-decoration-none">Press Releases</a></li>
+                    <li><a href="{% url 'agri_science' %}" class="text-light text-decoration-none">Agri Science</a></li>
                 </ul>
             </div>
 
@@ -170,9 +171,9 @@
             <div class="col-6 col-md-3">
                 <h5 class="footer-heading mb-3 text-success">Connect with Us</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-light text-decoration-none"><i class="bi bi-facebook me-2"></i>Facebook</a></li>
-                    <li><a href="#" class="text-light text-decoration-none"><i class="bi bi-twitter me-2"></i>Twitter</a></li>
-                    <li><a href="#" class="text-light text-decoration-none"><i class="bi bi-instagram me-2"></i>Instagram</a></li>
+                    <li><a href="{% url 'linkedin_link' %}" target="_blank" class="text-light text-decoration-none"><i class="bi bi-linkedin me-2"></i>LinkedIn</a></li>
+                    <li><a href="{% url 'twitter_link' %}" target="_blank" class="text-light text-decoration-none"><i class="bi bi-twitter me-2"></i>X</a></li>
+                    <li><a href="{% url 'instagram_link' %}" target="_blank" class="text-light text-decoration-none"><i class="bi bi-instagram me-2"></i>Instagram</a></li>
                 </ul>
             </div>
 
@@ -180,10 +181,10 @@
             <div class="col-6 col-md-3">
                 <h5 class="footer-heading mb-3 text-success">Make Money with Us</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-light text-decoration-none">Sell on AgriBazaar</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">Become a Supplier</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">Farm Partnerships</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">Advertise Your Products</a></li>
+                    <li><a href="{% url 'sell_on_agribazaar' %}" class="text-light text-decoration-none">Sell on AgriBazaar</a></li>
+                    <li><a href="{% url 'become_supplier' %}" class="text-light text-decoration-none">Become a Supplier</a></li>
+                    <li><a href="{% url 'farm_partnerships' %}" class="text-light text-decoration-none">Farm Partnerships</a></li>
+                    <li><a href="{% url 'advertise_products' %}" class="text-light text-decoration-none">Advertise Your Products</a></li>
                 </ul>
             </div>
 
@@ -191,10 +192,10 @@
             <div class="col-6 col-md-3">
                 <h5 class="footer-heading mb-3 text-success">Let Us Help You</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-light text-decoration-none">Your Account</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">Returns Centre</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">100% Purchase Protection</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">Help</a></li>
+                    <li><a href="{% url 'your_account' %}" class="text-light text-decoration-none">Your Account</a></li>
+                    <li><a href="{% url 'returns_centre' %}" class="text-light text-decoration-none">Returns Centre</a></li>
+                    <li><a href="{% url 'purchase_protection' %}" class="text-light text-decoration-none">100% Purchase Protection</a></li>
+                    <li><a href="{% url 'help_center' %}" class="text-light text-decoration-none">Help</a></li>
                 </ul>
             </div>
         </div>
@@ -206,22 +207,27 @@
                     <div class="col-6">
                         <h6 class="text-success">AgriBazaar</h6>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-light text-decoration-none">English</a></li>
-                            <li><a href="#" class="text-light text-decoration-none">India</a></li>
+                            <li><a href="{% url 'language_settings' %}" class="text-light text-decoration-none">English</a></li>
+                            <li><a href="{% url 'region_india' %}" class="text-light text-decoration-none">India</a></li>
                         </ul>
                     </div>
                     <div class="col-6">
                         <h6 class="text-success">Farm Services</h6>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-light text-decoration-none">Agri Web Services</a></li>
-                            <li><a href="#" class="text-light text-decoration-none">Farm Equipment</a></li>
+                            <li><a href="{% url 'agri_web_services' %}" class="text-light text-decoration-none">Agri Web Services</a></li>
+                            <li><a href="{% url 'farm_equipment' %}" class="text-light text-decoration-none">Farm Equipment</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
+            <div class="col-md-6 text-md-end">
+                <p class="text-muted mb-0">&copy; 2025 AgriBazaar. All rights reserved.</p>
+                <p class="text-muted small">Connecting Farmers with Markets</p>
+            </div>
         </div>
     </div>
 </footer>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
   <script src="{% static 'javascript/scriptH.js' %}"></script>
 </body>
