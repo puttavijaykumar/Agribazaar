@@ -1,6 +1,6 @@
 # management/commands/fix_harvest_images.py
 from django.core.management.base import BaseCommand
-from accounts.models import Product  # Replace with your actual app name
+from accounts.models import Banner  # Replace with your actual app name
 from decimal import Decimal
 
 class Command(BaseCommand):
