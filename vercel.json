@@ -1,18 +1,15 @@
 {
-    "builds": [{
-        "src": "agribazaar/wsgi.py",
-        "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb", "runtime": "python3.12" }
-    }],
+    "builds": [
+        {
+            "src": "agribazaar/wsgi.py",
+            "use": "@vercel/python",
+            "config": { "maxLambdaSize": "15mb", "runtime": "python3.12" }
+        }
+    ],
     "routes": [
         {
             "src": "/(.*)",
             "dest": "agribazaar/wsgi.py"
         }
-    ],
-    "functions": {
-        "agribazaar/wsgi.py": {
-            "maxDuration": 30
-        }
-    }
+    ]
 }
