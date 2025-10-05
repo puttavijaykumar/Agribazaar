@@ -180,6 +180,8 @@ a.disabled-link {
 !-- Banner Styles */
 
 /* Banner Container */
+/* Remove underline from all banner links */
+
 .banner-container {
     display: flex;
     gap: 20px;
@@ -187,7 +189,12 @@ a.disabled-link {
     min-height: 300px;
     overflow-x: auto;
 }
-
+.banner-container a {
+    text-decoration: none;
+}
+.banner-container a:hover {
+    text-decoration: none;
+}
 /* Floating Banner Styles */
 .floating-banner {
     min-width: 300px;
@@ -302,6 +309,16 @@ a.disabled-link {
     display: inline-block;
     margin-top: 10px;
 }
+
+.banner-link {
+    text-decoration: none;
+}
+.banner-link:hover {
+    text-decoration: none;
+}
+
+
+/* Crop section */
 .crop-section {
     background: linear-gradient(rgba(153, 252, 130, 0.85), rgba(153, 252, 130, 0.85)),   
     url('/static/images/farming-bg.jpg'); /* Update path as per your project */
