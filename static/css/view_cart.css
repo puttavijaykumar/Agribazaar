@@ -1,85 +1,97 @@
-/* Action Buttons Styling */
-.btn-outline-secondary {
-    border-color: #6c757d;
-    color: #6c757d;
-}
-
-.btn-outline-danger {
-    border-color: #dc3545;
-    color: #dc3545;
-}
-
-.quantity-section {
+body {
     background-color: #f8f9fa;
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid #dee2e6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
 }
 
-.input-group {
-    flex-wrap: nowrap;
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-.form-control {
+h1 {
+    font-weight: 700;
+    font-size: 2.75rem;
+    color: #2c3e50;
     text-align: center;
-    padding: 0.375rem 0.75rem;
+    margin-bottom: 30px;
 }
 
+.cart-item {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
 
-/* Media query for smaller screens, such as tablets and mobile devices */
+.cart-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.15);
+}
+
+.cart-item img {
+    border-radius: 8px;
+    max-width: 120px;
+    max-height: 120px;
+    object-fit: cover;
+}
+
+.card-body {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+h5 {
+    font-size: 1.4rem;
+    color: #34495e;
+}
+
+.text-muted {
+    font-size: 0.9rem;
+    color: #7f8c8d !important;
+}
+
+a.text-decoration-none {
+    display: block;
+    text-decoration: none !important;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
 @media (max-width: 768px) {
-    /* Adjust padding and font size for better mobile display */
-    .container {
-        padding: 0 15px; /* Add horizontal padding to prevent content from hitting the edges */
-    }
-
-    /* Change flex direction to stack cart items vertically */
-    .cart-item {
+    .card-body {
         flex-direction: column;
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
+        gap: 15px;
     }
-
     .cart-item img {
-        margin-bottom: 10px; /* Add space between image and text on mobile */
-    }
-
-    /* Make buttons and quantity sections full width on mobile */
-    .btn-outline-secondary,
-    .btn-outline-danger {
+        max-width: 100%;
+        max-height: none;
         width: 100%;
-        margin-bottom: 5px; /* Add margin for spacing between buttons */
+        border-radius: 10px;
     }
-
-    .quantity-section {
-        width: 100%;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-    /* Ensure input group and form control are styled for mobile */
-    .input-group {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .form-control {
-        flex-grow: 1; /* Allow the input to grow */
+    h5 {
+        font-size: 1.25rem;
     }
 }
 
-/* Media query for very small screens, like smaller mobile phones */
 @media (max-width: 480px) {
-    /* Further reduce padding and font sizes for a more compact view */
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    .cart-item {
+    .container {
         padding: 10px;
     }
-
-    .quantity-section {
-        padding: 6px 10px;
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
     }
 }

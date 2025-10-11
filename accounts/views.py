@@ -575,16 +575,8 @@ def buyer_dashboard(request):
 
 from .models import CartItem
 
-
 @login_required
 def add_to_cart(request):
-    product = get_object_or_404(product_farmer, id=product_id)
-    if request.user.is_authenticated:
-        LogActivity.objects.create(
-            user=request.user,
-            activity_type='Cart Action',
-            description=f'Added "{product.productName}" to cart'
-        )
     try:
         data = json.loads(request.body)
         product_id = data.get('product_id')
@@ -597,17 +589,17 @@ def add_to_cart(request):
         if product_type == 'ProductFarmer':
             product = get_object_or_404(product_farmer, id=product_id)
             cart_item, created = CartItem.objects.get_or_create(
-            user=request.user,
-            product_farmer = product,
-            defaults={'quantity': 1}
-        )
+                user=request.user,
+                product_farmer=product,
+                defaults={'quantity': 1}
+            )
         elif product_type == 'MarketPlaceProduct':
             product = get_object_or_404(MarketplaceProduct, id=product_id)
             cart_item, created = CartItem.objects.get_or_create(
-            user=request.user,  
-            product_marketplace = product,
-            defaults={'quantity': 1}
-        )
+                user=request.user,
+                product_marketplace=product,
+                defaults={'quantity': 1}
+            )
         else:
             return JsonResponse({'error': 'Invalid product type.'}, status=400)
 
@@ -615,6 +607,13 @@ def add_to_cart(request):
             # If already in cart, increase quantity
             cart_item.quantity += 1
             cart_item.save()
+
+        if request.user.is_authenticated:
+            LogActivity.objects.create(
+                user=request.user,
+                activity_type='Cart Action',
+                description=f'Added "{product.productName}" to cart'
+            )
 
         return JsonResponse({'message': 'Product added to cart successfully!'})
 
@@ -624,6 +623,7 @@ def add_to_cart(request):
     except Exception as e:
         print(f"Error adding to cart: {e}")
         return JsonResponse({'error': 'Something went wrong.'}, status=500)
+
     
 @login_required   
 def view_cart(request):
