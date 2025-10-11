@@ -648,22 +648,34 @@ def buy_product(request):
         try:
             # Get data from the POST request (form data)
             product_id = request.POST.get('product_id')
-            price = request.POST.get('price')
+            # price = request.POST.get('price')
             product_type = request.POST.get('product_type')
-
+            
+            
+            # **<-- HIGHLIGHTED MODIFICATION**
+            # Get the price from the POST request and handle potential errors
+            negotiated_price_str = request.POST.get('price')
+            
             if not product_id:
                 return JsonResponse({'error': 'Invalid product ID provided.'}, status=400)
 
             # Fetch the product from the database
             product = get_object_or_404(product_farmer, id=product_id)
             
-            if price is None:
-                price = product.price  # Use the product's original price if price is not provided
+            # if price is None:
+            #     price = product.price  # Use the product's original price if price is not provided
             
+            # Attempt to use the negotiated price, otherwise fall back to the original price
+            try:
+                final_price = float(negotiated_price_str)
+            except (ValueError, TypeError):
+                # If the negotiated price is invalid or missing, use the original price
+                final_price = product.price
+                
             # Save the data in session for later use (like on the checkout page)
             request.session['buy_now_product_id'] = product_id
             request.session['buy_now_product_type'] = product_type  # Assuming `product_type` exists
-            request.session['buy_now_price'] = price 
+            request.session['buy_now_price'] = final_price 
             
             # Redirect to checkout page or return a success message
             return redirect('checkout_buy_now')
