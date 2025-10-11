@@ -711,6 +711,48 @@ def checkout_buy_now(request):
         else:    
             return redirect('view_cart')  
         
+    if request.method == "POST":
+        quantity_str = request.POST.get('quantity', '1')
+        try:
+            quantity = int(quantity_str)
+        except (ValueError, TypeError):
+            quantity = 1
+
+        max_quantity = product.quantity if product_type == 'ProductFarmer' else product.stock
+
+        if quantity < 1 or quantity > max_quantity:
+            messages.error(request, f"Please select a quantity between 1 and {max_quantity}.")
+            return redirect('checkout_buy_now')
+        
+        # ----------- Place Order Logic Starts Here ----------
+        if product_type == 'ProductFarmer':
+            cart_item, created = CartItem.objects.get_or_create(
+                user=request.user,
+                product_farmer=product,
+                defaults={'quantity': quantity}
+            )
+            if not created:
+                cart_item.quantity = quantity
+                cart_item.save()
+            product.quantity -= quantity
+            product.save()
+        elif product_type == 'ProductMarketplace':
+            cart_item, created = CartItem.objects.get_or_create(
+                user=request.user,
+                product_marketplace=product,
+                defaults={'quantity': quantity}
+            )
+            if not created:
+                cart_item.quantity = quantity
+                cart_item.save()
+            product.stock -= quantity
+            product.save()
+        # ----------- Place Order Logic Ends Here ----------
+
+        messages.success(request, "Order placed successfully!")
+        return redirect('view_cart')
+
+        
     context = {
         'product': product,
         'product_type': product_type,
