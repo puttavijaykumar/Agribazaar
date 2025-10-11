@@ -1030,16 +1030,29 @@ def negotiate_product(request, product_id):
     messages_history = NegotiationMessage.objects.filter(
         negotiation=negotiation
     ).order_by('timestamp')
+    # ORGINAL PRICE DISPLAY 
     
-    latest_proposed_price = None
-    latest_message = messages_history.filter(proposed_price__isnull=False).last()
-    if latest_message:
-        latest_proposed_price = latest_message.proposed_price
+    # latest_proposed_price = None
+    # latest_message = messages_history.filter(proposed_price__isnull=False).last()
+    # if latest_message:
+    #     latest_proposed_price = latest_message.proposed_price
     
     # Use the calculated discounted_price if there's no latest proposed price from a negotiation
-    final_display_price = latest_proposed_price if latest_proposed_price else discounted_price
-
-
+    # final_display_price = latest_proposed_price if latest_proposed_price else discounted_price
+    
+    #  MODIFIED PRICE DISPLAY LOGIC 
+    # First, check for a price from a negotiation bid.
+    latest_proposed_message = messages_history.filter(proposed_price__isnull=False).last()
+    
+    final_display_price = product.price # Start with the original price as a fallback
+    
+    if latest_proposed_message:
+        # If there's a proposed price from a bid, that's the one to use.
+        final_display_price = latest_proposed_message.proposed_price
+    elif discounted_price != product.price:
+        # If there's no bid, but there's a discounted price from the URL, use that.
+        final_display_price = discounted_price
+   
     context = {
         'product': product,
         'negotiation': negotiation,

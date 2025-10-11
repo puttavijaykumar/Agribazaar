@@ -90,7 +90,7 @@
                                 <input type="hidden" id="product-id-buy-now" name="product_id" value="{{ product.id }}">
                                 <input type="hidden" id="product-type-buy-now" name="product_type" value="ProductFarmer">
                                 <input type="hidden" id="negotiated-price" name="price" 
-                                    value="{% if latest_proposed_price %}{{ latest_proposed_price }}{% else %}{{ final_display_price|floatformat:2 }}{% endif %}">
+                                    value="{{ final_display_price|floatformat:2 }}">
                                 <button type="submit" id="add-to-buy" class="btn btn-primary w-100 py-2 h-100">
                                     Buy Now
                                 </button>
