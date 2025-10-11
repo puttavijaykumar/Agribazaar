@@ -46,7 +46,12 @@ body {
     background-color: #25b3a0;
     border-color: #25b3a0;
 }
-
+/* ===== Make Quantity Label Stand Out ===== */
+.form-label[for="quantity"] {
+    color: #ffdf6c !important;  /* Bright gold/yellow for high contrast */
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
 /* ===== Form Styling ===== */
 #place-order {
     border-top: 1px solid #2d4a4a;  /* Updated border color */
