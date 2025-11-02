@@ -50,7 +50,8 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 DEBUG = os.getenv('DEBUG', 'True' if os.getenv('RENDER') is None else 'False') == 'True'
-DEBUG = True
+# DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -68,7 +69,7 @@ LOGGING = {
 # Application definition
   # Debugging to check if it loads correctly
 INSTALLED_APPS = [
-    
+    'corsheaders',  # <-- ADD THIS LINE
     'accounts',
     'cloudinary',
     'cloudinary_storage',
@@ -83,17 +84,39 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  
+
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
+    
     'django.contrib.sessions.middleware.SessionMiddleware',
+    
     'django.middleware.common.CommonMiddleware',
+    
     'django.middleware.csrf.CsrfViewMiddleware',
+    
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'accounts.middleware.ActivityLogMiddleware',
+    
 
 ]
+
+# MIDDLEWARE = [
+#     'whitenoise.middleware.WhiteSmokeMiddleware', # Keep this where it is
+#     'whitenoise.middleware.WhiteNoiseMiddleware',
+#     'django.middleware.security.SecurityMiddleware',
+#     'corsheaders.middleware.CorsMiddleware',  # <-- ADD THIS LINE HERE
+#     'django.contrib.sessions.middleware.SessionMiddleware',
+#     'django.middleware.common.CommonMiddleware',
+#     'django.middleware.csrf.CsrfViewMiddleware',
+#     'django.contrib.auth.middleware.AuthenticationMiddleware',
+#     'django.contrib.messages.middleware.MessageMiddleware',
+#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+#     # 'accounts.middleware.ActivityLogMiddleware',
+
+# ]
 
 ROOT_URLCONF = 'agribazaar.urls'
 
@@ -125,6 +148,28 @@ ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
 CSRF_TRUSTED_ORIGINS = [
     'https://agribazaar-pi.vercel.app',
 ]
+
+# --- CORS SETTINGS FOR REACT FRONTEND ---
+# 
+# 1. This list will hold the single production URL when finalized.
+CORS_ALLOWED_ORIGINS = [
+    # Add the final production URL of the frontend here once known.
+    # e.g., "https://agribazaar-frontend-ui.vercel.app",
+    
+    # Allow local development origins
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# 2. This regex allows all temporary Vercel deployment URLs (Preview branches)
+# This assumes your new frontend project name will start with 'agribazaar-ui' (or similar)
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://agribazaar-ui-\w+\.vercel\.app$",
+]
+
+CORS_ALLOW_CREDENTIALS = True  # Necessary if you use sessions/cookies for auth
+# --- END CORS SETTINGS ---
+
 
 DATABASES = {
     "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
@@ -179,7 +224,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-DEBUG = True
+# DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
