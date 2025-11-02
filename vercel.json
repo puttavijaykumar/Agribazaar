@@ -1,15 +1,35 @@
 {
-    "builds": [
-        {
-            "src": "agribazaar/wsgi.py",
-            "use": "@vercel/python",
-            "config": { "maxLambdaSize": "15mb", "runtime": "python3.12" }
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "agribazaar/wsgi.py"
-        }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "agribazaar-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "agribazaar-frontend/build" 
+      }
+    },
+    {
+      "src": "agribazaar/wsgi.py",
+      "use": "@vercel/python",
+      "config": { 
+        "maxLambdaSize": "15mb", 
+        "runtime": "python3.12" 
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "agribazaar/wsgi.py"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "agribazaar-frontend/build/index.html"
+    }
+  ],
+  "buildCommand": "cd agribazaar-frontend && npm install && npm run build && cd .. && bash build_files.sh"
 }
