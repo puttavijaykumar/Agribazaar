@@ -144,11 +144,15 @@ WSGI_APPLICATION = 'agribazaar.wsgi.application'
 SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')#render secrete key from environment variable
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
+ALLOWED_HOSTS = [
+    'agribazaar-1.onrender.com',            # Your Render backend domain
+    'agribazaar-frontend-ui.vercel.app',    # Your Vercel frontend (if you want frontend to talk to backend)
+    'localhost',
+    '127.0.0.1'
+]
 CSRF_TRUSTED_ORIGINS = [
-    'https://agribazaar-pi.vercel.app',
-    'https://agribazaar-frontend-ui.vercel.app',
-
+    'https://agribazaar-1.onrender.com',                  # Your Render backend
+    'https://agribazaar-frontend-ui.vercel.app',          # Your Vercel frontend
 ]
 
 # --- CORS SETTINGS FOR REACT FRONTEND ---
