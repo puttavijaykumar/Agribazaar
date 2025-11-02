@@ -30,6 +30,5 @@
       "src": "/(.*)",
       "dest": "agribazaar-frontend/dist/index.html"
     }
-  ],
-"buildCommand": "npm install --prefix agribazaar-frontend && npm run build --prefix agribazaar-frontend && bash build_files.sh"
+  ]
 }
