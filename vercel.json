@@ -5,7 +5,7 @@
       "src": "agribazaar-frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "agribazaar-frontend/build" 
+        "distDir": "agribazaar-frontend/dist" 
       }
     },
     {
@@ -28,8 +28,8 @@
     },
     {
       "src": "/(.*)",
-      "dest": "agribazaar-frontend/build/index.html"
+      "dest": "agribazaar-frontend/dist/index.html"
     }
   ],
-  "buildCommand": "cd agribazaar-frontend && npm install && npm run build && cd .. && bash build_files.sh"
+"buildCommand": "npm install --prefix agribazaar-frontend && npm run build --prefix agribazaar-frontend && bash build_files.sh"
 }
