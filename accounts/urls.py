@@ -1,99 +1,25 @@
-from django.urls import path, include
-from .views import register_view, login_view, logout_view
-from .views import register_view, verify_otp,resend_otp
-from .views import product_list_farmer
-from .views import buyer_dashboard,default_dashboard,farmer_dashboard,role_selection_view,category_products,account
-from .views import download_transaction_pdf,farmer_account
-from .views import crop_detail_view,search_results,product_detail,negotiate_product,view_marketplace_product,send_negotiation_reply
-from .views import negotiation_inbox,add_to_cart,monitor_negotiations,view_cart,buy_product,checkout_buy_now
-from .views import user_activity_log,admin_activity_log,get_activity_trends_data,user_analytics_dashboard,get_activity_breakdown_data,get_most_viewed_products_data,farmer_products_view
-from .models import LogActivity
-from accounts.views import home
-from .views import buy_category_product_now,add_to_cart_category_product,view_cart_category_product,discounted_products,market_price_detail,banner_detail
-from django.contrib.auth import views as auth_views
-# Footer views functions
-from .views import about_agribazaar,careers,press_releases,agri_science,linkedin_link,twitter_link,instagram_link,sell_on_agribazaar,become_supplier,farm_partnerships,advertise_products,your_account,purchase_protection,help_center,language_settings,region_india,agri_web_services,farm_equipment,returns_centre
+from django.urls import path
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .views import (
+    RegisterView, OTPGenerateView, OTPVerifyView, GoogleOAuthLoginView,
+    UpdateUserTypeView, FarmerDashboardView, BuyerDashboardView, CombinedDashboardView
+)
+
+from django.http import JsonResponse
+
+def api_root(request):
+    return JsonResponse({"message": "Welcome to Agribazaar API"})
 
 urlpatterns = [
-    path('', home, name='home'),
-    path("register/", register_view, name="register"),
-    path("login/", login_view, name="login"),
-    path("logout/", logout_view, name="logout"),
-    path('verify-otp/', verify_otp, name='verify_otp'),
-    path('resend-otp/', resend_otp, name='resend_otp'),
-    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    path('password_reset/done', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-    path('products/list/', product_list_farmer, name='product_list_farmer'),
-    path("farmer/dashboard/", farmer_dashboard, name="farmer_dashboard"),
-    path("buyer/dashboard/", buyer_dashboard, name="buyer_dashboard"),
-    path("buyer/dashboard/productshow/",buyer_dashboard, name="product_show"),
-    path("default/dashboard/", default_dashboard, name="default_dashboard"),
-    path("role_selection/", role_selection_view, name="role_selection_view"),
-    path('farmer/transactions/download/', download_transaction_pdf, name='download_transaction_pdf'),
-    path('farmer/account/', farmer_account, name='farmer_account'),
-    path('addtocart/', add_to_cart, name='add_to_cart'),
-    path('buy/product/', buy_product, name='buy_product'),
-    path('viewcart/', view_cart, name='view_cart'),
-    path('checkout/buy-now/', checkout_buy_now, name='checkout_buy_now'),
-    path('account/', account, name='account'),
-    path('crop/<str:crop_name>/', crop_detail_view, name='crop_detail_view'),
-    path('search-products/', search_results, name='search_results'),
-    # path('product/<int:id>/', product_detail, name='product_detail'),
-    path('product/<str:product_type>/<int:id>/', product_detail, name='product_detail'),
-    path('negotiate/<int:product_id>/', negotiate_product, name='negotiate_product'),
-    path('negotiation/reply/<int:message_id>/', send_negotiation_reply, name='send_negotiation_reply'),
-    path('negotiation/inbox/', negotiation_inbox, name='negotiation_inbox'),
-    path('product/marketplace/<int:product_id>/', view_marketplace_product, name='view_marketplace_product'),
-    path('monitor/negotiations/', monitor_negotiations, name='monitor_negotiations'),
-    path('add-to-cart-category-product/', add_to_cart_category_product, name='add_to_cart_category_product'),
-    path('category/cart/', view_cart_category_product, name='view_cart_category_product'),
-    path('category/<str:category>/', category_products, name='category_products'),
-    path('category/product/buy',buy_category_product_now, name='buy_category_product_now'),
-    path('activity/me/', user_activity_log, name='user_activity_log'),
-    path('admin/activities/', admin_activity_log, name='admin_activity_log'),
-    path('api/activity-trends/', get_activity_trends_data, name='api_activity_trends'),
-    path('analytics/', user_analytics_dashboard, name='user_analytics'),
-    path('api/activity-breakdown/', get_activity_breakdown_data, name='api_activity_breakdown'),
-    path('api/most-viewed-products/', get_most_viewed_products_data, name='api_most_viewed_products'),
-    path('farmer/my-products/', farmer_products_view, name='farmer_products_view'),
-    path('offers/<int:offer_id>/', discounted_products, name='discounted_products'),
-    path('market-price/<str:commodity_name>/', market_price_detail, name='market_price_detail'),
-    path("banner/<slug:slug>/", banner_detail, name="banner_detail"),
-
-    # Footer URL patterns
-    # Footer Navigation URLs - Get to Know Us
-    path('about/', about_agribazaar, name='about_agribazaar'),
-    path('careers/', careers, name='careers'),
-    path('press-releases/', press_releases, name='press_releases'),
-    path('agri-science/', agri_science, name='agri_science'),
-    
-    # Footer Navigation URLs - Social Media Links
-    path('social/facebook/', linkedin_link, name='linkedin_link'),
-    path('social/twitter/', twitter_link, name='twitter_link'),
-    path('social/instagram/', instagram_link, name='instagram_link'),
-    path('social/linkedin/', linkedin_link, name='linkedin_link'),
-    
-    # Footer Navigation URLs - Make Money with Us
-    path('sell/', sell_on_agribazaar, name='sell_on_agribazaar'),
-    path('supplier/', become_supplier, name='become_supplier'),
-    path('partnerships/', farm_partnerships, name='farm_partnerships'),
-    path('advertise/', advertise_products, name='advertise_products'),
-    
-    # Footer Navigation URLs - Let Us Help You
-    path('account/', your_account, name='your_account'),
-    path('returns/', returns_centre, name='returns_centre'),
-    path('protection/', purchase_protection, name='purchase_protection'),
-    path('help/', help_center, name='help_center'),
-    
-    # Footer Navigation URLs - Bottom Footer Links
-    path('language/', language_settings, name='language_settings'),
-    path('region/india/', region_india, name='region_india'),
-    path('services/', agri_web_services, name='agri_web_services'),
-    path('equipment/', farm_equipment, name='farm_equipment'),
-    
+    path('', api_root),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('otp/generate/', OTPGenerateView.as_view(), name='otp_generate'),
+    path('otp/verify/', OTPVerifyView.as_view(), name='otp_verify'),
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('google-login/', GoogleOAuthLoginView.as_view(), name='google_login'),
+    path('user-type/', UpdateUserTypeView.as_view(), name='update_user_type'),
+    path('dashboard/farmer/', FarmerDashboardView.as_view(), name='farmer_dashboard'),
+    path('dashboard/buyer/', BuyerDashboardView.as_view(), name='buyer_dashboard'),
+    path('dashboard/both/', CombinedDashboardView.as_view(), name='combined_dashboard'),
 ]
-
-
-
