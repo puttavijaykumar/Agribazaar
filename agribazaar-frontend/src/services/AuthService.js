@@ -1,5 +1,7 @@
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
+// REACT_APP_API_BASE_URL is render backend URL set in .env file,frontend will use this to make API calls to backend
+
 export async function registerUser(data) {
   return fetch(`${API_BASE_URL}/api/register/`, {
     method: 'POST',

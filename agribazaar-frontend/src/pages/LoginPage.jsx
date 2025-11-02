@@ -13,11 +13,32 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = e => {
-    e.preventDefault();
-    // TODO: Implement backend login API call, then:
-    // navigate('/') on success
-  };
+  const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login/`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        email,
+        password
+      }),
+      credentials: 'include' // add this if your backend uses cookies/session for auth
+    });
+    const data = await res.json();
+    if (res.ok) {
+      // Store token/session as needed (localStorage, cookies, etc)
+      // Example: localStorage.setItem("token", data.token);
+      navigate('/'); // redirect to homepage on successful login
+    } else {
+      // Handle error (data.detail, etc)
+      alert(data.detail || "Login failed. Please check your credentials.");
+    }
+  } catch (err) {
+    alert("An error occurred. Please try again.");
+  }
+};
+
 
   return (
     <div
