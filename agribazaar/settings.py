@@ -32,25 +32,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
 #     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 # }
+
 import cloudinary
 cloudinary.config(
-    cloud_name='dpiogqjk4',
-    api_key='963572252588284',
-    api_secret='H9QgDvkq8JUvnGATF6tBRkHUSbc'
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET')
 )
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dpiogqjk4',  # Hardcoded
-    'API_KEY': '963572252588284',
-    'API_SECRET': 'H9QgDvkq8JUvnGATF6tBRkHUSbc',
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 }
-
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 # In settings.py
 
 
 DEBUG = os.getenv('DEBUG', 'True' if os.getenv('RENDER') is None else 'False') == 'True'
-# DEBUG = True
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 LOGGING = {
     'version': 1,
@@ -147,16 +147,15 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')#render secrete key f
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','localhost']
 CSRF_TRUSTED_ORIGINS = [
     'https://agribazaar-pi.vercel.app',
+    'https://agribazaar-frontend-ui.vercel.app',
+
 ]
 
 # --- CORS SETTINGS FOR REACT FRONTEND ---
 # 
 # 1. This list will hold the single production URL when finalized.
 CORS_ALLOWED_ORIGINS = [
-    # Add the final production URL of the frontend here once known.
-    # e.g., "https://agribazaar-frontend-ui.vercel.app",
-    
-    # Allow local development origins
+    "https://agribazaar-frontend-ui.vercel.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
