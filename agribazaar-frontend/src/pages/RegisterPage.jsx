@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
+import AuthService from '../services/AuthService'; // ✅ Import your AuthService
 
 const colors = {
   primaryGreen: "#388e3c",
@@ -10,58 +11,60 @@ const colors = {
 };
 
 const RegisterPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPass, setConfirmPass] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPass: '',
+  });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
     setMessage('');
+
+    const { name, email, password, confirmPass } = formData;
+
     if (password !== confirmPass) {
-      setError("Passwords do not match!");
+      setError('Passwords do not match!');
       return;
     }
+
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/register/`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          username: name,
-          email: email,
-          password: password,
-          password2: confirmPass
-        }),
+      const data = await AuthService.register({
+        username: name,
+        email,
+        password,
+        password2: confirmPass,
       });
 
-      const data = await res.json();
-      if (res.ok) {
+      if (data && data.success) {
         setMessage('Registration successful! Please check your email for OTP.');
-        // Optionally, you could trigger OTP manually here if needed
-        navigate('/otp'); // navigate to OTP Verification Page after registration
-      } else if (data && data.detail) {
-        setError(data.detail);
+        navigate('/otp');
       } else {
-        setError('Registration failed. Please try again.');
+        setError(data?.detail || 'Registration failed. Please try again.');
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError('An error occurred during registration. Please try again.');
     }
   };
 
   const handleGoogleSuccess = (credentialResponse) => {
-    // Implement Google registration logic here, then navigate as appropriate
-    // navigate('/otp');
+    // You can handle Google sign-in registration logic here if needed
+    // e.g., AuthService.googleLogin(credentialResponse);
   };
 
   const login = useGoogleLogin({
     onSuccess: handleGoogleSuccess,
-    onError: () => alert('Google Sign-In was unsuccessful. Please try again.'),
-    flow: 'implicit'
+    onError: () => alert('Google Sign-In failed. Please try again.'),
+    flow: 'implicit',
   });
 
   return (
@@ -69,41 +72,45 @@ const RegisterPage = () => {
       style={{
         width: "100vw",
         height: "100vh",
-        minHeight: "100vh",
-        minWidth: "100vw",
         backgroundColor: "#232323",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 20,
-        padding: '1.5rem'
+        padding: '1.5rem',
       }}
     >
-      <div style={{
-        width: "100%",
-        maxWidth: 430,
-        padding: "2.5rem 2rem",
-        backgroundColor: colors.lightBg,
-        color: colors.contrastText,
-        borderRadius: 12,
-        boxShadow: "0 8px 32px rgba(0,0,0,0.16)",
-      }}>
-        <h2 style={{
-          marginBottom: '1.6rem',
-          color: colors.primaryGreen,
-          fontSize: "2.1rem",
-          fontWeight: 700,
-          textAlign: "left"
-        }}>
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 430,
+          padding: "2.5rem 2rem",
+          backgroundColor: colors.lightBg,
+          color: colors.contrastText,
+          borderRadius: 12,
+          boxShadow: "0 8px 32px rgba(0,0,0,0.16)",
+        }}
+      >
+        <h2
+          style={{
+            marginBottom: '1.6rem',
+            color: colors.primaryGreen,
+            fontSize: "2.1rem",
+            fontWeight: 700,
+            textAlign: "left",
+          }}
+        >
           Create your Agribazaar Account
         </h2>
+
         {/* Google Sign Up Button */}
-        <div style={{
-          display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "1.0rem"
-        }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginBottom: "1rem",
+          }}
+        >
           <div
             style={{
               width: "340px",
@@ -133,65 +140,131 @@ const RegisterPage = () => {
             />
             <span>Sign up with Google</span>
           </div>
-          <div style={{
-            width: "80%", margin: "18px 0 8px 0", display: "flex", alignItems: "center"
-          }}>
+          <div
+            style={{
+              width: "80%",
+              margin: "18px 0 8px 0",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <span style={{ flex: 1, height: 1, background: "#d8dadc" }}></span>
-            <span style={{ margin: "0 9px", color: "#888", fontWeight: 500, fontSize: "1rem" }}>or</span>
+            <span style={{
+              margin: "0 9px",
+              color: "#888",
+              fontWeight: 500,
+              fontSize: "1rem"
+            }}>or</span>
             <span style={{ flex: 1, height: 1, background: "#d8dadc" }}></span>
           </div>
         </div>
+
         {/* Registration Form */}
         <form onSubmit={handleRegister}>
           <label>Name:</label>
           <input
-            type="text" required
-            value={name}
-            onChange={e => setName(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem', borderRadius: 4, border: '1px solid #ccc', fontSize: '1rem' }}
+            type="text"
+            name="name"
+            required
+            value={formData.name}
+            onChange={handleChange}
+            style={{
+              width: '100%',
+              padding: '0.5rem',
+              marginBottom: '1rem',
+              borderRadius: 4,
+              border: '1px solid #ccc',
+              fontSize: '1rem',
+            }}
           />
+
           <label>Email:</label>
           <input
-            type="email" required
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem', borderRadius: 4, border: '1px solid #ccc', fontSize: '1rem' }}
+            type="email"
+            name="email"
+            required
+            value={formData.email}
+            onChange={handleChange}
+            style={{
+              width: '100%',
+              padding: '0.5rem',
+              marginBottom: '1rem',
+              borderRadius: 4,
+              border: '1px solid #ccc',
+              fontSize: '1rem',
+            }}
           />
+
           <label>Password:</label>
           <input
-            type="password" required
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem', borderRadius: 4, border: '1px solid #ccc', fontSize: '1rem' }}
+            type="password"
+            name="password"
+            required
+            value={formData.password}
+            onChange={handleChange}
+            style={{
+              width: '100%',
+              padding: '0.5rem',
+              marginBottom: '1rem',
+              borderRadius: 4,
+              border: '1px solid #ccc',
+              fontSize: '1rem',
+            }}
           />
+
           <label>Confirm Password:</label>
           <input
-            type="password" required
-            value={confirmPass}
-            onChange={e => setConfirmPass(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem', borderRadius: 4, border: '1px solid #ccc', fontSize: '1rem' }}
+            type="password"
+            name="confirmPass"
+            required
+            value={formData.confirmPass}
+            onChange={handleChange}
+            style={{
+              width: '100%',
+              padding: '0.5rem',
+              marginBottom: '1rem',
+              borderRadius: 4,
+              border: '1px solid #ccc',
+              fontSize: '1rem',
+            }}
           />
-          <button type="submit" style={{
-            backgroundColor: colors.primaryGreen,
-            color: 'white',
-            padding: '0.8rem',
-            width: '100%',
-            borderRadius: 7,
-            fontWeight: 'bold',
-            fontSize: "1.18rem",
-            letterSpacing: ".02rem"
-          }}>
+
+          <button
+            type="submit"
+            style={{
+              backgroundColor: colors.primaryGreen,
+              color: 'white',
+              padding: '0.8rem',
+              width: '100%',
+              borderRadius: 7,
+              fontWeight: 'bold',
+              fontSize: "1.18rem",
+              letterSpacing: ".02rem",
+              border: 'none',
+              cursor: 'pointer',
+            }}
+          >
             Register
           </button>
         </form>
+
         {message && <p style={{ color: 'green', marginTop: 10 }}>{message}</p>}
         {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
-        <p style={{
-          marginTop: '1.4rem',
-          fontSize: "1rem"
-        }}>
+
+        <p
+          style={{
+            marginTop: '1.4rem',
+            fontSize: "1rem",
+          }}
+        >
           Already have an account?{' '}
-          <Link to="/login" style={{ color: colors.secondaryGreen, textDecoration: "underline" }}>
+          <Link
+            to="/login"
+            style={{
+              color: colors.secondaryGreen,
+              textDecoration: "underline",
+            }}
+          >
             Login here
           </Link>
         </p>

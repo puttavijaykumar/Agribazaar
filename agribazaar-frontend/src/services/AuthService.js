@@ -1,55 +1,79 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+// src/services/AuthService.js
 
-// REACT_APP_API_BASE_URL is render backend URL set in .env file,frontend will use this to make API calls to backend
+// ✅ Use import.meta.env for Vite
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export async function registerUser(data) {
-  return fetch(`${API_BASE_URL}/api/register/`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(data),
-  });
+// Helper to handle API responses safely
+async function handleResponse(response) {
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.detail || "Request failed");
+  return data;
 }
 
-export async function sendOtp(email) {
-  return fetch(`${API_BASE_URL}/api/otp/generate/`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ email }),
-  });
-}
+const AuthService = {
+  // ✅ Registration API
+  register: async (userData) => {
+    const response = await fetch(`${API_BASE_URL}/register/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    });
+    return handleResponse(response);
+  },
 
-export async function verifyOtp(email, otp) {
-  return fetch(`${API_BASE_URL}/api/otp/verify/`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ email, otp }),
-  });
-}
+  // ✅ OTP generate API
+  sendOtp: async (email) => {
+    const response = await fetch(`${API_BASE_URL}/otp/generate/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    return handleResponse(response);
+  },
 
-export async function loginUser(credentials) {
-  return fetch(`${API_BASE_URL}/api/login/`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(credentials),
-  });
-}
+  // ✅ OTP verify API
+  verifyOtp: async (email, otp) => {
+    const response = await fetch(`${API_BASE_URL}/otp/verify/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, otp }),
+    });
+    return handleResponse(response);
+  },
 
-export async function loginWithGoogle(token) {
-  return fetch(`${API_BASE_URL}/api/google-login/`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ token }),
-  });
-}
+  // ✅ Login API
+  login: async (credentials) => {
+    const response = await fetch(`${API_BASE_URL}/login/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials),
+    });
+    return handleResponse(response);
+  },
 
-export async function updateUserType(userType) {
-  const token = localStorage.getItem('access_token');
-  return fetch(`${API_BASE_URL}/api/user-type/`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify({ user_type: userType }),
-  });
-}
+  // ✅ Google login API
+  googleLogin: async (token) => {
+    const response = await fetch(`${API_BASE_URL}/google-login/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+    return handleResponse(response);
+  },
+
+  // ✅ Update user type API
+  updateUserType: async (userType) => {
+    const token = localStorage.getItem("access_token");
+    const response = await fetch(`${API_BASE_URL}/user-type/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({ user_type: userType }),
+    });
+    return handleResponse(response);
+  },
+};
+
+export default AuthService;

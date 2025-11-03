@@ -69,10 +69,6 @@ LOGGING = {
 # Application definition
   # Debugging to check if it loads correctly
 INSTALLED_APPS = [
-    'corsheaders',  # <-- ADD THIS LINE
-    'accounts',
-    'cloudinary',
-    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,28 +77,23 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "whitenoise.runserver_nostatic", 
     "rest_framework",
-
+    'corsheaders',  # <-- ADD THIS LINE
+    'accounts',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',  
-
+    'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', 
-    
     'django.contrib.sessions.middleware.SessionMiddleware',
-    
     'django.middleware.common.CommonMiddleware',
-    
     'django.middleware.csrf.CsrfViewMiddleware',
-    
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-
 ]
 
 # MIDDLEWARE = [
@@ -162,8 +153,9 @@ CSRF_TRUSTED_ORIGINS = [
 # 1. This list will hold the single production URL when finalized.
 CORS_ALLOWED_ORIGINS = [
     "https://agribazaar-frontend-ui.vercel.app",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173", 
+    "http://127.0.0.1:8000", 
 ]
 
 # 2. This regex allows all temporary Vercel deployment URLs (Preview branches)
