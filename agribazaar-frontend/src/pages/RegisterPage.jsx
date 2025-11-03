@@ -1,276 +1,161 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useGoogleLogin } from '@react-oauth/google';
-import AuthService from '../services/AuthService'; // ✅ Import your AuthService
+import React, { useState } from "react";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
+import AuthService from "../services/AuthService";
+import { Eye, EyeOff } from "lucide-react"; // simple icon library
 
-const colors = {
-  primaryGreen: "#388e3c",
-  secondaryGreen: "#81c784",
-  lightBg: "#f1f8e9",
-  contrastText: "#263238",
-};
+const clientId =
+  "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
-const RegisterPage = () => {
+function RegisterPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPass: '',
+    username: "",
+    email: "",
+    password: "",
+    password2: "",
   });
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setMessage('');
-
-    const { name, email, password, confirmPass } = formData;
-
-    if (password !== confirmPass) {
-      setError('Passwords do not match!');
-      return;
-    }
-
+    setMessage("");
     try {
-      const data = await AuthService.register({
-        username: name,
-        email,
-        password,
-        password2: confirmPass,
-      });
-
-      if (data && data.success) {
-        setMessage('Registration successful! Please check your email for OTP.');
-        navigate('/otp');
-      } else {
-        setError(data?.detail || 'Registration failed. Please try again.');
-      }
-    } catch (err) {
-      setError('An error occurred during registration. Please try again.');
+      const res = await AuthService.register(formData);
+      setMessage("✅ Registration successful!");
+      console.log(res);
+    } catch (error) {
+      setMessage("❌ Registration failed. Check your inputs.");
+      console.error(error.response?.data);
     }
   };
 
   const handleGoogleSuccess = (credentialResponse) => {
-    // You can handle Google sign-in registration logic here if needed
-    // e.g., AuthService.googleLogin(credentialResponse);
+    const decoded = jwt_decode(credentialResponse.credential);
+    console.log("Google user:", decoded);
+
+    const googleData = {
+      username: decoded.name,
+      email: decoded.email,
+      password: "GoogleAuth@123",
+      password2: "GoogleAuth@123",
+    };
+
+    AuthService.register(googleData)
+      .then(() => setMessage("✅ Registered successfully using Google!"))
+      .catch(() =>
+        setMessage("⚠️ Google user already exists or registration failed.")
+      );
   };
 
-  const login = useGoogleLogin({
-    onSuccess: handleGoogleSuccess,
-    onError: () => alert('Google Sign-In failed. Please try again.'),
-    flow: 'implicit',
-  });
+  const handleGoogleFailure = () => {
+    setMessage("❌ Google sign-up failed.");
+  };
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "#232323",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: '1.5rem',
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: 430,
-          padding: "2.5rem 2rem",
-          backgroundColor: colors.lightBg,
-          color: colors.contrastText,
-          borderRadius: 12,
-          boxShadow: "0 8px 32px rgba(0,0,0,0.16)",
-        }}
-      >
-        <h2
-          style={{
-            marginBottom: '1.6rem',
-            color: colors.primaryGreen,
-            fontSize: "2.1rem",
-            fontWeight: 700,
-            textAlign: "left",
-          }}
-        >
-          Create your Agribazaar Account
-        </h2>
+    <GoogleOAuthProvider clientId={clientId}>
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
+        <div className="bg-white shadow-lg rounded-xl p-8 w-96">
+          <h2 className="text-2xl font-semibold text-center mb-6">
+            Create Account
+          </h2>
 
-        {/* Google Sign Up Button */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginBottom: "1rem",
-          }}
-        >
-          <div
-            style={{
-              width: "340px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "#fff",
-              borderRadius: "6px",
-              border: "1.5px solid #bbb",
-              boxShadow: "0 2px 8px rgba(10,12,16,0.05)",
-              color: "#666",
-              fontWeight: "500",
-              fontSize: "1.05rem",
-              cursor: "pointer",
-              minHeight: "50px",
-              marginBottom: "1rem",
-              transition: "box-shadow 0.15s",
-            }}
-            onClick={() => login()}
-            onMouseOver={e => e.currentTarget.style.boxShadow = "0 2px 14px 2px #c1e8c6"}
-            onMouseOut={e => e.currentTarget.style.boxShadow = "0 2px 8px rgba(10,12,16,0.05)"}
-          >
-            <img
-              src="https://developers.google.com/identity/images/g-logo.png"
-              alt="Google"
-              style={{ width: 24, marginRight: 15 }}
+          <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+            {/* Username */}
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={formData.username}
+              onChange={handleChange}
+              className="border p-2 rounded"
+              required
             />
-            <span>Sign up with Google</span>
+
+            {/* Email */}
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className="border p-2 rounded"
+              required
+            />
+
+            {/* Password */}
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="border p-2 rounded w-full pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-2.5 text-gray-500"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+
+            {/* Confirm Password */}
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="password2"
+                placeholder="Confirm Password"
+                value={formData.password2}
+                onChange={handleChange}
+                className="border p-2 rounded w-full pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-2.5 text-gray-500"
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+
+            {/* Register Button */}
+            <button
+              type="submit"
+              className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+            >
+              Register
+            </button>
+          </form>
+
+          {/* Google Signup */}
+          <div className="mt-6 text-center">
+            <p className="text-gray-500 mb-2">Or sign up using</p>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleFailure}
+              text="signup_with"
+              shape="pill"
+            />
           </div>
-          <div
-            style={{
-              width: "80%",
-              margin: "18px 0 8px 0",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <span style={{ flex: 1, height: 1, background: "#d8dadc" }}></span>
-            <span style={{
-              margin: "0 9px",
-              color: "#888",
-              fontWeight: 500,
-              fontSize: "1rem"
-            }}>or</span>
-            <span style={{ flex: 1, height: 1, background: "#d8dadc" }}></span>
-          </div>
+
+          {/* Message */}
+          {message && (
+            <p className="mt-4 text-center text-sm text-gray-700">{message}</p>
+          )}
         </div>
-
-        {/* Registration Form */}
-        <form onSubmit={handleRegister}>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            required
-            value={formData.name}
-            onChange={handleChange}
-            style={{
-              width: '100%',
-              padding: '0.5rem',
-              marginBottom: '1rem',
-              borderRadius: 4,
-              border: '1px solid #ccc',
-              fontSize: '1rem',
-            }}
-          />
-
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            style={{
-              width: '100%',
-              padding: '0.5rem',
-              marginBottom: '1rem',
-              borderRadius: 4,
-              border: '1px solid #ccc',
-              fontSize: '1rem',
-            }}
-          />
-
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            required
-            value={formData.password}
-            onChange={handleChange}
-            style={{
-              width: '100%',
-              padding: '0.5rem',
-              marginBottom: '1rem',
-              borderRadius: 4,
-              border: '1px solid #ccc',
-              fontSize: '1rem',
-            }}
-          />
-
-          <label>Confirm Password:</label>
-          <input
-            type="password"
-            name="confirmPass"
-            required
-            value={formData.confirmPass}
-            onChange={handleChange}
-            style={{
-              width: '100%',
-              padding: '0.5rem',
-              marginBottom: '1rem',
-              borderRadius: 4,
-              border: '1px solid #ccc',
-              fontSize: '1rem',
-            }}
-          />
-
-          <button
-            type="submit"
-            style={{
-              backgroundColor: colors.primaryGreen,
-              color: 'white',
-              padding: '0.8rem',
-              width: '100%',
-              borderRadius: 7,
-              fontWeight: 'bold',
-              fontSize: "1.18rem",
-              letterSpacing: ".02rem",
-              border: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            Register
-          </button>
-        </form>
-
-        {message && <p style={{ color: 'green', marginTop: 10 }}>{message}</p>}
-        {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
-
-        <p
-          style={{
-            marginTop: '1.4rem',
-            fontSize: "1rem",
-          }}
-        >
-          Already have an account?{' '}
-          <Link
-            to="/login"
-            style={{
-              color: colors.secondaryGreen,
-              textDecoration: "underline",
-            }}
-          >
-            Login here
-          </Link>
-        </p>
       </div>
-    </div>
+    </GoogleOAuthProvider>
   );
-};
+}
 
 export default RegisterPage;
