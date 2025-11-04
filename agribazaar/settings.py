@@ -10,8 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from pathlib import Path
+from dotenv import load_dotenv
 import os
 import dj_database_url
+
+
+
+# Load environment variables from .env
+load_dotenv()
+
+
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 LOGIN_URL = '/login/'
@@ -19,6 +27,7 @@ LOGIN_REDIRECT_URL = "/buyer/dashboard/"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env_path = BASE_DIR / ".env"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -231,8 +240,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # settings.py
 
-from dotenv import load_dotenv 
-load_dotenv()
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_PORT = 587  

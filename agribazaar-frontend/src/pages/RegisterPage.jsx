@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import AuthService from "../services/AuthService";
 import { Eye, EyeOff } from "lucide-react"; // simple icon library
 
@@ -36,7 +36,7 @@ function RegisterPage() {
   };
 
   const handleGoogleSuccess = (credentialResponse) => {
-    const decoded = jwt_decode(credentialResponse.credential);
+    const decoded = jwtDecode(credentialResponse.credential);
     console.log("Google user:", decoded);
 
     const googleData = {
