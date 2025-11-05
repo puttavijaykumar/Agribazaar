@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import React from "react";
 
 // -------------- THEME & GLOBAL STYLES --------------
@@ -70,16 +70,16 @@ const mainCategoryContainerStyle = {
 
 // -------------- NEWS/ANNOUNCEMENT SECTION --------------
 const newsSectionStyle = {
-  width: '100%',
-  background: '#c1f5bbff',
-  color: '#263238',
-  padding: '18px 0',
-  fontSize: '1.1rem',
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '60px',
+  width: "100%",
+  background: "#c1f5bbff",
+  color: "#263238",
+  padding: "18px 0",
+  fontSize: "1.1rem",
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "60px",
   fontWeight: 500,
   letterSpacing: "0.5px",
 };
@@ -261,30 +261,67 @@ const HomePage = () => {
   const [hoverCategory, setHoverCategory] = React.useState(null);
 
   return (
-    <div style={{ backgroundColor: colors.lightBg, minHeight: "100vh", color: colors.contrastText }}>
+    <div
+      style={{
+        backgroundColor: colors.lightBg,
+        minHeight: "100vh",
+        color: colors.contrastText,
+      }}
+    >
       {/* ---------- NAVIGATION BAR ---------- */}
       <nav style={navbarStyle}>
         <div>
           <h1>Agribazaar</h1>
         </div>
         <div>
-          <button style={{ ...buttonStyle, backgroundColor: colors.harvestYellow, color: colors.primaryGreen }}>
+          <button
+            style={{
+              ...buttonStyle,
+              backgroundColor: colors.harvestYellow,
+              color: colors.primaryGreen,
+            }}
+          >
             Farmer
           </button>
-          <button style={{ ...buttonStyle, backgroundColor: colors.harvestYellow, color: colors.primaryGreen }}>
+          <button
+            style={{
+              ...buttonStyle,
+              backgroundColor: colors.harvestYellow,
+              color: colors.primaryGreen,
+            }}
+          >
             Buyer
           </button>
-          <Link to="/login">
-          <button style={{
-              ...buttonStyle,
-              backgroundColor: "white",
-              color: colors.primaryGreen,
-              borderRadius: "30px",
-              padding: "0.6rem 1.8rem",
-            }}>
-            Login
-          </button>
-          </Link>
+          {/* ✅ If user logged in show LOGOUT, else LOGIN */}
+          {user ? (
+            <button
+              onClick={AuthService.logout}
+              style={{
+                ...buttonStyle,
+                backgroundColor: "#ffffff",
+                color: "#d32f2f",
+                fontWeight: "700",
+                borderRadius: "30px",
+                padding: "0.6rem 1.8rem",
+              }}
+            >
+              Logout
+            </button>
+          ) : (
+            <Link to="/login">
+              <button
+                style={{
+                  ...buttonStyle,
+                  backgroundColor: "white",
+                  color: colors.primaryGreen,
+                  borderRadius: "30px",
+                  padding: "0.6rem 1.8rem",
+                }}
+              >
+                Login
+              </button>
+            </Link>
+          )}
         </div>
       </nav>
 
@@ -299,7 +336,7 @@ const HomePage = () => {
           color: colors.primaryGreen,
         }}
       >
-      Shop By Category
+        Shop By Category
       </h2>
 
       <section style={mainCategoryContainerStyle}>
@@ -307,10 +344,14 @@ const HomePage = () => {
           <div
             key={idx}
             style={mainCategoryBoxStyle}
-            onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.07)")}
-            onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "scale(1.07)")
+            }
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            <span style={{ fontSize: "1.9rem", marginRight: 12 }}>{item.emoji}</span>
+            <span style={{ fontSize: "1.9rem", marginRight: 12 }}>
+              {item.emoji}
+            </span>
             {item.label}
           </div>
         ))}
@@ -327,7 +368,7 @@ const HomePage = () => {
           color: colors.primaryGreen,
         }}
       >
-      Agriculture News & Updates
+        Agriculture News & Updates
       </h2>
       <section style={newsSectionStyle}>
         {newsItems.map((item, i) => (
@@ -346,7 +387,7 @@ const HomePage = () => {
           color: colors.primaryGreen,
         }}
       >
-        Top Offers 
+        Top Offers
       </h2>
       <section style={offersContainer}>
         {offerProducts.map(({ title, desc, img }, idx) => (
@@ -355,9 +396,10 @@ const HomePage = () => {
             style={{
               ...offerCardStyle,
               transform: hoverOffer === idx ? "scale(1.05)" : "scale(1)",
-              boxShadow: hoverOffer === idx
-                ? "0 8px 16px rgba(0,0,0,0.2)"
-                : "0 4px 8px rgba(0,0,0,0.1)",
+              boxShadow:
+                hoverOffer === idx
+                  ? "0 8px 16px rgba(0,0,0,0.2)"
+                  : "0 4px 8px rgba(0,0,0,0.1)",
               transition: "transform 0.3s ease, box-shadow 0.3s ease",
             }}
             onMouseEnter={() => setHoverOffer(idx)}
@@ -381,7 +423,7 @@ const HomePage = () => {
           color: colors.primaryGreen,
         }}
       >
-      Shop Crops, Livestock & More
+        Shop Crops, Livestock & More
       </h2>
       <section style={categoryContainerStyle}>
         {productCategories.map(({ name, img }, idx) => (
@@ -400,7 +442,15 @@ const HomePage = () => {
               onMouseEnter={() => setHoverCategory(idx)}
               onMouseLeave={() => setHoverCategory(null)}
             />
-            <p style={{ marginTop: "1rem", fontWeight: "600", fontSize: "1.15rem" }}>{name}</p>
+            <p
+              style={{
+                marginTop: "1rem",
+                fontWeight: "600",
+                fontSize: "1.15rem",
+              }}
+            >
+              {name}
+            </p>
           </div>
         ))}
       </section>
@@ -416,7 +466,7 @@ const HomePage = () => {
           color: colors.primaryGreen,
         }}
       >
-      Live Market Prices
+        Live Market Prices
       </h2>
       <section style={livePricesStyle}>
         <span>Potato (Kangra) ₹1700 - ₹2600</span>

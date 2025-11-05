@@ -1,10 +1,8 @@
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
-// Make sure your .env does NOT end with a slash (correct example):
-// VITE_API_BASE_URL=https://agribazaar-1.onrender.com/api
 
-// ✅ Register User (Normal Signup)
+// ✅ Normal Register
 const register = async (formData) => {
   const payload = {
     username: formData.username,
@@ -20,14 +18,14 @@ const register = async (formData) => {
   return response.data;
 };
 
+// ✅ Normal Login
 const login = async (loginData) => {
   const response = await axios.post(`${API_URL}/login/`, loginData, {
     headers: { "Content-Type": "application/json" },
   });
 
-  // ✅ Store user session locally (so login persists after refresh)
+  // ✅ Store user session (so Login persists)
   localStorage.setItem("user", JSON.stringify(response.data));
-
   return response.data;
 };
 
@@ -39,15 +37,23 @@ const googleLogin = async (googleUser) => {
       email: googleUser.email,
       name: googleUser.name,
     },
-    { withCredentials: true } // maintain authenticated session
+    { headers: { "Content-Type": "application/json" } }
   );
 
+  // ✅ Store user session locally (IMPORTANT)
+  localStorage.setItem("user", JSON.stringify(response.data));
   return response.data;
 };
 
-// ✅ Export Functions
+// ✅ Logout function
+const logout = () => {
+  localStorage.removeItem("user"); // clear session
+  window.location.reload(); // refresh UI
+};
+
 export default {
   register,
   login,
   googleLogin,
+  logout,
 };
