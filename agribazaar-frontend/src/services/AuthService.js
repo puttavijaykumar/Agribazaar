@@ -1,58 +1,19 @@
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
-const API_URL = import.meta.env.VITE_API_BASE_URL; 
-// IMPORTANT: VITE_API_BASE_URL must NOT end with a trailing slash
-// Example: https://agribazaar-1.onrender.com/api
-
-// 1️⃣ Register User (no OTP here)
+// Register
 const register = async (userData) => {
-  const response = await axios.post(`${API_URL}/register/`, userData, {
-    headers: { "Content-Type": "application/json" },
-  });
-  return response.data; // Returns { message, email }
+  return await axios.post(`${API_URL}/register/`, userData);
 };
 
-// 2️⃣ Send OTP after registration
-const sendOtp = async (email) => {
-  const response = await axios.post(
-    `${API_URL}/send-otp/`,
-    { email },
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
-  return response.data; // Returns { message }
-};
-
-// 3️⃣ Verify OTP to activate account
-const verifyOtp = async ({ email, otp }) => {
-  const response = await axios.post(
-    `${API_URL}/verify-otp/`,
-    { email, otp },
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
-  return response.data; // Returns { message }
-};
-
-// 4️⃣ Login (After OTP verification)
+// Login
 const login = async (loginData) => {
-  const response = await axios.post(`${API_URL}/login/`, loginData, {
-    headers: { "Content-Type": "application/json" },
-  });
-  return response.data;
+  return await axios.post(`${API_URL}/login/`, loginData);
 };
 
-// 5️⃣ Google Login/Signup (we will handle later)
-const registerGoogle = () => {};
-const loginGoogle = () => {};
-
-export default {
-  register,
-  sendOtp,
-  verifyOtp,
-  login,
-  registerGoogle,
-  loginGoogle,
+// Google auth placeholder (backend implementation later)
+const registerGoogle = async (googleData) => {
+  return { message: "Google Sign-In Feature Coming Soon" };
 };
+
+export default { register, login, registerGoogle };

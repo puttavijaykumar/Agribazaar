@@ -28,10 +28,10 @@ ALLOWED_HOSTS = [
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser"
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = "/buyer/dashboard/"
+# LOGIN_URL = '/login/'
+# LOGIN_REDIRECT_URL = "/buyer/dashboard/"
 
-# --------------------
+# # --------------------
 # Installed apps
 # --------------------
 INSTALLED_APPS = [
