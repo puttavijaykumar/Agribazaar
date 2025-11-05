@@ -2,9 +2,21 @@ import axios from "axios";
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Register
-const register = async (userData) => {
-  return await axios.post(`${API_URL}/register/`, userData);
+const register = async (formData) => {
+  const payload = {
+    username: formData.username,
+    email: formData.email,
+    password: formData.password,
+    password2: formData.password2,
+  };
+
+  const response = await axios.post(`${API_URL}/register/`, payload, {
+    headers: { "Content-Type": "application/json" },
+  });
+
+  return response.data;
 };
+
 
 // Login
 const login = async (loginData) => {

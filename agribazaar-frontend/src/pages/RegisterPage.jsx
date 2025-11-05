@@ -25,23 +25,22 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
-    setLoading(true);
-
-    if (formData.password !== formData.password2) {
-      setMessage("❌ Passwords do not match");
-      setLoading(false);
-      return;
-    }
+    setSubmitting(true);
 
     try {
       await AuthService.register(formData);
-      setMessage("✅ Registration successful! Redirecting...");
-      setTimeout(() => navigate("/login"), 1500);
-    } catch (err) {
-      setMessage(err?.response?.data?.email?.[0] || "❌ Registration failed");
+      setMessage("✅ Registration successful! You can now login.");
+      setTimeout(() => navigate("/login"), 1200);
+    } catch (error) {
+      setMessage(
+        error?.response?.data?.password ||
+        error?.response?.data?.email?.[0] ||
+        error?.response?.data?.username?.[0] ||
+        "❌ Registration failed."
+      );
     }
 
-    setLoading(false);
+    setSubmitting(false);
   };
 
   const handleGoogleSignup = async (credentialResponse) => {
