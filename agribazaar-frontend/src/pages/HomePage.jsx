@@ -1,5 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
+import AuthService from "../services/AuthService";
+
+const user = JSON.parse(localStorage.getItem("user"));
 
 // -------------- THEME & GLOBAL STYLES --------------
 const colors = {
@@ -273,6 +276,7 @@ const HomePage = () => {
         <div>
           <h1>Agribazaar</h1>
         </div>
+
         <div>
           <button
             style={{
@@ -292,17 +296,17 @@ const HomePage = () => {
           >
             Buyer
           </button>
-          {/* ✅ If user logged in show LOGOUT, else LOGIN */}
+
           {user ? (
             <button
               onClick={AuthService.logout}
               style={{
                 ...buttonStyle,
-                backgroundColor: "#ffffff",
+                backgroundColor: "#fff",
                 color: "#d32f2f",
-                fontWeight: "700",
                 borderRadius: "30px",
                 padding: "0.6rem 1.8rem",
+                fontWeight: "700",
               }}
             >
               Logout
@@ -324,7 +328,6 @@ const HomePage = () => {
           )}
         </div>
       </nav>
-
       {/* ---------- FEATURE BAR / SERVICE NAVIGATION ---------- */}
       <h2
         style={{
