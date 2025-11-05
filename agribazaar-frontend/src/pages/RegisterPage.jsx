@@ -10,7 +10,7 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    username: "",   // ✅ Must match backend serializer
+    username: "",
     email: "",
     password: "",
     password2: "",
@@ -46,36 +46,53 @@ const RegisterPage = () => {
     setLoading(false);
   };
 
+  // ✅ Unified Input Style (Copy-Paste Applied to All Inputs)
+  const inputStyle = {
+    width: "100%",
+    padding: "12px 16px",
+    borderRadius: 12,
+    border: "2px solid #c8e6c9",
+    fontSize: ".95rem",
+    backgroundColor: "#fff",
+    boxSizing: "border-box",
+  };
+
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <div style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%)",
-        padding: "20px",
-        fontFamily: "'Segoe UI', sans-serif",
-      }}>
-
-        <div style={{
-          background: "white",
-          borderRadius: 20,
-          maxWidth: 420,
-          width: "100%",
-          padding: "2.5rem",
-          boxShadow: "0 18px 45px rgba(46, 125, 50, 0.25)",
-          border: "1px solid rgba(46, 125, 50, 0.2)",
-          animation: "slideUp 0.6s ease-out",
-        }}>
-
-          <h2 style={{
-            textAlign: "center",
-            fontSize: "2rem",
-            marginBottom: "0.5rem",
-            color: "#1b5e20",
-            fontWeight: 700,
-          }}>AgriBazaar</h2>
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%)",
+          padding: "20px",
+          fontFamily: "'Segoe UI', sans-serif",
+        }}
+      >
+        <div
+          style={{
+            background: "white",
+            borderRadius: 20,
+            maxWidth: 420,
+            width: "100%",
+            padding: "2.5rem",
+            boxShadow: "0 18px 45px rgba(46, 125, 50, 0.25)",
+            border: "1px solid rgba(46, 125, 50, 0.2)",
+            animation: "slideUp 0.6s ease-out",
+          }}
+        >
+          <h2
+            style={{
+              textAlign: "center",
+              fontSize: "2rem",
+              marginBottom: "0.5rem",
+              color: "#1b5e20",
+              fontWeight: 700,
+            }}
+          >
+            AgriBazaar
+          </h2>
 
           <p style={{ textAlign: "center", color: "#558b2f", marginBottom: "2rem" }}>
             Create your account
@@ -91,10 +108,7 @@ const RegisterPage = () => {
               value={formData.username}
               onChange={handleChange}
               required
-              style={{
-                padding: "12px 16px", borderRadius: 12,
-                border: "2px solid #c8e6c9", fontSize: ".95rem"
-              }}
+              style={inputStyle}
             />
 
             <input
@@ -104,10 +118,7 @@ const RegisterPage = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              style={{
-                padding: "12px 16px", borderRadius: 12,
-                border: "2px solid #c8e6c9", fontSize: ".95rem"
-              }}
+              style={inputStyle}
             />
 
             <div style={{ position: "relative" }}>
@@ -118,10 +129,7 @@ const RegisterPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                style={{
-                  padding: "12px 16px", borderRadius: 12,
-                  border: "2px solid #c8e6c9", width: "100%"
-                }}
+                style={inputStyle}
               />
               <span
                 onClick={() => setShowPassword(!showPassword)}
@@ -139,10 +147,7 @@ const RegisterPage = () => {
                 value={formData.password2}
                 onChange={handleChange}
                 required
-                style={{
-                  padding: "12px 16px", borderRadius: 12,
-                  border: "2px solid #c8e6c9", width: "100%"
-                }}
+                style={inputStyle}
               />
               <span
                 onClick={() => setShowPass2(!showPass2)}
@@ -165,7 +170,8 @@ const RegisterPage = () => {
                 border: "none",
                 cursor: "pointer",
                 fontWeight: 700,
-                transition: ".3s"
+                transition: ".3s",
+                marginTop: 4,
               }}
             >
               {loading ? "Creating account..." : "🌱 Register"}
@@ -176,17 +182,23 @@ const RegisterPage = () => {
 
           <div style={{ display: "flex", justifyContent: "center" }}>
             <GoogleLogin
-              onSuccess={(res) => console.log("Google Clicked ✅ (we will connect next)")}
+              onSuccess={(res) => console.log("Google Clicked ✅ (Next Step)")}
               onError={() => setMessage("❌ Google failed")}
               width="330"
             />
           </div>
 
-          {message && <p style={{ textAlign: "center", marginTop: 12, color: message.startsWith("✅") ? "#1b5e20" : "#c62828" }}>{message}</p>}
+          {message && (
+            <p style={{ textAlign: "center", marginTop: 12, color: message.startsWith("✅") ? "#1b5e20" : "#c62828" }}>
+              {message}
+            </p>
+          )}
 
           <p style={{ textAlign: "center", marginTop: 20 }}>
             Already have an account?{" "}
-            <Link to="/login" style={{ color: "#1b5e20", fontWeight: 600 }}>Login</Link>
+            <Link to="/login" style={{ color: "#1b5e20", fontWeight: 600 }}>
+              Login
+            </Link>
           </p>
         </div>
       </div>
