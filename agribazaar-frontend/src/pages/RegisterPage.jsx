@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import AuthService from "../services/AuthService";
-import { Eye, EyeOff } from "lucide-react"; // simple icon library
+import { Eye, EyeOff } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
-const clientId =
-  "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
+const colors = {
+  primaryGreen: "#388e3c",
+  secondaryGreen: "#81c784",
+  lightBg: "#f1f8e9",
+  contrastText: "#263238",
+};
+
+const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -17,6 +24,8 @@ function RegisterPage() {
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,32 +34,31 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+    setSubmitting(true);
     try {
       const res = await AuthService.register(formData);
       setMessage("✅ Registration successful!");
-      console.log(res);
+      setTimeout(() => navigate("/login"), 1000);
     } catch (error) {
-      setMessage("❌ Registration failed. Check your inputs.");
-      console.error(error.response?.data);
+      setMessage(error?.response?.data?.detail || "❌ Registration failed. Check your inputs.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const handleGoogleSuccess = (credentialResponse) => {
-    const decoded = jwtDecode(credentialResponse.credential);
-    console.log("Google user:", decoded);
-
-    const googleData = {
-      username: decoded.name,
-      email: decoded.email,
-      password: "GoogleAuth@123",
-      password2: "GoogleAuth@123",
-    };
-
-    AuthService.register(googleData)
-      .then(() => setMessage("✅ Registered successfully using Google!"))
-      .catch(() =>
-        setMessage("⚠️ Google user already exists or registration failed.")
-      );
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setMessage("");
+    setSubmitting(true);
+    try {
+      const decoded = jwtDecode(credentialResponse.credential);
+      // backend should handle social signup logic, such as creating user if not exists or login
+      const res = await AuthService.registerGoogle(decoded);
+      setMessage("✅ Registered successfully using Google!");
+      setTimeout(() => navigate("/login"), 1000);
+    } catch (err) {
+      setMessage("⚠️ Google user already exists or registration failed.");
+    }
+    setSubmitting(false);
   };
 
   const handleGoogleFailure = () => {
@@ -59,99 +67,136 @@ function RegisterPage() {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
-        <div className="bg-white shadow-lg rounded-xl p-8 w-96">
-          <h2 className="text-2xl font-semibold text-center mb-6">
-            Create Account
+      <div style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.lightBg,
+      }}>
+        <div style={{
+          backgroundColor: "#fff",
+          boxShadow: "0 4px 16px rgba(56,142,60,0.10)",
+          borderRadius: 14,
+          padding: "2rem",
+          minWidth: 340,
+          width: 340,
+        }}>
+          <h2 style={{
+            fontSize: "1.7rem",
+            fontWeight: "bold",
+            marginBottom: 20,
+            color: colors.primaryGreen,
+            textAlign: "center"
+          }}>
+            Create your Agribazaar account
           </h2>
-
-          <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-            {/* Username */}
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <input
               type="text"
               name="username"
               placeholder="Username"
               value={formData.username}
               onChange={handleChange}
-              className="border p-2 rounded"
+              style={{ border: "1px solid #ccd", borderRadius: 8, padding: "10px" }}
               required
+              disabled={submitting}
             />
-
-            {/* Email */}
             <input
               type="email"
               name="email"
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="border p-2 rounded"
+              style={{ border: "1px solid #ccd", borderRadius: 8, padding: "10px" }}
               required
+              disabled={submitting}
             />
-
             {/* Password */}
-            <div className="relative">
+            <div style={{position: "relative"}}>
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
-                className="border p-2 rounded w-full pr-10"
+                style={{ border: "1px solid #ccd", borderRadius: 8, padding: "10px", width: "100%" }}
                 required
+                disabled={submitting}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-2.5 text-gray-500"
+                style={{ position: "absolute", right: 8, top: 10, background: "none", border: "none", cursor: "pointer", color: "#888" }}
+                tabIndex={-1}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-
             {/* Confirm Password */}
-            <div className="relative">
+            <div style={{position: "relative"}}>
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="password2"
                 placeholder="Confirm Password"
                 value={formData.password2}
                 onChange={handleChange}
-                className="border p-2 rounded w-full pr-10"
+                style={{ border: "1px solid #ccd", borderRadius: 8, padding: "10px", width: "100%" }}
                 required
+                disabled={submitting}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-2.5 text-gray-500"
+                style={{ position: "absolute", right: 8, top: 10, background: "none", border: "none", cursor: "pointer", color: "#888" }}
+                tabIndex={-1}
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-
-            {/* Register Button */}
             <button
               type="submit"
-              className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+              style={{
+                backgroundColor: colors.primaryGreen,
+                color: "#fff",
+                border: "none",
+                borderRadius: 9,
+                padding: "12px",
+                fontWeight: 600,
+                fontSize: "1.08rem",
+                marginTop: 10,
+                cursor: submitting ? "not-allowed" : "pointer",
+                opacity: submitting ? 0.7 : 1
+              }}
+              disabled={submitting}
             >
-              Register
+              {submitting ? "Registering..." : "Register"}
             </button>
           </form>
-
-          {/* Google Signup */}
-          <div className="mt-6 text-center">
-            <p className="text-gray-500 mb-2">Or sign up using</p>
+          <div style={{ margin: "18px 0", textAlign: "center", color: "#888" }}>
+            <span>or sign up using</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleFailure}
-              text="signup_with"
               shape="pill"
+              width="260"
+              text="signup_with"
+              disabled={submitting}
             />
           </div>
-
-          {/* Message */}
           {message && (
-            <p className="mt-4 text-center text-sm text-gray-700">{message}</p>
+            <p style={{ marginTop: 16, textAlign: "center", color: message.startsWith("✅") ? colors.primaryGreen : "#e35656" }}>
+              {message}
+            </p>
           )}
+          <div style={{marginTop: 20, textAlign: "center", fontSize: "0.97rem", color: "#555"}}>
+            Already registered?{" "}
+            <Link to="/login" style={{ color: colors.secondaryGreen, textDecoration: "underline" }}>
+              Login
+            </Link>
+          </div>
         </div>
       </div>
     </GoogleOAuthProvider>

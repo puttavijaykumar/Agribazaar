@@ -1,22 +1,22 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import RegisterPage from "./pages/RegisterPage"; // ✅ Your main registration page
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage"; // main homepage
 
-// Replace with your actual Google OAuth Client ID
-const clientId =
-  "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
+const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
-const App = () => {
-  return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<RegisterPage />} />
-        </Routes>
-      </Router>
-    </GoogleOAuthProvider>
-  );
-};
+const App = () => (
+  <GoogleOAuthProvider clientId={clientId}>
+    <Router>
+      <Routes>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+    </Router>
+  </GoogleOAuthProvider>
+);
 
 export default App;
