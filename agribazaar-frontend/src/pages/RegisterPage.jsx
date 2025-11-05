@@ -36,9 +36,11 @@ function RegisterPage() {
     setMessage("");
     setSubmitting(true);
     try {
-      const res = await AuthService.register(formData);
-      setMessage("✅ Registration successful!");
-      setTimeout(() => navigate("/login"), 1000);
+      await AuthService.register(formData);
+      setMessage("✅ Registration successful! Please verify the OTP sent to your email.");
+      setTimeout(() => {
+        navigate("/verify-otp", { state: { email: formData.email } }); // Pass email for OTP verification
+      }, 1000);
     } catch (error) {
       setMessage(error?.response?.data?.detail || "❌ Registration failed. Check your inputs.");
     } finally {
@@ -51,10 +53,11 @@ function RegisterPage() {
     setSubmitting(true);
     try {
       const decoded = jwtDecode(credentialResponse.credential);
-      // backend should handle social signup logic, such as creating user if not exists or login
-      const res = await AuthService.registerGoogle(decoded);
-      setMessage("✅ Registered successfully using Google!");
-      setTimeout(() => navigate("/login"), 1000);
+      await AuthService.registerGoogle(decoded);
+      setMessage("✅ Registered using Google! Please verify the OTP sent to your Google email.");
+      setTimeout(() => {
+        navigate("/verify-otp", { state: { email: decoded.email } }); // Pass Google email for OTP page
+      }, 1000);
     } catch (err) {
       setMessage("⚠️ Google user already exists or registration failed.");
     }
@@ -113,7 +116,7 @@ function RegisterPage() {
               disabled={submitting}
             />
             {/* Password */}
-            <div style={{position: "relative"}}>
+            <div style={{ position: "relative" }}>
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
@@ -127,14 +130,17 @@ function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                style={{ position: "absolute", right: 8, top: 10, background: "none", border: "none", cursor: "pointer", color: "#888" }}
+                style={{
+                  position: "absolute", right: 8, top: 10,
+                  background: "none", border: "none", cursor: "pointer", color: "#888"
+                }}
                 tabIndex={-1}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
             {/* Confirm Password */}
-            <div style={{position: "relative"}}>
+            <div style={{ position: "relative" }}>
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="password2"
@@ -148,7 +154,10 @@ function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                style={{ position: "absolute", right: 8, top: 10, background: "none", border: "none", cursor: "pointer", color: "#888" }}
+                style={{
+                  position: "absolute", right: 8, top: 10,
+                  background: "none", border: "none", cursor: "pointer", color: "#888"
+                }}
                 tabIndex={-1}
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -187,11 +196,14 @@ function RegisterPage() {
             />
           </div>
           {message && (
-            <p style={{ marginTop: 16, textAlign: "center", color: message.startsWith("✅") ? colors.primaryGreen : "#e35656" }}>
+            <p style={{
+              marginTop: 16, textAlign: "center",
+              color: message.startsWith("✅") ? colors.primaryGreen : "#e35656"
+            }}>
               {message}
             </p>
           )}
-          <div style={{marginTop: 20, textAlign: "center", fontSize: "0.97rem", color: "#555"}}>
+          <div style={{ marginTop: 20, textAlign: "center", fontSize: "0.97rem", color: "#555" }}>
             Already registered?{" "}
             <Link to="/login" style={{ color: colors.secondaryGreen, textDecoration: "underline" }}>
               Login

@@ -37,9 +37,18 @@ const loginGoogle = async (googleUser) => {
   return response.data;
 };
 
+// OTP email verification
+const verifyOtp = async ({ email, otp }) => {
+  const response = await axios.post(`${API_URL}/verify-otp/`, { email, otp }, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
+};
+
 export default {
   register,
   registerGoogle,
   login,
-  loginGoogle
+  loginGoogle,
+  verifyOtp
 };

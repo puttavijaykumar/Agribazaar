@@ -1,71 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import AuthService from "../services/AuthService";
 
-const OTPVerificationPage = ({ onVerify }) => {
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+const OTPVerifyPage = () => {
+  const [otp, setOtp] = useState("");
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const email = location.state?.email; // Email passed from RegisterPage
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setMessage('');
-
-    if (!email || !otp) {
-      setError('Email and OTP are required');
-      return;
-    }
-
+    setMessage("");
+    setSubmitting(true);
     try {
-      const response = await fetch('/api/otp/verify/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setMessage(data.message || 'OTP verified successfully.');
-        // You can redirect or update state here on success
-      } else {
-        setError(data.error || 'OTP verification failed.');
-      }
+      await AuthService.verifyOtp({ email, otp }); // Implement verifyOtp in your AuthService.js
+      setMessage("✅ Email verified! You can login now.");
+      setTimeout(() => navigate("/login"), 1400);
     } catch (err) {
-      setError('An error occurred, please try again later.');
+      setMessage("❌ Invalid OTP. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '40px auto', padding: 20, backgroundColor: '#f1f8e9', borderRadius: 8 }}>
-      <h2>Verify OTP</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email Address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Enter OTP"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
-          required
-        />
-        <button
-          type="submit"
-          style={{ width: '100%', padding: '10px', backgroundColor: '#388e3c', color: 'white', border: 'none', borderRadius: 4 }}
-        >
-          Verify OTP
-        </button>
-      </form>
-
-      {message && <p style={{ color: 'green', marginTop: 15 }}>{message}</p>}
-      {error && <p style={{ color: 'red', marginTop: 15 }}>{error}</p>}
+    <div style={{ background: "#f1f8e9", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <div style={{ background: "#fff", borderRadius: 14, padding: "2rem", minWidth: 340, width: 340, boxShadow: "0 4px 16px #388e3c22" }}>
+        <h2 style={{ color: "#388e3c", textAlign: "center", marginBottom: "16px" }}>
+          Enter Email OTP
+        </h2>
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <input
+            type="text"
+            value={otp}
+            onChange={e => setOtp(e.target.value)}
+            placeholder="6-digit OTP from email"
+            required
+            disabled={submitting}
+            style={{ border: "1px solid #ccd", borderRadius: 8, padding: "10px" }}
+          />
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#388e3c",
+              color: "#fff",
+              border: "none",
+              borderRadius: 9,
+              padding: "12px",
+              fontWeight: 600,
+              fontSize: "1.08rem",
+              cursor: submitting ? "not-allowed" : "pointer",
+              opacity: submitting ? 0.7 : 1
+            }}
+            disabled={submitting}
+          >
+            {submitting ? "Verifying..." : "Verify OTP"}
+          </button>
+        </form>
+        {message && (
+          <p style={{ marginTop: 16, textAlign: "center", color: message.startsWith("✅") ? "#388e3c" : "#e35656" }}>
+            {message}
+          </p>
+        )}
+      </div>
     </div>
   );
 };
 
-export default OTPVerificationPage;
+export default OTPVerifyPage;
