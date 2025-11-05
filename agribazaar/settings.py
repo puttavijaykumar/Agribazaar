@@ -61,7 +61,6 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',   # keep first
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -152,13 +151,7 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "https://agribazaar-frontend-ui.vercel.app",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
-
-# match any vercel preview (safe if you want all previews)
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://.*\.vercel\.app$",
+   
 ]
 
 CSRF_TRUSTED_ORIGINS = [
