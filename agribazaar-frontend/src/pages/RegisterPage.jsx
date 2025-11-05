@@ -62,8 +62,9 @@ const RegisterPage = () => {
     alignItems: "center",
     background: "linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%)",
     position: "relative",
-    overflow: "hidden",
+    overflow: "auto",
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    padding: "20px",
   };
 
   const bgDecorationStyle = {
@@ -265,8 +266,8 @@ const RegisterPage = () => {
         <div style={cardStyle}>
           {/* Header */}
           <div style={headerStyle}>
-            <div style={logoStyle}>🌾🌱</div>
-            <h2 style={titleStyle}>AgriBasaar</h2>
+            <div style={logoStyle}></div>
+            <h2 style={titleStyle}>AgriBazaar</h2>
             <p style={subtitleStyle}>Join our farming community</p>
           </div>
 
