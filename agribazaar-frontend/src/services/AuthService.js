@@ -24,8 +24,14 @@ const login = async (loginData) => {
 };
 
 // Google auth placeholder (backend implementation later)
-const registerGoogle = async (googleData) => {
-  return { message: "Google Sign-In Feature Coming Soon" };
+const registerGoogle = async (googleUser) => {
+  const response = await axios.post(
+    `${API_URL}/register/google/`,
+    { email: googleUser.email, name: googleUser.name },
+    { withCredentials: true }
+  );
+  return response.data;
 };
+
 
 export default { register, login, registerGoogle };
