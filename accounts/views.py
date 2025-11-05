@@ -8,6 +8,9 @@ from rest_framework.views import APIView
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.hashers import make_password
 from .serializers import GoogleAuthSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import CustomUser
 
 # User Registration View
 class RegisterView(generics.CreateAPIView):
@@ -48,3 +51,26 @@ class GoogleRegisterView(APIView):
             {"message": "Google login successful", "email": user.email},
             status=status.HTTP_200_OK
         )
+        
+@api_view(["POST"])
+def google_login(request):
+    email = request.data.get("email")
+    name = request.data.get("name") or email.split("@")[0]
+
+    # If user exists → login, else create account
+    user, created = CustomUser.objects.get_or_create(
+        email=email,
+        defaults={"username": name}
+    )
+
+    user.is_active = True
+    user.save()
+
+    login(request, user)  # ✅ Maintain login session
+
+    return Response({
+        "message": "Google login success",
+        "username": user.username,
+        "email": user.email,
+        "new_user": created,
+    })

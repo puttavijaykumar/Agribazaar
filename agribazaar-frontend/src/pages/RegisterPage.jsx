@@ -32,7 +32,7 @@ const RegisterPage = () => {
 
     try {
       await AuthService.register(formData);
-      setMessage("✅ Registration successful! Redirecting to login...");
+      setMessage("✅ Registration successful! Redirecting...");
       setTimeout(() => navigate("/login"), 1300);
     } catch (error) {
       setMessage(
@@ -46,7 +46,23 @@ const RegisterPage = () => {
     setLoading(false);
   };
 
-  // ✅ Unified Input Style (Copy-Paste Applied to All Inputs)
+  // ✅ Clean Google Signup Handler
+  const handleGoogleSignup = async (credentialResponse) => {
+    try {
+      const decoded = jwtDecode(credentialResponse.credential);
+
+      await AuthService.googleLogin({
+        email: decoded.email,
+        name: decoded.name,
+      });
+
+      // ✅ Direct login successful → Navigate to home
+      navigate("/");
+    } catch (err) {
+      setMessage("❌ Google login failed.");
+    }
+  };
+
   const inputStyle = {
     width: "100%",
     padding: "12px 16px",
@@ -65,7 +81,7 @@ const RegisterPage = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          background: "linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%)",
+          background: "linear-gradient(135deg, #e8f5e9, #c8e6c9, #a5d6a7)",
           padding: "20px",
           fontFamily: "'Segoe UI', sans-serif",
         }}
@@ -100,7 +116,6 @@ const RegisterPage = () => {
 
           {/* FORM */}
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-
             <input
               type="text"
               name="username"
@@ -133,7 +148,13 @@ const RegisterPage = () => {
               />
               <span
                 onClick={() => setShowPassword(!showPassword)}
-                style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", cursor: "pointer" }}
+                style={{
+                  position: "absolute",
+                  right: 14,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
               >
                 {showPassword ? "👁️" : "👁️‍🗨️"}
               </span>
@@ -151,7 +172,13 @@ const RegisterPage = () => {
               />
               <span
                 onClick={() => setShowPass2(!showPass2)}
-                style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", cursor: "pointer" }}
+                style={{
+                  position: "absolute",
+                  right: 14,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
               >
                 {showPass2 ? "👁️" : "👁️‍🗨️"}
               </span>
@@ -180,10 +207,11 @@ const RegisterPage = () => {
 
           <div style={{ textAlign: "center", margin: "18px 0", color: "#558b2f" }}>or</div>
 
+          {/* ✅ GOOGLE SIGNUP */}
           <div style={{ display: "flex", justifyContent: "center" }}>
             <GoogleLogin
-              onSuccess={(res) => console.log("Google Clicked ✅ (Next Step)")}
-              onError={() => setMessage("❌ Google failed")}
+              onSuccess={handleGoogleSignup}
+              onError={() => setMessage("❌ Google sign-in failed")}
               width="330"
             />
           </div>
