@@ -48,7 +48,7 @@ const googleLogin = async (googleUser) => {
 // ✅ Logout function
 const logout = () => {
   localStorage.removeItem("user"); // clear session
-  window.location.reload(); // refresh UI
+  window.location.href = "/login";  // ✅ Redirect to login page
 };
 
 export default {
