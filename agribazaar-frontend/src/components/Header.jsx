@@ -7,8 +7,7 @@ export default function Header() {
       <nav>
         <Link to="/" className="mx-2 hover:underline">Home</Link>
         <Link to="/login" className="mx-2 hover:underline">Login</Link>
-        <Link to="/farmer-dashboard" className="mx-2 hover:underline">Farmer Dashboard</Link>
-        <Link to="/buyer-dashboard" className="mx-2 hover:underline">Buyer Dashboard</Link>
+        
       </nav>
     </header>
   );

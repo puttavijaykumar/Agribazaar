@@ -1,219 +1,443 @@
 import React, { useState } from "react";
-import { Mail, Lock, User, CheckCircle, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthService from "../services/AuthService";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+
+const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
 const RegisterPage = () => {
-  const [formData, setFormData] = useState({ username: "", email: "", password: "", password2: "" });
-  const [msg, setMsg] = useState("");
-  const [msgType, setMsgType] = useState("");
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
+  });
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
+  const [showPass2, setShowPass2] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (formData.password !== formData.password2) {
-      setMsg("❌ Passwords do not match");
-      setMsgType("error");
-      return;
-    }
-
-    if (formData.password.length < 8) {
-      setMsg("❌ Password must be at least 8 characters");
-      setMsgType("error");
-      return;
-    }
-
+    setMessage("");
     setLoading(true);
-    try {
-      await new Promise(r => setTimeout(r, 1500));
-      setMsg("✅ Registered successfully! Redirecting to login...");
-      setMsgType("success");
-      setFormData({ username: "", email: "", password: "", password2: "" });
-    } catch (error) {
-      setMsg("❌ Registration failed. Please try again.");
-      setMsgType("error");
+
+    if (formData.password !== formData.password2) {
+      setMessage("❌ Passwords do not match");
       setLoading(false);
+      return;
+    }
+
+    try {
+      await AuthService.register(formData);
+      setMessage("✅ Registration successful! Redirecting...");
+      setTimeout(() => navigate("/login"), 1500);
+    } catch (err) {
+      setMessage(err?.response?.data?.email?.[0] || "❌ Registration failed");
+    }
+
+    setLoading(false);
+  };
+
+  const handleGoogleSignup = async (credentialResponse) => {
+    try {
+      const userInfo = jwtDecode(credentialResponse.credential);
+      await AuthService.registerGoogle(userInfo);
+      setMessage("✅ Signed up with Google!");
+      setTimeout(() => navigate("/"), 800);
+    } catch {
+      setMessage("❌ Google signup failed");
     }
   };
 
+  const containerStyle = {
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%)",
+    position: "relative",
+    overflow: "hidden",
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+  };
+
+  const bgDecorationStyle = {
+    position: "absolute",
+    borderRadius: "50%",
+    opacity: 0.1,
+    pointerEvents: "none",
+  };
+
+  const cardStyle = {
+    background: "linear-gradient(180deg, #ffffff 0%, #f1f8f6 100%)",
+    borderRadius: 20,
+    width: "100%",
+    maxWidth: 420,
+    padding: "2.5rem",
+    boxShadow: "0 20px 60px rgba(0, 100, 0, 0.15)",
+    border: "1px solid rgba(76, 175, 80, 0.2)",
+    position: "relative",
+    zIndex: 10,
+    animation: "slideUp 0.6s ease-out",
+  };
+
+  const headerStyle = {
+    textAlign: "center",
+    marginBottom: "2rem",
+  };
+
+  const logoStyle = {
+    fontSize: "3rem",
+    marginBottom: "0.5rem",
+  };
+
+  const titleStyle = {
+    color: "#1b5e20",
+    marginBottom: "0.5rem",
+    fontSize: "1.95rem",
+    fontWeight: 700,
+    letterSpacing: "-0.5px",
+  };
+
+  const subtitleStyle = {
+    color: "#558b2f",
+    fontSize: "0.95rem",
+    fontWeight: 400,
+  };
+
+  const formStyle = {
+    display: "flex",
+    flexDirection: "column",
+    gap: 14,
+  };
+
+  const inputStyle = {
+    padding: "12px 16px",
+    borderRadius: 12,
+    border: "2px solid #e0f2e9",
+    width: "100%",
+    fontSize: "0.95rem",
+    fontFamily: "inherit",
+    transition: "all 0.3s ease",
+    backgroundColor: "#f8fdf7",
+    color: "#1b5e20",
+    boxSizing: "border-box",
+  };
+
+  const inputFocusStyle = {
+    ...inputStyle,
+    borderColor: "#4caf50",
+    backgroundColor: "#ffffff",
+    boxShadow: "0 0 0 3px rgba(76, 175, 80, 0.1)",
+    outline: "none",
+  };
+
+  const passwordContainerStyle = {
+    position: "relative",
+  };
+
+  const eyeStyle = {
+    position: "absolute",
+    right: 14,
+    top: "50%",
+    transform: "translateY(-50%)",
+    cursor: "pointer",
+    fontSize: "1.2rem",
+    userSelect: "none",
+    transition: "transform 0.2s ease",
+  };
+
+  const buttonStyle = {
+    background: "linear-gradient(135deg, #2e7d32 0%, #388e3c 50%, #43a047 100%)",
+    color: "#ffffff",
+    padding: "14px 20px",
+    borderRadius: 12,
+    border: "none",
+    cursor: "pointer",
+    fontWeight: 700,
+    fontSize: "1rem",
+    letterSpacing: "0.5px",
+    transition: "all 0.3s ease",
+    boxShadow: "0 8px 20px rgba(46, 125, 50, 0.3)",
+    transform: "translateY(0)",
+  };
+
+  const buttonHoverStyle = {
+    ...buttonStyle,
+    transform: "translateY(-2px)",
+    boxShadow: "0 12px 28px rgba(46, 125, 50, 0.4)",
+  };
+
+  const dividerStyle = {
+    textAlign: "center",
+    margin: "18px 0",
+    color: "#558b2f",
+    fontSize: "0.9rem",
+    fontWeight: 500,
+    position: "relative",
+  };
+
+  const dividerLineStyle = {
+    content: '""',
+    position: "absolute",
+    top: "50%",
+    width: "100%",
+    height: "1px",
+    backgroundColor: "#c8e6c9",
+    zIndex: 0,
+  };
+
+  const dividerTextStyle = {
+    position: "relative",
+    display: "inline-block",
+    backgroundColor: "#f1f8f6",
+    padding: "0 8px",
+    zIndex: 1,
+  };
+
+  const messageStyle = {
+    marginTop: 16,
+    textAlign: "center",
+    color: message.startsWith("✅") ? "#1b5e20" : "#c62828",
+    fontSize: "0.95rem",
+    fontWeight: 500,
+    animation: "fadeIn 0.4s ease",
+  };
+
+  const loginLinkStyle = {
+    marginTop: "1.5rem",
+    textAlign: "center",
+    color: "#558b2f",
+    fontSize: "0.95rem",
+  };
+
+  const linkStyle = {
+    color: "#2e7d32",
+    fontWeight: 700,
+    textDecoration: "none",
+    transition: "all 0.3s ease",
+    borderBottom: "2px solid transparent",
+  };
+
+  const [buttonHover, setButtonHover] = useState(false);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-lime-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden">
-      {/* Animated background blobs */}
-      <div className="absolute top-0 left-0 w-72 h-72 sm:w-96 sm:h-96 bg-green-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -z-10"></div>
-      <div className="absolute bottom-0 right-0 w-72 h-72 sm:w-96 sm:h-96 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -z-10"></div>
+    <GoogleOAuthProvider clientId={clientId}>
+      <div style={containerStyle}>
+        {/* Background Decorations */}
+        <div
+          style={{
+            ...bgDecorationStyle,
+            width: 300,
+            height: 300,
+            background: "#81c784",
+            top: -100,
+            left: -100,
+          }}
+        />
+        <div
+          style={{
+            ...bgDecorationStyle,
+            width: 250,
+            height: 250,
+            background: "#a5d6a7",
+            bottom: -80,
+            right: -50,
+          }}
+        />
+        <div
+          style={{
+            ...bgDecorationStyle,
+            width: 200,
+            height: 200,
+            background: "#81c784",
+            top: "50%",
+            right: "5%",
+          }}
+        />
 
-      <div className="w-full max-w-md lg:max-w-lg">
-        {/* Header Section */}
-        <div className="text-center mb-8 sm:mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-4 shadow-lg hover:shadow-xl transform hover:scale-110 transition">
-            <User className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+        {/* Main Card */}
+        <div style={cardStyle}>
+          {/* Header */}
+          <div style={headerStyle}>
+            <div style={logoStyle}>🌾🌱</div>
+            <h2 style={titleStyle}>AgriBasaar</h2>
+            <p style={subtitleStyle}>Join our farming community</p>
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-2">
-            Create Account
-          </h1>
-          <p className="text-gray-600 text-sm sm:text-base">Join us today and get started in seconds</p>
-        </div>
 
-        {/* Alert Messages */}
-        {msg && (
-          <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${
-            msgType === "success" 
-              ? "bg-green-50 border border-green-200" 
-              : "bg-red-50 border border-red-200"
-          }`}>
-            {msgType === "success" ? (
-              <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-            ) : (
-              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
-            )}
-            <p className={msgType === "success" ? "text-green-800 text-sm font-medium" : "text-red-800 text-sm font-medium"}>
-              {msg}
-            </p>
-          </div>
-        )}
+          {/* Form */}
+          <form onSubmit={handleSubmit} style={formStyle}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              onFocus={(e) => (e.target.style.borderColor = "#4caf50")}
+              onBlur={(e) => (e.target.style.borderColor = "#e0f2e9")}
+              required
+              style={inputStyle}
+            />
 
-        {/* Main Form Card */}
-        <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 backdrop-blur-sm bg-opacity-95 border border-white border-opacity-50">
-          <div onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-            {/* Username Input */}
-            <div className="group">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Username</label>
-              <div className="relative">
-                <User className="absolute left-4 top-4 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition" />
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  placeholder="johndoe"
-                  required
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition bg-gray-50 focus:bg-white"
-                />
-              </div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={handleChange}
+              onFocus={(e) => (e.target.style.borderColor = "#4caf50")}
+              onBlur={(e) => (e.target.style.borderColor = "#e0f2e9")}
+              required
+              style={inputStyle}
+            />
+
+            <div style={passwordContainerStyle}>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                onFocus={(e) => (e.target.style.borderColor = "#4caf50")}
+                onBlur={(e) => (e.target.style.borderColor = "#e0f2e9")}
+                required
+                style={inputStyle}
+              />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                style={eyeStyle}
+                onMouseEnter={(e) => (e.target.style.transform = "translateY(-50%) scale(1.2)")}
+                onMouseLeave={(e) => (e.target.style.transform = "translateY(-50%) scale(1)")}
+              >
+                {showPassword ? "👁️" : "👁️‍🗨️"}
+              </span>
             </div>
 
-            {/* Email Input */}
-            <div className="group">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-4 w-5 h-5 text-gray-400 group-focus-within:text-green-500 transition" />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="john@example.com"
-                  required
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition bg-gray-50 focus:bg-white"
-                />
-              </div>
+            <div style={passwordContainerStyle}>
+              <input
+                type={showPass2 ? "text" : "password"}
+                name="password2"
+                placeholder="Confirm Password"
+                value={formData.password2}
+                onChange={handleChange}
+                onFocus={(e) => (e.target.style.borderColor = "#4caf50")}
+                onBlur={(e) => (e.target.style.borderColor = "#e0f2e9")}
+                required
+                style={inputStyle}
+              />
+              <span
+                onClick={() => setShowPass2(!showPass2)}
+                style={eyeStyle}
+                onMouseEnter={(e) => (e.target.style.transform = "translateY(-50%) scale(1.2)")}
+                onMouseLeave={(e) => (e.target.style.transform = "translateY(-50%) scale(1)")}
+              >
+                {showPass2 ? "👁️" : "👁️‍🗨️"}
+              </span>
             </div>
 
-            {/* Password Input */}
-            <div className="group">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-4 w-5 h-5 text-gray-400 group-focus-within:text-green-500 transition" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Min. 8 characters"
-                  required
-                  className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition bg-gray-50 focus:bg-white"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Confirm Password Input */}
-            <div className="group">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-4 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition" />
-                <input
-                  type={showPassword2 ? "text" : "password"}
-                  name="password2"
-                  value={formData.password2}
-                  onChange={handleChange}
-                  placeholder="Re-enter password"
-                  required
-                  className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-gray-50 focus:bg-white"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword2(!showPassword2)}
-                  className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition"
-                >
-                  {showPassword2 ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Terms & Conditions */}
-            <div className="flex items-center gap-2 text-xs sm:text-sm">
-              <input type="checkbox" id="terms" className="w-4 h-4 rounded border-gray-300 cursor-pointer" required />
-              <label htmlFor="terms" className="text-gray-600 cursor-pointer">
-                I agree to the <span className="text-blue-600 font-semibold hover:underline">Terms & Conditions</span>
-              </label>
-            </div>
-
-            {/* Register Button */}
             <button
-              onClick={handleSubmit}
+              type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-3 sm:py-4 rounded-xl hover:from-blue-600 hover:to-purple-700 transition transform hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 mt-6 shadow-lg text-base sm:text-lg"
+              style={buttonHover && !loading ? buttonHoverStyle : buttonStyle}
+              onMouseEnter={() => !loading && setButtonHover(true)}
+              onMouseLeave={() => setButtonHover(false)}
+              onMouseDown={(e) => {
+                e.target.style.transform = "translateY(0px)";
+              }}
+              onMouseUp={(e) => {
+                e.target.style.transform = buttonHover ? "translateY(-2px)" : "translateY(0)";
+              }}
             >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="inline-block animate-spin">⏳</span>
-                  Creating account...
-                </span>
-              ) : (
-                "Create Account"
-              )}
+              {loading ? "Creating account..." : "🌱 Register"}
             </button>
-          </div>
+          </form>
 
           {/* Divider */}
-          <div className="flex items-center gap-4 my-6 sm:my-8">
-            <div className="flex-1 h-px bg-gray-300"></div>
-            <span className="text-gray-500 text-xs sm:text-sm font-medium">OR</span>
-            <div className="flex-1 h-px bg-gray-300"></div>
+          <div style={dividerStyle}>
+            <div style={dividerLineStyle}></div>
+            <span style={dividerTextStyle}>or</span>
           </div>
 
-          {/* Social Login Options */}
-          <button className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-green-300 rounded-xl hover:bg-green-50 transition font-medium text-sm sm:text-base text-gray-700">
-            <span>🔵</span> Continue with Google
-          </button>
+          {/* Google Login */}
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
+            <GoogleLogin
+              onSuccess={handleGoogleSignup}
+              onError={() => setMessage("❌ Google failed")}
+              width="330"
+            />
+          </div>
+
+          {/* Message */}
+          {message && <p style={messageStyle}>{message}</p>}
 
           {/* Login Link */}
-          <p className="text-center text-gray-600 text-xs sm:text-sm mt-6">
+          <p style={loginLinkStyle}>
             Already have an account?{" "}
-            <button className="font-bold text-green-600 hover:text-emerald-600 transition">
-              Login here
-            </button>
+            <Link
+              to="/login"
+              style={linkStyle}
+              onMouseEnter={(e) => {
+                e.target.style.borderBottomColor = "#2e7d32";
+                e.target.style.color = "#1b5e20";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.borderBottomColor = "transparent";
+                e.target.style.color = "#2e7d32";
+              }}
+            >
+              Login
+            </Link>
           </p>
         </div>
 
-        {/* Footer */}
-        <p className="text-center text-gray-500 text-xs sm:text-sm mt-6">
-          By registering, you agree to our privacy policy
-        </p>
+        <style>{`
+          @keyframes slideUp {
+            from {
+              opacity: 0;
+              transform: translateY(40px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
+          }
+
+          input::placeholder {
+            color: #a1d9a1;
+          }
+
+          input:focus {
+            outline: none;
+          }
+
+          button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+          }
+
+          @media (max-width: 480px) {
+            ${cardStyle} {
+              padding: 1.5rem;
+              max-width: 90%;
+            }
+          }
+        `}</style>
       </div>
-    </div>
+    </GoogleOAuthProvider>
   );
 };
 
