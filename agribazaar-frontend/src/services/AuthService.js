@@ -20,12 +20,14 @@ const register = async (formData) => {
   return response.data;
 };
 
-// ✅ Login User (Email + Password)
 const login = async (loginData) => {
   const response = await axios.post(`${API_URL}/login/`, loginData, {
     headers: { "Content-Type": "application/json" },
-    withCredentials: true, // allow session cookies if backend uses them
   });
+
+  // ✅ Store user session locally (so login persists after refresh)
+  localStorage.setItem("user", JSON.stringify(response.data));
+
   return response.data;
 };
 

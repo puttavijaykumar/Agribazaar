@@ -1,26 +1,36 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AuthService from "../services/AuthService";
+import { Link, useNavigate } from "react-router-dom"; 
 
 const LoginPage = () => {
+  const navigate = useNavigate();   // ✅ Initialize navigate
+
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [buttonHover, setButtonHover] = useState(false);
 
-  const handleChange = (e) => setLoginData({ ...loginData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setMsg("");
     setLoading(true);
+
     try {
       await AuthService.login(loginData);
       setMsg("✅ Logged in successfully!");
+
+      // ✅ Redirect to homepage after login
+      setTimeout(() => navigate("/"), 700);
+
     } catch {
       setMsg("❌ Login failed. Please check your credentials.");
     }
+
     setLoading(false);
   };
 
