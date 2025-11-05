@@ -24,13 +24,24 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+
     try {
       const res = await AuthService.login({ email, password });
+
+      // ✅ If backend says account not verified → send OTP & redirect to verify
+      if (res?.requires_otp === true) {
+        await AuthService.sendOtp(email);
+        setMessage("⚠️ Your account is not verified. OTP sent again.");
+        return setTimeout(() => navigate("/verify-otp", { state: { email } }), 1200);
+      }
+
       setMessage("✅ Login successful!");
       setTimeout(() => navigate('/'), 1000);
+
     } catch (err) {
       setMessage(err?.response?.data?.detail || "❌ Login failed. Check your credentials.");
     }
+
     setLoading(false);
   };
 
@@ -39,9 +50,17 @@ const LoginPage = () => {
     setLoading(true);
     try {
       const decoded = jwtDecode(credentialResponse.credential);
-      await AuthService.loginGoogle(decoded);
+      const res = await AuthService.loginGoogle(decoded);
+
+      if (res?.requires_otp === true) {
+        await AuthService.sendOtp(decoded.email);
+        setMessage("⚠️ Verify OTP sent to your Google email.");
+        return setTimeout(() => navigate("/verify-otp", { state: { email: decoded.email } }), 1200);
+      }
+
       setMessage("✅ Logged in with Google!");
-      setTimeout(() => navigate('/'), 600);
+      setTimeout(() => navigate('/'), 700);
+
     } catch (err) {
       setMessage("⚠️ Google login failed.");
     }
@@ -79,7 +98,8 @@ const LoginPage = () => {
           }}>
             Login to Agribazaar
           </h2>
-          <form onSubmit={handleLogin} style={{display: "flex", flexDirection: "column", gap: 15}}>
+
+          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 15 }}>
             <input
               type="email"
               required
@@ -113,9 +133,11 @@ const LoginPage = () => {
               {loading ? "Logging in..." : "Login"}
             </button>
           </form>
-          <div style={{margin: "16px 0", textAlign: "center", color: "#888"}}>
+
+          <div style={{ margin: "16px 0", textAlign: "center", color: "#888" }}>
             <span>or login using</span>
           </div>
+
           <div style={{ display: "flex", justifyContent: "center" }}>
             <GoogleLogin
               text="signin_with"
@@ -126,11 +148,13 @@ const LoginPage = () => {
               disabled={loading}
             />
           </div>
+
           {message && (
             <p style={{ marginTop: 12, textAlign: "center", color: message.startsWith("✅") ? colors.primaryGreen : "#e35656" }}>
               {message}
             </p>
           )}
+
           <p style={{
             marginTop: '1.1rem',
             fontSize: ".97rem",

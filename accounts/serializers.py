@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.contrib.auth.password_validation import validate_password
 from .models import CustomUser
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -7,22 +6,20 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'password', 'password2']
-        extra_kwargs = {
-            'password': {'write_only': True},
-        }
+        fields = ("username", "email", "password", "password2")
+        extra_kwargs = {"password": {"write_only": True}}
 
-    def validate(self, attrs):
-        if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"password": "Passwords didn't match."})
-        validate_password(attrs['password'])
-        return attrs
+    def validate(self, data):
+        if data["password"] != data["password2"]:
+            raise serializers.ValidationError({"password": "Passwords do not match"})
+        return data
 
     def create(self, validated_data):
-        validated_data.pop('password2')
+        validated_data.pop("password2")
         user = CustomUser.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password']
+            username=validated_data["username"],
+            email=validated_data["email"],
+            password=validated_data["password"],
+            is_active=False
         )
         return user
