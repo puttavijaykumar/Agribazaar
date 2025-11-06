@@ -50,3 +50,8 @@ class GoogleAuthSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+class RoleUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["role"]

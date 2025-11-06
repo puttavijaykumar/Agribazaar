@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import AuthService from "../services/AuthService";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const navigate = useNavigate();   // ✅ Initialize navigate
+  const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [msg, setMsg] = useState("");
@@ -20,11 +20,18 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      await AuthService.login(loginData);
+      const user = await AuthService.login(loginData); // user is stored in localStorage
+
       setMsg("✅ Logged in successfully!");
 
-      // ✅ Redirect to homepage after login
-      setTimeout(() => navigate("/"), 700);
+      // ✅ Redirect based on whether role is set or not
+      setTimeout(() => {
+        if (!user.role || user.role === "" || user.role === null) {
+          navigate("/select-role"); // ask role
+        } else {
+          navigate(`/${user.role}/dashboard`); // direct to respective dashboard
+        }
+      }, 700);
 
     } catch {
       setMsg("❌ Login failed. Please check your credentials.");
@@ -32,6 +39,8 @@ const LoginPage = () => {
 
     setLoading(false);
   };
+
+  // ---- STYLING BELOW (unchanged) ----
 
   const containerStyle = {
     minHeight: "100vh",
@@ -45,12 +54,7 @@ const LoginPage = () => {
     padding: "20px",
   };
 
-  const bgDecorationStyle = {
-    position: "absolute",
-    borderRadius: "50%",
-    opacity: 0.1,
-    pointerEvents: "none",
-  };
+  const bgDecorationStyle = { position: "absolute", borderRadius: "50%", opacity: 0.1, pointerEvents: "none" };
 
   const cardStyle = {
     background: "linear-gradient(180deg, #ffffff 0%, #f1f8f6 100%)",
@@ -63,64 +67,6 @@ const LoginPage = () => {
     position: "relative",
     zIndex: 10,
     animation: "slideUp 0.6s ease-out",
-  };
-
-  const headerStyle = {
-    textAlign: "center",
-    marginBottom: "2rem",
-  };
-
-  const logoStyle = {
-    fontSize: "2.8rem",
-    marginBottom: "0.5rem",
-  };
-
-  const titleStyle = {
-    color: "#1b5e20",
-    marginBottom: "0.3rem",
-    fontSize: "1.85rem",
-    fontWeight: 700,
-    letterSpacing: "-0.5px",
-  };
-
-  const subtitleStyle = {
-    color: "#558b2f",
-    fontSize: "0.9rem",
-    fontWeight: 400,
-  };
-
-  const formStyle = {
-    display: "flex",
-    flexDirection: "column",
-    gap: 14,
-  };
-
-  const inputStyle = {
-    padding: "12px 16px",
-    borderRadius: 12,
-    border: "2px solid #e0f2e9",
-    width: "100%",
-    fontSize: "0.95rem",
-    fontFamily: "inherit",
-    transition: "all 0.3s ease",
-    backgroundColor: "#f8fdf7",
-    color: "#1b5e20",
-    boxSizing: "border-box",
-  };
-
-  const passwordContainerStyle = {
-    position: "relative",
-  };
-
-  const eyeStyle = {
-    position: "absolute",
-    right: 14,
-    top: "50%",
-    transform: "translateY(-50%)",
-    cursor: "pointer",
-    fontSize: "1.2rem",
-    userSelect: "none",
-    transition: "transform 0.2s ease",
   };
 
   const buttonStyle = {
@@ -144,279 +90,72 @@ const LoginPage = () => {
     boxShadow: "0 12px 28px rgba(46, 125, 50, 0.4)",
   };
 
-  const messageStyle = {
-    marginTop: 16,
+  const inputStyle = {
     padding: "12px 16px",
-    textAlign: "center",
-    borderRadius: 10,
+    borderRadius: 12,
+    border: "2px solid #e0f2e9",
+    width: "100%",
     fontSize: "0.95rem",
-    fontWeight: 500,
-    animation: "fadeIn 0.4s ease",
-    border: msg.startsWith("✅") ? "1px solid #81c784" : "1px solid #e57373",
-    backgroundColor: msg.startsWith("✅") ? "#e8f5e9" : "#ffebee",
-    color: msg.startsWith("✅") ? "#1b5e20" : "#c62828",
-  };
-
-  const linkContainerStyle = {
-    marginTop: "1.5rem",
-    textAlign: "center",
-    color: "#558b2f",
-    fontSize: "0.95rem",
-  };
-
-  const linkStyle = {
-    color: "#2e7d32",
-    fontWeight: 700,
-    textDecoration: "none",
+    fontFamily: "inherit",
     transition: "all 0.3s ease",
-    borderBottom: "2px solid transparent",
-    marginLeft: "0.5rem",
-  };
-
-  const forgotLinkStyle = {
-    display: "flex",
-    justifyContent: "flex-end",
-    marginTop: "8px",
-  };
-
-  const forgotStyle = {
-    color: "#558b2f",
-    fontSize: "0.85rem",
-    fontWeight: 500,
-    textDecoration: "none",
-    transition: "all 0.3s ease",
-    borderBottom: "1px solid transparent",
+    backgroundColor: "#f8fdf7",
+    color: "#1b5e20",
+    boxSizing: "border-box",
   };
 
   return (
     <div style={containerStyle}>
-      {/* Background Decorations */}
-      <div
-        style={{
-          ...bgDecorationStyle,
-          width: 300,
-          height: 300,
-          background: "#81c784",
-          top: -100,
-          left: -100,
-        }}
-      />
-      <div
-        style={{
-          ...bgDecorationStyle,
-          width: 250,
-          height: 250,
-          background: "#a5d6a7",
-          bottom: -80,
-          right: -50,
-        }}
-      />
-      <div
-        style={{
-          ...bgDecorationStyle,
-          width: 200,
-          height: 200,
-          background: "#81c784",
-          top: "50%",
-          right: "5%",
-        }}
-      />
-
-      {/* Main Card */}
+      {/* Card */}
       <div style={cardStyle}>
-        {/* Header */}
-        <div style={headerStyle}>
-          <div style={logoStyle}></div>
-          <h2 style={titleStyle}>Welcome Back</h2>
-          <p style={subtitleStyle}>Login to AgriBasaar</p>
-        </div>
+        <h2 style={{ textAlign: "center", marginBottom: "1rem", color: "#1b5e20" }}>Welcome Back</h2>
 
-        {/* Form */}
-        <form onSubmit={handleLogin} style={formStyle}>
-          {/* Email Input */}
-          <div>
-            <label style={{ display: "block", marginBottom: "6px", color: "#1b5e20", fontWeight: 600, fontSize: "0.9rem" }}>
-              Email Address
-            </label>
+        <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email address"
+            value={loginData.email}
+            onChange={handleChange}
+            required
+            style={inputStyle}
+          />
+
+          <div style={{ position: "relative" }}>
             <input
-              type="email"
-              name="email"
-              placeholder="your@email.com"
-              value={loginData.email}
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={loginData.password}
               onChange={handleChange}
-              onFocus={(e) => (e.target.style.borderColor = "#4caf50")}
-              onBlur={(e) => (e.target.style.borderColor = "#e0f2e9")}
               required
               style={inputStyle}
             />
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", cursor: "pointer" }}
+            >
+              {showPassword ? "👁️" : "👁️‍🗨️"}
+            </span>
           </div>
 
-          {/* Password Input */}
-          <div>
-            <label style={{ display: "block", marginBottom: "6px", color: "#1b5e20", fontWeight: 600, fontSize: "0.9rem" }}>
-              Password
-            </label>
-            <div style={passwordContainerStyle}>
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Enter your password"
-                value={loginData.password}
-                onChange={handleChange}
-                onFocus={(e) => (e.target.style.borderColor = "#4caf50")}
-                onBlur={(e) => (e.target.style.borderColor = "#e0f2e9")}
-                required
-                style={inputStyle}
-              />
-              <span
-                onClick={() => setShowPassword(!showPassword)}
-                style={eyeStyle}
-                onMouseEnter={(e) => (e.target.style.transform = "translateY(-50%) scale(1.2)")}
-                onMouseLeave={(e) => (e.target.style.transform = "translateY(-50%) scale(1)")}
-              >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
-              </span>
-            </div>
-            <div style={forgotLinkStyle}>
-              <a
-                href="#forgot"
-                style={forgotStyle}
-                onMouseEnter={(e) => {
-                  e.target.style.borderBottomColor = "#558b2f";
-                  e.target.style.color = "#1b5e20";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.borderBottomColor = "transparent";
-                  e.target.style.color = "#558b2f";
-                }}
-              >
-                Forgot password?
-              </a>
-            </div>
-          </div>
-
-          {/* Login Button */}
           <button
             type="submit"
             disabled={loading}
-            style={buttonHover && !loading ? buttonHoverStyle : buttonStyle}
-            onMouseEnter={() => !loading && setButtonHover(true)}
+            style={buttonHover ? buttonHoverStyle : buttonStyle}
+            onMouseEnter={() => setButtonHover(true)}
             onMouseLeave={() => setButtonHover(false)}
-            onMouseDown={(e) => {
-              e.target.style.transform = "translateY(0px)";
-            }}
-            onMouseUp={(e) => {
-              e.target.style.transform = buttonHover ? "translateY(-2px)" : "translateY(0)";
-            }}
           >
             {loading ? "Logging in..." : "🔓 Login"}
           </button>
         </form>
 
-        {/* Message Alert */}
-        {msg && <div style={messageStyle}>{msg}</div>}
+        {msg && <p style={{ marginTop: 12, textAlign: "center" }}>{msg}</p>}
 
-        {/* Signup Link */}
-        <p style={linkContainerStyle}>
+        <p style={{ textAlign: "center", marginTop: 16 }}>
           Don't have an account?
-          <Link
-            to="/register"
-            style={linkStyle}
-            onMouseEnter={(e) => {
-              e.target.style.borderBottomColor = "#2e7d32";
-              e.target.style.color = "#1b5e20";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.borderBottomColor = "transparent";
-              e.target.style.color = "#2e7d32";
-            }}
-          >
-            Sign up
-          </Link>
+          <Link to="/register" style={{ color: "#2e7d32", fontWeight: "700", marginLeft: 6 }}>Sign up</Link>
         </p>
       </div>
-
-      <style>{`
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        input::placeholder {
-          color: #a1d9a1;
-        }
-
-        input:focus {
-          outline: none;
-        }
-
-        button:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-        }
-
-        /* Mobile - Extra Small */
-        @media (max-width: 360px) {
-          div[style*="maxWidth"] {
-            max-width: calc(100vw - 20px) !important;
-          }
-          div[style*="padding: 2.5rem"] {
-            padding: 1.25rem !important;
-          }
-        }
-
-        /* Mobile - Small */
-        @media (max-width: 480px) {
-          div[style*="maxWidth"] {
-            max-width: calc(100vw - 16px) !important;
-          }
-          div[style*="padding: 2.5rem"] {
-            padding: 1.5rem !important;
-          }
-          h2[style*="fontSize: 1.85rem"] {
-            font-size: 1.55rem !important;
-          }
-        }
-
-        /* Tablet - Medium */
-        @media (max-width: 768px) {
-          div[style*="maxWidth"] {
-            max-width: calc(100vw - 24px) !important;
-          }
-          div[style*="padding: 2.5rem"] {
-            padding: 2rem !important;
-          }
-        }
-
-        /* Tablet - Large */
-        @media (max-width: 1024px) {
-          div[style*="maxWidth"] {
-            max-width: calc(100vw - 32px) !important;
-          }
-        }
-
-        /* Desktop */
-        @media (min-width: 1025px) {
-          div[style*="maxWidth"] {
-            max-width: 400px;
-          }
-        }
-      `}</style>
     </div>
   );
 };

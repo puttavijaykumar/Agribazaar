@@ -51,9 +51,22 @@ const logout = () => {
   window.location.href = "/login";  // ✅ Redirect to login page
 };
 
+// Save Role for Logged-in User
+// Set Role
+const setRole = async (role) => {
+  const response = await axios.post(
+    `${API_URL}/set-role/`,
+    { role },
+    { withCredentials: true }
+  );
+  return response.data;
+};
+
 export default {
   register,
   login,
   googleLogin,
   logout,
+  setRole,
+
 };
