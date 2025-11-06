@@ -55,28 +55,23 @@ class GoogleRegisterView(APIView):
             status=status.HTTP_200_OK
         )
         
-@api_view(["POST"])
+@api_view(['POST'])
 def google_login(request):
     email = request.data.get("email")
-    name = request.data.get("name") or email.split("@")[0]
+    name = request.data.get("name")
 
-    # If user exists → login, else create account
-    user, created = CustomUser.objects.get_or_create(
-        email=email,
-        defaults={"username": name}
-    )
+    user, created = CustomUser.objects.get_or_create(email=email, defaults={"username": name})
 
-    user.is_active = True
-    user.save()
+    if created:
+        user.role = None  # ✅ Force role selection
+        user.save()
 
-    login(request, user)  # ✅ Maintain login session
-
+    # ✅ Return user info including role
     return Response({
-        "message": "Google login success",
-        "username": user.username,
         "email": user.email,
-        "new_user": created,
-    })
+        "username": user.username,
+        "role": user.role,
+    }, status=200)
     
     
     

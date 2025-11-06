@@ -36,12 +36,12 @@ const googleLogin = async (googleUser) => {
     {
       email: googleUser.email,
       name: googleUser.name,
-    },
-    { headers: { "Content-Type": "application/json" } }
+    }
   );
 
-  // ✅ Store user session locally (IMPORTANT)
+  // ✅ Save returned user in localStorage
   localStorage.setItem("user", JSON.stringify(response.data));
+
   return response.data;
 };
 

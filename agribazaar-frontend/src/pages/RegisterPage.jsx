@@ -46,22 +46,33 @@ const RegisterPage = () => {
     setLoading(false);
   };
 
-  // ✅ Clean Google Signup Handler
-  const handleGoogleSignup = async (credentialResponse) => {
-    try {
-      const decoded = jwtDecode(credentialResponse.credential);
+  // ✅ Google Signup Handler (with role redirect logic)
+const handleGoogleSignup = async (credentialResponse) => {
+  try {
+    const decoded = jwtDecode(credentialResponse.credential);
 
-      await AuthService.googleLogin({
-        email: decoded.email,
-        name: decoded.name,
-      });
+    // ✅ Login/Signup with Google in backend
+    const user = await AuthService.googleLogin({
+      email: decoded.email,
+      name: decoded.name,
+    });
 
-      // ✅ Direct login successful → Navigate to home
-      navigate("/");
-    } catch (err) {
-      setMessage("❌ Google login failed.");
+    // ✅ Store user session locally so app remembers login
+    localStorage.setItem("user", JSON.stringify(user));
+
+    // ✅ If role is not set → go to role selection page
+    if (!user.role || user.role === null || user.role === "") {
+      navigate("/select-role");
+    } 
+    else {
+      navigate("/"); // or navigate(`/${user.role}/dashboard`);
     }
-  };
+
+  } catch (err) {
+    setMessage("❌ Google login failed.");
+  }
+};
+
 
   const inputStyle = {
     width: "100%",
