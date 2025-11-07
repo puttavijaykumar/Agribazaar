@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from .models import CustomUser
 from django.contrib.auth import get_user_model
+import secrets
 
 class RegisterSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True)
@@ -35,20 +36,22 @@ class GoogleAuthSerializer(serializers.Serializer):
     name = serializers.CharField(required=False, allow_blank=True)
 
     def validate(self, attrs):
-        email = attrs.get('email')
-        name = attrs.get('name') or email.split("@")[0]
+        email = attrs.get("email")
+        name = attrs.get("name") or email.split("@")[0]
 
-        # ✅ Create user if does not exist
+        # ✅ Generate random password manually
+        random_password = secrets.token_urlsafe(16)
+
         user, created = User.objects.get_or_create(
             email=email,
             defaults={
                 "username": name,
-                "password": make_password(User.objects.make_random_password()),
+                "password": make_password(random_password),
                 "is_active": True,
             }
         )
 
-        attrs['user'] = user
+        attrs["user"] = user
         return attrs
 
 class RoleUpdateSerializer(serializers.ModelSerializer):
