@@ -157,6 +157,13 @@ CSRF_TRUSTED_ORIGINS = [
     "https://agribazaar-1.onrender.com",
 ]
 
+# Allow cross-site cookies (Required for Vercel + Render setup)
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = True
+
 # --------------------
 # Static / Media
 # --------------------
@@ -169,6 +176,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+
 
 # --------------------
 # Security in production

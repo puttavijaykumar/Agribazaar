@@ -1,5 +1,6 @@
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 // ✅ Normal Register
@@ -33,14 +34,18 @@ const login = async (loginData) => {
 const googleLogin = async (googleUser) => {
   const response = await axios.post(
     `${API_URL}/google-login/`,
-    googleUser,
-    { headers: { "Content-Type": "application/json" } }
+    {
+      email: googleUser.email,
+      name: googleUser.name,
+    },
+    {
+      withCredentials: true,  // ✅ *MOST IMPORTANT*
+      headers: { "Content-Type": "application/json" }
+    }
   );
 
-  // ✅ Store user session + tokens
+  // ✅ Store user locally so UI knows login state
   localStorage.setItem("user", JSON.stringify(response.data));
-  localStorage.setItem("access", response.data.access);
-  localStorage.setItem("refresh", response.data.refresh);
 
   return response.data;
 };
