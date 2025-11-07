@@ -36,20 +36,15 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 # --------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'corsheaders',
+    "rest_framework",
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     "whitenoise.runserver_nostatic",
-    "rest_framework",
-    # If using JWT (recommended):
-    # "rest_framework_simplejwt",
-
-    'corsheaders',
     'accounts',
-
     'cloudinary',
     'cloudinary_storage',
 ]

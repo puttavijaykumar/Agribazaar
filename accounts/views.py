@@ -12,8 +12,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import CustomUser
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes,authentication_classes
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 # User Registration View
@@ -73,13 +74,13 @@ def google_login(request):
     })
     
     
+
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])   # ✅ Important
 @permission_classes([IsAuthenticated])
 def set_role(request):
     serializer = RoleUpdateSerializer(instance=request.user, data=request.data, partial=True)
-
     if serializer.is_valid():
         serializer.save()
-        return Response({"message": "Role updated successfully", "role": serializer.data["role"]})
-    
+        return Response({"role": serializer.data["role"]})
     return Response(serializer.errors, status=400)

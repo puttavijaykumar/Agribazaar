@@ -52,19 +52,27 @@ const googleLogin = async (googleUser) => {
 
 // ✅ Set Role
 const setRole = async (role) => {
+  const token = localStorage.getItem("access");
+
   const response = await axios.post(
     `${API_URL}/set-role/`,
     { role },
-    { withCredentials: true }
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // ✅ Send JWT token
+        "Content-Type": "application/json",
+      },
+    }
   );
 
-  // ✅ Update user in localStorage so frontend remembers the role
+  // ✅ Update stored user role
   const user = JSON.parse(localStorage.getItem("user")) || {};
   user.role = response.data.role;
   localStorage.setItem("user", JSON.stringify(user));
 
   return response.data;
 };
+
 
 
 // ✅ Logout function
