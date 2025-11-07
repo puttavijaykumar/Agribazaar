@@ -10,6 +10,4 @@ urlpatterns = [
     path("google-login/", google_login),
     path('set-role/', set_role, name="set-role"),
 
-
-
 ]

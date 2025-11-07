@@ -1,27 +1,25 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
+import { useNavigate } from "react-router-dom";
 
 const SelectRolePage = () => {
   const navigate = useNavigate();
 
-  const handleSelect = async (role) => {
-    await AuthService.setRole(role);
-
-    // Update localStorage user role
-    const user = JSON.parse(localStorage.getItem("user"));
-    user.role = role;
-    localStorage.setItem("user", JSON.stringify(user));
-
-    navigate(`/${role}/dashboard`);
+  const chooseRole = async (role) => {
+    try {
+      await AuthService.setRole(role);
+      navigate(`/${role}/dashboard`)
+    } catch (err) {
+      console.log(err);
+      alert("Error saving role. Please login again.");
+    }
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "50px" }}>
+    <div style={{ textAlign: "center", marginTop: "5rem" }}>
       <h2>Select Your Role</h2>
-      <button onClick={() => handleSelect("farmer")}>Farmer</button>
-      <button onClick={() => handleSelect("buyer")}>Buyer</button>
-      <button onClick={() => handleSelect("both")}>Both</button>
+      <button onClick={() => chooseRole("farmer")}>Farmer</button>
+      <button onClick={() => chooseRole("buyer")}>Buyer</button>
+      <button onClick={() => chooseRole("both")}>Both</button>
     </div>
   );
 };
