@@ -53,12 +53,12 @@ const setRole = async (role) => {
     { withCredentials: true }
   );
 
-  // ✅ Update saved user role in localStorage
-  let user = JSON.parse(localStorage.getItem("user"));
-  user.role = role;
+  // ✅ Update user in localStorage so frontend remembers the role
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+  user.role = response.data.role;
   localStorage.setItem("user", JSON.stringify(user));
 
-  return user;
+  return response.data;
 };
 
 
