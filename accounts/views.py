@@ -135,3 +135,16 @@ def set_role(request):
         serializer.save()
         return Response({"role": serializer.data["role"]})
     return Response(serializer.errors, status=400)
+
+
+
+from agribazaar.utils.email_sender import send_email
+
+@api_view(["GET"])
+def test_email(request):
+    send_email(
+        to_email="your@email.com",
+        subject="AgriBazaar Test Mail",
+        html_content="<h2>✅ Email sent successfully!</h2>"
+    )
+    return Response({"message": "Email sent!"})
