@@ -70,6 +70,7 @@ def password_reset_request(request):
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
+        # ✅ Always return success to avoid email enumeration attacks
         return Response({"message": "If the email exists, reset link will be sent."}, status=200)
 
     uid = urlsafe_base64_encode(force_bytes(user.pk))
@@ -77,14 +78,20 @@ def password_reset_request(request):
 
     reset_url = f"https://agribazaar-frontend-ui.vercel.app/reset-password/{uid}/{token}"
 
-    send_mail(
+    # ✅ Sending email through Resend
+    send_email(
+        to_email=email,
         subject="Reset Your AgriBazaar Password",
-        message=f"Click the link to reset your password:\n{reset_url}",
-        from_email=None,
-        recipient_list=[email],
+        html_content=f"""
+        <h2>Password Reset Request</h2>
+        <p>Click the link below to reset your password:</p>
+        <a href="{reset_url}" style="color: green; font-weight: bold;">Reset Password</a>
+        <p>If you did not request this, please ignore.</p>
+        """
     )
 
     return Response({"message": "Password reset link sent to email"}, status=200)
+
 
 
 @api_view(['POST'])
@@ -143,7 +150,7 @@ from utils.email_sender import send_email
 @api_view(["GET"])
 def test_email(request):
     send_email(
-        to_email="your@email.com",
+        to_email="vijaykumarputta08@gmail.com",
         subject="AgriBazaar Test Mail",
         html_content="<h2>✅ Email sent successfully!</h2>"
     )
