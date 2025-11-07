@@ -66,7 +66,7 @@ const LoginPage = () => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+    background: "linear-gradient(135deg, #0d3b1a, #1b5e2f, #2d8e4a, #3fac5d)",
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     padding: "20px",
   };
@@ -85,7 +85,7 @@ const LoginPage = () => {
   const titleStyle = {
     textAlign: "center",
     marginBottom: "0.5rem",
-    color: "#1a3a52",
+    color: "#1b5e2f",
     fontSize: "28px",
     fontWeight: "700",
     letterSpacing: "-0.5px",
@@ -139,7 +139,7 @@ const LoginPage = () => {
   };
 
   const buttonStyle = {
-    background: "linear-gradient(135deg, #2c5364, #203a43)",
+    background: "linear-gradient(135deg, #2d8e4a, #1b5e2f)",
     color: "white",
     padding: "14px 20px",
     borderRadius: "12px",
@@ -149,13 +149,13 @@ const LoginPage = () => {
     fontSize: "16px",
     transition: "all 0.3s ease",
     opacity: loading ? 0.8 : 1,
-    boxShadow: "0 4px 15px rgba(44, 83, 100, 0.2)",
+    boxShadow: "0 4px 15px rgba(45, 142, 74, 0.2)",
   };
 
   const buttonHoverStyle = {
     ...buttonStyle,
     transform: "translateY(-2px)",
-    boxShadow: "0 6px 20px rgba(44, 83, 100, 0.3)",
+    boxShadow: "0 6px 20px rgba(45, 142, 74, 0.3)",
   };
 
   const dividerStyle = {
@@ -193,7 +193,7 @@ const LoginPage = () => {
   };
 
   const linkStyle = {
-    color: "#2c5364",
+    color: "#2d8e4a",
     fontWeight: "600",
     textDecoration: "none",
     transition: "all 0.2s ease",
