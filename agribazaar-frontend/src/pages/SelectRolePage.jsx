@@ -15,7 +15,7 @@ const SelectRolePage = () => {
       } else if (role === "buyer") {
         navigate("/buyer/dashboard");
       } else {
-        navigate("/both/dashboard");
+        navigate("/");
       }
 
     } catch (err) {

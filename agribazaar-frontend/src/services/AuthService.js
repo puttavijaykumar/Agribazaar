@@ -47,24 +47,18 @@ const googleLogin = async (googleUser) => {
 
 // ✅ Set Role
 const setRole = async (role) => {
-  const token = localStorage.getItem("access");
   const response = await axios.post(
     `${API_URL}/set-role/`,
     { role },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`, // ✅ IMPORTANT
-        "Content-Type": "application/json",
-      },
-    }
+    { withCredentials: true }
   );
 
-  // ✅ Update stored user with new role
-  const user = JSON.parse(localStorage.getItem("user"));
+  // ✅ Update saved user role in localStorage
+  let user = JSON.parse(localStorage.getItem("user"));
   user.role = role;
   localStorage.setItem("user", JSON.stringify(user));
 
-  return response.data;
+  return user;
 };
 
 
