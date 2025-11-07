@@ -38,24 +38,18 @@ class LoginView(generics.GenericAPIView):
         if user is None:
             return Response({"detail": "Invalid email or password"}, status=400)
 
-        return Response({"message": "Login Successful!"}, status=200)
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
+            "email": user.email,
+            "username": user.username,
+            "role": user.role
+        }, status=200)
 
 
-# Login Via Google OAuth
-class GoogleRegisterView(APIView):
-    def post(self, request):
-        serializer = GoogleAuthSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
 
-        user = serializer.validated_data['user']
-
-        # ✅ Auto Login
-        login(request, user)
-
-        return Response(
-            {"message": "Google login successful", "email": user.email},
-            status=status.HTTP_200_OK
-        )
         
 @api_view(['POST'])
 def google_login(request):

@@ -21,14 +21,15 @@ const register = async (formData) => {
 
 // ✅ Normal Login
 const login = async (loginData) => {
-  const response = await axios.post(`${API_URL}/login/`, loginData, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const response = await axios.post(`${API_URL}/login/`, loginData);
 
-  // ✅ Store user session (so Login persists)
   localStorage.setItem("user", JSON.stringify(response.data));
+  localStorage.setItem("access", response.data.access);
+  localStorage.setItem("refresh", response.data.refresh);
+
   return response.data;
 };
+
 
 // ✅ Google Login (Signup + Login combined)
 const googleLogin = async (googleUser) => {
@@ -38,14 +39,13 @@ const googleLogin = async (googleUser) => {
       email: googleUser.email,
       name: googleUser.name,
     },
-    {
-      withCredentials: true,  // ✅ *MOST IMPORTANT*
-      headers: { "Content-Type": "application/json" }
-    }
+    { withCredentials: true }
   );
 
-  // ✅ Store user locally so UI knows login state
+  // ✅ Store user + tokens
   localStorage.setItem("user", JSON.stringify(response.data));
+  localStorage.setItem("access", response.data.access);
+  localStorage.setItem("refresh", response.data.refresh);
 
   return response.data;
 };
