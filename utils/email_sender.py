@@ -1,24 +1,12 @@
-# agribazaar/utils/email_sender.py
+import resend
+from django.conf import settings
 
-import requests
-import os
-
-RESEND_API_KEY = os.getenv("RESEND_API_KEY")
-SENDER_EMAIL = os.getenv("RESEND_SENDER_EMAIL")
+resend.api_key = settings.RESEND_API_KEY
 
 def send_email(to_email, subject, html_content):
-    url = "https://api.resend.com/emails"
-    payload = {
-        "from": SENDER_EMAIL,
+    return resend.Emails.send({
+        "from": settings.RESEND_FROM_EMAIL,
         "to": to_email,
         "subject": subject,
         "html": html_content,
-    }
-
-    headers = {
-        "Authorization": f"Bearer {RESEND_API_KEY}",
-        "Content-Type": "application/json",
-    }
-
-    response = requests.post(url, json=payload, headers=headers)
-    return response.json()
+    })

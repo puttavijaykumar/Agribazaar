@@ -24,6 +24,11 @@ from django.contrib.auth import get_user_model
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from utils.email_sender import send_email
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.tokens import default_token_generator as token_generator
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
@@ -70,7 +75,7 @@ def password_reset_request(request):
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
-        # ✅ Always return success to avoid email enumeration attacks
+        # ✅ Don't reveal if user exists (security best practice)
         return Response({"message": "If the email exists, reset link will be sent."}, status=200)
 
     uid = urlsafe_base64_encode(force_bytes(user.pk))
@@ -78,20 +83,23 @@ def password_reset_request(request):
 
     reset_url = f"https://agribazaar-frontend-ui.vercel.app/reset-password/{uid}/{token}"
 
-    # ✅ Sending email through Resend
+    # ✅ Send email using Resend
     send_email(
         to_email=email,
         subject="Reset Your AgriBazaar Password",
         html_content=f"""
-        <h2>Password Reset Request</h2>
-        <p>Click the link below to reset your password:</p>
-        <a href="{reset_url}" style="color: green; font-weight: bold;">Reset Password</a>
-        <p>If you did not request this, please ignore.</p>
+        <h2>🔐 Password Reset Request</h2>
+        <p>You recently requested to reset your password.</p>
+        <p>Click below to reset your password:</p>
+        <a href="{reset_url}" style="padding: 10px 18px; background:#2d8e4a; color:white; text-decoration:none; border-radius:6px;">
+            Reset Password
+        </a>
+        <br><br>
+        <p>If you did not request this, just ignore this email.</p>
         """
     )
 
-    return Response({"message": "Password reset link sent to email"}, status=200)
-
+    return Response({"message": "✅ Password reset link sent to email"}, status=200)
 
 
 @api_view(['POST'])
