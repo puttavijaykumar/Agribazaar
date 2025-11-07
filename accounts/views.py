@@ -138,7 +138,7 @@ def set_role(request):
 
 
 
-from agribazaar.utils.email_sender import send_email
+from utils.email_sender import send_email
 
 @api_view(["GET"])
 def test_email(request):
