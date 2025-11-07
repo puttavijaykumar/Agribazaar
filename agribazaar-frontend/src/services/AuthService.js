@@ -51,23 +51,20 @@ const logout = () => {
   window.location.href = "/login";  // ✅ Redirect to login page
 };
 
-// Save Role for Logged-in User
 const setRole = async (role) => {
   const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) throw new Error("No user stored");
 
+  // ✅ Send JWT token to backend
   const response = await axios.post(
     `${API_URL}/set-role/`,
     { role },
     {
-      headers: {
-        Authorization: `Bearer ${user.access}`, // if JWT
-        "Content-Type": "application/json",
-      },
-      withCredentials: true, // if using session cookies
+      headers: { Authorization: `Bearer ${user.access}` }
     }
   );
 
-  // update local user in storage
+  // ✅ Update stored user role
   user.role = role;
   localStorage.setItem("user", JSON.stringify(user));
 
