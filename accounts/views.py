@@ -16,6 +16,18 @@ from rest_framework.decorators import api_view, permission_classes,authenticatio
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.core.mail import send_mail
+from django.contrib.auth import get_user_model
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+User = get_user_model()
+token_generator = PasswordResetTokenGenerator()
+
 
 # User Registration View
 class RegisterView(generics.CreateAPIView):
@@ -49,6 +61,51 @@ class LoginView(generics.GenericAPIView):
         }, status=200)
 
 
+@api_view(['POST'])
+def password_reset_request(request):
+    email = request.data.get("email")
+    if not email:
+        return Response({"error": "Email is required"}, status=400)
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response({"message": "If the email exists, reset link will be sent."}, status=200)
+
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    token = token_generator.make_token(user)
+
+    reset_url = f"https://agribazaar-frontend-ui.vercel.app/reset-password/{uid}/{token}"
+
+    send_mail(
+        subject="Reset Your AgriBazaar Password",
+        message=f"Click the link to reset your password:\n{reset_url}",
+        from_email=None,
+        recipient_list=[email],
+    )
+
+    return Response({"message": "Password reset link sent to email"}, status=200)
+
+
+@api_view(['POST'])
+def password_reset_confirm(request, uid, token):
+    password = request.data.get("password")
+    if not password:
+        return Response({"error": "Password required"}, status=400)
+
+    try:
+        user_id = force_str(urlsafe_base64_decode(uid))
+        user = User.objects.get(pk=user_id)
+    except:
+        return Response({"error": "Invalid link"}, status=400)
+
+    if not token_generator.check_token(user, token):
+        return Response({"error": "Invalid or expired token"}, status=400)
+
+    user.set_password(password)
+    user.save()
+
+    return Response({"message": "Password reset successful!"}, status=200)
 
         
 @api_view(['POST'])

@@ -30,6 +30,15 @@ const login = async (loginData) => {
   return response.data;
 };
 
+// ✅ Send Reset Link
+const requestPasswordReset = async (email) => {
+  return await axios.post(`${API_URL}/forgot-password/`, { email });
+};
+
+// ✅ Submit New Password
+const resetPassword = async (uid, token, password) => {
+  return await axios.post(`${API_URL}/reset-password/${uid}/${token}/`, { password });
+};
 
 // ✅ Google Login (Signup + Login combined)
 const googleLogin = async (googleUser) => {
@@ -88,5 +97,6 @@ export default {
   googleLogin,
   logout,
   setRole,
-
+  requestPasswordReset,
+  resetPassword
 };
