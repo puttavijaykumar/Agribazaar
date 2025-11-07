@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from .models import CustomUser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 # User Registration View
@@ -57,22 +58,19 @@ class GoogleRegisterView(APIView):
         
 @api_view(['POST'])
 def google_login(request):
-    email = request.data.get("email")
-    name = request.data.get("name")
+    serializer = GoogleAuthSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user = serializer.validated_data['user']
 
-    user, created = CustomUser.objects.get_or_create(email=email, defaults={"username": name})
+    refresh = RefreshToken.for_user(user)
 
-    if created:
-        user.role = None  # ✅ Force role selection
-        user.save()
-
-    # ✅ Return user info including role
     return Response({
+        "refresh": str(refresh),
+        "access": str(refresh.access_token),
         "email": user.email,
         "username": user.username,
-        "role": user.role,
-    }, status=200)
-    
+        "role": user.role  # ✅ Role included
+    })
     
     
 @api_view(['POST'])

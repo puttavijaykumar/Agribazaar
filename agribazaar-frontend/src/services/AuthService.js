@@ -33,17 +33,40 @@ const login = async (loginData) => {
 const googleLogin = async (googleUser) => {
   const response = await axios.post(
     `${API_URL}/google-login/`,
-    {
-      email: googleUser.email,
-      name: googleUser.name,
-    }
+    googleUser,
+    { headers: { "Content-Type": "application/json" } }
   );
 
-  // ✅ Save returned user in localStorage
+  // ✅ Store user session + tokens
   localStorage.setItem("user", JSON.stringify(response.data));
+  localStorage.setItem("access", response.data.access);
+  localStorage.setItem("refresh", response.data.refresh);
 
   return response.data;
 };
+
+// ✅ Set Role
+const setRole = async (role) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.post(
+    `${API_URL}/set-role/`,
+    { role },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // ✅ IMPORTANT
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  // ✅ Update stored user with new role
+  const user = JSON.parse(localStorage.getItem("user"));
+  user.role = role;
+  localStorage.setItem("user", JSON.stringify(user));
+
+  return response.data;
+};
+
 
 // ✅ Logout function
 const logout = () => {
@@ -51,31 +74,6 @@ const logout = () => {
   window.location.href = "/login";  // ✅ Redirect to login page
 };
 
-// ✅ Set Role (Used after registration / google login)
-const setRole = async (role) => {
-  // Get logged in user info
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  if (!user) {
-    throw new Error("User not authenticated");
-  }
-
-  // ✅ If using JWT login:
-  return axios.post(
-    `${API_URL}/set-role/`,
-    { role },
-    {
-      headers: {
-        Authorization: `Bearer ${user.access}`,  // token required to authenticate
-      },
-    }
-  ).then((res) => {
-    // ✅ Update role in localStorage so UI updates
-    user.role = role;
-    localStorage.setItem("user", JSON.stringify(user));
-    return res.data;
-  });
-};
 
 export default {
   register,

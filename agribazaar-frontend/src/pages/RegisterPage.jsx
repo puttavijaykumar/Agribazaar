@@ -51,27 +51,23 @@ const handleGoogleSignup = async (credentialResponse) => {
   try {
     const decoded = jwtDecode(credentialResponse.credential);
 
-    // ✅ Login/Signup with Google in backend
     const user = await AuthService.googleLogin({
       email: decoded.email,
       name: decoded.name,
     });
 
-    // ✅ Store user session locally so app remembers login
-    localStorage.setItem("user", JSON.stringify(user));
-
-    // ✅ If role is not set → go to role selection page
-    if (!user.role || user.role === null || user.role === "") {
+    // ✅ Check role
+    if (!user.role) {
       navigate("/select-role");
-    } 
-    else {
-      navigate("/"); // or navigate(`/${user.role}/dashboard`);
+    } else {
+      navigate(`/${user.role}/dashboard`);
     }
 
   } catch (err) {
     setMessage("❌ Google login failed.");
   }
 };
+
 
 
   const inputStyle = {
