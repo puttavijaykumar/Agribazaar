@@ -51,24 +51,30 @@ const logout = () => {
   window.location.href = "/login";  // ✅ Redirect to login page
 };
 
+// ✅ Set Role (Used after registration / google login)
 const setRole = async (role) => {
+  // Get logged in user info
   const user = JSON.parse(localStorage.getItem("user"));
-  if (!user) throw new Error("No user stored");
 
-  // ✅ Send JWT token to backend
-  const response = await axios.post(
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+
+  // ✅ If using JWT login:
+  return axios.post(
     `${API_URL}/set-role/`,
     { role },
     {
-      headers: { Authorization: `Bearer ${user.access}` }
+      headers: {
+        Authorization: `Bearer ${user.access}`,  // token required to authenticate
+      },
     }
-  );
-
-  // ✅ Update stored user role
-  user.role = role;
-  localStorage.setItem("user", JSON.stringify(user));
-
-  return response.data;
+  ).then((res) => {
+    // ✅ Update role in localStorage so UI updates
+    user.role = role;
+    localStorage.setItem("user", JSON.stringify(user));
+    return res.data;
+  });
 };
 
 export default {
