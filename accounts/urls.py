@@ -13,7 +13,6 @@ urlpatterns = [
     path("google-login/", google_login),
     path("forgot-password/", password_reset_request, name="forgot-password"),
     path("reset-password/<uid>/<token>/", password_reset_confirm, name="reset-password"),
-    path("test-email/", test_email),
     path('set-role/', set_role, name="set-role"),
 
 ]

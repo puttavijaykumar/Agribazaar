@@ -125,8 +125,7 @@ REST_FRAMEWORK = {
 # --------------------
 # Resend Email Settings
 # --------------------
-RESEND_API_KEY = os.getenv("RESEND_API_KEY")
-RESEND_FROM_EMAIL = os.getenv("RESEND_SENDER_EMAIL")
+
 
 # --------------------
 # Cloudinary (media only)
