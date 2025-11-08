@@ -34,7 +34,9 @@ from django.contrib.auth import get_user_model
 import os
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-
+import secrets
+from django.utils import timezone
+from datetime import timedelta
 
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
@@ -48,8 +50,51 @@ class RegisterView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"message": "Registration successful. Please login."}, status=201)
+        user = serializer.save(is_verified=False)
+
+        # Generate OTP, save and email
+        otp_code = generate_otp()
+        user.otp_code = otp_code
+        user.otp_created_at = timezone.now()
+        user.save()
+
+        send_mail(
+            subject="Your AgriBazaar Registration OTP",
+            message=f"Your OTP code for AgriBazaar registration is: {otp_code}\nValid for 15 minutes.",
+            from_email=os.getenv('EMAIL_HOST_USER'),
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+
+        return Response({"message": "Registration successful. Please enter the OTP sent to your email."}, status=201)
+    
+    
+    
+    
+def generate_otp():
+    return f"{secrets.randbelow(900000) + 100000}"
+
+@api_view(['POST'])
+def verify_otp(request):
+    email = request.data.get("email")
+    otp_code = request.data.get("otp")
+
+    try:
+        user = User.objects.get(email=email)
+        if not user.otp_code or not user.otp_created_at:
+            return Response({"error": "No OTP requested. Register again."}, status=400)
+        if timezone.now() - user.otp_created_at > timedelta(minutes=15):
+            return Response({"error": "OTP expired. Register again."}, status=400)
+        if user.otp_code != otp_code:
+            return Response({"error": "Incorrect OTP."}, status=400)
+
+        user.is_verified = True
+        user.otp_code = None
+        user.otp_created_at = None
+        user.save()
+        return Response({"message": "OTP verified! You can now log in."}, status=200)
+    except User.DoesNotExist:
+        return Response({"error": "User not found."}, status=404)
 
 # Login Via Email and Password
 class LoginView(generics.GenericAPIView):
@@ -58,8 +103,12 @@ class LoginView(generics.GenericAPIView):
         password = request.data.get("password")
 
         user = authenticate(request, email=email, password=password)
+
         if user is None:
             return Response({"detail": "Invalid email or password"}, status=400)
+
+        if not user.is_verified:
+            return Response({"detail": "Email not verified. Please verify OTP sent to your email."}, status=403)
 
         refresh = RefreshToken.for_user(user)
 

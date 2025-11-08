@@ -30,7 +30,12 @@ const login = async (loginData) => {
   return response.data;
 };
 
-// ✅ Send Reset Link
+//  Verify OTP
+const verifyOtp = async (email, otp) => {
+  return await axios.post(`${API_URL}/verify-otp/`, { email, otp });
+};
+
+//  Send Reset Link
 const requestPasswordReset = async (email) => {
   return await axios.post(`${API_URL}/forgot-password/`, { email });
 };
@@ -94,6 +99,7 @@ const logout = () => {
 export default {
   register,
   login,
+  verifyOtp,
   googleLogin,
   logout,
   setRole,
