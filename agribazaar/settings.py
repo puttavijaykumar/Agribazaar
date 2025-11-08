@@ -28,6 +28,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
+
 AUTH_USER_MODEL = "accounts.CustomUser"
 # LOGIN_URL = '/login/'
 # LOGIN_REDIRECT_URL = "/buyer/dashboard/"
@@ -150,7 +151,8 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "https://agribazaar-frontend-ui.vercel.app",
-   
+    "http://localhost:5173",  # Add local frontend URL
+
 ]
 
 CSRF_TRUSTED_ORIGINS = [
