@@ -26,25 +26,26 @@ const RegisterPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    setLoading(true);
+  e.preventDefault();
+  setMessage("");
+  setLoading(true);
 
-    try {
-      await AuthService.register(formData);
-      setMessage("✅ Registration successful! Redirecting...");
-      setTimeout(() => navigate("/login"), 1300);
-    } catch (error) {
-      setMessage(
-        error?.response?.data?.password ||
-        error?.response?.data?.email?.[0] ||
-        error?.response?.data?.username?.[0] ||
-        "❌ Registration failed."
-      );
-    }
+  try {
+    await AuthService.register(formData);
+    setMessage("✅ Registration successful! Please verify OTP sent to your email.");
+    // Navigate to OTP verification page and pass user email via state
+    setTimeout(() => navigate("/enter-otp", { state: { email: formData.email } }), 1300);
+  } catch (error) {
+    setMessage(
+      error?.response?.data?.password ||
+      error?.response?.data?.email?.[0] ||
+      error?.response?.data?.username?.[0] ||
+      "❌ Registration failed."
+    );
+  }
 
-    setLoading(false);
-  };
+  setLoading(false);
+};
 
   // ✅ Google Signup Handler (with role redirect logic)
 const handleGoogleSignup = async (credentialResponse) => {
