@@ -3,7 +3,6 @@ from django.urls import path
 from .views import RegisterView, LoginView, set_role
 from .views import google_login
 from .views import password_reset_request, password_reset_confirm
-from accounts.views import test_email
 
 
 

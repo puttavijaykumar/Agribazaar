@@ -24,7 +24,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from utils.email_sender import send_email
+# from utils.email_sender import send_email
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator as token_generator
@@ -153,13 +153,4 @@ def set_role(request):
 
 
 
-from utils.email_sender import send_email
 
-@api_view(["GET"])
-def test_email(request):
-    send_email(
-        to_email="vijaykumarputta08@gmail.com",
-        subject="AgriBazaar Test Mail",
-        html_content="<h2>✅ Email sent successfully!</h2>"
-    )
-    return Response({"message": "Email sent!"})
