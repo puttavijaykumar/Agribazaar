@@ -22,7 +22,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
     # 'agribazaar-1.onrender.com',    # Render backend
-    'https://agribazaar-seven.vercel.app/'
+    'agribazaar-seven.vercel.app',
     'agribazaar-frontend-ui.vercel.app',  # Vercel frontend
     'localhost',
     '127.0.0.1',
@@ -157,7 +157,6 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://agribazaar-frontend-ui.vercel.app",
-    "https://agribazaar-1.onrender.com",
 ]
 
 # Allow cross-site cookies (Required for Vercel + Render setup)
