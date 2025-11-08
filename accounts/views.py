@@ -30,6 +30,12 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.contrib.auth import get_user_model
 
+
+import os
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
+
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
 
@@ -66,6 +72,9 @@ class LoginView(generics.GenericAPIView):
         }, status=200)
 
 
+User = get_user_model()
+token_generator = PasswordResetTokenGenerator()
+
 @api_view(['POST'])
 def password_reset_request(request):
     email = request.data.get("email")
@@ -75,29 +84,39 @@ def password_reset_request(request):
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
-        # ✅ Don't reveal if user exists (security best practice)
+        # Never reveal user existence for security
         return Response({"message": "If the email exists, reset link will be sent."}, status=200)
 
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = token_generator.make_token(user)
 
-    reset_url = f"https://agribazaar-frontend-ui.vercel.app/reset-password/{uid}/{token}"
+    # Use environment variable for frontend base URL (set on Vercel)
+    frontend_url = os.getenv('FRONTEND_URL', 'https://agribazaar-frontend-ui.vercel.app')
+    reset_url = f"{frontend_url}/reset-password/{uid}/{token}"
 
-    # ✅ Send email using Resend
-    send_email(
-        to_email=email,
-        subject="Reset Your AgriBazaar Password",
-        html_content=f"""
-        <h2>🔐 Password Reset Request</h2>
-        <p>You recently requested to reset your password.</p>
-        <p>Click below to reset your password:</p>
-        <a href="{reset_url}" style="padding: 10px 18px; background:#2d8e4a; color:white; text-decoration:none; border-radius:6px;">
-            Reset Password
-        </a>
-        <br><br>
-        <p>If you did not request this, just ignore this email.</p>
-        """
-    )
+    subject = "Reset Your AgriBazaar Password"
+    html_content = f"""
+    <h2>🔐 Password Reset Request</h2>
+    <p>You recently requested to reset your password.</p>
+    <p>Click the button below to reset your password:</p>
+    <a href="{reset_url}" style="padding: 10px 18px; background:#2d8e4a; color:white; text-decoration:none; border-radius:6px;">
+        Reset Password
+    </a>
+    <br><br>
+    <p>If you did not request this, please ignore this email.</p>
+    """
+
+    try:
+        send_mail(
+            subject=subject,
+            message='',
+            from_email=os.getenv('EMAIL_HOST_USER'),
+            recipient_list=[email],
+            html_message=html_content,
+            fail_silently=False,
+        )
+    except Exception as e:
+        return Response({"error": f"Failed to send email: {str(e)}"}, status=500)
 
     return Response({"message": "✅ Password reset link sent to email"}, status=200)
 
