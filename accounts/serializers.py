@@ -4,6 +4,8 @@ from django.contrib.auth.hashers import make_password
 from .models import CustomUser
 from django.contrib.auth import get_user_model
 import secrets
+from .models import Product
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True)
@@ -39,7 +41,7 @@ class GoogleAuthSerializer(serializers.Serializer):
         email = attrs.get("email")
         name = attrs.get("name") or email.split("@")[0]
 
-        # ✅ Generate random password manually
+        #  Generate random password manually
         random_password = secrets.token_urlsafe(16)
 
         user, created = User.objects.get_or_create(
@@ -58,3 +60,32 @@ class RoleUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ["role"]
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.email')  # Show owner's email
+
+    class Meta:
+        model = Product
+        fields = [
+            'id',
+            'name',
+            'price',
+            'description',
+            'quantity',
+            'image1',
+            'image2',
+            'image3',
+            'image4',
+            'validity_days',
+            'owner',
+            'created_at',
+            'updated_at',
+        ]
+        read_only_fields = ['owner', 'created_at', 'updated_at']
+
+    def create(self, validated_data):
+        # Attach the user who created the product as owner automatically
+        user = self.context['request'].user
+        validated_data['owner'] = user
+        return super().create(validated_data)

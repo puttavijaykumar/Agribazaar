@@ -17,20 +17,25 @@ const colors = {
 const navbarStyle = {
   backgroundColor: colors.primaryGreen,
   color: "white",
-  padding: "1rem 2rem",
+  padding: "clamp(0.8rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem)",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  gap: "1rem",
 };
 
 const buttonStyle = {
   backgroundColor: colors.secondaryGreen,
   color: colors.contrastText,
   borderRadius: "20px",
-  padding: "0.6rem 1.2rem",
-  margin: "0 0.5rem",
+  padding: "clamp(0.4rem, 1.5vw, 0.6rem) clamp(0.8rem, 2vw, 1.2rem)",
+  margin: "0 clamp(0.2rem, 0.5vw, 0.5rem)",
   cursor: "pointer",
   transition: "background-color 0.3s ease",
+  fontSize: "clamp(0.75rem, 2vw, 0.9rem)",
+  fontWeight: "600",
+  border: "none",
+  whiteSpace: "nowrap",
 };
 
 const mainCategoryBoxes = [
@@ -41,48 +46,56 @@ const mainCategoryBoxes = [
   { label: "Irrigation", emoji: "💧" },
 ];
 
-const mainCategoryBoxStyle = {
+const mainCategoryBoxStyle = (index) => ({
   background: "linear-gradient(105deg, #aee571 85%, #d9e7c5 100%)",
   boxShadow: "0 4px 12px rgba(56,142,60,0.07)",
   borderRadius: "28px",
   height: "70px",
   minWidth: "180px",
-  maxWidth: "210px",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   fontWeight: "700",
   fontSize: "1.35rem",
-  margin: "0 12px",
   color: "#388e3c",
   transition: "transform 0.2s",
   cursor: "pointer",
-};
+  flexShrink: 0,
+  marginLeft: "2rem",
+  marginRight: "2rem",
+});
 
 const mainCategoryContainerStyle = {
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "flex-start",
   alignItems: "center",
   gap: "24px",
-  padding: "36px 0 32px 0",
+  padding: "36px 0",
   marginBottom: "16px",
-  flexWrap: "wrap",
+  overflowX: "auto",
+  overflowY: "hidden",
   background: "#e5f8dd",
+  scrollBehavior: "smooth",
+  WebkitOverflowScrolling: "touch",
 };
 
 const newsSectionStyle = {
   width: "100%",
   background: "#c1f5bbff",
   color: "#263238",
-  padding: "18px 0",
-  fontSize: "1.1rem",
+  padding: "18px 2rem",
+  fontSize: "1rem",
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
-  justifyContent: "center",
+  justifyContent: "flex-start",
   gap: "60px",
   fontWeight: 500,
   letterSpacing: "0.5px",
+  overflowX: "auto",
+  overflowY: "hidden",
+  scrollBehavior: "smooth",
+  WebkitOverflowScrolling: "touch",
 };
 
 const newsItems = [
@@ -97,6 +110,10 @@ const offersContainer = {
   overflowX: "auto",
   padding: "1rem 2rem",
   margin: "1rem 0",
+  overflowY: "hidden",
+  scrollBehavior: "smooth",
+  WebkitOverflowScrolling: "touch",
+  paddingRight: "3rem",
 };
 
 const offerCardStyle = {
@@ -112,9 +129,8 @@ const offerCardStyle = {
   textAlign: "center",
   display: "flex",
   flexDirection: "column",
-  justifyContent: "start",
+  justifyContent: "flex-start",
   alignItems: "center",
-  margin: "0 0.5rem",
   transition: "transform 0.3s ease, box-shadow 0.3s ease",
 };
 
@@ -139,7 +155,7 @@ const offerProducts = [
   },
   {
     title: "Indrayani Rice - 20% Off",
-    desc: "Freshness You Can Taste – At Juicy Prices! Limited-time offer – Taste the difference today",
+    desc: "Freshness You Can Taste – At Juicy Prices!",
     img: "https://res.cloudinary.com/dpiogqjk4/image/upload/v1757094535/nuh9degi74yky2b7wrua.jpg",
   },
   {
@@ -148,8 +164,8 @@ const offerProducts = [
     img: "https://res.cloudinary.com/dpiogqjk4/image/upload/v1761923196/pulses_cloudinary_rwjwoi.jpg",
   },
   {
-    title: "Sugarcane Juice with Honey - 18% Off",
-    desc: "Premium Rice at Unbeatable Prices! Limited-time offer – bring home quality",
+    title: "Sugarcane Juice - 18% Off",
+    desc: "Premium Rice at Unbeatable Prices!",
     img: "https://res.cloudinary.com/dpiogqjk4/image/upload/v1761923328/vegetables_mu0jxc.jpg",
   },
 ];
@@ -157,9 +173,12 @@ const offerProducts = [
 const categoryContainerStyle = {
   display: "flex",
   gap: "20px",
-  margin: "20px 2rem",
-  flexWrap: "wrap",
-  justifyContent: "space-around",
+  margin: "20px 0",
+  justifyContent: "flex-start",
+  overflowX: "auto",
+  overflowY: "hidden",
+  scrollBehavior: "smooth",
+  WebkitOverflowScrolling: "touch",
 };
 
 const categoryImageStyle = {
@@ -170,6 +189,9 @@ const categoryImageStyle = {
   cursor: "pointer",
   boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
   transition: "transform 0.3s ease",
+  flexShrink: 0,
+  marginLeft: "2rem",
+  marginRight: "2rem",
 };
 
 const productCategories = [
@@ -202,9 +224,13 @@ const livePricesStyle = {
   display: "flex",
   gap: "2rem",
   overflowX: "auto",
+  overflowY: "hidden",
   fontWeight: "600",
   borderRadius: "12px",
   margin: "1rem 2rem",
+  scrollBehavior: "smooth",
+  WebkitOverflowScrolling: "touch",
+  paddingRight: "3rem",
 };
 
 const footerStyle = {
@@ -243,13 +269,19 @@ const blob2Style = {
 
 const footerContentStyle = {
   display: "flex",
-  justifyContent: "space-around",
-  flexWrap: "wrap",
-  maxWidth: "1200px",
+  justifyContent: "flex-start",
+  flexWrap: "nowrap",
+  maxWidth: "100%",
   margin: "0 auto",
   position: "relative",
   zIndex: 2,
   gap: "2rem",
+  overflowX: "auto",
+  overflowY: "hidden",
+  paddingLeft: "2rem",
+  paddingRight: "3rem",
+  scrollBehavior: "smooth",
+  WebkitOverflowScrolling: "touch",
 };
 
 const footerColumnStyle = {
@@ -261,6 +293,7 @@ const footerColumnStyle = {
   border: "1px solid rgba(255, 255, 255, 0.1)",
   transition: "all 0.3s ease",
   backdropFilter: "blur(10px)",
+  flexShrink: 0,
 };
 
 const footerColumnHoverStyle = {
@@ -268,6 +301,7 @@ const footerColumnHoverStyle = {
   background: "rgba(255, 255, 255, 0.1)",
   transform: "translateY(-5px)",
   boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
+  flexShrink: 0,
 };
 
 const footerColumnTitleStyle = {
@@ -308,7 +342,7 @@ const bottomTextStyle = {
   zIndex: 2,
 };
 
-const EnhancedFooter = ({ hoveredColumn, setHoveredColumn }) => {
+const EnhancedFooter = () => {
   const [hovered, setHovered] = React.useState(null);
 
   const footerColumns = [
@@ -342,11 +376,9 @@ const EnhancedFooter = ({ hoveredColumn, setHoveredColumn }) => {
 
   return (
     <footer style={footerStyle}>
-      {/* Background Blobs */}
       <div style={blob1Style}></div>
       <div style={blob2Style}></div>
 
-      {/* Main Footer Content */}
       <div style={footerContentStyle}>
         {footerColumns.map((column, idx) => (
           <div
@@ -380,10 +412,8 @@ const EnhancedFooter = ({ hoveredColumn, setHoveredColumn }) => {
         ))}
       </div>
 
-      {/* Divider */}
       <div style={dividerStyle}></div>
 
-      {/* Copyright */}
       <div style={bottomTextStyle}>
         © 2024 AgriBazaar. All rights reserved. | Connecting Farmers & Buyers Across India
       </div>
@@ -407,10 +437,10 @@ const HomePage = () => {
       {/* ---------- NAVIGATION BAR ---------- */}
       <nav style={navbarStyle}>
         <div>
-          <h1>Agribazaar</h1>
+          <h1 style={{ fontSize: "clamp(1.2rem, 4vw, 1.5rem)", margin: "0" }}>Agribazaar</h1>
         </div>
 
-        <div>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
           <button
             style={{
               ...buttonStyle,
@@ -463,65 +493,73 @@ const HomePage = () => {
           )}
         </div>
       </nav>
-      {/* ---------- FEATURE BAR / SERVICE NAVIGATION ---------- */}
+
+      {/* ---------- SECTION 1: SHOP BY CATEGORY ---------- */}
       <h2
         style={{
-          fontSize: "2rem",
+          fontSize: "clamp(1.3rem, 5vw, 2rem)",
           fontWeight: "800",
           textAlign: "left",
           marginLeft: "2rem",
           marginBottom: "16px",
           color: colors.primaryGreen,
+          marginTop: "2rem",
         }}
       >
-        Shop By Category
+        🛍️ Shop By Category
       </h2>
 
       <section style={mainCategoryContainerStyle}>
         {mainCategoryBoxes.map((item, idx) => (
           <div
             key={idx}
-            style={mainCategoryBoxStyle}
+            style={mainCategoryBoxStyle(idx)}
             onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.07)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
             <span style={{ fontSize: "1.9rem", marginRight: 12 }}>{item.emoji}</span>
-            {item.label}
+            <span>{item.label}</span>
           </div>
         ))}
+        {/* Empty space for scroll padding */}
+        <div style={{ minWidth: "2rem", flexShrink: 0 }}></div>
       </section>
 
-      {/* ---------- NEWS / INFO BANNER ---------- */}
+      {/* ---------- SECTION 2: AGRICULTURE NEWS ---------- */}
       <h2
         style={{
-          fontSize: "2rem",
+          fontSize: "clamp(1.3rem, 5vw, 2rem)",
           fontWeight: "800",
           textAlign: "left",
           marginLeft: "2rem",
           marginBottom: "16px",
           color: colors.primaryGreen,
+          marginTop: "2rem",
         }}
       >
-        Agriculture News & Updates
+        📰 Agriculture News & Updates
       </h2>
       <section style={newsSectionStyle}>
         {newsItems.map((item, i) => (
-          <span key={i}>{item}</span>
+          <span key={i} style={{ flexShrink: 0, whiteSpace: "nowrap" }}>
+            {item}
+          </span>
         ))}
       </section>
 
-      {/* ---------- OFFER CARDS / DEALS ---------- */}
+      {/* ---------- SECTION 3: TOP OFFERS ---------- */}
       <h2
         style={{
-          fontSize: "2rem",
+          fontSize: "clamp(1.3rem, 5vw, 2rem)",
           fontWeight: "800",
           textAlign: "left",
           marginLeft: "2rem",
           marginBottom: "16px",
           color: colors.primaryGreen,
+          marginTop: "2rem",
         }}
       >
-        Top Offers
+        🎉 Top Offers
       </h2>
       <section style={offersContainer}>
         {offerProducts.map(({ title, desc, img }, idx) => (
@@ -534,34 +572,34 @@ const HomePage = () => {
                 hoverOffer === idx
                   ? "0 8px 16px rgba(0,0,0,0.2)"
                   : "0 4px 8px rgba(0,0,0,0.1)",
-              transition: "transform 0.3s ease, box-shadow 0.3s ease",
             }}
             onMouseEnter={() => setHoverOffer(idx)}
             onMouseLeave={() => setHoverOffer(null)}
           >
             <img src={img} alt={title} style={offerImgStyle} />
-            <h3>{title}</h3>
-            <p>{desc}</p>
+            <h3 style={{ fontSize: "0.95rem", margin: "0.5rem 0 0.3rem" }}>{title}</h3>
+            <p style={{ fontSize: "0.85rem", margin: "0", color: "#666" }}>{desc}</p>
           </div>
         ))}
       </section>
 
-      {/* ---------- PRODUCT CATEGORY GRID ---------- */}
+      {/* ---------- SECTION 4: PRODUCT CATEGORIES ---------- */}
       <h2
         style={{
-          fontSize: "2rem",
+          fontSize: "clamp(1.3rem, 5vw, 2rem)",
           fontWeight: "800",
           textAlign: "left",
           marginLeft: "2rem",
           marginBottom: "16px",
           color: colors.primaryGreen,
+          marginTop: "2rem",
         }}
       >
-        Shop Crops, Livestock & More
+        🌾 Shop Crops, Livestock & More
       </h2>
       <section style={categoryContainerStyle}>
         {productCategories.map(({ name, img }, idx) => (
-          <div key={idx} style={{ textAlign: "center" }}>
+          <div key={idx} style={{ textAlign: "center", flexShrink: 0 }}>
             <img
               src={img}
               alt={name}
@@ -580,36 +618,58 @@ const HomePage = () => {
               style={{
                 marginTop: "1rem",
                 fontWeight: "600",
-                fontSize: "1.15rem",
+                fontSize: "clamp(0.85rem, 2vw, 1.15rem)",
+                margin: "1rem 0 0 0",
+                whiteSpace: "nowrap",
               }}
             >
               {name}
             </p>
           </div>
         ))}
+        {/* Empty space for scroll padding */}
+        <div style={{ minWidth: "2rem", flexShrink: 0 }}></div>
       </section>
 
-      {/* ---------- LIVE MARKET PRICES INFOBAR ---------- */}
+      {/* ---------- SECTION 5: LIVE MARKET PRICES ---------- */}
       <h2
         style={{
-          fontSize: "2rem",
+          fontSize: "clamp(1.3rem, 5vw, 2rem)",
           fontWeight: "800",
           textAlign: "left",
           marginLeft: "2rem",
           marginBottom: "16px",
           color: colors.primaryGreen,
+          marginTop: "2rem",
         }}
       >
-        Live Market Prices
+        📊 Live Market Prices
       </h2>
       <section style={livePricesStyle}>
-        <span>Potato (Kangra) ₹1700 - ₹2600</span>
-        <span>Banana (Palampur) ₹4300 - ₹4400</span>
-        <span>Bottle gourd (Palampur) ₹3500 - ₹5000</span>
+        <span style={{ flexShrink: 0, whiteSpace: "nowrap" }}>Potato (Kangra) ₹1700 - ₹2600</span>
+        <span style={{ flexShrink: 0, whiteSpace: "nowrap" }}>Banana (Palampur) ₹4300 - ₹4400</span>
+        <span style={{ flexShrink: 0, whiteSpace: "nowrap" }}>Bottle gourd (Palampur) ₹3500 - ₹5000</span>
       </section>
 
-      {/* ---------- FOOTER / SUPPORT LINKS ---------- */}
+      {/* ---------- FOOTER ---------- */}
       <EnhancedFooter />
+
+      <style>{`
+        /* Hide scrollbar but keep scrolling */
+        section::-webkit-scrollbar {
+          display: none;
+        }
+        section {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        @media (max-width: 600px) {
+          input, button, textarea {
+            font-size: 16px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

@@ -10,6 +10,7 @@ import BothDashboard from "./pages/BothDashboard";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import EnterOTPPage from "./pages/EnterOTPPage";
+import UploadProducts from './pages/UploadProducts';  
 
 const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password/:uid/:token" element={<ResetPasswordPage />} />
           <Route path="/enter-otp" element={<EnterOTPPage />} />
+          <Route path="/upload-products" element={<UploadProducts />} />
 
         </Routes>
       </Router>

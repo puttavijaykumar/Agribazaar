@@ -109,6 +109,58 @@ const getUserProfile = async () => {
 
   return response.data;
 };
+
+// List products of logged-in farmer
+const getProducts = async () => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/products/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// Upload new product, accepts FormData for images
+const createProduct = async (formData) => {
+  const token = localStorage.getItem("access");
+
+  const response = await axios.post(`${API_URL}/products/`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data;
+};
+
+// Update existing product
+const updateProduct = async (id, formData) => {
+  const token = localStorage.getItem("access");
+
+  const response = await axios.put(`${API_URL}/products/${id}/`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data;
+};
+
+// Delete product by ID
+const deleteProduct = async (id) => {
+  const token = localStorage.getItem("access");
+
+  const response = await axios.delete(`${API_URL}/products/${id}/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return response.data;
+};
+
+
+
+
 export default {
   register,
   login,
@@ -118,5 +170,9 @@ export default {
   setRole,
   requestPasswordReset,
   resetPassword,
-  getUserProfile
+  getUserProfile,
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
 };

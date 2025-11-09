@@ -171,6 +171,30 @@ const SelectRolePage = () => {
             transform: translateY(0);
           }
         }
+
+        /* Mobile Phones (320px - 480px) */
+        @media (max-width: 480px) {
+          body {
+            overflow-x: hidden;
+          }
+        }
+
+        /* Small Devices (481px - 600px) */
+        @media (max-width: 600px) {
+          body {
+            overflow-x: hidden;
+          }
+        }
+
+        /* Tablets & Medium Devices (601px - 900px) */
+        @media (min-width: 601px) and (max-width: 900px) {
+          /* Smooth transitions for tablet */
+        }
+
+        /* Large Screens (901px+) */
+        @media (min-width: 901px) {
+          /* Optimized for desktop */
+        }
       `}</style>
     </div>
   );
@@ -183,7 +207,7 @@ const containerStyle = {
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  padding: "2rem",
+  padding: "clamp(1rem, 4vw, 2rem)",
   fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
   position: "relative",
   overflow: "hidden"
@@ -191,87 +215,92 @@ const containerStyle = {
 
 const bgBlobStyle1 = {
   position: "absolute",
-  width: "400px",
-  height: "400px",
+  width: "clamp(200px, 30vw, 400px)",
+  height: "clamp(200px, 30vw, 400px)",
   background: "rgba(74, 124, 44, 0.1)",
   borderRadius: "50%",
-  top: "-100px",
-  right: "-100px",
+  top: "clamp(-50px, -10vh, -100px)",
+  right: "clamp(-50px, -5vw, -100px)",
   animation: "float 6s ease-in-out infinite"
 };
 
 const bgBlobStyle2 = {
   position: "absolute",
-  width: "300px",
-  height: "300px",
+  width: "clamp(150px, 25vw, 300px)",
+  height: "clamp(150px, 25vw, 300px)",
   background: "rgba(45, 80, 22, 0.15)",
   borderRadius: "50%",
-  bottom: "50px",
-  left: "-80px",
+  bottom: "clamp(20px, 5vh, 50px)",
+  left: "clamp(-40px, -5vw, -80px)",
   animation: "float 8s ease-in-out infinite 1s"
 };
 
 const bgBlobStyle3 = {
   position: "absolute",
-  width: "250px",
-  height: "250px",
+  width: "clamp(125px, 20vw, 250px)",
+  height: "clamp(125px, 20vw, 250px)",
   background: "rgba(74, 124, 44, 0.08)",
   borderRadius: "50%",
   top: "50%",
-  right: "10%",
+  right: "clamp(5%, 10vw, 10%)",
   animation: "float 7s ease-in-out infinite 2s"
 };
 
 const headerStyle = {
   textAlign: "center",
-  marginBottom: "4rem",
-  marginTop: "1rem",
+  marginBottom: "clamp(2rem, 8vw, 4rem)",
+  marginTop: "clamp(0.5rem, 3vw, 1rem)",
   position: "relative",
   zIndex: 10,
-  animation: "slideIn 0.8s ease"
+  animation: "slideIn 0.8s ease",
+  maxWidth: "90%"
 };
 
 const logoStyle = {
-  fontSize: "4rem",
-  marginBottom: "1rem",
-  animation: "float 4s ease-in-out infinite"
+  fontSize: "clamp(2.5rem, 10vw, 4rem)",
+  marginBottom: "clamp(0.5rem, 3vw, 1rem)",
+  animation: "float 4s ease-in-out infinite",
+  display: "inline-block"
 };
 
 const titleStyle = {
-  fontSize: "3.2rem",
+  fontSize: "clamp(1.8rem, 8vw, 3.2rem)",
   background: "linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   backgroundClip: "text",
-  marginBottom: "0.8rem",
+  marginBottom: "clamp(0.5rem, 2vw, 0.8rem)",
   fontWeight: "800",
-  letterSpacing: "-1px"
+  letterSpacing: "-1px",
+  margin: "0 0 clamp(0.5rem, 2vw, 0.8rem) 0"
 };
 
 const subtitleStyle = {
-  fontSize: "1.2rem",
+  fontSize: "clamp(0.95rem, 4vw, 1.2rem)",
   color: "#d0e8d8",
   fontWeight: "400",
-  maxWidth: "600px",
+  maxWidth: "100%",
   margin: "0 auto",
-  lineHeight: "1.6"
+  lineHeight: "1.6",
+  padding: "0 clamp(0.5rem, 3vw, 0)"
 };
 
 const gridStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-  gap: "2.5rem",
+  gridTemplateColumns: "repeat(auto-fit, minmax(clamp(280px, 90vw, 300px), 1fr))",
+  gap: "clamp(1.5rem, 4vw, 2.5rem)",
   maxWidth: "1100px",
   width: "100%",
-  marginBottom: "3rem",
+  marginBottom: "clamp(2rem, 5vw, 3rem)",
   position: "relative",
-  zIndex: 10
+  zIndex: 10,
+  padding: "0 clamp(0.5rem, 2vw, 0)"
 };
 
 const cardStyle = {
   background: "linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 252, 248, 0.98) 100%)",
-  borderRadius: "20px",
-  padding: "2.5rem 2rem",
+  borderRadius: "clamp(15px, 3vw, 20px)",
+  padding: "clamp(1.5rem, 5vw, 2.5rem) clamp(1rem, 4vw, 2rem)",
   boxShadow: "0 20px 60px rgba(0, 0, 0, 0.15)",
   transition: "all 0.4s cubic-bezier(0.23, 1, 0.320, 1)",
   cursor: "pointer",
@@ -286,35 +315,36 @@ const cardStyle = {
 };
 
 const cardHoverStyle = {
-  transform: "translateY(-12px) scale(1.02)",
+  transform: "translateY(clamp(-8px, -2vw, -12px)) scale(1.02)",
   boxShadow: "0 40px 80px rgba(0, 0, 0, 0.25)"
 };
 
 const badgeStyle = {
-  fontSize: "4rem",
-  width: "100px",
-  height: "100px",
+  fontSize: "clamp(2.5rem, 8vw, 4rem)",
+  width: "clamp(80px, 15vw, 100px)",
+  height: "clamp(80px, 15vw, 100px)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  borderRadius: "20px",
-  marginBottom: "1.5rem",
+  borderRadius: "clamp(15px, 3vw, 20px)",
+  marginBottom: "clamp(1rem, 3vw, 1.5rem)",
   boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
   animation: "slideIn 0.6s ease"
 };
 
 const cardTitleStyle = {
-  fontSize: "1.8rem",
+  fontSize: "clamp(1.3rem, 5vw, 1.8rem)",
   color: "#1a5d2e",
-  marginBottom: "0.8rem",
+  marginBottom: "clamp(0.5rem, 2vw, 0.8rem)",
   fontWeight: "800",
-  letterSpacing: "-0.5px"
+  letterSpacing: "-0.5px",
+  margin: "0 0 clamp(0.5rem, 2vw, 0.8rem) 0"
 };
 
 const cardDescriptionStyle = {
-  fontSize: "1rem",
+  fontSize: "clamp(0.85rem, 3vw, 1rem)",
   color: "#555555",
-  marginBottom: "1.5rem",
+  marginBottom: "clamp(1rem, 2vw, 1.5rem)",
   lineHeight: "1.6",
   fontWeight: "500"
 };
@@ -322,9 +352,9 @@ const cardDescriptionStyle = {
 const featuresListStyle = {
   display: "flex",
   flexDirection: "column",
-  gap: "0.8rem",
+  gap: "clamp(0.5rem, 2vw, 0.8rem)",
   width: "100%",
-  marginBottom: "1.5rem",
+  marginBottom: "clamp(1rem, 2vw, 1.5rem)",
   flexGrow: 1
 };
 
@@ -332,26 +362,26 @@ const featureItemStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  gap: "0.5rem",
-  fontSize: "0.95rem",
+  gap: "clamp(0.3rem, 1vw, 0.5rem)",
+  fontSize: "clamp(0.8rem, 3vw, 0.95rem)",
   color: "#333",
   fontWeight: "500"
 };
 
 const featureDotStyle = {
-  fontSize: "1.2rem",
+  fontSize: "clamp(0.9rem, 3vw, 1.2rem)",
   color: "#2d8659",
   fontWeight: "bold"
 };
 
 const cardButtonStyle = {
-  padding: "14px 28px",
-  borderRadius: "12px",
+  padding: "clamp(10px, 3vw, 14px) clamp(20px, 5vw, 28px)",
+  borderRadius: "clamp(10px, 2vw, 12px)",
   border: "none",
   cursor: "pointer",
   color: "white",
   fontWeight: "700",
-  fontSize: "1rem",
+  fontSize: "clamp(0.8rem, 2.5vw, 1rem)",
   transition: "all 0.3s ease",
   width: "100%",
   boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)",
@@ -360,23 +390,26 @@ const cardButtonStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  gap: "0.5rem"
+  gap: "clamp(0.3rem, 1vw, 0.5rem)"
 };
 
 const footerStyle = {
   position: "relative",
   zIndex: 10,
-  marginTop: "2rem"
+  marginTop: "clamp(1.5rem, 4vw, 2rem)",
+  width: "100%",
+  maxWidth: "90%",
+  padding: "0 clamp(0.5rem, 2vw, 0)"
 };
 
 const footerTextStyle = {
-  fontSize: "0.95rem",
+  fontSize: "clamp(0.8rem, 3vw, 0.95rem)",
   color: "#c8e6c8",
   textAlign: "center",
   fontWeight: "500",
   background: "rgba(255, 255, 255, 0.1)",
-  padding: "1rem 1.5rem",
-  borderRadius: "12px",
+  padding: "clamp(0.8rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem)",
+  borderRadius: "clamp(10px, 2vw, 12px)",
   backdropFilter: "blur(10px)",
   border: "1px solid rgba(255, 255, 255, 0.2)"
 };

@@ -68,15 +68,15 @@ const LoginPage = () => {
     alignItems: "center",
     background: "linear-gradient(135deg, #0d3b1a, #1b5e2f, #2d8e4a, #3fac5d)",
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    padding: "20px",
+    padding: "clamp(1rem, 4vw, 2rem)",
   };
 
   const cardStyle = {
     background: "rgba(255, 255, 255, 0.95)",
-    borderRadius: "20px",
+    borderRadius: "clamp(15px, 3vw, 20px)",
     maxWidth: "420px",
     width: "100%",
-    padding: "3rem",
+    padding: "clamp(1.5rem, 6vw, 3rem)",
     boxShadow: "0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)",
     backdropFilter: "blur(10px)",
     border: "1px solid rgba(255, 255, 255, 0.2)",
@@ -84,33 +84,35 @@ const LoginPage = () => {
 
   const titleStyle = {
     textAlign: "center",
-    marginBottom: "0.5rem",
+    marginBottom: "clamp(0.3rem, 1vw, 0.5rem)",
     color: "#1b5e2f",
-    fontSize: "28px",
+    fontSize: "clamp(1.5rem, 6vw, 1.75rem)",
     fontWeight: "700",
     letterSpacing: "-0.5px",
+    margin: "0 0 clamp(0.3rem, 1vw, 0.5rem) 0"
   };
 
   const subtitleStyle = {
     textAlign: "center",
-    marginBottom: "2rem",
+    marginBottom: "clamp(1.2rem, 4vw, 2rem)",
     color: "#7a8fa6",
-    fontSize: "14px",
+    fontSize: "clamp(0.8rem, 2.5vw, 0.95rem)",
     fontWeight: "400",
+    margin: "clamp(0.3rem, 1vw, 0.5rem) 0 clamp(1.2rem, 4vw, 2rem) 0"
   };
 
   const formStyle = {
     display: "flex",
     flexDirection: "column",
-    gap: "16px",
+    gap: "clamp(1rem, 2vw, 1.2rem)",
   };
 
   const inputStyle = {
-    padding: "13px 16px",
-    borderRadius: "12px",
+    padding: "clamp(10px, 2.5vw, 13px) clamp(12px, 3vw, 16px)",
+    borderRadius: "clamp(10px, 2vw, 12px)",
     border: "2px solid #e0e7f1",
     width: "100%",
-    fontSize: "15px",
+    fontSize: "clamp(0.85rem, 2.5vw, 0.95rem)",
     fontFamily: "inherit",
     transition: "all 0.3s ease",
     boxSizing: "border-box",
@@ -131,9 +133,9 @@ const LoginPage = () => {
 
   const eyeIconStyle = {
     position: "absolute",
-    right: "14px",
+    right: "clamp(10px, 2vw, 14px)",
     cursor: "pointer",
-    fontSize: "18px",
+    fontSize: "clamp(1rem, 2vw, 1.1rem)",
     userSelect: "none",
     transition: "opacity 0.2s ease",
   };
@@ -141,15 +143,17 @@ const LoginPage = () => {
   const buttonStyle = {
     background: "linear-gradient(135deg, #2d8e4a, #1b5e2f)",
     color: "white",
-    padding: "14px 20px",
-    borderRadius: "12px",
+    padding: "clamp(10px, 2.5vw, 14px) clamp(1.5rem, 3vw, 1.8rem)",
+    borderRadius: "clamp(10px, 2vw, 12px)",
     border: "none",
     cursor: loading ? "not-allowed" : "pointer",
     fontWeight: "700",
-    fontSize: "16px",
+    fontSize: "clamp(0.85rem, 2.5vw, 0.95rem)",
     transition: "all 0.3s ease",
     opacity: loading ? 0.8 : 1,
     boxShadow: "0 4px 15px rgba(45, 142, 74, 0.2)",
+    textTransform: "uppercase",
+    letterSpacing: "0.5px",
   };
 
   const buttonHoverStyle = {
@@ -161,9 +165,9 @@ const LoginPage = () => {
   const dividerStyle = {
     display: "flex",
     alignItems: "center",
-    marginTop: "24px",
-    marginBottom: "20px",
-    gap: "12px",
+    marginTop: "clamp(1.5rem, 3vw, 2rem)",
+    marginBottom: "clamp(1.2rem, 3vw, 1.5rem)",
+    gap: "clamp(0.8rem, 2vw, 1rem)",
   };
 
   const lineStyle = {
@@ -174,22 +178,24 @@ const LoginPage = () => {
 
   const dividerTextStyle = {
     color: "#a0b0c0",
-    fontSize: "13px",
+    fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
     fontWeight: "500",
+    whiteSpace: "nowrap",
   };
 
   const googleButtonContainerStyle = {
     display: "flex",
     justifyContent: "center",
-    marginBottom: "20px",
+    marginBottom: "clamp(1.2rem, 3vw, 1.5rem)",
+    width: "100%",
   };
 
   const linkContainerStyle = {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    marginTop: "18px",
-    fontSize: "13px",
+    marginTop: "clamp(1rem, 2vw, 1.3rem)",
+    fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
   };
 
   const linkStyle = {
@@ -201,21 +207,22 @@ const LoginPage = () => {
 
   const signupContainerStyle = {
     textAlign: "center",
-    marginTop: "22px",
-    fontSize: "14px",
+    marginTop: "clamp(1.5rem, 3vw, 1.8rem)",
+    fontSize: "clamp(0.8rem, 2vw, 0.9rem)",
     color: "#6a7a8a",
   };
 
   const msgStyle = {
-    marginTop: "16px",
+    marginTop: "clamp(1rem, 2vw, 1.2rem)",
     textAlign: "center",
-    padding: "12px 14px",
-    borderRadius: "8px",
-    fontSize: "14px",
+    padding: "clamp(0.8rem, 2vw, 1rem) clamp(1rem, 2vw, 1.2rem)",
+    borderRadius: "clamp(6px, 1.5vw, 8px)",
+    fontSize: "clamp(0.75rem, 2vw, 0.9rem)",
     fontWeight: "500",
     background: msg.includes("❌") ? "rgba(229, 57, 53, 0.1)" : "rgba(56, 142, 60, 0.1)",
     color: msg.includes("❌") ? "#c62828" : "#2e7d32",
     border: msg.includes("❌") ? "1px solid rgba(229, 57, 53, 0.2)" : "1px solid rgba(56, 142, 60, 0.2)",
+    animation: "slideIn 0.3s ease",
   };
 
   return (
@@ -272,7 +279,12 @@ const LoginPage = () => {
           </form>
 
           <div style={linkContainerStyle}>
-            <Link to="/forgot-password" style={linkStyle} onMouseEnter={(e) => e.target.style.color = "#1a3a52"} onMouseLeave={(e) => e.target.style.color = "#2c5364"}>
+            <Link 
+              to="/forgot-password" 
+              style={linkStyle}
+              onMouseEnter={(e) => e.target.style.color = "#1a3a52"} 
+              onMouseLeave={(e) => e.target.style.color = "#2d8e4a"}
+            >
               🔑 Forgot Password?
             </Link>
           </div>
@@ -284,10 +296,13 @@ const LoginPage = () => {
           </div>
 
           <div style={googleButtonContainerStyle}>
-            <GoogleLogin
-              onSuccess={handleGoogleLogin}
-              onError={() => setMsg("❌ Google sign-in failed")}
-            />
+            <div style={{ width: "100%", maxWidth: "330px", display: "flex", justifyContent: "center" }}>
+              <GoogleLogin
+                onSuccess={handleGoogleLogin}
+                onError={() => setMsg("❌ Google sign-in failed")}
+                width="100%"
+              />
+            </div>
           </div>
 
           {msg && <p style={msgStyle}>{msg}</p>}
@@ -305,6 +320,48 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        /* Mobile Phones (320px - 480px) */
+        @media (max-width: 480px) {
+          input::placeholder {
+            font-size: 0.8rem;
+          }
+          input, button {
+            font-size: 16px !important;
+          }
+        }
+
+        /* Small Tablets (481px - 600px) */
+        @media (max-width: 600px) {
+          input, button, textarea {
+            font-size: 16px !important;
+          }
+        }
+
+        /* Medium Tablets (601px - 900px) */
+        @media (min-width: 601px) and (max-width: 900px) {
+          /* Smooth transitions for tablet */
+        }
+
+        /* Large Screens (901px+) */
+        @media (min-width: 901px) {
+          button {
+            font-size: 0.95rem !important;
+          }
+        }
+      `}</style>
     </GoogleOAuthProvider>
   );
 };

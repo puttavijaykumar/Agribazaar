@@ -37,6 +37,11 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 import secrets
 from django.utils import timezone
 from datetime import timedelta
+from .serializers import ProductSerializer
+from rest_framework import viewsets, permissions
+from .models import Product
+
+
 
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
@@ -237,3 +242,18 @@ def user_profile(request):
     }
 
     return Response(data)
+
+
+# Farmer products uploading function
+
+class ProductViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Return products owned by logged-in user only
+        return Product.objects.filter(owner=self.request.user).order_by('-created_at')
+
+    def perform_create(self, serializer):
+        # Set the owner of the created product
+        serializer.save(owner=self.request.user)
