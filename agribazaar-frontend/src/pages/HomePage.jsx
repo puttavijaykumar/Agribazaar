@@ -320,7 +320,7 @@ const EnhancedFooter = ({ hoveredColumn, setHoveredColumn }) => {
     },
     {
       title: "Connect with Us",
-      links: ["LinkedIn", "Twitter", "Instagram"],
+      links: ["LinkedIn", "X", "Instagram"],
     },
     {
       title: "Make Money with Us",
