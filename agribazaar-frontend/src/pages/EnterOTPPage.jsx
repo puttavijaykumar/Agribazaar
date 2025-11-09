@@ -32,7 +32,7 @@ export default function EnterOTPPage() {
     setLoading(true);
     try {
       await AuthService.verifyOtp(email, otp);
-      setMsg("✅ OTP verified! You can now log in.");
+      setMsg(" OTP verified! You can now log in.");
       setTimeout(() => navigate("/login"), 1200);
     } catch (error) {
       setError(error.response?.data?.error || "❌ OTP verification failed. Please try again.");
@@ -82,7 +82,7 @@ export default function EnterOTPPage() {
             marginBottom: "16px",
             animation: "pulse 2s infinite"
           }}>
-            📬
+            
           </div>
           <h2 style={{
             fontSize: "32px",
