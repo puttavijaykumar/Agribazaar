@@ -75,28 +75,24 @@ function FarmerDashboard() {
     {
       key: "upload",
       title: "Upload Products",
-      icon: "📤",
       color: "#81c784",
       link: "/upload-products",
     },
     {
       key: "messaging",
       title: "Negotiation & Messages",
-      icon: "💬",
       color: "#64b5f6",
       link: "/messages",
     },
     {
       key: "products",
       title: "My Products",
-      icon: "🛍️",
       color: "#ffd54f",
       link: "/my-products",
     },
     {
       key: "analytics",
       title: "Sales Analytics",
-      icon: "📊",
       color: "#ff8a65",
       link: "/analytics",
     },
@@ -270,7 +266,7 @@ function FarmerDashboard() {
                 e.target.style.boxShadow = "none";
               }}
             >
-              🔄 Buyer
+              Buyer
             </button>
           )}
         </div>
@@ -295,7 +291,7 @@ function FarmerDashboard() {
 
       {/* Main Dashboard Grid - Horizontal Scroll */}
       <h3 style={{ fontSize: "clamp(1.3rem, 4vw, 1.8rem)", fontWeight: "800", color: "#1b5e20", margin: "2rem 0 1rem 2rem" }}>
-        📊 Dashboard Modules
+        Dashboard Modules
       </h3>
 
       <div
@@ -411,7 +407,7 @@ function FarmerDashboard() {
 
       {/* Quick Stats Section - Horizontal Scroll */}
       <h3 style={{ fontSize: "clamp(1.3rem, 4vw, 1.8rem)", fontWeight: "800", color: "#1b5e20", margin: "2rem 0 1rem 2rem" }}>
-        📈 Quick Stats
+        Quick Stats
       </h3>
 
       <div
@@ -496,7 +492,7 @@ function FarmerDashboard() {
           }}
         >
           <p style={{ fontSize: "clamp(1.3rem, 4vw, 2rem)", margin: 0, fontWeight: "800", color: "#ff8a65" }}>
-            📈
+            
           </p>
           <p style={{ fontSize: "clamp(0.7rem, 2vw, 0.9rem)", color: "#555", margin: "0.5rem 0 0 0" }}>
             {user.salesData.recentActivity || "No data"}
@@ -508,7 +504,7 @@ function FarmerDashboard() {
 
       {/* My Products Section */}
       <h3 style={{ fontSize: "clamp(1.3rem, 4vw, 1.8rem)", fontWeight: "800", color: "#1b5e20", margin: "2rem 0 1rem 2rem" }}>
-        🛍️ My Products
+         My Products
       </h3>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", padding: "0 2rem" }}>
         {products.length === 0 ? (
@@ -565,7 +561,7 @@ function FarmerDashboard() {
             e.target.style.boxShadow = "0 5px 15px rgba(27, 94, 32, 0.3)";
           }}
         >
-          🏠 Back to Home
+           Back to Home
         </button>
       </div>
 
