@@ -204,7 +204,7 @@ def google_login(request):
         "access": str(refresh.access_token),
         "email": user.email,
         "username": user.username,
-        "role": user.role  # ✅ Role included
+        "role": user.role  
     })
     
     
