@@ -95,7 +95,20 @@ const logout = () => {
   window.location.href = "/login";  // ✅ Redirect to login page
 };
 
+//  Fetch user profile info
+const getUserProfile = async () => {
+  const token = localStorage.getItem("access");
+  if (!token) throw new Error("No access token found.");
 
+  const response = await axios.get(`${API_URL}/api/profile/`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    },
+  });
+
+  return response.data;
+};
 export default {
   register,
   login,
@@ -104,5 +117,6 @@ export default {
   logout,
   setRole,
   requestPasswordReset,
-  resetPassword
+  resetPassword,
+  getUserProfile
 };

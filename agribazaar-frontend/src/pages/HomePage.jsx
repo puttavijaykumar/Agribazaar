@@ -4,7 +4,6 @@ import AuthService from "../services/AuthService";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
-// -------------- THEME & GLOBAL STYLES --------------
 const colors = {
   primaryGreen: "#388e3c",
   secondaryGreen: "#81c784",
@@ -15,7 +14,6 @@ const colors = {
   contrastText: "#263238",
 };
 
-// -------------- NAVIGATION BAR --------------
 const navbarStyle = {
   backgroundColor: colors.primaryGreen,
   color: "white",
@@ -35,7 +33,6 @@ const buttonStyle = {
   transition: "background-color 0.3s ease",
 };
 
-// -------------- FEATURE BAR / PRIMARY CTA ROW --------------
 const mainCategoryBoxes = [
   { label: "Seeds", emoji: "🌱" },
   { label: "Fertilizers", emoji: "🌾" },
@@ -43,6 +40,7 @@ const mainCategoryBoxes = [
   { label: "Equipment", emoji: "🚜" },
   { label: "Irrigation", emoji: "💧" },
 ];
+
 const mainCategoryBoxStyle = {
   background: "linear-gradient(105deg, #aee571 85%, #d9e7c5 100%)",
   boxShadow: "0 4px 12px rgba(56,142,60,0.07)",
@@ -60,6 +58,7 @@ const mainCategoryBoxStyle = {
   transition: "transform 0.2s",
   cursor: "pointer",
 };
+
 const mainCategoryContainerStyle = {
   display: "flex",
   justifyContent: "center",
@@ -71,7 +70,6 @@ const mainCategoryContainerStyle = {
   background: "#e5f8dd",
 };
 
-// -------------- NEWS/ANNOUNCEMENT SECTION --------------
 const newsSectionStyle = {
   width: "100%",
   background: "#c1f5bbff",
@@ -86,13 +84,13 @@ const newsSectionStyle = {
   fontWeight: 500,
   letterSpacing: "0.5px",
 };
+
 const newsItems = [
   "🌾 Government sets new MSP for wheat and paddy this season",
   "🚜 AgriBazaar introduces new equipment rental scheme",
   "🛒 Online trading of maize crosses previous month record",
 ];
 
-// -------------- OFFER CARDS AREA --------------
 const offersContainer = {
   display: "flex",
   gap: "1rem",
@@ -100,6 +98,7 @@ const offersContainer = {
   padding: "1rem 2rem",
   margin: "1rem 0",
 };
+
 const offerCardStyle = {
   flex: "1 1 220px",
   maxWidth: "260px",
@@ -118,6 +117,7 @@ const offerCardStyle = {
   margin: "0 0.5rem",
   transition: "transform 0.3s ease, box-shadow 0.3s ease",
 };
+
 const offerImgStyle = {
   width: "100%",
   height: "100px",
@@ -125,6 +125,7 @@ const offerImgStyle = {
   borderRadius: "10px",
   marginBottom: "10px",
 };
+
 const offerProducts = [
   {
     title: "Black Rice - 10% Off",
@@ -153,7 +154,6 @@ const offerProducts = [
   },
 ];
 
-// -------------- PRODUCT CATEGORIES (KEY AGRI SEGMENTS) --------------
 const categoryContainerStyle = {
   display: "flex",
   gap: "20px",
@@ -161,6 +161,7 @@ const categoryContainerStyle = {
   flexWrap: "wrap",
   justifyContent: "space-around",
 };
+
 const categoryImageStyle = {
   width: "200px",
   height: "200px",
@@ -170,7 +171,7 @@ const categoryImageStyle = {
   boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
   transition: "transform 0.3s ease",
 };
-// Crop/Agri Product segments
+
 const productCategories = [
   {
     name: "Spices",
@@ -194,7 +195,6 @@ const productCategories = [
   },
 ];
 
-// -------------- MARKET PRICES/INFOBAR --------------
 const livePricesStyle = {
   backgroundColor: colors.harvestYellow,
   color: colors.primaryGreen,
@@ -207,7 +207,6 @@ const livePricesStyle = {
   margin: "1rem 2rem",
 };
 
-// -------------- ENHANCED FOOTER (SITE LINKS) --------------
 const footerStyle = {
   background: `linear-gradient(135deg, #0d3822 0%, #1b5e20 25%, #2d6a4f 50%, #1b5e20 75%, #0d3822 100%)`,
   color: "white",
@@ -309,7 +308,6 @@ const bottomTextStyle = {
   zIndex: 2,
 };
 
-// -------------- ENHANCED FOOTER COMPONENT --------------
 const EnhancedFooter = ({ hoveredColumn, setHoveredColumn }) => {
   const [hovered, setHovered] = React.useState(null);
 
@@ -387,17 +385,16 @@ const EnhancedFooter = ({ hoveredColumn, setHoveredColumn }) => {
 
       {/* Copyright */}
       <div style={bottomTextStyle}>
-        © 2024 AgriBazaar. All rights reserved. | Connecting Farmers & Buyers
-        Across India
+        © 2024 AgriBazaar. All rights reserved. | Connecting Farmers & Buyers Across India
       </div>
     </footer>
   );
 };
 
-// -------------- MAIN HOMEPAGE COMPONENT --------------
 const HomePage = () => {
   const [hoverOffer, setHoverOffer] = React.useState(null);
   const [hoverCategory, setHoverCategory] = React.useState(null);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -420,6 +417,7 @@ const HomePage = () => {
               backgroundColor: colors.harvestYellow,
               color: colors.primaryGreen,
             }}
+            onClick={() => navigate("/farmer/dashboard")}
           >
             Farmer
           </button>
@@ -429,6 +427,7 @@ const HomePage = () => {
               backgroundColor: colors.harvestYellow,
               color: colors.primaryGreen,
             }}
+            onClick={() => navigate("/buyer/dashboard")}
           >
             Buyer
           </button>
@@ -483,14 +482,10 @@ const HomePage = () => {
           <div
             key={idx}
             style={mainCategoryBoxStyle}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.07)")
-            }
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.07)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            <span style={{ fontSize: "1.9rem", marginRight: 12 }}>
-              {item.emoji}
-            </span>
+            <span style={{ fontSize: "1.9rem", marginRight: 12 }}>{item.emoji}</span>
             {item.label}
           </div>
         ))}

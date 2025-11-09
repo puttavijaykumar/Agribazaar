@@ -6,7 +6,7 @@ import HomePage from "./pages/HomePage";
 import SelectRolePage from "./pages/SelectRolePage";
 import FarmerDashboard from "./pages/FarmerDashboard";
 import BuyerDashboard from "./pages/BuyerDashboard";
-import BothDashboard from "./pages/BothDashboard"; // ✅ Import
+import BothDashboard from "./pages/BothDashboard"; 
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import EnterOTPPage from "./pages/EnterOTPPage";

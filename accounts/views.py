@@ -221,4 +221,19 @@ def set_role(request):
 
 
 
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])  # Using JWT authentication
+@permission_classes([IsAuthenticated])
+def user_profile(request):
+    user = request.user
 
+    # You can customize fields as required here
+    data = {
+        "username": user.username,
+        "email": user.email,
+        "role": user.role,
+        # "address": getattr(user, 'address', ''),  # if you add address field later
+        # Add products, notifications, salesData here if related models exist and are serialized
+    }
+
+    return Response(data)
