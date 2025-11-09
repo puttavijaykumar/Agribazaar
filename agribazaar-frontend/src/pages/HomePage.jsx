@@ -220,7 +220,7 @@ const footerStyle = {
 const footerBackgroundBlob = {
   position: "absolute",
   borderRadius: "50%",
-  opacity: 0.08",
+  opacity: "0.08",
   pointerEvents: "none",
 };
 
