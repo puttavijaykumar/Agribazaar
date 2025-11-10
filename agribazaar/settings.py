@@ -5,7 +5,8 @@ import os
 import dj_database_url
 from datetime import timedelta
 import cloudinary
-
+import cloudinary.uploader
+import cloudinary.api
 # --------------------
 # Paths & dotenv
 # --------------------

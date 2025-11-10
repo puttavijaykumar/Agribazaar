@@ -12,6 +12,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import EnterOTPPage from "./pages/EnterOTPPage";
 import UploadProducts from './pages/UploadProducts';  
 import UserProfile from "./pages/UserProfile";
+import MyProducts from "./pages/MyProducts";  
 
 const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
@@ -32,7 +33,7 @@ function App() {
           <Route path="/enter-otp" element={<EnterOTPPage />} />
           <Route path="/upload-products" element={<UploadProducts />} />
           <Route path="/profile" element={<UserProfile />} />
-
+          <Route path="/my-products" element={<MyProducts />} />
         </Routes>
       </Router>
     </GoogleOAuthProvider>
