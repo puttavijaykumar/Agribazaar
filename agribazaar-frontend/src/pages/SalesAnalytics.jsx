@@ -1,6 +1,6 @@
 // src/pages/SalesAnalytics.jsx
 import React, { useEffect, useState } from "react";
-import AuthService from "../services/AuthServices";
+import AuthService from "../services/AuthService";
 import FarmerNavbar from "../components/FarmerNavbar";
 import EnhancedFooter from "../components/EnhancedFooter";
 import {

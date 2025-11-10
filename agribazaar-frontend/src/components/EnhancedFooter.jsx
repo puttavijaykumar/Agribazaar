@@ -37,31 +37,29 @@ const blob2Style = {
 
 const footerContentStyle = {
   display: "flex",
-  justifyContent: "space-between", // Changed from flex-start to space-between
-  flexWrap: "nowrap",
-  maxWidth: "1400px", // Increased maxWidth to accommodate all columns
+  justifyContent: "center", // Center the columns
+  flexWrap: "wrap", // Allow wrapping on smaller screens
+  maxWidth: "1400px",
   margin: "0 auto",
   position: "relative",
   zIndex: 2,
-  gap: "clamp(1rem, 2vw, 2rem)", // Responsive gap
-  overflowX: "auto",
-  overflowY: "hidden",
-  padding: "0 clamp(1rem, 3vw, 2rem)", // Unified padding
-  scrollBehavior: "smooth",
-  WebkitOverflowScrolling: "touch",
+  gap: "clamp(1.5rem, 3vw, 3rem)", // Increased gap for better spacing
+  padding: "0 clamp(1rem, 3vw, 2rem)",
+  boxSizing: "border-box",
 };
 
 const footerColumnStyle = {
-  flex: "1 1 auto", // Allow columns to grow and shrink equally
-  minWidth: "220px", // Increased minimum width for better spacing
-  maxWidth: "280px", // Added maximum width to prevent over-stretching
-  padding: "clamp(1rem, 2vw, 1.5rem)",
+  flex: "0 0 calc(25% - 3rem)", // Each column takes 25% minus gap
+  minWidth: "250px", // Increased minimum width
+  maxWidth: "300px", // Increased maximum width
+  padding: "clamp(1.2rem, 2.5vw, 1.8rem)",
   background: "rgba(255, 255, 255, 0.05)",
   borderRadius: "clamp(8px, 2vw, 12px)",
   border: "1px solid rgba(255, 255, 255, 0.1)",
   transition: "all 0.3s ease",
   backdropFilter: "blur(10px)",
-  flexShrink: 0,
+  margin: "0.5rem",
+  boxSizing: "border-box",
 };
 
 const footerColumnHoverStyle = {
@@ -72,30 +70,31 @@ const footerColumnHoverStyle = {
 };
 
 const footerColumnTitleStyle = {
-  fontSize: "clamp(0.85rem, 2.5vw, 1.1rem)",
+  fontSize: "clamp(0.9rem, 2.5vw, 1.2rem)",
   fontWeight: "700",
   color: "#aed581",
-  marginBottom: "clamp(0.6rem, 1vw, 1rem)",
+  marginBottom: "clamp(0.8rem, 1.5vw, 1.2rem)",
   textTransform: "uppercase",
   letterSpacing: "0.5px",
-  margin: "0 0 clamp(0.6rem, 1vw, 1rem) 0",
+  margin: "0 0 clamp(0.8rem, 1.5vw, 1.2rem) 0",
 };
 
 const footerLinkStyle = {
-  fontSize: "clamp(0.75rem, 2vw, 0.95rem)",
+  fontSize: "clamp(0.8rem, 2vw, 1rem)",
   color: "#e8f5e9",
   textDecoration: "none",
   transition: "all 0.3s ease",
   cursor: "pointer",
   fontWeight: "500",
-  padding: "clamp(0.3rem, 0.8vw, 0.5rem) 0",
+  padding: "clamp(0.4rem, 1vw, 0.6rem) 0",
   display: "block",
+  lineHeight: "1.4",
 };
 
 const dividerStyle = {
   height: "1px",
   background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)",
-  margin: "clamp(1.5rem, 2vw, 2rem) auto",
+  margin: "clamp(2rem, 4vw, 3rem) auto",
   maxWidth: "1400px",
   width: "calc(100% - clamp(2rem, 6vw, 4rem))",
   position: "relative",
@@ -104,15 +103,15 @@ const dividerStyle = {
 
 const bottomTextStyle = {
   textAlign: "center",
-  fontSize: "clamp(0.75rem, 2vw, 0.9rem)",
+  fontSize: "clamp(0.8rem, 2vw, 1rem)",
   color: "#b3e5fc",
-  marginTop: "clamp(1rem, 1.5vw, 1.5rem)",
+  marginTop: "clamp(1rem, 2vw, 2rem)",
   fontWeight: "500",
   position: "relative",
   zIndex: 2,
   padding: "0 clamp(1rem, 3vw, 2rem)",
   maxWidth: "1400px",
-  margin: "clamp(1rem, 1.5vw, 1.5rem) auto 0",
+  margin: "clamp(1rem, 2vw, 2rem) auto 0",
 };
 
 const EnhancedFooter = () => {
@@ -120,15 +119,15 @@ const EnhancedFooter = () => {
 
   const footerColumns = [
     {
-      title: "Get to Know Us",
-      links: ["About Agribazaar", "Careers", "Press Releases", "Agri Science"],
+      title: "GET TO KNOW US",
+      links: ["About Agribazaar", "Careers", "Press Release", "Agri Science"],
     },
     {
-      title: "Connect with Us",
+      title: "CONNECT WITH US",
       links: ["LinkedIn", "X", "Instagram"],
     },
     {
-      title: "Make Money with Us",
+      title: "MAKE MONEY WITH US",
       links: [
         "Sell on Agribazaar",
         "Become a Supplier",
@@ -137,7 +136,7 @@ const EnhancedFooter = () => {
       ],
     },
     {
-      title: "Let Us Help You",
+      title: "LET US HELP YOU",
       links: [
         "Your Account",
         "Returns Centre",
@@ -153,7 +152,7 @@ const EnhancedFooter = () => {
       <div style={blob1Style}></div>
       <div style={blob2Style}></div>
 
-      {/* Main Footer Content - Horizontal Scroll */}
+      {/* Main Footer Content */}
       <div style={footerContentStyle}>
         {footerColumns.map((column, idx) => (
           <div
@@ -196,31 +195,26 @@ const EnhancedFooter = () => {
       </div>
 
       <style>{`
-        /* Hide scrollbar but keep scrolling */
-        div::-webkit-scrollbar {
-          display: none;
+        /* Responsive behavior */
+        @media (max-width: 1200px) {
+          .footer-column {
+            flex: 0 0 calc(50% - 2rem) !important;
+            max-width: calc(50% - 2rem) !important;
+          }
         }
-        div {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
+
+        @media (max-width: 768px) {
+          .footer-column {
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+            min-width: auto !important;
+          }
         }
 
         @media (max-width: 600px) {
           /* Mobile optimizations */
           a, button {
             font-size: 16px !important;
-          }
-        }
-
-        @media (min-width: 601px) and (max-width: 900px) {
-          /* Tablet optimizations */
-        }
-
-        @media (min-width: 901px) {
-          /* Desktop optimizations - Remove horizontal scroll on desktop */
-          .footer-content {
-            overflow-x: visible;
-            justify-content: space-between;
           }
         }
       `}</style>
