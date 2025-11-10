@@ -89,3 +89,10 @@ class ProductSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         validated_data['owner'] = user
         return super().create(validated_data)
+    
+    
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["username", "email", "role",
+                "home_name", "street", "village", "mandal", "district", "state", "pincode"]

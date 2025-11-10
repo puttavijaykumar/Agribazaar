@@ -41,6 +41,7 @@ from .serializers import ProductSerializer
 from rest_framework import viewsets, permissions
 from .models import Product
 
+from .serializers import UserProfileSerializer
 
 
 User = get_user_model()
@@ -226,23 +227,21 @@ def set_role(request):
 
 
 
-@api_view(['GET'])
-@authentication_classes([JWTAuthentication])  # Using JWT authentication
+@api_view(['GET', 'PUT'])
+@authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def user_profile(request):
     user = request.user
+    if request.method == "GET":
+        serializer = UserProfileSerializer(user)
+        return Response(serializer.data)
 
-    # You can customize fields as required here
-    data = {
-        "username": user.username,
-        "email": user.email,
-        "role": user.role,
-        # "address": getattr(user, 'address', ''),  # if you add address field later
-        # Add products, notifications, salesData here if related models exist and are serialized
-    }
-
-    return Response(data)
-
+    elif request.method == "PUT":
+        serializer = UserProfileSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Farmer products uploading function
 

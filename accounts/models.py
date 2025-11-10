@@ -12,20 +12,27 @@ class CustomUser(AbstractUser):
     )
 
     email = models.EmailField(unique=True)
-
     role = models.CharField(
         max_length=10,
         choices=ROLE_CHOICES,
-        null=True,        # allows role to be empty initially
+        null=True,
         blank=True
     )
 
-    # === New fields for OTP verification ===
+    # Address fields
+    home_name = models.CharField(max_length=100, blank=True)
+    street = models.CharField(max_length=100, blank=True)
+    village = models.CharField(max_length=100, blank=True)
+    mandal = models.CharField(max_length=100, blank=True)
+    district = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    pincode = models.CharField(max_length=10, blank=True)
+
+    # OTP fields
     otp_code = models.CharField(max_length=6, null=True, blank=True)
     otp_created_at = models.DateTimeField(null=True, blank=True)
-    is_verified = models.BooleanField(default=False)  # Set False until OTP verified
+    is_verified = models.BooleanField(default=False)
 
-    # Optionally add a method to check if OTP is expired
     def is_otp_expired(self):
         if self.otp_created_at:
             return timezone.now() > self.otp_created_at + timedelta(minutes=15)
