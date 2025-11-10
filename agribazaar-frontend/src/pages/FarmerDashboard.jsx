@@ -93,7 +93,7 @@ function FarmerDashboard() {
       key: "analytics",
       title: "Sales Analytics",
       color: "#ff8a65",
-      link: "/analytics",
+      link: "/sales-analytics",
     },
   ];
 
