@@ -11,6 +11,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import EnterOTPPage from "./pages/EnterOTPPage";
 import UploadProducts from './pages/UploadProducts';  
+import UserProfile from "./pages/UserProfile";
 
 const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/reset-password/:uid/:token" element={<ResetPasswordPage />} />
           <Route path="/enter-otp" element={<EnterOTPPage />} />
           <Route path="/upload-products" element={<UploadProducts />} />
+          <Route path="/profile" element={<UserProfile />} />
 
         </Routes>
       </Router>

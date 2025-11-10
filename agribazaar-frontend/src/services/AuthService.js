@@ -158,7 +158,17 @@ const deleteProduct = async (id) => {
   return response.data;
 };
 
-
+// Update user profile data - e.g., to update address
+const updateUserProfile = async (profileData) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.put(`${API_URL}/api/profile/`, profileData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+};
 
 
 export default {
@@ -171,6 +181,7 @@ export default {
   requestPasswordReset,
   resetPassword,
   getUserProfile,
+  updateUserProfile, // <-- add this here
   getProducts,
   createProduct,
   updateProduct,
