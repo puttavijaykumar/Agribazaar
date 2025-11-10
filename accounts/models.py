@@ -67,3 +67,15 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.owner.email})"
+    
+class Sale(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # per unit price
+    total = models.DecimalField(max_digits=12, decimal_places=2)  # quantity * price
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        self.total = self.quantity * self.price
+        super().save(*args, **kwargs)

@@ -13,6 +13,7 @@ import EnterOTPPage from "./pages/EnterOTPPage";
 import UploadProducts from './pages/UploadProducts';  
 import UserProfile from "./pages/UserProfile";
 import MyProducts from "./pages/MyProducts";  
+import SalesAnalytics from "./pages/SalesAnalytics";
 
 const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
@@ -34,6 +35,8 @@ function App() {
           <Route path="/upload-products" element={<UploadProducts />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/my-products" element={<MyProducts />} />
+          <Route path="/sales-analytics" element={<SalesAnalytics />} />
+
         </Routes>
       </Router>
     </GoogleOAuthProvider>

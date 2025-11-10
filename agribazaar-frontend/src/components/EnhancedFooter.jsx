@@ -37,24 +37,24 @@ const blob2Style = {
 
 const footerContentStyle = {
   display: "flex",
-  justifyContent: "flex-start",
+  justifyContent: "space-between", // Changed from flex-start to space-between
   flexWrap: "nowrap",
-  maxWidth: "100%",
+  maxWidth: "1400px", // Increased maxWidth to accommodate all columns
   margin: "0 auto",
   position: "relative",
   zIndex: 2,
-  gap: "2rem",
+  gap: "clamp(1rem, 2vw, 2rem)", // Responsive gap
   overflowX: "auto",
   overflowY: "hidden",
-  paddingLeft: "2rem",
-  paddingRight: "3rem",
+  padding: "0 clamp(1rem, 3vw, 2rem)", // Unified padding
   scrollBehavior: "smooth",
   WebkitOverflowScrolling: "touch",
 };
 
 const footerColumnStyle = {
-  margin: "1rem",
-  minWidth: "150px",
+  flex: "1 1 auto", // Allow columns to grow and shrink equally
+  minWidth: "220px", // Increased minimum width for better spacing
+  maxWidth: "280px", // Added maximum width to prevent over-stretching
   padding: "clamp(1rem, 2vw, 1.5rem)",
   background: "rgba(255, 255, 255, 0.05)",
   borderRadius: "clamp(8px, 2vw, 12px)",
@@ -69,7 +69,6 @@ const footerColumnHoverStyle = {
   background: "rgba(255, 255, 255, 0.1)",
   transform: "translateY(-5px)",
   boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
-  flexShrink: 0,
 };
 
 const footerColumnTitleStyle = {
@@ -96,7 +95,9 @@ const footerLinkStyle = {
 const dividerStyle = {
   height: "1px",
   background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)",
-  margin: "clamp(1.5rem, 2vw, 2rem) 0",
+  margin: "clamp(1.5rem, 2vw, 2rem) auto",
+  maxWidth: "1400px",
+  width: "calc(100% - clamp(2rem, 6vw, 4rem))",
   position: "relative",
   zIndex: 2,
 };
@@ -110,6 +111,8 @@ const bottomTextStyle = {
   position: "relative",
   zIndex: 2,
   padding: "0 clamp(1rem, 3vw, 2rem)",
+  maxWidth: "1400px",
+  margin: "clamp(1rem, 1.5vw, 1.5rem) auto 0",
 };
 
 const EnhancedFooter = () => {
@@ -182,8 +185,6 @@ const EnhancedFooter = () => {
             </ul>
           </div>
         ))}
-        {/* End spacer for scroll padding */}
-        <div style={{ minWidth: "2rem", flexShrink: 0 }}></div>
       </div>
 
       {/* Divider */}
@@ -216,7 +217,11 @@ const EnhancedFooter = () => {
         }
 
         @media (min-width: 901px) {
-          /* Desktop optimizations */
+          /* Desktop optimizations - Remove horizontal scroll on desktop */
+          .footer-content {
+            overflow-x: visible;
+            justify-content: space-between;
+          }
         }
       `}</style>
     </footer>

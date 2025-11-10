@@ -40,10 +40,16 @@ from datetime import timedelta
 from .serializers import ProductSerializer
 from rest_framework import viewsets, permissions
 from .models import Product
-
+from .models import Sale
 from .serializers import UserProfileSerializer
 from rest_framework import filters
 from rest_framework.parsers import MultiPartParser, FormParser
+
+        
+from .serializers import SalesAnalyticsSerializer
+from django.db.models import Sum
+from django.db.models.functions import TruncDate
+
 
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
@@ -261,3 +267,45 @@ class ProductViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Set the owner of the created product
         serializer.save(owner=self.request.user)
+        
+        
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def sales_analytics(request):
+    user = request.user
+    date_from = request.GET.get("from")
+    date_to = request.GET.get("to")
+
+    sales = Sale.objects.filter(owner=user)
+    if date_from and date_to:
+        sales = sales.filter(created_at__date__gte=date_from, created_at__date__lte=date_to)
+
+    total_sales_amount = sales.aggregate(total=Sum("total"))["total"] or 0
+    sales_count = sales.count()
+
+    # Sales grouped by date
+    by_date = (
+        sales
+        .annotate(date=TruncDate('created_at'))
+        .values('date')
+        .annotate(amount=Sum('total'))
+        .order_by('date')
+    )
+
+    # Sales by product
+    by_product = (
+        sales
+        .values("product__name")
+        .annotate(quantity=Sum("quantity"), revenue=Sum("total"))
+        .order_by("-revenue")
+    )
+
+    data = {
+        "total_sales_amount": total_sales_amount,
+        "sales_count": sales_count,
+        "by_date": list(by_date),
+        "by_product": list(by_product),
+    }
+
+    serializer = SalesAnalyticsSerializer(data)
+    return Response(serializer.data)

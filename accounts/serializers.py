@@ -96,3 +96,20 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ["username", "email", "role",
                 "home_name", "street", "village", "mandal", "district", "state", "pincode"]
+        
+        
+        
+class SalesByDateSerializer(serializers.Serializer):
+    date = serializers.DateField()
+    amount = serializers.DecimalField(max_digits=12, decimal_places=2)
+
+class SalesByProductSerializer(serializers.Serializer):
+    product__name = serializers.CharField()
+    quantity = serializers.IntegerField()
+    revenue = serializers.DecimalField(max_digits=12, decimal_places=2)
+
+class SalesAnalyticsSerializer(serializers.Serializer):
+    total_sales_amount = serializers.DecimalField(max_digits=14, decimal_places=2)
+    sales_count = serializers.IntegerField()
+    by_date = SalesByDateSerializer(many=True)
+    by_product = SalesByProductSerializer(many=True)

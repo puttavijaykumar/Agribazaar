@@ -5,6 +5,7 @@ from .views import google_login
 from .views import password_reset_request, password_reset_confirm,user_profile
 from .views import verify_otp
 from .views import ProductViewSet
+from .views import sales_analytics  # Import the new sales analytics view
 
 
 
@@ -33,6 +34,6 @@ urlpatterns = [
     # Explicit URLs for Product API
     path('products/', product_list, name='product-list'),
     path('products/<int:pk>/', product_detail, name='product-detail'),
- 
+    path('analytics/', sales_analytics, name='sales-analytics'),
 
 ]

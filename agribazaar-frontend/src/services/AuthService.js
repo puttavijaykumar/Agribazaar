@@ -170,6 +170,22 @@ const updateUserProfile = async (profileData) => {
   return response.data;
 };
 
+// Fetch sales analytics data with optional date filters
+const getSalesAnalytics = async (fromDate, toDate) => {
+  let url = `${API_URL}/analytics/`;
+  if (fromDate && toDate) {
+    url += `?from=${fromDate}&to=${toDate}`;
+  }
+  const token = localStorage.getItem("access");
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+};
+
 
 export default {
   register,
@@ -181,9 +197,11 @@ export default {
   requestPasswordReset,
   resetPassword,
   getUserProfile,
-  updateUserProfile, // <-- add this here
+  updateUserProfile, 
   getProducts,
   createProduct,
   updateProduct,
   deleteProduct,
+  getSalesAnalytics,  // <-- Added Sales Analytics here
+
 };
