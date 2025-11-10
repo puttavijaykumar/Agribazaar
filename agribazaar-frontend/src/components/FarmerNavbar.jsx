@@ -92,7 +92,7 @@ function FarmerNavbar({ user }) {
             e.target.style.color = "white";
           }}
         >
-          Notifications ({user.notifications.length})
+          Notifications ({user.notifications?.length || 0})
         </button>
 
         {user.role === "both" && (
