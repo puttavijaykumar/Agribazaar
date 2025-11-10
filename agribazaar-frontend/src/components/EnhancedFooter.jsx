@@ -37,28 +37,33 @@ const blob2Style = {
 
 const footerContentStyle = {
   display: "flex",
-  justifyContent: "center", // Center the columns
-  flexWrap: "wrap", // Allow wrapping on smaller screens
-  maxWidth: "1400px",
+  justifyContent: "flex-start",
+  flexWrap: "nowrap",
+  maxWidth: "100%",
   margin: "0 auto",
   position: "relative",
   zIndex: 2,
-  gap: "clamp(1.5rem, 3vw, 3rem)", // Increased gap for better spacing
-  padding: "0 clamp(1rem, 3vw, 2rem)",
-  boxSizing: "border-box",
+  gap: "clamp(1.5rem, 3vw, 3rem)",
+  overflowX: "auto",
+  overflowY: "hidden",
+  padding: "1rem clamp(1rem, 3vw, 2rem)",
+  scrollBehavior: "smooth",
+  WebkitOverflowScrolling: "touch",
+  scrollbarWidth: "none",
+  msOverflowStyle: "none",
 };
 
 const footerColumnStyle = {
-  flex: "0 0 calc(25% - 3rem)", // Each column takes 25% minus gap
-  minWidth: "250px", // Increased minimum width
-  maxWidth: "300px", // Increased maximum width
+  flex: "0 0 auto",
+  minWidth: "280px",
+  maxWidth: "320px",
   padding: "clamp(1.2rem, 2.5vw, 1.8rem)",
   background: "rgba(255, 255, 255, 0.05)",
   borderRadius: "clamp(8px, 2vw, 12px)",
   border: "1px solid rgba(255, 255, 255, 0.1)",
   transition: "all 0.3s ease",
   backdropFilter: "blur(10px)",
-  margin: "0.5rem",
+  margin: "0.5rem 0",
   boxSizing: "border-box",
 };
 
@@ -152,7 +157,7 @@ const EnhancedFooter = () => {
       <div style={blob1Style}></div>
       <div style={blob2Style}></div>
 
-      {/* Main Footer Content */}
+      {/* Main Footer Content - Horizontal Scroll Only */}
       <div style={footerContentStyle}>
         {footerColumns.map((column, idx) => (
           <div
@@ -195,19 +200,44 @@ const EnhancedFooter = () => {
       </div>
 
       <style>{`
-        /* Responsive behavior */
-        @media (max-width: 1200px) {
+        /* Hide scrollbar but keep scrolling */
+        .footer-content::-webkit-scrollbar {
+          display: none;
+        }
+        
+        /* For larger screens - distribute evenly without scrolling */
+        @media (min-width: 1200px) {
+          .footer-content {
+            justify-content: space-between !important;
+            overflow-x: visible !important;
+            flex-wrap: nowrap !important;
+          }
           .footer-column {
-            flex: 0 0 calc(50% - 2rem) !important;
-            max-width: calc(50% - 2rem) !important;
+            flex: 1 !important;
+            min-width: auto !important;
+            max-width: none !important;
           }
         }
 
-        @media (max-width: 768px) {
+        /* For medium screens - keep horizontal scrolling */
+        @media (min-width: 768px) and (max-width: 1199px) {
+          .footer-content {
+            gap: 2rem !important;
+          }
           .footer-column {
-            flex: 0 0 100% !important;
-            max-width: 100% !important;
-            min-width: auto !important;
+            min-width: 250px !important;
+          }
+        }
+
+        /* For mobile - horizontal scrolling with comfortable touch targets */
+        @media (max-width: 767px) {
+          .footer-content {
+            gap: 1.5rem !important;
+            padding-left: 1.5rem !important;
+            padding-right: 1.5rem !important;
+          }
+          .footer-column {
+            min-width: 260px !important;
           }
         }
 
