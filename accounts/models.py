@@ -3,6 +3,9 @@ from django.db import models
 from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
+from cloudinary.models import CloudinaryField
+
+
 
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (
@@ -50,12 +53,11 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
     quantity = models.FloatField()
-    # Up to 4 images, all optional
-    image1 = models.ImageField(upload_to='product_images/', blank=True, null=True)
-    image2 = models.ImageField(upload_to='product_images/', blank=True, null=True)
-    image3 = models.ImageField(upload_to='product_images/', blank=True, null=True)
-    image4 = models.ImageField(upload_to='product_images/', blank=True, null=True)
-    # Product validity (e.g., number of days it should remain on listing)
+    # Up to 4 images, all optional (now use CloudinaryField)
+    image1 = CloudinaryField('image', blank=True, null=True)
+    image2 = CloudinaryField('image', blank=True, null=True)
+    image3 = CloudinaryField('image', blank=True, null=True)
+    image4 = CloudinaryField('image', blank=True, null=True)
     validity_days = models.PositiveIntegerField(default=30)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -79,3 +81,12 @@ class Sale(models.Model):
     def save(self, *args, **kwargs):
         self.total = self.quantity * self.price
         super().save(*args, **kwargs)
+
+
+
+
+
+
+
+
+
