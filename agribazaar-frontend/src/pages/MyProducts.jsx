@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import FarmerNavbar from "../components/FarmerNavbar";
 import EnhancedFooter from "../components/EnhancedFooter";
 
+const CLOUDINARY_ROOT = "https://res.cloudinary.com/dpiogqjk4/";
+
 function MyProducts() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -147,7 +149,7 @@ function MyProducts() {
                   <td>
                     {product.image1 ? (
                       <img
-                        src={product.image1}
+                        src={CLOUDINARY_ROOT + product.image1}
                         alt=""
                         style={{ width: 60, height: 60, objectFit: "cover" }}
                       />
@@ -194,7 +196,7 @@ function MyProducts() {
                   <td>
                     {product.image1 ? (
                       <img
-                        src={product.image1}
+                        src={CLOUDINARY_ROOT + product.image1}
                         alt=""
                         style={{ width: 60, height: 60, objectFit: "cover" }}
                       />
