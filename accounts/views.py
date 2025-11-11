@@ -43,7 +43,7 @@ from .models import Product
 from .models import Sale
 from .serializers import UserProfileSerializer
 from rest_framework import filters
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
         
 from .serializers import SalesAnalyticsSerializer
@@ -255,7 +255,7 @@ def user_profile(request):
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
 
