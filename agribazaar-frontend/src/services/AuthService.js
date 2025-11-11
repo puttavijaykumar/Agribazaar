@@ -134,16 +134,18 @@ const createProduct = async (formData) => {
 };
 
 // Update existing product
-const updateProduct = async (id, formData) => {
+const updateProduct = async (id, { price, quantity }) => {
   const token = localStorage.getItem("access");
-
-  const response = await axios.put(`${API_URL}/products/${id}/`, formData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-
+  const response = await axios.patch(
+    `${API_URL}/products/${id}/`,
+    { price, quantity },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return response.data;
 };
 
