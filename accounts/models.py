@@ -84,7 +84,30 @@ class Sale(models.Model):
 
 
 
+class RecentlyViewed(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recently_viewed')
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='recently_viewed_by')
+    viewed_at = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        ordering = ['-viewed_at']
+        unique_together = ['user', 'product']
+
+    def __str__(self):
+        return f"{self.user.email} viewed {self.product.name} at {self.viewed_at}"
+
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='wishlist_items')
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='wishlisted_by')
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-added_at']
+        unique_together = ['user', 'product']
+
+    def __str__(self):
+        return f"{self.user.email} wishlisted {self.product.name}"
 
 
 

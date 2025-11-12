@@ -5,6 +5,8 @@ from .models import CustomUser
 from django.contrib.auth import get_user_model
 import secrets
 from .models import Product
+from .models import RecentlyViewed, Wishlist
+
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -113,3 +115,54 @@ class SalesAnalyticsSerializer(serializers.Serializer):
     sales_count = serializers.IntegerField()
     by_date = SalesByDateSerializer(many=True)
     by_product = SalesByProductSerializer(many=True)
+
+
+# Reuse your existing ProductSerializer for product details
+class ProductSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.email')
+
+    class Meta:
+        model = Product
+        fields = [
+            'id', 'name', 'price', 'description', 'quantity',
+            'image1', 'image2', 'image3', 'image4',
+            'validity_days', 'owner', 'created_at', 'updated_at',
+        ]
+        read_only_fields = ['owner', 'created_at', 'updated_at']
+
+
+# Recently Viewed Serializer - show product and viewed date
+class RecentlyViewedSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+
+    class Meta:
+        model = RecentlyViewed
+        fields = ['product', 'viewed_at']
+
+
+# Wishlist Serializer - show product and date added
+class WishlistSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+
+    class Meta:
+        model = Wishlist
+        fields = ['product', 'added_at']
+
+
+# Recommended Serializer - can reuse ProductSerializer or extend if needed
+class RecommendedSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.email')
+
+    class Meta:
+        model = Product
+        fields = ProductSerializer.Meta.fields
+
+
+# Top Sellers Serializer - include user info and aggregate sales
+class TopSellerSerializer(serializers.ModelSerializer):
+    total_quantity_sold = serializers.IntegerField()
+    email = serializers.EmailField(source='email')
+
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'email', 'total_quantity_sold']

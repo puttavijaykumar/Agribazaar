@@ -506,7 +506,7 @@ const HomePage = () => {
           marginTop: "2rem",
         }}
       >
-        🛍️ Shop By Category
+         Shop By Category
       </h2>
 
       <section style={mainCategoryContainerStyle}>
@@ -537,7 +537,7 @@ const HomePage = () => {
           marginTop: "2rem",
         }}
       >
-        📰 Agriculture News & Updates
+         Agriculture News & Updates
       </h2>
       <section style={newsSectionStyle}>
         {newsItems.map((item, i) => (
@@ -559,7 +559,7 @@ const HomePage = () => {
           marginTop: "2rem",
         }}
       >
-        🎉 Top Offers
+         Top Offers
       </h2>
       <section style={offersContainer}>
         {offerProducts.map(({ title, desc, img }, idx) => (
@@ -595,7 +595,7 @@ const HomePage = () => {
           marginTop: "2rem",
         }}
       >
-        🌾 Shop Crops, Livestock & More
+         Shop Crops, Livestock & More
       </h2>
       <section style={categoryContainerStyle}>
         {productCategories.map(({ name, img }, idx) => (
@@ -643,7 +643,7 @@ const HomePage = () => {
           marginTop: "2rem",
         }}
       >
-        📊 Live Market Prices
+         Live Market Prices
       </h2>
       <section style={livePricesStyle}>
         <span style={{ flexShrink: 0, whiteSpace: "nowrap" }}>Potato (Kangra) ₹1700 - ₹2600</span>

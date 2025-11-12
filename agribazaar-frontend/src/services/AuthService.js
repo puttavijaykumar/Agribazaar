@@ -188,6 +188,95 @@ const getSalesAnalytics = async (fromDate, toDate) => {
   return response.data;
 };
 
+// Fetch Recently Viewed Products for logged-in user
+const fetchRecentlyViewed = async (userId) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/users/${userId}/recently-viewed`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// Fetch order summary for logged-in user
+const fetchOrderSummary = async (userId) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/users/${userId}/orders/summary`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// Fetch wishlist/favorites
+const fetchWishlist = async (userId) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/users/${userId}/wishlist`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// Fetch recommended products for user
+const fetchRecommended = async (userId) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/users/${userId}/recommended`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// Fetch top sellers/farmers
+const fetchTopSellers = async () => {
+  const response = await axios.get(`${API_URL}/sellers/top`);
+  return response.data;
+};
+
+// Fetch featured new arrivals
+const fetchNewArrivals = async () => {
+  const response = await axios.get(`${API_URL}/products/new-arrivals`);
+  return response.data;
+};
+
+// Fetch seasonal picks
+const fetchSeasonalPicks = async () => {
+  const response = await axios.get(`${API_URL}/products/seasonal-picks`);
+  return response.data;
+};
+
+// Fetch cart count for user
+const fetchCartCount = async (userId) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/users/${userId}/cart/count`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// Fetch unread notifications count for user
+const fetchNotificationCount = async (userId) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/users/${userId}/notifications/unread-count`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// Fetch unread chat message count for user
+const fetchChatUnreadCount = async (userId) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/users/${userId}/chat/unread-count`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// Fetch user reward points
+const fetchRewardPoints = async (userId) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/users/${userId}/rewards/points`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
 
 export default {
   register,
@@ -205,5 +294,16 @@ export default {
   updateProduct,
   deleteProduct,
   getSalesAnalytics,  // <-- Added Sales Analytics here
+  fetchRecentlyViewed,
+  fetchOrderSummary,
+  fetchWishlist,
+  fetchRecommended,
+  fetchTopSellers,
+  fetchNewArrivals,
+  fetchSeasonalPicks,
+  fetchCartCount,
+  fetchNotificationCount,
+  fetchChatUnreadCount,
+  fetchRewardPoints,
 
 };

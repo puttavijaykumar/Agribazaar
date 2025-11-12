@@ -309,3 +309,78 @@ def sales_analytics(request):
 
     serializer = SalesAnalyticsSerializer(data)
     return Response(serializer.data)
+
+
+# Recently Viewed Products
+class RecentlyViewedListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        # Assuming a RecentlyViewed model linking user to products with timestamp
+        return Product.objects.filter(
+            recentlyviewed__user=user
+        ).order_by('-recentlyviewed__viewed_at').distinct()
+
+
+# Wishlist Products
+class WishlistListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        # Assuming a Wishlist model linking user to products
+        return Product.objects.filter(
+            wishlist__user=user
+        ).order_by('-wishlist__added_at')
+
+
+# Recommended Products
+class RecommendedListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        # For now, return latest products as placeholder for recommender logic
+        return Product.objects.order_by('-created_at')[:20]
+
+
+# Top Sellers
+class TopSellersListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        # Aggregate sales grouped by owner, order desc by quantity sold
+        # Return limited sellers' products for top sellers
+        top_sellers = (
+            Product.objects.values('owner')
+            .annotate(total_quantity=Sum('sale__quantity'))
+            .order_by('-total_quantity')
+            .values_list('owner', flat=True)
+        )
+        # Return products of those top sellers (owners)
+        return Product.objects.filter(owner__in=top_sellers[:10])
+
+
+# New Arrivals
+class NewArrivalsListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        # Filter products by created_at recent first, limit 20
+        return Product.objects.order_by('-created_at')[:20]
+
+
+# Seasonal Picks
+class SeasonalPicksListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        # Filter products with seasonal picks tag or flag; here assuming filter by name for demo
+        return Product.objects.filter(name__icontains='seasonal').order_by('-created_at')[:20]

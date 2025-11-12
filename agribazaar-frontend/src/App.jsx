@@ -15,6 +15,15 @@ import UserProfile from "./pages/UserProfile";
 import MyProducts from "./pages/MyProducts";  
 import SalesAnalytics from "./pages/SalesAnalytics";
 
+
+import RecentlyViewedPage from "./pages/RecentlyViewedPage";
+import WishlistPage from "./pages/WishlistPage";
+import RecommendedPage from "./pages/RecommendedPage";
+import TopSellersPage from "./pages/TopSellersPage";
+import NewArrivalsPage from "./pages/NewArrivalsPage";
+import SeasonalPicksPage from "./pages/SeasonalPicksPage";
+
+
 const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
 function App() {
@@ -36,7 +45,15 @@ function App() {
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/my-products" element={<MyProducts />} />
           <Route path="/sales-analytics" element={<SalesAnalytics />} />
-
+          
+          {/* Add new routes corresponding to new features */}
+          <Route path="/buyer/recently-viewed" element={<RecentlyViewedPage />} />
+          <Route path="/buyer/wishlist" element={<WishlistPage />} />
+          <Route path="/buyer/recommended" element={<RecommendedPage />} />
+          <Route path="/buyer/top-sellers" element={<TopSellersPage />} />
+          <Route path="/buyer/new-arrivals" element={<NewArrivalsPage />} />
+          <Route path="/buyer/seasonal-picks" element={<SeasonalPicksPage />} />
+          
         </Routes>
       </Router>
     </GoogleOAuthProvider>
