@@ -22,7 +22,7 @@ const AddressesPage = () => {
       setLoading(true);
       setMessage("");
       try {
-        // 1. Fetch user profile for main address fields
+        // Fetch user profile for main address fields
         const profile = await AuthService.getUserProfile();
         const profAddr = (
           profile.home_name || profile.street || profile.village ||
@@ -39,7 +39,7 @@ const AddressesPage = () => {
         } : null;
         setProfileAddress(profAddr);
 
-        // 2. Fetch any separate addresses (array) if backend supports them
+        // Fetch any separate addresses (array) if backend supports them
         let sepAddresses = [];
         try {
           sepAddresses = await AuthService.fetchAddresses();
@@ -81,24 +81,29 @@ const AddressesPage = () => {
   };
 
   const handleSave = () => {
+    console.log("handleSave called", formData); // debugging line
     if (editingAddress) {
-      // Update existing extra address (not profile address)
       AuthService.updateAddress(editingAddress.id, formData)
         .then(updated => {
           setAddresses(addrs => addrs.map(a => a.id === updated.id ? updated : a));
           cancelEdit();
           setMessage("Address updated");
         })
-        .catch(() => setMessage("Failed to update address"));
+        .catch((err) => {
+          setMessage("Failed to update address");
+          console.error("updateAddress error:", err); // debugging
+        });
     } else {
-      // Create new extra address
       AuthService.createAddress(formData)
         .then(created => {
           setAddresses(addrs => [...addrs, created]);
           cancelEdit();
           setMessage("Address added");
         })
-        .catch(() => setMessage("Failed to add address"));
+        .catch((err) => {
+          setMessage("Failed to add address");
+          console.error("createAddress error:", err); // debugging
+        });
     }
   };
 
@@ -108,7 +113,10 @@ const AddressesPage = () => {
         setAddresses(addrs => addrs.filter(a => a.id !== id));
         setMessage("Address deleted");
       })
-      .catch(() => setMessage("Failed to delete address"));
+      .catch((err) => {
+        setMessage("Failed to delete address");
+        console.error("deleteAddress error:", err); // debugging
+      });
   };
 
   if (loading) return <div>Loading addresses...</div>;
@@ -116,7 +124,7 @@ const AddressesPage = () => {
   return (
     <div style={{ maxWidth: "600px", margin: "2rem auto" }}>
       <h2>Manage Addresses</h2>
-      {message && <div style={{ marginBottom: "1rem", color: "green" }}>{message}</div>}
+      {message && <div style={{ marginBottom: "1rem", color: message.includes("Failed") ? "red" : "green" }}>{message}</div>}
 
       {/* Show the profile address at the top (only display, no delete/edit from here) */}
       {profileAddress && (
