@@ -22,7 +22,6 @@ const AddressesPage = () => {
       setLoading(true);
       setMessage("");
       try {
-        // Fetch user profile for main address fields
         const profile = await AuthService.getUserProfile();
         const profAddr = (
           profile.home_name || profile.street || profile.village ||
@@ -39,7 +38,6 @@ const AddressesPage = () => {
         } : null;
         setProfileAddress(profAddr);
 
-        // Fetch any separate addresses (array) if backend supports them
         let sepAddresses = [];
         try {
           sepAddresses = await AuthService.fetchAddresses();
@@ -81,30 +79,19 @@ const AddressesPage = () => {
   };
 
   const handleSave = () => {
-    console.log("handleSave called", formData); // debugging line
-    if (editingAddress) {
-      AuthService.updateAddress(editingAddress.id, formData)
-        .then(updated => {
-          setAddresses(addrs => addrs.map(a => a.id === updated.id ? updated : a));
-          cancelEdit();
-          setMessage("Address updated");
-        })
-        .catch((err) => {
-          setMessage("Failed to update address");
-          console.error("updateAddress error:", err); // debugging
-        });
-    } else {
-      AuthService.createAddress(formData)
-        .then(created => {
-          setAddresses(addrs => [...addrs, created]);
-          cancelEdit();
-          setMessage("Address added");
-        })
-        .catch((err) => {
-          setMessage("Failed to add address");
-          console.error("createAddress error:", err); // debugging
-        });
+    if (!editingAddress) {
+      return; // No add, so just return
     }
+    AuthService.updateAddress(editingAddress.id, formData)
+      .then(updated => {
+        setAddresses(addrs => addrs.map(a => a.id === updated.id ? updated : a));
+        cancelEdit();
+        setMessage("Address updated");
+      })
+      .catch((err) => {
+        setMessage("Failed to update address");
+        console.error("updateAddress error:", err);
+      });
   };
 
   const handleDelete = (id) => {
@@ -115,7 +102,7 @@ const AddressesPage = () => {
       })
       .catch((err) => {
         setMessage("Failed to delete address");
-        console.error("deleteAddress error:", err); // debugging
+        console.error("deleteAddress error:", err);
       });
   };
 
@@ -156,22 +143,32 @@ const AddressesPage = () => {
         </ul>
       )}
 
-      <hr />
-      <h3>{editingAddress ? "Edit Address" : "Add New Address"}</h3>
-      <form onSubmit={e => { e.preventDefault(); handleSave(); }}>
-        <input placeholder="Line 1" value={formData.line1} onChange={e => handleChange("line1", e.target.value)} required /><br/>
-        <input placeholder="Line 2" value={formData.line2} onChange={e => handleChange("line2", e.target.value)} /><br/>
-        <input placeholder="City" value={formData.city} onChange={e => handleChange("city", e.target.value)} required /><br/>
-        <input placeholder="District" value={formData.district} onChange={e => handleChange("district", e.target.value)} required /><br/>
-        <input placeholder="State" value={formData.state} onChange={e => handleChange("state", e.target.value)} required /><br/>
-        <input placeholder="Postal Code" value={formData.postal_code} onChange={e => handleChange("postal_code", e.target.value)} required /><br/>
-        <label>
-          <input type="checkbox" checked={formData.is_default} onChange={e => handleChange("is_default", e.target.checked)} />
-          Default Address
-        </label><br/>
-        <button type="submit">{editingAddress ? "Update" : "Add"}</button>
-        {editingAddress && <button type="button" onClick={cancelEdit} style={{ marginLeft: "1rem" }}>Cancel</button>}
-      </form>
+      {/* Removed add new address form section */}
+
+      {/* Edit form */}
+      {editingAddress && (
+        <>
+          <hr />
+          <h3>Edit Address</h3>
+          <form onSubmit={e => {
+            e.preventDefault();
+            handleSave();
+          }}>
+            <input placeholder="Line 1" value={formData.line1} onChange={e => handleChange("line1", e.target.value)} required /><br/>
+            <input placeholder="Line 2" value={formData.line2} onChange={e => handleChange("line2", e.target.value)} /><br/>
+            <input placeholder="City" value={formData.city} onChange={e => handleChange("city", e.target.value)} required /><br/>
+            <input placeholder="District" value={formData.district} onChange={e => handleChange("district", e.target.value)} required /><br/>
+            <input placeholder="State" value={formData.state} onChange={e => handleChange("state", e.target.value)} required /><br/>
+            <input placeholder="Postal Code" value={formData.postal_code} onChange={e => handleChange("postal_code", e.target.value)} required /><br/>
+            <label>
+              <input type="checkbox" checked={formData.is_default} onChange={e => handleChange("is_default", e.target.checked)} />
+              Default Address
+            </label><br/>
+            <button type="submit">Update</button>
+            <button type="button" onClick={cancelEdit} style={{ marginLeft: "1rem" }}>Cancel</button>
+          </form>
+        </>
+      )}
     </div>
   );
 };
