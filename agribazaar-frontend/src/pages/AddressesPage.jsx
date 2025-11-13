@@ -15,12 +15,46 @@ const AddressesPage = () => {
     is_default: false,
   });
   const [message, setMessage] = useState("");
+  const [profileAddress, setProfileAddress] = useState(null);
 
   useEffect(() => {
-    AuthService.fetchAddresses()
-      .then(data => setAddresses(data))
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    async function fetchAllAddresses() {
+      setLoading(true);
+      setMessage("");
+      try {
+        // 1. Fetch user profile for main address fields
+        const profile = await AuthService.getUserProfile();
+        const profAddr = (
+          profile.home_name || profile.street || profile.village ||
+          profile.mandal || profile.district || profile.state || profile.pincode
+        ) ? {
+          id: "profile-addr",
+          line1: profile.home_name,
+          line2: profile.street,
+          city: profile.village,
+          district: profile.district,
+          state: profile.state,
+          postal_code: profile.pincode,
+          is_default: true
+        } : null;
+        setProfileAddress(profAddr);
+
+        // 2. Fetch any separate addresses (array) if backend supports them
+        let sepAddresses = [];
+        try {
+          sepAddresses = await AuthService.fetchAddresses();
+        } catch {}
+
+        setAddresses(sepAddresses);
+      } catch {
+        setMessage("Failed to fetch addresses");
+        setProfileAddress(null);
+        setAddresses([]);
+      }
+      setLoading(false);
+    }
+
+    fetchAllAddresses();
   }, []);
 
   const handleChange = (field, value) => {
@@ -48,7 +82,7 @@ const AddressesPage = () => {
 
   const handleSave = () => {
     if (editingAddress) {
-      // Update existing
+      // Update existing extra address (not profile address)
       AuthService.updateAddress(editingAddress.id, formData)
         .then(updated => {
           setAddresses(addrs => addrs.map(a => a.id === updated.id ? updated : a));
@@ -57,7 +91,7 @@ const AddressesPage = () => {
         })
         .catch(() => setMessage("Failed to update address"));
     } else {
-      // Create new
+      // Create new extra address
       AuthService.createAddress(formData)
         .then(created => {
           setAddresses(addrs => [...addrs, created]);
@@ -83,8 +117,21 @@ const AddressesPage = () => {
     <div style={{ maxWidth: "600px", margin: "2rem auto" }}>
       <h2>Manage Addresses</h2>
       {message && <div style={{ marginBottom: "1rem", color: "green" }}>{message}</div>}
-      
-      {addresses.length === 0 ? <p>No addresses saved.</p> : (
+
+      {/* Show the profile address at the top (only display, no delete/edit from here) */}
+      {profileAddress && (
+        <div style={{ marginBottom: "1rem", border: "2px solid #1b5e20", padding: "1rem", borderRadius: "8px", background: "#f9fdfb" }}>
+          <div>
+            <strong>Default Address (Profile)</strong>
+          </div>
+          <div>{profileAddress.line1} {profileAddress.line2}</div>
+          <div>{profileAddress.city}, {profileAddress.district}</div>
+          <div>{profileAddress.state} - {profileAddress.postal_code}</div>
+          <div style={{fontSize: "0.9em", color: "#197278"}}>To update, go to your Profile page</div>
+        </div>
+      )}
+
+      {addresses.length === 0 ? <p>No additional addresses saved.</p> : (
         <ul>
           {addresses.map(addr => (
             <li key={addr.id} style={{ marginBottom: "1rem", border: "1px solid #ccc", padding: "1rem", borderRadius: "8px" }}>
@@ -100,6 +147,7 @@ const AddressesPage = () => {
           ))}
         </ul>
       )}
+
       <hr />
       <h3>{editingAddress ? "Edit Address" : "Add New Address"}</h3>
       <form onSubmit={e => { e.preventDefault(); handleSave(); }}>
