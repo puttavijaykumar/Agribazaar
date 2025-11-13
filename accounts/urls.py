@@ -10,6 +10,9 @@ from .views import sales_analytics  # Import the new sales analytics view
 from .views import RecentlyViewedListView,WishlistListView,RecommendedListView
 from .views import TopSellersListView,NewArrivalsListView,SeasonalPicksListView
 from .views import OrderListView,OrderDetailView,CartDetailView,NotificationListView
+from .views import UserSettingsView
+
+from .views import AddressListCreateView, AddressDetailView
 
 product_list = ProductViewSet.as_view({
     'get': 'list',
@@ -54,6 +57,9 @@ urlpatterns = [
     path('cart/', CartDetailView.as_view(), name='cart-detail'),
     # Notification APIs can be added here in the future
     path('notifications/', NotificationListView.as_view(), name='notification-list'),
+    path('settings/', UserSettingsView.as_view(), name='user-settings'),
 
+    path('addresses/', AddressListCreateView.as_view(), name='address-list-create'),
+    path('addresses/<int:pk>/', AddressDetailView.as_view(), name='address-detail'),
     
 ]

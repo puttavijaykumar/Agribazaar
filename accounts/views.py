@@ -57,6 +57,17 @@ from .models import Cart,CartItem
 from .models import Notification
 from .serializers import NotificationSerializer
 
+from .models import UserSettings
+from .serializers import UserSettingsSerializer
+from rest_framework.generics import RetrieveUpdateAPIView
+
+from .models import RewardTransaction
+from .serializers import RewardTransactionSerializer
+from rest_framework.generics import ListAPIView
+
+from .models import Address
+from .serializers import AddressSerializer
+
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
 
@@ -417,3 +428,47 @@ class NotificationListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user)
+
+# User Settings View
+class UserSettingsView(RetrieveUpdateAPIView):
+    serializer_class = UserSettingsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        settings, _ = UserSettings.objects.get_or_create(user=self.request.user)
+        return settings
+
+# Reward Points and Transactions Views
+class RewardPointsSummaryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        points = RewardTransaction.objects.filter(user=request.user).aggregate(total=Sum('points'))['total'] or 0
+        return Response({'reward_points': points})
+
+class RewardTransactionListView(ListAPIView):
+    serializer_class = RewardTransactionSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return RewardTransaction.objects.filter(user=self.request.user).order_by('-created_at')
+    
+    
+class AddressListCreateView(generics.ListCreateAPIView):
+    serializer_class = AddressSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Address.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class AddressDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AddressSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Address.objects.filter(user=self.request.user)
+    
+

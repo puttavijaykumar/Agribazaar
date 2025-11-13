@@ -9,6 +9,12 @@ from .models import RecentlyViewed, Wishlist
 from .models import Order,OrderItem
 from .models import Cart,CartItem
 from .models import Notification
+from .models import UserSettings
+from .models import RewardTransaction
+
+from .models import Address
+
+
 class RegisterSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True)
 
@@ -196,3 +202,29 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = '__all__'
+
+
+class UserSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserSettings
+        exclude = ['user']  # user is set automatically from request
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+    
+    
+class RewardTransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RewardTransaction
+        fields = ['id', 'points', 'description', 'created_at']
+        
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = '__all__'
+        read_only_fields = ['user']
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)

@@ -115,6 +115,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=30)
     total = models.DecimalField(max_digits=10, decimal_places=2)
+    delivery_address = models.ForeignKey('Address', on_delete=models.SET_NULL, null=True, blank=True)
     # ...other order meta fields
 
 class OrderItem(models.Model):
@@ -139,3 +140,45 @@ class Notification(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
+
+# User settings model for storing user preferences
+
+class UserSettings(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='settings')
+    dark_mode = models.BooleanField(default=False)
+    language = models.CharField(max_length=15, default='en')
+    notifications_enabled = models.BooleanField(default=True)
+    newsletter_opt_in = models.BooleanField(default=False)
+    currency_preference = models.CharField(max_length=5, default="INR")
+    default_shipping_address = models.ForeignKey('Address', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    default_payment_method = models.CharField(max_length=24, blank=True)
+    show_personalized_recommendations = models.BooleanField(default=True)
+    order_updates_via_sms = models.BooleanField(default=False)
+    wishlist_visibility = models.CharField(max_length=8, default="private", choices=[("private", "Private"), ("public", "Public")])
+    review_reminders_enabled = models.BooleanField(default=True)
+
+# Points and Rewards model for tracking user rewards
+class RewardTransaction(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    points = models.IntegerField()  # +10 (earned), -20 (used)
+    description = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.email} | {self.points} pts | {self.description}'
+    
+# Multiple Address model for storing user addresses
+
+class Address(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='addresses')
+    line1 = models.CharField(max_length=128)
+    line2 = models.CharField(max_length=128, blank=True)
+    city = models.CharField(max_length=32)
+    district = models.CharField(max_length=32)
+    state = models.CharField(max_length=32)
+    postal_code = models.CharField(max_length=12)
+    is_default = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.line1}, {self.city}, {self.state}"

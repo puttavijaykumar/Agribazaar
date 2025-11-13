@@ -22,6 +22,16 @@ import RecommendedPage from "./pages/RecommendedPage";
 import TopSellersPage from "./pages/TopSellersPage";
 import NewArrivalsPage from "./pages/NewArrivalsPage";
 import SeasonalPicksPage from "./pages/SeasonalPicksPage";
+import AddressesPage from './pages/AddressesPage';
+
+import CartPage from "./pages/CartPage";
+import NotificationsPage from "./pages/NotificationsPage";
+import RewardsPage from "./pages/RewardsPage";
+import SettingsPage from "./pages/SettingsPage";
+
+import OrdersPage from './pages/OrdersPage';
+import TrackOrdersPage from './pages/TrackOrdersPage';
+import ReorderPage from './pages/ReorderPage';
 
 
 const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
@@ -53,6 +63,17 @@ function App() {
           <Route path="/buyer/top-sellers" element={<TopSellersPage />} />
           <Route path="/buyer/new-arrivals" element={<NewArrivalsPage />} />
           <Route path="/buyer/seasonal-picks" element={<SeasonalPicksPage />} />
+          <Route path="/addresses" element={<AddressesPage />} />
+
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/rewards" element={<RewardsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/addresses" element={<AddressesPage />} />
+
+          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/orders/track" element={<TrackOrdersPage />} />
+          <Route path="/orders/reorder" element={<ReorderPage />} />
           
         </Routes>
       </Router>

@@ -3,7 +3,7 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
-// ✅ Normal Register
+//  Normal Register
 const register = async (formData) => {
   const payload = {
     username: formData.username,
@@ -19,7 +19,7 @@ const register = async (formData) => {
   return response.data;
 };
 
-// ✅ Normal Login
+//  Normal Login
 const login = async (loginData) => {
   const response = await axios.post(`${API_URL}/login/`, loginData);
 
@@ -40,12 +40,12 @@ const requestPasswordReset = async (email) => {
   return await axios.post(`${API_URL}/forgot-password/`, { email });
 };
 
-// ✅ Submit New Password
+//  Submit New Password
 const resetPassword = async (uid, token, password) => {
   return await axios.post(`${API_URL}/reset-password/${uid}/${token}/`, { password });
 };
 
-// ✅ Google Login (Signup + Login combined)
+//  Google Login (Signup + Login combined)
 const googleLogin = async (googleUser) => {
   const response = await axios.post(
     `${API_URL}/google-login/`,
@@ -56,7 +56,7 @@ const googleLogin = async (googleUser) => {
     { withCredentials: true }
   );
 
-  // ✅ Store user + tokens
+  //  Store user + tokens
   localStorage.setItem("user", JSON.stringify(response.data));
   localStorage.setItem("access", response.data.access);
   localStorage.setItem("refresh", response.data.refresh);
@@ -64,7 +64,7 @@ const googleLogin = async (googleUser) => {
   return response.data;
 };
 
-// ✅ Set Role
+//  Set Role
 const setRole = async (role) => {
   const token = localStorage.getItem("access");
 
@@ -73,13 +73,13 @@ const setRole = async (role) => {
     { role },
     {
       headers: {
-        Authorization: `Bearer ${token}`, // ✅ Send JWT token
+        Authorization: `Bearer ${token}`, //  Send JWT token
         "Content-Type": "application/json",
       },
     }
   );
 
-  // ✅ Update stored user role
+  //  Update stored user role
   const user = JSON.parse(localStorage.getItem("user")) || {};
   user.role = response.data.role;
   localStorage.setItem("user", JSON.stringify(user));
@@ -89,10 +89,10 @@ const setRole = async (role) => {
 
 
 
-// ✅ Logout function
+//  Logout function
 const logout = () => {
   localStorage.removeItem("user"); // clear session
-  window.location.href = "/login";  // ✅ Redirect to login page
+  window.location.href = "/login";  // Redirect to login page
 };
 
 //  Fetch user profile info
@@ -278,6 +278,58 @@ const fetchRewardPoints = async (userId) => {
   return response.data;
 };
 
+// Cart APIs
+const fetchCart = async () => {
+  const response = await axios.get(`${API_URL}/cart/`, { headers: authHeader() });
+  return response.data;
+};
+
+// Notifications
+const fetchNotifications = async () => {
+  const response = await axios.get(`${API_URL}/notifications/`, { headers: authHeader() });
+  return response.data;
+};
+
+// Reward History
+const fetchRewardHistory = async () => {
+  const response = await axios.get(`${API_URL}/rewards/history/`, { headers: authHeader() });
+  return response.data;
+};
+
+
+// Settings
+const fetchSettings = async () => {
+  const response = await axios.get(`${API_URL}/settings/`, { headers: authHeader() });
+  return response.data;
+};
+
+const updateSettings = async (settingsData) => {
+  const response = await axios.put(`${API_URL}/settings/`, settingsData, { headers: authHeader() });
+  return response.data;
+};
+
+// Addresses
+const fetchAddresses = async () => {
+  const response = await axios.get(`${API_URL}/addresses/`, { headers: authHeader() });
+  return response.data;
+};
+
+const createAddress = async (addressData) => {
+  const response = await axios.post(`${API_URL}/addresses/`, addressData, { headers: authHeader() });
+  return response.data;
+};
+
+const updateAddress = async (id, addressData) => {
+  const response = await axios.put(`${API_URL}/addresses/${id}/`, addressData, { headers: authHeader() });
+  return response.data;
+};
+
+const deleteAddress = async (id) => {
+  const response = await axios.delete(`${API_URL}/addresses/${id}/`, { headers: authHeader() });
+  return response.data;
+};
+
+
 export default {
   register,
   login,
@@ -305,5 +357,13 @@ export default {
   fetchNotificationCount,
   fetchChatUnreadCount,
   fetchRewardPoints,
-
+  fetchCart,
+  fetchNotifications,
+  fetchRewardHistory,
+  fetchSettings,
+  updateSettings,
+  fetchAddresses,
+  createAddress,
+  updateAddress,
+  deleteAddress,
 };
