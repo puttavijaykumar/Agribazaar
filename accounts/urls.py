@@ -9,6 +9,7 @@ from .views import sales_analytics  # Import the new sales analytics view
 
 from .views import RecentlyViewedListView,WishlistListView,RecommendedListView
 from .views import TopSellersListView,NewArrivalsListView,SeasonalPicksListView
+from .views import OrderListView,OrderDetailView,CartDetailView,NotificationListView
 
 product_list = ProductViewSet.as_view({
     'get': 'list',
@@ -44,4 +45,15 @@ urlpatterns = [
     path('sellers/top/', TopSellersListView.as_view(), name='top-sellers'),
     path('products/new-arrivals/', NewArrivalsListView.as_view(), name='new-arrivals'),
     path('products/seasonal-picks/', SeasonalPicksListView.as_view(), name='seasonal-picks'),
+    
+    # Order APIs
+    path('orders/', OrderListView.as_view(), name='order-list'),
+    path('orders/<int:pk>/', OrderDetailView.as_view(), name='order-detail'),
+    
+    # Cart APIs can be added here in the future
+    path('cart/', CartDetailView.as_view(), name='cart-detail'),
+    # Notification APIs can be added here in the future
+    path('notifications/', NotificationListView.as_view(), name='notification-list'),
+
+    
 ]

@@ -50,6 +50,12 @@ from .serializers import SalesAnalyticsSerializer
 from django.db.models import Sum
 from django.db.models.functions import TruncDate
 
+from .serializers import OrderItemSerializer,OrderSerializer
+from .models import Order,OrderItem
+from .serializers import CartItemSerializer,CartSerializer
+from .models import Cart,CartItem
+from .models import Notification
+from .serializers import NotificationSerializer
 
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
@@ -384,3 +390,30 @@ class SeasonalPicksListView(generics.ListAPIView):
     def get_queryset(self):
         # Filter products with seasonal picks tag or flag; here assuming filter by name for demo
         return Product.objects.filter(name__icontains='seasonal').order_by('-created_at')[:20]
+    
+    
+class OrderListView(generics.ListAPIView):
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
+
+class OrderDetailView(generics.RetrieveAPIView):
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Order.objects.all()
+    
+# Cart Views
+class CartDetailView(generics.RetrieveAPIView):
+    serializer_class = CartSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    def get_object(self):
+        return Cart.objects.get(user=self.request.user)
+
+
+# Notification Views can be added similarly
+class NotificationListView(generics.ListAPIView):
+    serializer_class = NotificationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    def get_queryset(self):
+        return Notification.objects.filter(user=self.request.user)

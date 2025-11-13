@@ -6,9 +6,9 @@ from django.contrib.auth import get_user_model
 import secrets
 from .models import Product
 from .models import RecentlyViewed, Wishlist
-
-
-
+from .models import Order,OrderItem
+from .models import Cart,CartItem
+from .models import Notification
 class RegisterSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True)
 
@@ -166,3 +166,33 @@ class TopSellerSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'email', 'total_quantity_sold']
+        
+        
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = '__all__'
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True, read_only=True)
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+# added for Cart and CartItem models
+class CartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = '__all__'
+
+class CartSerializer(serializers.ModelSerializer):
+    items = CartItemSerializer(many=True, read_only=True)
+    class Meta:
+        model = Cart
+        fields = '__all__'
+
+# Notification Serializer
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'
