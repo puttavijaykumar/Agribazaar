@@ -36,15 +36,28 @@ function UserProfile() {
     async function fetchProfile() {
       try {
         const profile = await AuthService.getUserProfile();
-        setUser(profile);
+        setUser({
+          username: profile.username,
+          email: profile.email,
+          role: profile.role,
+          address: {
+            homeName: profile.home_name || "",
+            street: profile.street || "",
+            village: profile.village || "",
+            mandal: profile.mandal || "",
+            district: profile.district || "",
+            state: profile.state || "",
+            pincode: profile.pincode || ""
+          }
+        });
         setAddressInput({
-          homeName: profile.address?.homeName || "",
-          street: profile.address?.street || "",
-          village: profile.address?.village || "",
-          mandal: profile.address?.mandal || "",
-          district: profile.address?.district || "",
-          state: profile.address?.state || "",
-          pincode: profile.address?.pincode || "",
+          homeName: profile.home_name || "",
+          street: profile.street || "",
+          village: profile.village || "",
+          mandal: profile.mandal || "",
+          district: profile.district || "",
+          state: profile.state || "",
+          pincode: profile.pincode || ""
         });
       } catch {
         setMessage("Error loading profile. Please log in again.");
@@ -56,6 +69,7 @@ function UserProfile() {
     fetchProfile();
   }, [navigate]);
 
+
   const handleInputChange = (field, value) => {
     setAddressInput((prev) => ({
       ...prev,
@@ -64,12 +78,33 @@ function UserProfile() {
   };
 
   const handleSave = async () => {
-  setLoading(true);
+    setLoading(true);
     try {
-      await AuthService.updateUserProfile({ address: addressInput });
-      // Refetch the user profile from the backend
+      await AuthService.updateUserProfile({
+        home_name: addressInput.homeName,
+        street: addressInput.street,
+        village: addressInput.village,
+        mandal: addressInput.mandal,
+        district: addressInput.district,
+        state: addressInput.state,
+        pincode: addressInput.pincode
+      });
+      // Refetch the user profile and do the same mapping as above
       const profile = await AuthService.getUserProfile();
-      setUser(profile);
+      setUser({
+        username: profile.username,
+        email: profile.email,
+        role: profile.role,
+        address: {
+          homeName: profile.home_name || "",
+          street: profile.street || "",
+          village: profile.village || "",
+          mandal: profile.mandal || "",
+          district: profile.district || "",
+          state: profile.state || "",
+          pincode: profile.pincode || ""
+        }
+      });
       setEditAddress(false);
       setMessage("Profile updated successfully!");
     } catch {
@@ -77,6 +112,7 @@ function UserProfile() {
     }
     setLoading(false);
   };
+
 
 
   const profileRowStyle = {
