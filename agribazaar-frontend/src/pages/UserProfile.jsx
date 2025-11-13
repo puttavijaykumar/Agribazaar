@@ -64,10 +64,12 @@ function UserProfile() {
   };
 
   const handleSave = async () => {
-    setLoading(true);
+  setLoading(true);
     try {
       await AuthService.updateUserProfile({ address: addressInput });
-      setUser((prev) => ({ ...prev, address: addressInput }));
+      // Refetch the user profile from the backend
+      const profile = await AuthService.getUserProfile();
+      setUser(profile);
       setEditAddress(false);
       setMessage("Profile updated successfully!");
     } catch {
@@ -75,6 +77,7 @@ function UserProfile() {
     }
     setLoading(false);
   };
+
 
   const profileRowStyle = {
     padding: "1rem",
@@ -244,9 +247,9 @@ function UserProfile() {
             <>
               <div style={{ whiteSpace: "pre-line", lineHeight: 1.5, color: "#333" }}>
                 {`${user.address?.homeName || ""}${user.address?.street ? ", " + user.address.street : ""}
-${user.address?.village || ""}${user.address?.mandal ? ", " + user.address.mandal : ""}
-${user.address?.district || ""}${user.address?.state ? ", " + user.address.state : ""}
-${user.address?.pincode || ""}`}
+                  ${user.address?.village || ""}${user.address?.mandal ? ", " + user.address.mandal : ""}
+                  ${user.address?.district || ""}${user.address?.state ? ", " + user.address.state : ""}
+                  ${user.address?.pincode || ""}`}
               </div>
               <button
                 style={{
