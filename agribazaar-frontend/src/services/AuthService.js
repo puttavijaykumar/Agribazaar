@@ -1,4 +1,5 @@
 import axios from "axios";
+import authHeader from './authHeader'; // adjust the path if it’s in a subfolder
 
 axios.defaults.withCredentials = true;
 const API_URL = import.meta.env.VITE_API_BASE_URL;
