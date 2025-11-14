@@ -462,7 +462,7 @@ const BuyerNavbar = ({ cartCount, notifCount, chatUnreadCount, points }) => {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", flex: 1, marginLeft: "2rem", marginRight: "2rem", gap: "0.5rem" }}>
-          <Search size={18} color="white" />
+          <Search size={8} color="white" />
           <input
             type="search"
             placeholder="Search products"
