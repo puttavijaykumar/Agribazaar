@@ -33,10 +33,53 @@ import OrdersPage from './pages/OrdersPage';
 import TrackOrdersPage from './pages/TrackOrdersPage';
 import ReorderPage from './pages/ReorderPage';
 
+import axios from "axios";
+import React, { useEffect } from "react";
+
 
 const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
+
 function App() {
+  useEffect(() => {
+    // Axios interceptor to refresh token on 401 response
+    axios.interceptors.response.use(
+      response => response,
+      async error => {
+        const originalRequest = error.config;
+        if (
+          error.response &&
+          error.response.status === 401 &&
+          !originalRequest._retry
+        ) {
+          originalRequest._retry = true;
+          const user = JSON.parse(localStorage.getItem("user"));
+          if (!user || !user.refresh) {
+            window.location.href = "/login";
+            return Promise.reject(error);
+          }
+          try {
+            const response = await axios.post("/api/token/refresh/", {
+              refresh: user.refresh,
+            });
+            const newAccessToken = response.data.access;
+            user.access = newAccessToken;
+            localStorage.setItem("user", JSON.stringify(user));
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${newAccessToken}`;
+            originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+            return axios(originalRequest);
+          } catch (refreshError) {
+            window.location.href = "/login";
+            return Promise.reject(refreshError);
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+  }, []);
+
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <Router>
