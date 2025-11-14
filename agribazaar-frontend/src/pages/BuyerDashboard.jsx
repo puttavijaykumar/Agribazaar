@@ -549,8 +549,8 @@ const BuyerNavbar = ({ cartCount, notifCount, chatUnreadCount, points }) => {
             borderRadius: "20px",
             marginLeft: "0.5rem",
           }}>
-            <Trophy size={18} color="#fff9c4" />
-            <span style={{ fontSize: "0.9rem", fontWeight: "600" }}>{points}</span>
+            {/* <Trophy size={18} color="#fff9c4" />
+            <span style={{ fontSize: "0.9rem", fontWeight: "600" }}>{points}</span> */}
           </div>
 
           <div style={{ position: "relative" }}>
