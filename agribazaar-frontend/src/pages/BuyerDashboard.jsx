@@ -628,7 +628,8 @@ const BuyerNavbar = ({ cartCount, notifCount, chatUnreadCount, points, searchQue
 };
 
 const BuyerDashboard = () => {
-
+  
+  const navigate = useNavigate(); // <-- You need this line!
   // Add your state declarations here
   const [cartCount, setCartCount] = useState(0);
   const [notifCount, setNotifCount] = useState(0);
