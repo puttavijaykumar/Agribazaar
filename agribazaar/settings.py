@@ -106,13 +106,12 @@ REST_FRAMEWORK = {
     ]
 }
 
-
-# SIMPLE_JWT = {
-#     "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
-#     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
-#     "ALGORITHM": "HS256",
-#     "SIGNING_KEY": SECRET_KEY,
-# }
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+}
 
 # --------------------
 # Email (OTP)
