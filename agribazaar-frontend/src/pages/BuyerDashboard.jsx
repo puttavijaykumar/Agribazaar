@@ -430,7 +430,7 @@ const NavIcon = ({ icon: Icon, badge, label, onClick }) => (
   </button>
 );
 
-const BuyerNavbar = ({ cartCount, notifCount, chatUnreadCount, points }) => {
+const BuyerNavbar = ({ cartCount, notifCount, chatUnreadCount, points, searchQuery, setSearchQuery, handleSearch  }) => {
   
   const navigate = useNavigate();
   const [showOrders, setShowOrders] = React.useState(false);
@@ -645,21 +645,16 @@ const BuyerDashboard = () => {
   
   // Search states
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
+  // const [searchResults, setSearchResults] = useState([]);
+  // const [isSearching, setIsSearching] = useState(false);
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return; // Ignore empty searches
-    setIsSearching(true);
-    try {
-      const response = await AuthService.searchProducts(searchQuery);
-      setSearchResults(response);
-    } catch (error) {
-      console.error("Search failed", error);
-    }
-    setIsSearching(false);
+    if (!searchQuery.trim()) return;
+    // Navigate to search page with query as URL param
+    navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
   };
+
   
   useEffect(() => {
   const fetchDashboardData = async () => {

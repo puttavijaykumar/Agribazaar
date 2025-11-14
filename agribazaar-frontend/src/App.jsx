@@ -35,6 +35,7 @@ import ReorderPage from './pages/ReorderPage';
 
 import axios from "axios";
 import React, { useEffect } from "react";
+import SearchResults from './pages/SearchResults';
 
 
 const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
@@ -117,6 +118,7 @@ function App() {
           <Route path="/orders" element={<OrdersPage />} />
           <Route path="/orders/track" element={<TrackOrdersPage />} />
           <Route path="/orders/reorder" element={<ReorderPage />} />
+          <Route path="/search" element={<SearchResults />} />
           
         </Routes>
       </Router>
