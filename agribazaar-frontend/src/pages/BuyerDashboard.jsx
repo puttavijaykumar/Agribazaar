@@ -867,7 +867,7 @@ const BuyerDashboard = () => {
   return (
     <div style={{ backgroundColor: colors.lightBg, minHeight: "100vh", color: colors.contrastText }}>
       {/* Navbar */}
-      <BuyerNavbar cartCount={cartCount} notifCount={notifCount} chatUnreadCount={chatUnreadCount} points={points} />
+      <BuyerNavbar cartCount={cartCount} notifCount={notifCount} chatUnreadCount={chatUnreadCount} points={points} searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={handleSearch} />
 
       {/* ---------- SECTION 1: SHOP BY CATEGORY ---------- */}
       <h2
