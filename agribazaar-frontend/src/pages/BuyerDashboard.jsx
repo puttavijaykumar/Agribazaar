@@ -457,29 +457,36 @@ const BuyerNavbar = ({ cartCount, notifCount, chatUnreadCount, points }) => {
           style={{ cursor: "pointer", fontWeight: "bold", fontSize: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}
           onClick={() => navigate("/buyer/dashboard")}
         >
-          <span style={{ fontSize: "1.8rem" }}>🌾</span>
+          <span style={{ fontSize: "1.8rem" }}></span>
           AgriBazaar
         </div>
 
         <div style={{ display: "flex", alignItems: "center", flex: 1, marginLeft: "2rem", marginRight: "2rem", gap: "0.5rem" }}>
-          <Search size={8} color="white" />
-          <input
-            type="search"
-            placeholder="Search products"
-            style={{
-              flex: 1,
-              padding: "0.5rem 0.75rem",
-              borderRadius: "20px",
-              border: "none",
-              outline: "none",
-              fontSize: "0.9rem",
-            }}
-          />
+          <Search size={24} color="white" />
+          <form onSubmit={handleSearch} style={{ flex: 0.75, display: "flex" }}>
+            <input
+              type="search"
+              placeholder="Search products"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                flex: 1,
+                padding: "0.75rem 1rem",
+                borderRadius: "20px",
+                border: "none",
+                outline: "none",
+                fontSize: "0.9rem",
+              }}
+            />
+            <button type="submit" style={buttonStyle}>Search</button>
+          </form>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <NavIcon icon={Heart} badge={0} label="Wishlist" />
-          <NavIcon icon={ShoppingCart} badge={cartCount} label="Cart" />
+          <NavIcon icon={Heart} badge={0} label="Wishlist" onClick={() => navigate("/buyer/wishlist")}  // Navigate to wishlist page 
+          />
+          <NavIcon icon={ShoppingCart} badge={cartCount} label="Cart" onClick={() => navigate("/cart")}
+          />
 
           <div style={{ position: "relative" }}>
             <NavIcon icon={Package} badge={0} label="Orders" onClick={() => setShowOrders(!showOrders)} />
@@ -635,7 +642,25 @@ const BuyerDashboard = () => {
   const [newArrivals, setNewArrivals] = useState([]);
   const [seasonalPicks, setSeasonalPicks] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // Search states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return; // Ignore empty searches
+    setIsSearching(true);
+    try {
+      const response = await AuthService.searchProducts(searchQuery);
+      setSearchResults(response);
+    } catch (error) {
+      console.error("Search failed", error);
+    }
+    setIsSearching(false);
+  };
+  
   useEffect(() => {
   const fetchDashboardData = async () => {
     try {
@@ -861,7 +886,7 @@ const BuyerDashboard = () => {
           marginTop: "2rem",
         }}
       >
-        🛍️ Shop By Category
+         Shop By Category
       </h2>
       <section style={mainCategoryContainerStyle}>
         {mainCategoryBoxes.map((item, idx) => (
@@ -1005,7 +1030,7 @@ const BuyerDashboard = () => {
           marginTop: "2rem",
         }}
       >
-        🎉 Top Offers
+         Top Offers
       </h2>
       <section style={offersContainer}>
         {offerProducts.map(({ title, desc, img }, idx) => (
@@ -1037,7 +1062,7 @@ const BuyerDashboard = () => {
           marginTop: "2rem",
         }}
       >
-        🌾 Shop Crops, Livestock & More
+         Shop Crops, Livestock & More
       </h2>
       <section style={categoryContainerStyle}>
         {productCategories.map(({ name, img }, idx) => (

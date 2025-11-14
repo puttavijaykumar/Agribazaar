@@ -330,6 +330,19 @@ const deleteAddress = async (id) => {
   return response.data;
 };
 
+// list of products matching search
+
+const searchProducts = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}/products/`, {
+      params: { search: query }
+    });
+    return response.data; // list of products matching search
+  } catch (error) {
+    console.error("Error searching products:", error);
+    throw error;
+  }
+};
 
 export default {
   register,
@@ -367,4 +380,5 @@ export default {
   createAddress,
   updateAddress,
   deleteAddress,
+  searchProducts,
 };
