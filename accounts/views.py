@@ -279,8 +279,8 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # Return products owned by logged-in user only
-        return Product.objects.filter(owner=self.request.user).order_by('-created_at')
-
+        return Product.objects.all().order_by('-created_at')
+    
     def perform_create(self, serializer):
         # Set the owner of the created product
         serializer.save(owner=self.request.user)
