@@ -331,18 +331,22 @@ const deleteAddress = async (id) => {
 };
 
 // list of products matching search
-
 const searchProducts = async (query) => {
+  const token = localStorage.getItem('access');
   try {
     const response = await axios.get(`${API_URL}/products/`, {
-      params: { search: query }
+      params: { search: query },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
-    return response.data; // list of products matching search
+    return response.data;
   } catch (error) {
     console.error("Error searching products:", error);
     throw error;
   }
 };
+
 
 export default {
   register,
