@@ -24,13 +24,15 @@ const LoginPage = () => {
 
     try {
       const user = await AuthService.login(loginData);
-      setMsg("✅ Logged in successfully!");
+      setMsg(" Logged in successfully!");
 
       setTimeout(() => {
         if (!user.role || user.role === "" || user.role === null) {
           navigate("/select-role");
-        } else {
-          navigate(`/${user.role}/dashboard`);
+        } else if(user.role === "both"){
+          navigate("/");
+        }else {
+        navigate(`/${user.role}/dashboard`);
         }
       }, 700);
 
