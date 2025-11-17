@@ -6,7 +6,7 @@ import HomePage from "./pages/HomePage";
 import SelectRolePage from "./pages/SelectRolePage";
 import FarmerDashboard from "./pages/FarmerDashboard";
 import BuyerDashboard from "./pages/BuyerDashboard";
-import BothDashboard from "./pages/BothDashboard"; 
+// import BothDashboard from "./pages/BothDashboard"; 
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import EnterOTPPage from "./pages/EnterOTPPage";
@@ -91,7 +91,7 @@ function App() {
           <Route path="/select-role" element={<SelectRolePage  />} />
           <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
           <Route path="/buyer/dashboard" element={<BuyerDashboard />} />
-          <Route path="/both/dashboard" element={<BothDashboard />} />
+          {/* <Route path="/both/dashboard" element={<BothDashboard />} /> */}
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password/:uid/:token" element={<ResetPasswordPage />} />
           <Route path="/enter-otp" element={<EnterOTPPage />} />
