@@ -15,6 +15,7 @@ import UserProfile from "./pages/UserProfile";
 import MyProducts from "./pages/MyProducts";  
 import SalesAnalytics from "./pages/SalesAnalytics";
 
+import ProfileFarmer from './pages/profileFarmer';
 
 import RecentlyViewedPage from "./pages/RecentlyViewedPage";
 import WishlistPage from "./pages/WishlistPage";
@@ -97,6 +98,7 @@ function App() {
           <Route path="/enter-otp" element={<EnterOTPPage />} />
           <Route path="/upload-products" element={<UploadProducts />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/farmer/profile" element={<ProfileFarmer />} />
           <Route path="/my-products" element={<MyProducts />} />
           <Route path="/sales-analytics" element={<SalesAnalytics />} />
           

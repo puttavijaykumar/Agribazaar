@@ -59,7 +59,7 @@ function FarmerDashboard() {
   };
 
   const goToProfileSettings = () => {
-    navigate("/profile");
+    navigate("/farmer/profile");
   };
 
   const goToNotifications = () => {
