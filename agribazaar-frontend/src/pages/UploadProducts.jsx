@@ -29,6 +29,13 @@ function UploadProducts() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  const [user, setUser] = useState(null);   // <-- ADD THIS LINE
+  
+  useEffect(() => {                         // <-- ADD THIS EFFECT
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) setUser(JSON.parse(storedUser));
+  }, []);
+
   const handleInputChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -117,7 +124,7 @@ function UploadProducts() {
     >
       {/* Farmer Navbar at top */}
       <FarmerNavbar user={user || {}} />
-      
+
       {/* Background Decoration */}
       <div
         style={{
