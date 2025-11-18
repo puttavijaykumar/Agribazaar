@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AuthService from "../services/AuthService";
 import EnhancedFooter from "../components/EnhancedFooter";
-import FarmerNavbar from '../components/FarmerNavbar'; // Adjust path as required
+import FarmerNavbar from '../components/FarmerNavbar';
 
 function UploadProducts() {
   const [formData, setFormData] = useState({
@@ -29,9 +29,8 @@ function UploadProducts() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const [user, setUser] = useState(null);   // <-- ADD THIS LINE
-  
-  useEffect(() => {                         // <-- ADD THIS EFFECT
+  const [user, setUser] = useState(null);
+  useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
@@ -43,10 +42,8 @@ function UploadProducts() {
   const handleImageChange = (e) => {
     const name = e.target.name;
     const file = e.target.files[0];
-
     if (file) {
       setImages((prev) => ({ ...prev, [name]: file }));
-
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreviews((prev) => ({ ...prev, [name]: reader.result }));
@@ -77,7 +74,6 @@ function UploadProducts() {
       setFormData({ name: "", price: "", description: "", quantity: "", validity_days: "30" });
       setImages({ image1: null, image2: null, image3: null, image4: null });
       setImagePreviews({ image1: null, image2: null, image3: null, image4: null });
-      
       setTimeout(() => setSuccess(false), 4000);
       alert(`Product "${res.name}" uploaded successfully!`);
     } catch (error) {
@@ -89,6 +85,7 @@ function UploadProducts() {
 
   const inputStyle = {
     width: "100%",
+    minWidth: "200px",
     padding: "12px 14px",
     borderRadius: "10px",
     border: "2px solid #e0e0e0",
@@ -111,6 +108,9 @@ function UploadProducts() {
 
   const formGroupStyle = {
     marginBottom: "1.8rem",
+    minWidth: "220px",
+    maxWidth: "300px",
+    flex: "0 0 auto"
   };
 
   return (
@@ -122,10 +122,8 @@ function UploadProducts() {
         paddingBottom: "4rem",
       }}
     >
-      {/* Farmer Navbar at top */}
       <FarmerNavbar user={user || {}} />
-
-      {/* Background Decoration */}
+      {/* Bg deco */}
       <div
         style={{
           position: "fixed",
@@ -138,8 +136,6 @@ function UploadProducts() {
           zIndex: -1,
         }}
       ></div>
-
-      {/* Top Navigation */}
       <div
         style={{
           display: "flex",
@@ -155,9 +151,7 @@ function UploadProducts() {
         <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", minWidth: "200px" }}>
           <span style={{ fontSize: "clamp(1.5rem, 5vw, 2.5rem)" }}></span>
         </div>
-        
       </div>
-
       {/* Main Form Container */}
       <div
         style={{
@@ -168,9 +162,9 @@ function UploadProducts() {
           boxShadow: "0 20px 60px rgba(0, 0, 0, 0.1)",
           padding: "clamp(1.5rem, 5vw, 3rem)",
           border: "2px solid rgba(129, 199, 132, 0.2)",
+          overflow: "hidden"
         }}
       >
-        {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <h2
             style={{
@@ -180,7 +174,7 @@ function UploadProducts() {
               margin: "0 0 0.8rem 0",
             }}
           >
-             Upload Your Product
+            Upload Your Product
           </h2>
           <p style={{ fontSize: "clamp(0.9rem, 3vw, 1.1rem)", color: "#666", margin: 0 }}>
             Share your agricultural products with buyers across India
@@ -196,7 +190,6 @@ function UploadProducts() {
           ></div>
         </div>
 
-        {/* Success Message */}
         {success && (
           <div
             style={{
@@ -209,15 +202,20 @@ function UploadProducts() {
             }}
           >
             <p style={{ margin: 0, color: "#2d8e4a", fontWeight: "600", fontSize: "clamp(0.85rem, 2vw, 1.05rem)" }}>
-               Product uploaded successfully!
+              Product uploaded successfully!
             </p>
           </div>
         )}
 
-        {/* Form */}
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
-          {/* Product Name & Price Row */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
+          {/* Horizontally scrolling Product Name & Price Row */}
+          <div className="scroll-x-row"
+            style={{
+              display: "flex",
+              gap: "1.5rem",
+              overflowX: "auto",
+              paddingBottom: "0.75rem"
+            }}>
             <div style={formGroupStyle}>
               <label style={labelStyle}>Product Name</label>
               <input
@@ -240,9 +238,8 @@ function UploadProducts() {
                 }}
               />
             </div>
-
             <div style={formGroupStyle}>
-              <label style={labelStyle}> Price (₹ per unit)</label>
+              <label style={labelStyle}>Price (₹ per unit)</label>
               <input
                 type="number"
                 name="price"
@@ -265,7 +262,6 @@ function UploadProducts() {
               />
             </div>
           </div>
-
           {/* Description */}
           <div style={formGroupStyle}>
             <label style={labelStyle}>Description</label>
@@ -294,9 +290,14 @@ function UploadProducts() {
               }}
             />
           </div>
-
-          {/* Quantity & Validity Row */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
+          {/* Horizontally scrolling Quantity & Validity Row */}
+          <div className="scroll-x-row"
+            style={{
+              display: "flex",
+              gap: "1.5rem",
+              overflowX: "auto",
+              paddingBottom: "0.75rem"
+            }}>
             <div style={formGroupStyle}>
               <label style={labelStyle}>Quantity Available</label>
               <input
@@ -319,7 +320,6 @@ function UploadProducts() {
                 }}
               />
             </div>
-
             <div style={formGroupStyle}>
               <label style={labelStyle}>Listing Validity (Days)</label>
               <input
@@ -342,24 +342,24 @@ function UploadProducts() {
               />
             </div>
           </div>
-
           {/* Images Section */}
           <div style={{ marginTop: "1.5rem", marginBottom: "1.5rem" }}>
-            <h3 style={{ 
-              fontSize: "clamp(1.1rem, 4vw, 1.3rem)", 
-              fontWeight: "700", 
-              color: "#1b5e20", 
+            <h3 style={{
+              fontSize: "clamp(1.1rem, 4vw, 1.3rem)",
+              fontWeight: "700",
+              color: "#1b5e20",
               marginBottom: "1.2rem",
               margin: "0 0 1.2rem 0",
             }}>
-               Product Images (Upload up to 4 images)
+              Product Images (Upload up to 4 images)
             </h3>
-
-            <div style={{ 
-              display: "grid", 
-              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", 
-              gap: "1rem",
-            }}>
+            <div className="scroll-x-row"
+              style={{
+                display: "flex",
+                gap: "1rem",
+                overflowX: "auto",
+                paddingBottom: "0.5rem"
+              }}>
               {[1, 2, 3, 4].map((num) => (
                 <div
                   key={`image${num}`}
@@ -376,10 +376,13 @@ function UploadProducts() {
                     position: "relative",
                     overflow: "hidden",
                     minHeight: "150px",
+                    minWidth: "150px",
+                    maxWidth: "220px",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
+                    flex: "0 0 auto"
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = "#2d8e4a";
@@ -405,7 +408,6 @@ function UploadProducts() {
                       opacity: 0,
                     }}
                   />
-
                   {imagePreviews[`image${num}`] ? (
                     <div style={{ position: "relative", width: "100%" }}>
                       <img
@@ -419,7 +421,7 @@ function UploadProducts() {
                         }}
                       />
                       <p style={{ margin: "0.6rem 0 0 0", fontSize: "clamp(0.7rem, 2vw, 0.85rem)", color: "#666", fontWeight: "600" }}>
-                         Image selected
+                        Image selected
                       </p>
                     </div>
                   ) : (
@@ -437,7 +439,6 @@ function UploadProducts() {
               ))}
             </div>
           </div>
-
           {/* Submit Button */}
           <button
             type="submit"
@@ -462,6 +463,7 @@ function UploadProducts() {
               alignItems: "center",
               justifyContent: "center",
               gap: "0.8rem",
+              minWidth: "200px"
             }}
             onMouseEnter={(e) => {
               if (!loading) {
@@ -489,52 +491,31 @@ function UploadProducts() {
           </button>
         </form>
       </div>
-
       <style>{`
         @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
+          from { transform: rotate(0deg);}
+          to { transform: rotate(360deg);}
         }
-
-        /* Mobile Optimizations */
-        @media (max-width: 480px) {
-          label {
-            font-size: 0.9rem !important;
-          }
-          textarea, input {
-            font-size: 16px !important;
-          }
+        .scroll-x-row {
+          scrollbar-width: thin;
         }
-
-        /* Tablet Optimizations */
-        @media (min-width: 481px) and (max-width: 768px) {
-          label {
-            font-size: 0.95rem !important;
-          }
+        .scroll-x-row::-webkit-scrollbar {
+          height: 6px;
+          background: #e0f2f1;
         }
-
-        /* Large Screen Optimizations */
-        @media (min-width: 1200px) {
-          label {
-            font-size: 1.05rem !important;
-          }
+        .scroll-x-row::-webkit-scrollbar-thumb {
+          background: #81c784;
+          border-radius: 4px;
         }
-      `}</style>
-      
+        @media (max-width: 600px) {
+          .scroll-x-row { gap: 1rem; }
+        }
+      `}
+      </style>
       <EnhancedFooter />
     </div>
   );
