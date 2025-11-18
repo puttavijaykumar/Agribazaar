@@ -2,9 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
 import EnhancedFooter from "../components/EnhancedFooter";
+import BuyerNavbar from "../components/BuyerNavbar"; // Import FarmerNavbar
 
 function UserProfile() {
   const navigate = useNavigate();
+
+  // For BuyerNavbar
+  const [navbarUser, setNavbarUser] = useState(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) setNavbarUser(JSON.parse(storedUser));
+  }, []);
+
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -158,6 +167,8 @@ function UserProfile() {
         paddingBottom: "3rem",
       }}
     >
+      {/* Farmer Top Navbar */}
+      <BuyerNavbar user={navbarUser || {}} />
       <div
         style={{
           maxWidth: "520px",
