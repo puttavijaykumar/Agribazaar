@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+
 function FarmerNavbar({ user }) {
   const navigate = useNavigate();
 

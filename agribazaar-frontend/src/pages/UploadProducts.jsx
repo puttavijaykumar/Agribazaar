@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AuthService from "../services/AuthService";
 import EnhancedFooter from "../components/EnhancedFooter";
+import FarmerNavbar from '../components/FarmerNavbar'; // Adjust path as required
 
 function UploadProducts() {
   const [formData, setFormData] = useState({
@@ -114,6 +115,9 @@ function UploadProducts() {
         paddingBottom: "4rem",
       }}
     >
+      {/* Farmer Navbar at top */}
+      <FarmerNavbar user={user || {}} />
+      
       {/* Background Decoration */}
       <div
         style={{
