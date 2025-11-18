@@ -154,46 +154,8 @@ function UploadProducts() {
       >
         <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", minWidth: "200px" }}>
           <span style={{ fontSize: "clamp(1.5rem, 5vw, 2.5rem)" }}></span>
-          <div>
-            <h1 style={{ 
-              margin: 0, 
-              fontSize: "clamp(1.3rem, 5vw, 2rem)", 
-              fontWeight: "800", 
-              color: "#1b5e20" 
-            }}>
-              AgriBazaar
-            </h1>
-            <p style={{ margin: "0.2rem 0 0 0", fontSize: "clamp(0.7rem, 2vw, 0.9rem)", color: "#666" }}>
-              List Your Products
-            </p>
-          </div>
         </div>
-        <a href="/" style={{ textDecoration: "none" }}>
-          <button
-            style={{
-              padding: "0.6rem 1.2rem",
-              borderRadius: "10px",
-              background: "linear-gradient(135deg, #1b5e20 0%, #2d8e4a 100%)",
-              color: "white",
-              fontWeight: "700",
-              border: "none",
-              cursor: "pointer",
-              transition: "all 0.3s ease",
-              fontSize: "clamp(0.8rem, 2vw, 0.95rem)",
-              whiteSpace: "nowrap",
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.transform = "translateY(-3px)";
-              e.target.style.boxShadow = "0 10px 25px rgba(27, 94, 32, 0.3)";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = "translateY(0)";
-              e.target.style.boxShadow = "none";
-            }}
-          >
-            ← Back
-          </button>
-        </a>
+        
       </div>
 
       {/* Main Form Container */}
