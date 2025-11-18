@@ -3,6 +3,7 @@ import AuthService from "../services/AuthService";
 import EnhancedFooter from "../components/EnhancedFooter";
 import FarmerNavbar from '../components/FarmerNavbar';
 
+
 function UploadProducts() {
   const [formData, setFormData] = useState({
     name: "",
@@ -12,12 +13,14 @@ function UploadProducts() {
     validity_days: "30",
   });
 
+
   const [images, setImages] = useState({
     image1: null,
     image2: null,
     image3: null,
     image4: null,
   });
+
 
   const [imagePreviews, setImagePreviews] = useState({
     image1: null,
@@ -26,8 +29,10 @@ function UploadProducts() {
     image4: null,
   });
 
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
 
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -35,9 +40,11 @@ function UploadProducts() {
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
+
   const handleInputChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
 
   const handleImageChange = (e) => {
     const name = e.target.name;
@@ -52,9 +59,11 @@ function UploadProducts() {
     }
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
 
     const data = new FormData();
     data.append("name", formData.name);
@@ -63,10 +72,12 @@ function UploadProducts() {
     data.append("quantity", formData.quantity);
     data.append("validity_days", formData.validity_days);
 
+
     if (images.image1) data.append("image1", images.image1);
     if (images.image2) data.append("image2", images.image2);
     if (images.image3) data.append("image3", images.image3);
     if (images.image4) data.append("image4", images.image4);
+
 
     try {
       const res = await AuthService.createProduct(data);
@@ -83,9 +94,10 @@ function UploadProducts() {
     }
   };
 
+
   const inputStyle = {
     width: "100%",
-    minWidth: "220px",
+    minWidth: "200px",
     padding: "12px 14px",
     borderRadius: "10px",
     border: "2px solid #e0e0e0",
@@ -95,6 +107,7 @@ function UploadProducts() {
     boxSizing: "border-box",
     backgroundColor: "#fafafa",
   };
+
 
   const labelStyle = {
     fontSize: "1rem",
@@ -106,12 +119,14 @@ function UploadProducts() {
     letterSpacing: "0.5px",
   };
 
+
   const formGroupStyle = {
     marginBottom: "1.8rem",
     minWidth: "220px",
-    maxWidth: "340px",
+    maxWidth: "300px",
     flex: "0 0 auto"
   };
+
 
   return (
     <div
@@ -190,6 +205,7 @@ function UploadProducts() {
           ></div>
         </div>
 
+
         {success && (
           <div
             style={{
@@ -206,6 +222,7 @@ function UploadProducts() {
             </p>
           </div>
         )}
+
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
           {/* Horizontally scrolling Product Name & Price Row */}
@@ -263,7 +280,7 @@ function UploadProducts() {
             </div>
           </div>
           {/* Description */}
-          <div style={formGroupStyle}>
+          <div style={{ ...formGroupStyle, maxWidth: "100%", minWidth: "100%" }}>
             <label style={labelStyle}>Description</label>
             <textarea
               name="description"
@@ -275,9 +292,6 @@ function UploadProducts() {
               style={{
                 ...inputStyle,
                 resize: "vertical",
-                minWidth: "400px",
-                maxWidth: "900px",
-                width: "100%",
                 fontFamily: "inherit",
                 minHeight: "120px",
               }}
@@ -299,7 +313,8 @@ function UploadProducts() {
               display: "flex",
               gap: "2.5rem",
               overflowX: "auto",
-              paddingBottom: "0.75rem"
+              paddingBottom: "0.75rem",
+              marginTop: "0.5rem"
             }}>
             <div style={formGroupStyle}>
               <label style={labelStyle}>Quantity Available</label>
@@ -346,20 +361,20 @@ function UploadProducts() {
             </div>
           </div>
           {/* Images Section */}
-          <div style={{ marginTop: "1.5rem", marginBottom: "1.5rem" }}>
+          <div style={{ marginTop: "2rem", marginBottom: "1.5rem" }}>
             <h3 style={{
               fontSize: "clamp(1.1rem, 4vw, 1.3rem)",
               fontWeight: "700",
               color: "#1b5e20",
               marginBottom: "1.2rem",
-              margin: "0 0 1.2rem 0",
+              margin: "0 0 1.5rem 0",
             }}>
               Product Images (Upload up to 4 images)
             </h3>
             <div className="scroll-x-row"
               style={{
                 display: "flex",
-                gap: "1rem",
+                gap: "1.5rem",
                 overflowX: "auto",
                 paddingBottom: "0.5rem"
               }}>
@@ -447,7 +462,7 @@ function UploadProducts() {
             type="submit"
             disabled={loading}
             style={{
-              marginTop: "1.5rem",
+              marginTop: "2rem",
               padding: "clamp(0.8rem, 3vw, 1rem) clamp(1.5rem, 5vw, 2rem)",
               borderRadius: "12px",
               border: "none",
@@ -515,7 +530,7 @@ function UploadProducts() {
           border-radius: 4px;
         }
         @media (max-width: 600px) {
-          .scroll-x-row { gap: 1rem; }
+          .scroll-x-row { gap: 1.5rem; }
         }
       `}
       </style>
@@ -523,5 +538,6 @@ function UploadProducts() {
     </div>
   );
 }
+
 
 export default UploadProducts;
