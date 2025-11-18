@@ -95,14 +95,23 @@ const BuyerNavbar = ({
   notifCount = 0,
   chatUnreadCount = 0,
   points = 0,
-  searchQuery = "",
-  setSearchQuery = () => {},
-  handleSearch = () => {}
 }) => {
   const navigate = useNavigate();
+
   const [showOrders, setShowOrders] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+
+  // INTERNAL SEARCH STATE
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // INTERNAL SEARCH HANDLER (Navigates to /search with query param)
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const trimmedQuery = searchQuery.trim();
+    if (!trimmedQuery) return;
+    navigate(`/search?query=${encodeURIComponent(trimmedQuery)}`);
+  };
 
   const logout = () => {
     AuthService.logout();
@@ -125,20 +134,22 @@ const BuyerNavbar = ({
             fontSize: "1.5rem",
             display: "flex",
             alignItems: "center",
-            gap: "0.5rem"
+            gap: "0.5rem",
           }}
           onClick={() => navigate("/buyer/dashboard")}
         >
           AgriBazaar
         </div>
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          flex: 1,
-          marginLeft: "2rem",
-          marginRight: "2rem",
-          gap: "0.5rem"
-        }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flex: 1,
+            marginLeft: "2rem",
+            marginRight: "2rem",
+            gap: "0.5rem",
+          }}
+        >
           <Search size={24} color="white" />
           <form onSubmit={handleSearch} style={{ flex: 0.75, display: "flex" }}>
             <input
@@ -155,7 +166,9 @@ const BuyerNavbar = ({
                 fontSize: "0.9rem",
               }}
             />
-            <button type="submit" style={buttonStyle}>Search</button>
+            <button type="submit" style={buttonStyle}>
+              Search
+            </button>
           </form>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -164,98 +177,119 @@ const BuyerNavbar = ({
           <div style={{ position: "relative" }}>
             <NavIcon icon={Package} badge={0} label="Orders" onClick={() => setShowOrders(!showOrders)} />
             {showOrders && (
-              <div style={{
-                position: "absolute",
-                top: "100%",
-                right: 0,
-                backgroundColor: "white",
-                color: "black",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                borderRadius: "8px",
-                width: "200px",
-                zIndex: 1000,
-                marginTop: "0.5rem",
-              }}>
-                <Link to="/orders" style={{ display: "block", padding: "12px 16px", borderBottom: "1px solid #eee", textDecoration: "none", color: "#263238", fontSize: "0.9rem", transition: "background 0.2s" }} onMouseEnter={e => e.target.style.backgroundColor = "#f5f5f5"} onMouseLeave={e => e.target.style.backgroundColor = "transparent"}>My Orders</Link>
-                <Link to="/orders/track" style={{ display: "block", padding: "12px 16px", borderBottom: "1px solid #eee", textDecoration: "none", color: "#263238", fontSize: "0.9rem", transition: "background 0.2s" }} onMouseEnter={e => e.target.style.backgroundColor = "#f5f5f5"} onMouseLeave={e => e.target.style.backgroundColor = "transparent"}>Track Orders</Link>
-                <Link to="/orders/reorder" style={{ display: "block", padding: "12px 16px", textDecoration: "none", color: "#263238", fontSize: "0.9rem", transition: "background 0.2s" }} onMouseEnter={e => e.target.style.backgroundColor = "#f5f5f5"} onMouseLeave={e => e.target.style.backgroundColor = "transparent"}>Reorder</Link>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  right: 0,
+                  backgroundColor: "white",
+                  color: "black",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                  borderRadius: "8px",
+                  width: "200px",
+                  zIndex: 1000,
+                  marginTop: "0.5rem",
+                }}
+              >
+                <Link to="/orders" style={menuLinkStyle}>My Orders</Link>
+                <Link to="/orders/track" style={menuLinkStyle}>Track Orders</Link>
+                <Link to="/orders/reorder" style={menuLinkStyle}>Reorder</Link>
               </div>
             )}
           </div>
           <div style={{ position: "relative" }}>
             <NavIcon icon={Bell} badge={notifCount} label="Notifications" onClick={() => setShowNotifications(!showNotifications)} />
             {showNotifications && (
-              <div style={{
-                position: "absolute",
-                top: "100%",
-                right: 0,
-                backgroundColor: "white",
-                color: "black",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                borderRadius: "8px",
-                width: "300px",
-                zIndex: 1000,
-                maxHeight: "300px",
-                overflowY: "auto",
-                marginTop: "0.5rem",
-              }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  right: 0,
+                  backgroundColor: "white",
+                  color: "black",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                  borderRadius: "8px",
+                  width: "300px",
+                  zIndex: 1000,
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                  marginTop: "0.5rem",
+                }}
+              >
                 <p style={{ padding: "16px", fontSize: "0.9rem", color: "#666" }}>No new notifications</p>
               </div>
             )}
           </div>
           <NavIcon icon={MessageCircle} badge={chatUnreadCount} label="Chat" />
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            backgroundColor: "rgba(255,255,255,0.15)",
-            paddingLeft: "0.75rem",
-            paddingRight: "0.75rem",
-            paddingTop: "0.4rem",
-            paddingBottom: "0.4rem",
-            borderRadius: "20px",
-            marginLeft: "0.5rem",
-          }}>
-            {/* <Trophy size={18} color="#fff9c4" />
-            <span style={{ fontSize: "0.9rem", fontWeight: "600" }}>{points}</span> */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              backgroundColor: "rgba(255,255,255,0.15)",
+              paddingLeft: "0.75rem",
+              paddingRight: "0.75rem",
+              paddingTop: "0.4rem",
+              paddingBottom: "0.4rem",
+              borderRadius: "20px",
+              marginLeft: "0.5rem",
+            }}
+          >
+            {/* future points display, commented out */}
           </div>
           <div style={{ position: "relative" }}>
             <NavIcon icon={User} label="Profile" onClick={() => setShowProfile(!showProfile)} />
             {showProfile && (
-              <div style={{
-                position: "absolute",
-                top: "100%",
-                right: 0,
-                backgroundColor: "white",
-                color: "black",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                borderRadius: "8px",
-                width: "220px",
-                zIndex: 1000,
-                overflow: "hidden",
-                marginTop: "0.5rem",
-              }}>
-                <div style={{ padding: "12px 16px", backgroundColor: "#f0f8f5", borderBottom: "1px solid #eee", fontWeight: "600", fontSize: "0.95rem", color: "#263238" }}>My Account</div>
-                <Link to="/profile" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 16px", textDecoration: "none", color: "#263238", fontSize: "0.9rem", transition: "background 0.2s", borderBottom: "1px solid #eee" }} onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f5f5f5"} onMouseLeave={e => e.currentTarget.style.backgroundColor = "transparent"}><User size={16} /> Profile</Link>
-                <Link to="/settings" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 16px", textDecoration: "none", color: "#263238", fontSize: "0.9rem", transition: "background 0.2s", borderBottom: "1px solid #eee" }} onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f5f5f5"} onMouseLeave={e => e.currentTarget.style.backgroundColor = "transparent"}><Settings size={16} /> Settings</Link>
-                <Link to="/addresses" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 16px", textDecoration: "none", color: "#263238", fontSize: "0.9rem", transition: "background 0.2s", borderBottom: "1px solid #eee" }} onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f5f5f5"} onMouseLeave={e => e.currentTarget.style.backgroundColor = "transparent"}><MapPin size={16} /> Addresses</Link>
-                <Link to="/rewards" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 16px", textDecoration: "none", color: "#263238", fontSize: "0.9rem", transition: "background 0.2s", borderBottom: "1px solid #eee" }} onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f5f5f5"} onMouseLeave={e => e.currentTarget.style.backgroundColor = "transparent"}><Trophy size={16} /> My Points</Link>
-                <Link to="/help" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 16px", textDecoration: "none", color: "#263238", fontSize: "0.9rem", transition: "background 0.2s", borderBottom: "1px solid #eee" }} onMouseEnter={e => e.currentTarget.style.backgroundColor = "#f5f5f5"} onMouseLeave={e => e.currentTarget.style.backgroundColor = "transparent"}><HelpCircle size={16} /> Help</Link>
-                <button onClick={logout} style={{
-                  width: "100%",
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  right: 0,
+                  backgroundColor: "white",
+                  color: "black",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                  borderRadius: "8px",
+                  width: "220px",
+                  zIndex: 1000,
+                  overflow: "hidden",
+                  marginTop: "0.5rem",
+                }}
+              >
+                <div style={{
                   padding: "12px 16px",
-                  cursor: "pointer",
-                  border: "none",
-                  background: "#fff3e0",
-                  textAlign: "left",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  fontSize: "0.9rem",
+                  backgroundColor: "#f0f8f5",
+                  borderBottom: "1px solid #eee",
                   fontWeight: "600",
-                  color: "#d32f2f",
-                  transition: "background 0.2s",
-                }} onMouseEnter={e => e.currentTarget.style.backgroundColor = "#ffebee"} onMouseLeave={e => e.currentTarget.style.backgroundColor = "#fff3e0"}>
+                  fontSize: "0.95rem",
+                  color: "#263238",
+                }}>
+                  My Account
+                </div>
+                <Link to="/profile" style={menuLinkStyleProfile}><User size={16} /> Profile</Link>
+                <Link to="/settings" style={menuLinkStyleProfile}><Settings size={16} /> Settings</Link>
+                <Link to="/addresses" style={menuLinkStyleProfile}><MapPin size={16} /> Addresses</Link>
+                <Link to="/rewards" style={menuLinkStyleProfile}><Trophy size={16} /> My Points</Link>
+                <Link to="/help" style={menuLinkStyleProfile}><HelpCircle size={16} /> Help</Link>
+                <button
+                  onClick={logout}
+                  style={{
+                    width: "100%",
+                    padding: "12px 16px",
+                    cursor: "pointer",
+                    border: "none",
+                    background: "#fff3e0",
+                    textAlign: "left",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    fontSize: "0.9rem",
+                    fontWeight: "600",
+                    color: "#d32f2f",
+                    transition: "background 0.2s",
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#ffebee"}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#fff3e0"}
+                >
                   <LogOut size={16} /> Logout
                 </button>
               </div>
@@ -265,6 +299,26 @@ const BuyerNavbar = ({
       </nav>
     </>
   );
+};
+
+// Shared styles for menu items for brevity
+const menuLinkStyle = {
+  display: "block",
+  padding: "12px 16px",
+  borderBottom: "1px solid #eee",
+  textDecoration: "none",
+  color: "#263238",
+  fontSize: "0.9rem",
+  transition: "background 0.2s",
+  cursor: "pointer",
+};
+
+const menuLinkStyleProfile = {
+  ...menuLinkStyle,
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
+  borderBottom: "1px solid #eee",
 };
 
 export default BuyerNavbar;
