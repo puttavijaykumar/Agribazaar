@@ -85,7 +85,7 @@ function UploadProducts() {
 
   const inputStyle = {
     width: "100%",
-    minWidth: "200px",
+    minWidth: "220px",
     padding: "12px 14px",
     borderRadius: "10px",
     border: "2px solid #e0e0e0",
@@ -109,7 +109,7 @@ function UploadProducts() {
   const formGroupStyle = {
     marginBottom: "1.8rem",
     minWidth: "220px",
-    maxWidth: "300px",
+    maxWidth: "340px",
     flex: "0 0 auto"
   };
 
@@ -212,7 +212,7 @@ function UploadProducts() {
           <div className="scroll-x-row"
             style={{
               display: "flex",
-              gap: "1.5rem",
+              gap: "2.5rem",
               overflowX: "auto",
               paddingBottom: "0.75rem"
             }}>
@@ -275,6 +275,9 @@ function UploadProducts() {
               style={{
                 ...inputStyle,
                 resize: "vertical",
+                minWidth: "400px",
+                maxWidth: "900px",
+                width: "100%",
                 fontFamily: "inherit",
                 minHeight: "120px",
               }}
@@ -294,7 +297,7 @@ function UploadProducts() {
           <div className="scroll-x-row"
             style={{
               display: "flex",
-              gap: "1.5rem",
+              gap: "2.5rem",
               overflowX: "auto",
               paddingBottom: "0.75rem"
             }}>

@@ -6,7 +6,7 @@ function FarmerNavbar({ user }) {
   const navigate = useNavigate();
 
   const goToProfileSettings = () => {
-    navigate("/profile");
+    navigate("/farmer/profile");
   };
 
   const goToNotifications = () => {
