@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AuthService from "../services/AuthService";
 import EnhancedFooter from "../components/EnhancedFooter";
-import FarmerNavbar from '../components/FarmerNavbar';
+import FarmerNavbar from '../components/FarmerNavbar'; // Adjust path as required
 
 function UploadProducts() {
   const [formData, setFormData] = useState({
@@ -28,9 +28,10 @@ function UploadProducts() {
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [user, setUser] = useState(null);
 
-  useEffect(() => {
+  const [user, setUser] = useState(null);   // <-- ADD THIS LINE
+  
+  useEffect(() => {                         // <-- ADD THIS EFFECT
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
@@ -76,7 +77,7 @@ function UploadProducts() {
       setFormData({ name: "", price: "", description: "", quantity: "", validity_days: "30" });
       setImages({ image1: null, image2: null, image3: null, image4: null });
       setImagePreviews({ image1: null, image2: null, image3: null, image4: null });
-
+      
       setTimeout(() => setSuccess(false), 4000);
       alert(`Product "${res.name}" uploaded successfully!`);
     } catch (error) {
@@ -110,7 +111,6 @@ function UploadProducts() {
 
   const formGroupStyle = {
     marginBottom: "1.8rem",
-    minWidth: "280px",
   };
 
   return (
@@ -118,7 +118,7 @@ function UploadProducts() {
       style={{
         minHeight: "100vh",
         background: "linear-gradient(135deg, #f1f8e9 0%, #e8f5e9 100%)",
-        overflowX: "auto",
+        padding: "1.5rem 1rem",
         paddingBottom: "4rem",
       }}
     >
@@ -139,54 +139,61 @@ function UploadProducts() {
         }}
       ></div>
 
-      {/* Main scrollable container */}
+      {/* Top Navigation */}
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          minHeight: "100vh",
-          minWidth: "100vw",
-          padding: "1.5rem",
-          boxSizing: "border-box",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "2rem",
+          maxWidth: "900px",
+          margin: "0 auto 2rem",
+          flexWrap: "wrap",
+          gap: "1rem",
         }}
       >
-        {/* Header Section */}
-        <div
-          style={{
-            background: "white",
-            borderRadius: "15px",
-            boxShadow: "0 20px 60px rgba(0, 0, 0, 0.1)",
-            padding: "2rem 1.5rem",
-            marginBottom: "1.5rem",
-            border: "2px solid rgba(129, 199, 132, 0.2)",
-            minWidth: "100vw",
-            boxSizing: "border-box",
-          }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <h2
-              style={{
-                fontSize: "clamp(1.8rem, 6vw, 2.5rem)",
-                fontWeight: "800",
-                color: "#1b5e20",
-                margin: "0 0 0.8rem 0",
-              }}
-            >
-              Upload Your Product
-            </h2>
-            <p style={{ fontSize: "clamp(0.9rem, 3vw, 1.1rem)", color: "#666", margin: 0 }}>
-              Share your agricultural products with buyers across India
-            </p>
-            <div
-              style={{
-                height: "4px",
-                width: "80px",
-                background: "linear-gradient(90deg, #81c784 0%, #aed581 100%)",
-                borderRadius: "2px",
-                margin: "1rem auto 0",
-              }}
-            ></div>
-          </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", minWidth: "200px" }}>
+          <span style={{ fontSize: "clamp(1.5rem, 5vw, 2.5rem)" }}></span>
+        </div>
+        
+      </div>
+
+      {/* Main Form Container */}
+      <div
+        style={{
+          maxWidth: "900px",
+          margin: "0 auto",
+          background: "white",
+          borderRadius: "15px",
+          boxShadow: "0 20px 60px rgba(0, 0, 0, 0.1)",
+          padding: "clamp(1.5rem, 5vw, 3rem)",
+          border: "2px solid rgba(129, 199, 132, 0.2)",
+        }}
+      >
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <h2
+            style={{
+              fontSize: "clamp(1.8rem, 6vw, 2.5rem)",
+              fontWeight: "800",
+              color: "#1b5e20",
+              margin: "0 0 0.8rem 0",
+            }}
+          >
+             Upload Your Product
+          </h2>
+          <p style={{ fontSize: "clamp(0.9rem, 3vw, 1.1rem)", color: "#666", margin: 0 }}>
+            Share your agricultural products with buyers across India
+          </p>
+          <div
+            style={{
+              height: "4px",
+              width: "80px",
+              background: "linear-gradient(90deg, #81c784 0%, #aed581 100%)",
+              borderRadius: "2px",
+              margin: "1rem auto 0",
+            }}
+          ></div>
         </div>
 
         {/* Success Message */}
@@ -199,254 +206,160 @@ function UploadProducts() {
               padding: "1rem",
               marginBottom: "1.5rem",
               animation: "slideIn 0.3s ease",
-              minWidth: "100vw",
-              boxSizing: "border-box",
             }}
           >
             <p style={{ margin: 0, color: "#2d8e4a", fontWeight: "600", fontSize: "clamp(0.85rem, 2vw, 1.05rem)" }}>
-              ✓ Product uploaded successfully!
+               Product uploaded successfully!
             </p>
           </div>
         )}
 
-        {/* Form Container - Horizontal Scroll */}
-        <div
-          style={{
-            display: "flex",
-            overflowX: "auto",
-            overflowY: "hidden",
-            gap: "1.5rem",
-            paddingBottom: "1rem",
-            scrollBehavior: "smooth",
-            minWidth: "100vw",
-            boxSizing: "border-box",
-            paddingLeft: "1.5rem",
-            paddingRight: "1.5rem",
-          }}
-        >
-          {/* Form Card */}
-          <div
-            style={{
-              background: "white",
-              borderRadius: "15px",
-              boxShadow: "0 20px 60px rgba(0, 0, 0, 0.1)",
-              padding: "2rem",
-              border: "2px solid rgba(129, 199, 132, 0.2)",
-              minWidth: "100vw",
-              boxSizing: "border-box",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              {/* Product Name */}
-              <div style={formGroupStyle}>
-                <label style={labelStyle}>Product Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="e.g., Organic Wheat"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  style={inputStyle}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = "#81c784";
-                    e.target.style.boxShadow = "0 0 0 3px rgba(129, 199, 132, 0.1)";
-                    e.target.style.backgroundColor = "white";
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "#e0e0e0";
-                    e.target.style.boxShadow = "none";
-                    e.target.style.backgroundColor = "#fafafa";
-                  }}
-                />
-              </div>
-
-              {/* Price */}
-              <div style={formGroupStyle}>
-                <label style={labelStyle}>Price (₹ per unit)</label>
-                <input
-                  type="number"
-                  name="price"
-                  placeholder="e.g., 2500"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  required
-                  step="0.01"
-                  style={inputStyle}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = "#81c784";
-                    e.target.style.boxShadow = "0 0 0 3px rgba(129, 199, 132, 0.1)";
-                    e.target.style.backgroundColor = "white";
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "#e0e0e0";
-                    e.target.style.boxShadow = "none";
-                    e.target.style.backgroundColor = "#fafafa";
-                  }}
-                />
-              </div>
-
-              {/* Description */}
-              <div style={formGroupStyle}>
-                <label style={labelStyle}>Description</label>
-                <textarea
-                  name="description"
-                  placeholder="Describe your product quality, origin, farming method, etc."
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  required
-                  rows="4"
-                  style={{
-                    ...inputStyle,
-                    resize: "vertical",
-                    fontFamily: "inherit",
-                    minHeight: "120px",
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = "#81c784";
-                    e.target.style.boxShadow = "0 0 0 3px rgba(129, 199, 132, 0.1)";
-                    e.target.style.backgroundColor = "white";
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "#e0e0e0";
-                    e.target.style.boxShadow = "none";
-                    e.target.style.backgroundColor = "#fafafa";
-                  }}
-                />
-              </div>
-
-              {/* Quantity */}
-              <div style={formGroupStyle}>
-                <label style={labelStyle}>Quantity Available</label>
-                <input
-                  type="number"
-                  name="quantity"
-                  placeholder="e.g., 500 kg"
-                  value={formData.quantity}
-                  onChange={handleInputChange}
-                  required
-                  style={inputStyle}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = "#81c784";
-                    e.target.style.boxShadow = "0 0 0 3px rgba(129, 199, 132, 0.1)";
-                    e.target.style.backgroundColor = "white";
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "#e0e0e0";
-                    e.target.style.boxShadow = "none";
-                    e.target.style.backgroundColor = "#fafafa";
-                  }}
-                />
-              </div>
-
-              {/* Validity */}
-              <div style={formGroupStyle}>
-                <label style={labelStyle}>Listing Validity (Days)</label>
-                <input
-                  type="number"
-                  name="validity_days"
-                  placeholder="e.g., 30"
-                  value={formData.validity_days}
-                  onChange={handleInputChange}
-                  style={inputStyle}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = "#81c784";
-                    e.target.style.boxShadow = "0 0 0 3px rgba(129, 199, 132, 0.1)";
-                    e.target.style.backgroundColor = "white";
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "#e0e0e0";
-                    e.target.style.boxShadow = "none";
-                    e.target.style.backgroundColor = "#fafafa";
-                  }}
-                />
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  marginTop: "1rem",
-                  padding: "clamp(0.8rem, 3vw, 1rem) clamp(1.5rem, 5vw, 2rem)",
-                  borderRadius: "12px",
-                  border: "none",
-                  background: loading
-                    ? "linear-gradient(135deg, #999 0%, #777 100%)"
-                    : "linear-gradient(135deg, #81c784 0%, #2d8e4a 100%)",
-                  color: "white",
-                  fontWeight: "700",
-                  fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)",
-                  cursor: loading ? "not-allowed" : "pointer",
-                  transition: "all 0.3s ease",
-                  boxShadow: "0 10px 30px rgba(129, 199, 132, 0.3)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.5px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.8rem",
-                  width: "100%",
+        {/* Form */}
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+          {/* Product Name & Price Row */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
+            <div style={formGroupStyle}>
+              <label style={labelStyle}>Product Name</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="e.g., Organic Wheat"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+                style={inputStyle}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#81c784";
+                  e.target.style.boxShadow = "0 0 0 3px rgba(129, 199, 132, 0.1)";
+                  e.target.style.backgroundColor = "white";
                 }}
-                onMouseEnter={(e) => {
-                  if (!loading) {
-                    e.target.style.transform = "translateY(-3px)";
-                    e.target.style.boxShadow = "0 15px 40px rgba(129, 199, 132, 0.4)";
-                  }
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#e0e0e0";
+                  e.target.style.boxShadow = "none";
+                  e.target.style.backgroundColor = "#fafafa";
                 }}
-                onMouseLeave={(e) => {
-                  if (!loading) {
-                    e.target.style.transform = "translateY(0)";
-                    e.target.style.boxShadow = "0 10px 30px rgba(129, 199, 132, 0.3)";
-                  }
+              />
+            </div>
+
+            <div style={formGroupStyle}>
+              <label style={labelStyle}> Price (₹ per unit)</label>
+              <input
+                type="number"
+                name="price"
+                placeholder="e.g., 2500"
+                value={formData.price}
+                onChange={handleInputChange}
+                required
+                step="0.01"
+                style={inputStyle}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#81c784";
+                  e.target.style.boxShadow = "0 0 0 3px rgba(129, 199, 132, 0.1)";
+                  e.target.style.backgroundColor = "white";
                 }}
-              >
-                {loading ? (
-                  <>
-                    <span style={{ animation: "spin 1s linear infinite" }}>⚙️</span>
-                    Uploading...
-                  </>
-                ) : (
-                  <>Upload Product</>
-                )}
-              </button>
-            </form>
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#e0e0e0";
+                  e.target.style.boxShadow = "none";
+                  e.target.style.backgroundColor = "#fafafa";
+                }}
+              />
+            </div>
           </div>
 
-          {/* Images Card */}
-          <div
-            style={{
-              background: "white",
-              borderRadius: "15px",
-              boxShadow: "0 20px 60px rgba(0, 0, 0, 0.1)",
-              padding: "2rem",
-              border: "2px solid rgba(129, 199, 132, 0.2)",
-              minWidth: "100vw",
-              boxSizing: "border-box",
-            }}
-          >
-            <h3
+          {/* Description */}
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Description</label>
+            <textarea
+              name="description"
+              placeholder="Describe your product quality, origin, farming method, etc."
+              value={formData.description}
+              onChange={handleInputChange}
+              required
+              rows="4"
               style={{
-                fontSize: "clamp(1.1rem, 4vw, 1.3rem)",
-                fontWeight: "700",
-                color: "#1b5e20",
-                margin: "0 0 1.5rem 0",
+                ...inputStyle,
+                resize: "vertical",
+                fontFamily: "inherit",
+                minHeight: "120px",
               }}
-            >
-              📸 Product Images (Upload up to 4)
+              onFocus={(e) => {
+                e.target.style.borderColor = "#81c784";
+                e.target.style.boxShadow = "0 0 0 3px rgba(129, 199, 132, 0.1)";
+                e.target.style.backgroundColor = "white";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "#e0e0e0";
+                e.target.style.boxShadow = "none";
+                e.target.style.backgroundColor = "#fafafa";
+              }}
+            />
+          </div>
+
+          {/* Quantity & Validity Row */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
+            <div style={formGroupStyle}>
+              <label style={labelStyle}>Quantity Available</label>
+              <input
+                type="number"
+                name="quantity"
+                placeholder="e.g., 500 kg"
+                value={formData.quantity}
+                onChange={handleInputChange}
+                required
+                style={inputStyle}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#81c784";
+                  e.target.style.boxShadow = "0 0 0 3px rgba(129, 199, 132, 0.1)";
+                  e.target.style.backgroundColor = "white";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#e0e0e0";
+                  e.target.style.boxShadow = "none";
+                  e.target.style.backgroundColor = "#fafafa";
+                }}
+              />
+            </div>
+
+            <div style={formGroupStyle}>
+              <label style={labelStyle}>Listing Validity (Days)</label>
+              <input
+                type="number"
+                name="validity_days"
+                placeholder="e.g., 30"
+                value={formData.validity_days}
+                onChange={handleInputChange}
+                style={inputStyle}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#81c784";
+                  e.target.style.boxShadow = "0 0 0 3px rgba(129, 199, 132, 0.1)";
+                  e.target.style.backgroundColor = "white";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#e0e0e0";
+                  e.target.style.boxShadow = "none";
+                  e.target.style.backgroundColor = "#fafafa";
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Images Section */}
+          <div style={{ marginTop: "1.5rem", marginBottom: "1.5rem" }}>
+            <h3 style={{ 
+              fontSize: "clamp(1.1rem, 4vw, 1.3rem)", 
+              fontWeight: "700", 
+              color: "#1b5e20", 
+              marginBottom: "1.2rem",
+              margin: "0 0 1.2rem 0",
+            }}>
+               Product Images (Upload up to 4 images)
             </h3>
 
-            <div
-              style={{
-                display: "flex",
-                gap: "1.5rem",
-                overflowX: "auto",
-                paddingBottom: "1rem",
-                scrollBehavior: "smooth",
-              }}
-            >
+            <div style={{ 
+              display: "grid", 
+              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", 
+              gap: "1rem",
+            }}>
               {[1, 2, 3, 4].map((num) => (
                 <div
                   key={`image${num}`}
@@ -462,13 +375,11 @@ function UploadProducts() {
                       : "#fafafa",
                     position: "relative",
                     overflow: "hidden",
-                    minWidth: "150px",
                     minHeight: "150px",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
-                    flexShrink: 0,
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = "#2d8e4a";
@@ -508,14 +419,14 @@ function UploadProducts() {
                         }}
                       />
                       <p style={{ margin: "0.6rem 0 0 0", fontSize: "clamp(0.7rem, 2vw, 0.85rem)", color: "#666", fontWeight: "600" }}>
-                        ✓ Selected
+                         Image selected
                       </p>
                     </div>
                   ) : (
                     <div>
-                      <p style={{ fontSize: "2rem", margin: "0" }}>📸</p>
+                      <p style={{ fontSize: "clamp(1.5rem, 4vw, 2rem)", margin: "0" }}>📸</p>
                       <p style={{ margin: "0.5rem 0 0 0", fontSize: "clamp(0.8rem, 2vw, 0.95rem)", color: "#666", fontWeight: "600" }}>
-                        Click
+                        Click to upload
                       </p>
                       <p style={{ margin: "0.2rem 0 0 0", fontSize: "clamp(0.7rem, 1.5vw, 0.85rem)", color: "#999" }}>
                         Image {num}
@@ -526,7 +437,57 @@ function UploadProducts() {
               ))}
             </div>
           </div>
-        </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              marginTop: "1.5rem",
+              padding: "clamp(0.8rem, 3vw, 1rem) clamp(1.5rem, 5vw, 2rem)",
+              borderRadius: "12px",
+              border: "none",
+              background: loading
+                ? "linear-gradient(135deg, #999 0%, #777 100%)"
+                : "linear-gradient(135deg, #81c784 0%, #2d8e4a 100%)",
+              color: "white",
+              fontWeight: "700",
+              fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)",
+              cursor: loading ? "not-allowed" : "pointer",
+              transition: "all 0.3s ease",
+              boxShadow: "0 10px 30px rgba(129, 199, 132, 0.3)",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.8rem",
+            }}
+            onMouseEnter={(e) => {
+              if (!loading) {
+                e.target.style.transform = "translateY(-3px)";
+                e.target.style.boxShadow = "0 15px 40px rgba(129, 199, 132, 0.4)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!loading) {
+                e.target.style.transform = "translateY(0)";
+                e.target.style.boxShadow = "0 10px 30px rgba(129, 199, 132, 0.3)";
+              }
+            }}
+          >
+            {loading ? (
+              <>
+                <span style={{ animation: "spin 1s linear infinite" }}>⚙️</span>
+                Uploading...
+              </>
+            ) : (
+              <>
+                Upload Product
+              </>
+            )}
+          </button>
+        </form>
       </div>
 
       <style>{`
@@ -549,39 +510,31 @@ function UploadProducts() {
           }
         }
 
-        /* Scrollbar styling */
-        div::-webkit-scrollbar {
-          height: 8px;
-        }
-
-        div::-webkit-scrollbar-track {
-          background: #f1f8e9;
-          border-radius: 10px;
-        }
-
-        div::-webkit-scrollbar-thumb {
-          background: #81c784;
-          border-radius: 10px;
-        }
-
-        div::-webkit-scrollbar-thumb:hover {
-          background: #2d8e4a;
-        }
-
         /* Mobile Optimizations */
         @media (max-width: 480px) {
-          body {
-            font-size: 14px;
+          label {
+            font-size: 0.9rem !important;
+          }
+          textarea, input {
+            font-size: 16px !important;
           }
         }
 
-        @media (max-width: 768px) {
-          body {
-            font-size: 15px;
+        /* Tablet Optimizations */
+        @media (min-width: 481px) and (max-width: 768px) {
+          label {
+            font-size: 0.95rem !important;
+          }
+        }
+
+        /* Large Screen Optimizations */
+        @media (min-width: 1200px) {
+          label {
+            font-size: 1.05rem !important;
           }
         }
       `}</style>
-
+      
       <EnhancedFooter />
     </div>
   );
