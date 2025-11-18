@@ -229,7 +229,7 @@ function UploadProducts() {
           <div className="scroll-x-row"
             style={{
               display: "flex",
-              gap: "14rem",
+              gap: "20rem",
               overflowX: "auto",
               paddingBottom: "0.75rem"
             }}>
@@ -311,7 +311,7 @@ function UploadProducts() {
           <div className="scroll-x-row"
             style={{
               display: "flex",
-              gap: "14rem",
+              gap: "20rem",
               overflowX: "auto",
               paddingBottom: "0.75rem",
               marginTop: "0.5rem"
