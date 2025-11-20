@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ShoppingCart, Heart, User, LogOut, LogIn, UserPlus, Sun, Bell, Leaf, Upload, UserCheck, Package 
+  ShoppingCart, Heart, User, LogOut, LogIn, UserPlus, Sun, Bell, Leaf, Upload, UserCheck, Package, Tractor, ShoppingCart 
 } from "lucide-react";
 
 const HomeNavbar = ({ user }) => {
@@ -10,6 +10,7 @@ const HomeNavbar = ({ user }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [showCategoryMenu, setShowCategoryMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showDashboardDropdown, setShowDashboardDropdown] = useState(false);
 
   // Assume user = { role: "buyer" | "farmer" | "both", username: "XYZ", ... }
   const loggedIn = !!user;
@@ -216,32 +217,83 @@ const HomeNavbar = ({ user }) => {
           </Link>
         )}
 
-        {/* Role Switcher (for "both" role) */}
         {isBoth && (
-          <button
-            onClick={() => {
-              // Switch between buyer and farmer dashboards
-              if (window.location.pathname.startsWith("/farmer")) {
-                navigate("/buyer/dashboard");
-              } else {
-                navigate("/farmer/dashboard");
-              }
-            }}
-            style={{
-              ...iconLinkStyle,
-              background: "#fffbe6",
-              color: "#388e3c",
-              border: "1px solid #aed581",
-              fontWeight: 700,
-              borderRadius: 8,
-              padding: "0.41rem 1rem"
-            }}
-            title="Switch Dashboard"
-          >
-            {window.location.pathname.startsWith("/farmer") ? "Buyer Dashboard" : "Farmer Dashboard"}
-          </button>
+          <div style={{ position: "relative" }}>
+            <button
+              onClick={() => setShowDashboardDropdown(v => !v)}
+              style={{
+                ...iconLinkStyle,
+                background: "#f3e8fd",
+                color: "#263238",
+                border: "1px solid #aed581",
+                fontWeight: 700,
+                borderRadius: 8,
+                padding: "0.41rem 1.2rem",
+                minWidth: 130,
+                position: "relative"
+              }}
+            >
+              Switch Dashboards ▼
+            </button>
+            {showDashboardDropdown && (
+              <div
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: "110%",
+                  background: "#fff",
+                  color: "#263238",
+                  borderRadius: 10,
+                  boxShadow: "0 4px 18px rgba(102, 187, 106, 0.13)",
+                  zIndex: 50,
+                  minWidth: "170px",
+                  overflow: "hidden"
+                }}
+              >
+                <div
+                  onClick={() => {
+                    setShowDashboardDropdown(false);
+                    navigate("/farmer/dashboard");
+                  }}
+                  style={{
+                    padding: "12px 18px",
+                    borderBottom: "1px solid #eee",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    fontWeight: 600,
+                    transition: "background 0.2s"
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#f1f8e9"}
+                  onMouseLeave={e => e.currentTarget.style.background = "#fff"}
+                >
+                  <Tractor size={18} /> Farmer Dashboard
+                </div>
+                <div
+                  onClick={() => {
+                    setShowDashboardDropdown(false);
+                    navigate("/buyer/dashboard");
+                  }}
+                  style={{
+                    padding: "12px 18px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    fontWeight: 600,
+                    transition: "background 0.2s"
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#e3f2fd"}
+                  onMouseLeave={e => e.currentTarget.style.background = "#fff"}
+                >
+                  <ShoppingCart size={18} /> Buyer Dashboard
+                </div>
+              </div>
+            )}
+          </div>
         )}
-        
+
         {/* Profile/Login/Logout */}
         {loggedIn ? (
           <div style={{ position: "relative" }}>
