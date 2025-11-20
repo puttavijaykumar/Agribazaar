@@ -204,7 +204,7 @@ const HomeNavbar = ({ user }) => {
 
         {/* Become Seller – only for buyer or not logged in */}
         {!isFarmer && (
-          <Link to="/register?as=seller" style={{
+          <Link to="/register" style={{
             ...iconLinkStyle,
             fontWeight: "bold",
             color: "#aed581",
