@@ -195,12 +195,12 @@ const HomeNavbar = ({ user }) => {
           </>
         )}
 
-        {/* Farmer actions */}
+        {/* Farmer actions
         {isFarmer && (
           <Link to="/upload-products" style={iconLinkStyle} title="Upload Product">
             <Upload size={22} />
           </Link>
-        )}
+        )} */}
 
         {/* Become Seller – only for buyer or not logged in */}
         {!isFarmer && (
