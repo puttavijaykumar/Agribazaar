@@ -4,6 +4,7 @@ import AuthService from '../services/AuthService';
 import BuyerNavbar from '../components/BuyerNavbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 
+// Set this to your Cloudinary upload folder:
 const IMAGE_BASE_URL = 'https://res.cloudinary.com/dpiogqjk4/';
 
 const SearchResults = () => {
@@ -43,9 +44,23 @@ const SearchResults = () => {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* Top Navbar */}
       <BuyerNavbar />
-      <main style={{ flex: '1 0 auto', padding: '1rem', maxWidth: 1200, margin: '0 auto' }}>
-        <h2 style={{ marginBottom: '2rem', marginLeft: '0.5rem' }}>Results for "{query}"</h2>
+
+      {/* Main content */}
+      <main
+        style={{
+          flex: '1 0 auto',
+          padding: '1rem',
+          maxWidth: 1200,
+          margin: '0 auto',
+          width: '100%',
+        }}
+      >
+        <h2 style={{ marginBottom: '2rem', marginLeft: '0.5rem' }}>
+          Results for "{query}"
+        </h2>
+
         {products.length === 0 ? (
           <p>No products found.</p>
         ) : (
@@ -55,15 +70,14 @@ const SearchResults = () => {
               gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
               gap: '2rem',
               width: '100%',
-              justifyItems: 'center',
+              margin: '0 auto',
+              alignItems: 'stretch',
             }}
           >
             {products.map((product) => (
               <div
                 key={product.id}
                 style={{
-                  width: '100%',
-                  maxWidth: '260px',
                   background: '#fff',
                   borderRadius: '8px',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
@@ -71,6 +85,9 @@ const SearchResults = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
+                  width: '100%',
+                  maxWidth: '260px',
+                  margin: '0 auto',
                 }}
               >
                 <img
@@ -81,7 +98,7 @@ const SearchResults = () => {
                     height: '140px',
                     objectFit: 'cover',
                     borderRadius: '8px',
-                    marginBottom: '0.7rem'
+                    marginBottom: '0.7rem',
                   }}
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
@@ -96,6 +113,7 @@ const SearchResults = () => {
           </div>
         )}
       </main>
+      {/* Footer */}
       <EnhancedFooter />
     </div>
   );
