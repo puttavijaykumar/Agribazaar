@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ShoppingCart, Heart, User, LogOut, LogIn, UserPlus, Sun, Bell, Leaf, Upload, UserCheck, Package, Tractor, ShoppingCart 
+  ShoppingCart, Heart, User, LogOut, LogIn, UserPlus, Sun, Bell, Leaf, Upload, UserCheck, Package, Tractor 
 } from "lucide-react";
 
 const HomeNavbar = ({ user }) => {
