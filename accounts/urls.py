@@ -37,7 +37,7 @@ urlpatterns = [
     path("reset-password/<uid>/<token>/", password_reset_confirm, name="reset-password"),
     path('set-role/', set_role, name="set-role"),
     path('api/profile/', user_profile, name='user-profile'),
-    path('my-products/', MyProductListView.as_view(), name='my-products')
+    path('my-products/', MyProductListView.as_view(), name='my-products'),
     # Explicit URLs for Product API
     path('products/', product_list, name='product-list'),
     path('products/<int:pk>/', product_detail, name='product-detail'),
