@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ShoppingCart, Heart, User, LogOut, LogIn, UserPlus, Sun, Bell, Leaf, Upload, UserCheck
+  ShoppingCart, Heart, User, LogOut, LogIn, UserPlus, Sun, Bell, Leaf, Upload, UserCheck, Package 
 } from "lucide-react";
 
 const HomeNavbar = ({ user }) => {
@@ -189,7 +189,7 @@ const HomeNavbar = ({ user }) => {
               <Heart size={22} />
             </Link>
             <Link to="/orders" style={iconLinkStyle} title="Your Orders">
-              <Bell size={22} />
+              <Package  size={22} />
             </Link>
           </>
         )}
@@ -219,7 +219,14 @@ const HomeNavbar = ({ user }) => {
         {/* Role Switcher (for "both" role) */}
         {isBoth && (
           <button
-            onClick={handleRoleSwitch}
+            onClick={() => {
+              // Switch between buyer and farmer dashboards
+              if (window.location.pathname.startsWith("/farmer")) {
+                navigate("/buyer/dashboard");
+              } else {
+                navigate("/farmer/dashboard");
+              }
+            }}
             style={{
               ...iconLinkStyle,
               background: "#fffbe6",
@@ -229,12 +236,12 @@ const HomeNavbar = ({ user }) => {
               borderRadius: 8,
               padding: "0.41rem 1rem"
             }}
-            title="Switch Role"
+            title="Switch Dashboard"
           >
-            Switch to {window.location.pathname.startsWith("/farmer") ? "Buyer" : "Farmer"}
+            {window.location.pathname.startsWith("/farmer") ? "Buyer Dashboard" : "Farmer Dashboard"}
           </button>
         )}
-
+        
         {/* Profile/Login/Logout */}
         {loggedIn ? (
           <div style={{ position: "relative" }}>
