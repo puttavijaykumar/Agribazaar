@@ -4,7 +4,6 @@ import AuthService from '../services/AuthService';
 import BuyerNavbar from '../components/BuyerNavbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 
-// Set this to your Cloudinary upload folder:
 const IMAGE_BASE_URL = 'https://res.cloudinary.com/dpiogqjk4/';
 
 const SearchResults = () => {
@@ -44,22 +43,19 @@ const SearchResults = () => {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Top Navbar */}
       <BuyerNavbar />
-
-      {/* Main content */}
-      <main style={{ flex: '1 0 auto', padding: '1rem', maxWidth: 800, margin: '0 auto' }}>
+      <main style={{ flex: '1 0 auto', padding: '1rem', maxWidth: 1200, margin: '0 auto' }}>
         <h2 style={{ marginBottom: '2rem', marginLeft: '0.5rem' }}>Results for "{query}"</h2>
         {products.length === 0 ? (
           <p>No products found.</p>
         ) : (
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1.5rem',
-              alignItems: 'center',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '2rem',
               width: '100%',
+              justifyItems: 'center',
             }}
           >
             {products.map((product) => (
@@ -67,7 +63,7 @@ const SearchResults = () => {
                 key={product.id}
                 style={{
                   width: '100%',
-                  maxWidth: '340px',
+                  maxWidth: '260px',
                   background: '#fff',
                   borderRadius: '8px',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
@@ -89,7 +85,7 @@ const SearchResults = () => {
                   }}
                   onError={(e) => { e.target.style.display = 'none'; }}
                 />
-                <h4 style={{ margin: '0.5rem 0 0.2rem', fontSize: '1.1rem', fontWeight: 700 }}>
+                <h4 style={{ margin: '0.5rem 0 0.2rem', fontSize: '1.09rem', fontWeight: 700 }}>
                   {product.name}
                 </h4>
                 <p style={{ margin: 0, color: '#444', fontWeight: 600 }}>
@@ -100,7 +96,6 @@ const SearchResults = () => {
           </div>
         )}
       </main>
-      {/* Footer */}
       <EnhancedFooter />
     </div>
   );
