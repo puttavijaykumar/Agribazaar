@@ -67,6 +67,8 @@ from rest_framework.generics import ListAPIView
 
 from .models import Address
 from .serializers import AddressSerializer
+from rest_framework.generics import ListAPIView
+
 
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
@@ -267,8 +269,15 @@ def user_profile(request):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# Farmer products uploading function
+# View function to list his uploaded products
+class MyProductListView(ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        return Product.objects.filter(owner=self.request.user).order_by('-created_at')
+
+# Farmer products uploading function
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticated]

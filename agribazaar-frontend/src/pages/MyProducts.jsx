@@ -35,7 +35,7 @@ function MyProducts() {
   async function fetchProducts() {
     try {
       const queryParam = searchQuery ? `?search=${encodeURIComponent(searchQuery)}` : "";
-      const productList = await AuthService.getProducts(queryParam);
+      const productList = await AuthService.getMyProducts(queryParam);
       setProducts(productList);
     } catch {
       setToast({ type: "error", message: "Failed to load products." });

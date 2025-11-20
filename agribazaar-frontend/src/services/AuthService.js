@@ -110,6 +110,14 @@ const getUserProfile = async () => {
 
   return response.data;
 };
+// Fetch logged-in user's own products
+const getMyProducts = async () => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/my-products/`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return response.data;
+};
 
 // List products of logged-in farmer
 const getProducts = async () => {
@@ -358,7 +366,8 @@ export default {
   requestPasswordReset,
   resetPassword,
   getUserProfile,
-  updateUserProfile, 
+  updateUserProfile,
+  getMyProducts,
   getProducts,
   createProduct,
   updateProduct,
