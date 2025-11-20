@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import AuthService from "../services/AuthService";
+import HomeNavbar from "../components/HomeNavbar";  // IMPORT THE NEW NAVBAR
+
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -426,6 +428,15 @@ const HomePage = () => {
   const [hoverCategory, setHoverCategory] = React.useState(null);
   const navigate = useNavigate();
 
+  // Get the user (if logged in) for HomeNavbar
+  const user = React.useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  }, []);
+
   return (
     <div
       style={{
@@ -434,66 +445,8 @@ const HomePage = () => {
         color: colors.contrastText,
       }}
     >
-      {/* ---------- NAVIGATION BAR ---------- */}
-      <nav style={navbarStyle}>
-        <div>
-          <h1 style={{ fontSize: "clamp(1.2rem, 4vw, 1.5rem)", margin: "0" }}>Agribazaar</h1>
-        </div>
-
-        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
-          <button
-            style={{
-              ...buttonStyle,
-              backgroundColor: colors.harvestYellow,
-              color: colors.primaryGreen,
-            }}
-            onClick={() => navigate("/farmer/dashboard")}
-          >
-            Farmer
-          </button>
-          <button
-            style={{
-              ...buttonStyle,
-              backgroundColor: colors.harvestYellow,
-              color: colors.primaryGreen,
-            }}
-            onClick={() => navigate("/buyer/dashboard")}
-          >
-            Buyer
-          </button>
-
-          {user ? (
-            <button
-              onClick={AuthService.logout}
-              style={{
-                ...buttonStyle,
-                backgroundColor: "#fff",
-                color: "#d32f2f",
-                borderRadius: "30px",
-                padding: "0.6rem 1.8rem",
-                fontWeight: "700",
-              }}
-            >
-              Logout
-            </button>
-          ) : (
-            <Link to="/login">
-              <button
-                style={{
-                  ...buttonStyle,
-                  backgroundColor: "white",
-                  color: colors.primaryGreen,
-                  borderRadius: "30px",
-                  padding: "0.6rem 1.8rem",
-                }}
-              >
-                Login
-              </button>
-            </Link>
-          )}
-        </div>
-      </nav>
-
+      <HomeNavbar user={user} /> 
+      
       {/* ---------- SECTION 1: SHOP BY CATEGORY ---------- */}
       <h2
         style={{
