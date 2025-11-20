@@ -23,7 +23,7 @@ function FarmerDashboard() {
     async function fetchData() {
       try {
         const profile = await AuthService.getUserProfile();
-        const fetchedProducts = await AuthService.getProducts();
+        const fetchedProducts = await AuthService.getMyProducts();
         setUser((prev) => ({
           ...prev,
           ...profile,
