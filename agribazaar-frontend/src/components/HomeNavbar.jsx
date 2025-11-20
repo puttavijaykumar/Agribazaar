@@ -268,7 +268,7 @@ const HomeNavbar = ({ user }) => {
                   onMouseEnter={e => e.currentTarget.style.background = "#f1f8e9"}
                   onMouseLeave={e => e.currentTarget.style.background = "#fff"}
                 >
-                  <Tractor size={18} /> Farmer Dashboard
+                  <Tractor size={18} /> Farmer 
                 </div>
                 <div
                   onClick={() => {
@@ -287,7 +287,7 @@ const HomeNavbar = ({ user }) => {
                   onMouseEnter={e => e.currentTarget.style.background = "#e3f2fd"}
                   onMouseLeave={e => e.currentTarget.style.background = "#fff"}
                 >
-                  <ShoppingCart size={18} /> Buyer Dashboard
+                  <ShoppingCart size={18} /> Buyer 
                 </div>
               </div>
             )}
