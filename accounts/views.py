@@ -68,6 +68,7 @@ from rest_framework.generics import ListAPIView
 from .models import Address
 from .serializers import AddressSerializer
 from rest_framework.generics import ListAPIView
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 User = get_user_model()
@@ -308,7 +309,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['category']
     search_fields = ['name', 'description']
 
 
