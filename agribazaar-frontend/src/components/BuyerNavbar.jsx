@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Heart, ShoppingCart, Package, Bell, MessageCircle, Trophy, User,
-  Search, LogOut, Settings, MapPin, HelpCircle
+  LogOut, Settings, MapPin, HelpCircle, Search, Leaf
 } from "lucide-react";
 import AuthService from "../services/AuthService";
 
+// Colors/theme
 const colors = {
   primaryGreen: "#388e3c",
   secondaryGreen: "#81c784",
@@ -22,6 +23,10 @@ const navbarStyle = {
   alignItems: "center",
   gap: "1rem",
   boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+  position: "sticky",
+  top: 0,
+  zIndex: 100,
+  flexWrap: "wrap"
 };
 
 const buttonStyle = {
@@ -90,22 +95,28 @@ const NavIcon = ({ icon: Icon, badge, label, onClick }) => (
   </button>
 );
 
+// Categories for dropdown
+const categories = [
+  "Grains", "Spices", "Fruits", "Vegetables", "Dairy", "Seeds", "Machinery"
+];
+
 const BuyerNavbar = ({
   cartCount = 0,
   notifCount = 0,
   chatUnreadCount = 0,
   points = 0,
+  user = null  // <-- Pass user object as prop
 }) => {
   const navigate = useNavigate();
 
   const [showOrders, setShowOrders] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [showCategoryMenu, setShowCategoryMenu] = useState(false);
 
-  // INTERNAL SEARCH STATE
+  // Search state
   const [searchQuery, setSearchQuery] = useState("");
 
-  // INTERNAL SEARCH HANDLER (Navigates to /search with query param)
   const handleSearch = (e) => {
     e.preventDefault();
     const trimmedQuery = searchQuery.trim();
@@ -127,6 +138,7 @@ const BuyerNavbar = ({
         }
       `}</style>
       <nav style={navbarStyle}>
+        {/* Brand logo/name */}
         <div
           style={{
             cursor: "pointer",
@@ -134,12 +146,14 @@ const BuyerNavbar = ({
             fontSize: "1.5rem",
             display: "flex",
             alignItems: "center",
-            gap: "0.5rem",
+            gap: "0.55rem",
           }}
           onClick={() => navigate("/buyer/dashboard")}
         >
+          <Leaf size={24} color="#aed581" style={{ marginRight: 2 }} />
           AgriBazaar
         </div>
+        {/* Category Dropdown & Search */}
         <div
           style={{
             display: "flex",
@@ -147,33 +161,114 @@ const BuyerNavbar = ({
             flex: 1,
             marginLeft: "2rem",
             marginRight: "2rem",
-            gap: "0.5rem",
+            minWidth: 0,
+            gap: "0.5rem"
           }}
         >
-          <Search size={24} color="white" />
-          <form onSubmit={handleSearch} style={{ flex: 0.75, display: "flex" }}>
+          {/* Category Dropdown */}
+          <div style={{ position: "relative" }}>
+            <button
+              onClick={() => setShowCategoryMenu((prev) => !prev)}
+              style={{
+                background: "transparent",
+                color: "white",
+                border: "none",
+                fontWeight: 700,
+                fontSize: "1rem",
+                cursor: "pointer",
+                marginRight: 13,
+                letterSpacing: 0.5
+              }}
+            >
+              Categories ▾
+            </button>
+            {showCategoryMenu && (
+              <div style={{
+                position: "absolute",
+                left: 0,
+                top: "110%",
+                background: "white",
+                color: "#263238",
+                borderRadius: 8,
+                boxShadow: "0 4px 12px rgba(0,0,0,0.13)",
+                minWidth: 150,
+                zIndex: 20,
+                fontWeight: 500
+              }}>
+                {categories.map((cat) => (
+                  <div
+                    key={cat}
+                    onClick={() => {
+                      setShowCategoryMenu(false);
+                      navigate(`/search?query=${encodeURIComponent(cat)}`);
+                    }}
+                    style={{
+                      padding: "10px 20px",
+                      cursor: "pointer",
+                      borderBottom: "1px solid #f1f1f1"
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = "#f7fef7"}
+                    onMouseLeave={e => e.currentTarget.style.background = "white"}
+                  >
+                    {cat}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* Search Bar */}
+          <form
+            onSubmit={handleSearch}
+            style={{
+              flex: "1 0 220px",
+              maxWidth: 420,
+              minWidth: 120,
+              display: "flex",
+              alignItems: "center",
+              background: "white",
+              borderRadius: "20px",
+              padding: "0.1rem 0.26rem",
+              marginRight: "0.5rem"
+            }}
+          >
             <input
               type="search"
-              placeholder="Search products"
+              placeholder="Search for products..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               style={{
                 flex: 1,
-                padding: "0.75rem 1rem",
-                borderRadius: "20px",
                 border: "none",
+                borderRadius: "20px",
+                padding: "0.69rem 1.1rem",
+                fontSize: "0.98rem",
                 outline: "none",
-                fontSize: "0.9rem",
+                background: "transparent"
               }}
             />
-            <button type="submit" style={buttonStyle}>
+            <button
+              type="submit"
+              style={{
+                padding: "0.62rem 1.1rem",
+                borderRadius: "20px",
+                background: "#aed581",
+                color: "#388e3c",
+                border: "none",
+                fontWeight: 700,
+                fontSize: "1rem",
+                cursor: "pointer"
+              }}
+            >
+              <Search size={18} style={{ marginBottom: -2, marginRight: 3 }} />
               Search
             </button>
           </form>
         </div>
+        {/* Right Side: All Your Other Icons */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <NavIcon icon={Heart} badge={0} label="Wishlist" onClick={() => navigate("/buyer/wishlist")} />
           <NavIcon icon={ShoppingCart} badge={cartCount} label="Cart" onClick={() => navigate("/cart")} />
+          {/* Orders dropdown */}
           <div style={{ position: "relative" }}>
             <NavIcon icon={Package} badge={0} label="Orders" onClick={() => setShowOrders(!showOrders)} />
             {showOrders && (
@@ -197,6 +292,7 @@ const BuyerNavbar = ({
               </div>
             )}
           </div>
+          {/* Notifications dropdown */}
           <div style={{ position: "relative" }}>
             <NavIcon icon={Bell} badge={notifCount} label="Notifications" onClick={() => setShowNotifications(!showNotifications)} />
             {showNotifications && (
@@ -221,22 +317,25 @@ const BuyerNavbar = ({
             )}
           </div>
           <NavIcon icon={MessageCircle} badge={chatUnreadCount} label="Chat" />
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              backgroundColor: "rgba(255,255,255,0.15)",
-              paddingLeft: "0.75rem",
-              paddingRight: "0.75rem",
-              paddingTop: "0.4rem",
-              paddingBottom: "0.4rem",
-              borderRadius: "20px",
-              marginLeft: "0.5rem",
-            }}
-          >
-            {/* future points display, commented out */}
-          </div>
+          {/* SWITCH DASHBOARD BUTTON: Only for "both" role */}
+          {user?.role === "both" && (
+            <button
+              onClick={() => navigate("/farmer/dashboard")}
+              style={{
+                background: "#e8f5e9",
+                color: "#388e3c",
+                border: "1px solid #aed581",
+                fontWeight: 700,
+                borderRadius: 8,
+                padding: "0.41rem 1.1rem",
+                marginLeft: 14,
+                cursor: "pointer"
+              }}
+            >
+              Switch to Farmer Dashboard
+            </button>
+          )}
+          {/* Profile dropdown */}
           <div style={{ position: "relative" }}>
             <NavIcon icon={User} label="Profile" onClick={() => setShowProfile(!showProfile)} />
             {showProfile && (
@@ -287,8 +386,8 @@ const BuyerNavbar = ({
                     color: "#d32f2f",
                     transition: "background 0.2s",
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#ffebee"}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#fff3e0"}
+                  onMouseEnter={e => e.currentTarget.style.backgroundColor = "#ffebee"}
+                  onMouseLeave={e => e.currentTarget.style.backgroundColor = "#fff3e0"}
                 >
                   <LogOut size={16} /> Logout
                 </button>
