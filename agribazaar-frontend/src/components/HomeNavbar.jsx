@@ -186,7 +186,7 @@ const HomeNavbar = ({ user }) => {
             <Link to="/cart" style={iconLinkStyle} title="View Cart">
               <ShoppingCart size={22} />
             </Link>
-            <Link to="/wishlist" style={iconLinkStyle} title="Wishlist">
+            <Link to="/buyer/wishlist" style={iconLinkStyle} title="Wishlist">
               <Heart size={22} />
             </Link>
             <Link to="/orders" style={iconLinkStyle} title="Your Orders">
