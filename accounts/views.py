@@ -277,6 +277,28 @@ class MyProductListView(ListAPIView):
     def get_queryset(self):
         return Product.objects.filter(owner=self.request.user).order_by('-created_at')
 
+# Categorizing the products
+
+def infer_category(name, description):
+    text = f"{name} {description}".lower()
+    # Map keywords to top-level categories from your dropdown
+    if any(word in text for word in ["wheat", "rice", "barley", "maize", "corn", "millet", "sorghum", "oats"]):
+        return "Grains"
+    if any(word in text for word in ["turmeric", "chilli", "pepper", "cumin", "mustard", "coriander", "spice"]):
+        return "Spices"
+    if any(word in text for word in ["apple", "banana", "mango", "orange", "fruit", "lemon", "papaya", "berry"]):
+        return "Fruits"
+    if any(word in text for word in ["potato", "onion", "tomato", "cabbage", "veg", "spinach", "carrot", "cauliflower", "okra"]):
+        return "Vegetables"
+    if any(word in text for word in ["milk", "cheese", "butter", "paneer", "dairy", "yogurt", "curd", "ghee"]):
+        return "Dairy"
+    if any(word in text for word in ["seed", "seeds", "hybrid"]):
+        if any(word in text for word in ["groundnut", "sunflower", "mustard", "flax", "sesame", "soybean", "canola"]):
+            return "Seeds"
+    if any(word in text for word in ["tractor", "harvester", "sprayer", "tools", "plough", "machinery", "equipment", "pump", "motor"]):
+        return "Machinery"
+    return "Uncategorized"
+
 # Farmer products uploading function
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
@@ -291,8 +313,11 @@ class ProductViewSet(viewsets.ModelViewSet):
         return Product.objects.all().order_by('-created_at')
     
     def perform_create(self, serializer):
-        # Set the owner of the created product
-        serializer.save(owner=self.request.user)
+        name = self.request.data.get("name", "")
+        description = self.request.data.get("description", "")
+        category = infer_category(name, description)
+        serializer.save(owner=self.request.user, category=category)
+
         
         
 @api_view(['GET'])

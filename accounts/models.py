@@ -48,6 +48,18 @@ class CustomUser(AbstractUser):
         return self.email
 
 
+CATEGORY_CHOICES = [
+    ("Grains", "Grains"),
+    ("Spices", "Spices"),
+    ("Fruits", "Fruits"),
+    ("Vegetables", "Vegetables"),
+    ("Dairy", "Dairy"),
+    ("Seeds", "Seeds"),
+    ("Machinery", "Machinery"),
+    ("Uncategorized", "Uncategorized"),
+]
+
+
 class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -64,6 +76,13 @@ class Product(models.Model):
         on_delete=models.CASCADE,
         related_name='products'
     )
+    
+    category = models.CharField(
+        max_length=40,
+        choices=CATEGORY_CHOICES,
+        default="Uncategorized"
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
