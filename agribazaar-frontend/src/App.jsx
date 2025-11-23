@@ -42,6 +42,8 @@ import EquipmentPage from "./pages/EquipmentPage";
 import IrrigationPage from "./pages/IrrigationPage";
 
 import AdminProductUploadPage from "./pages/AdminProductUploadPage";
+import AdminProductListPage from "./pages/AdminProductListPage";
+
 import axios from "axios";
 import React, { useEffect } from "react";
 import SearchResults from './pages/SearchResults';
@@ -136,7 +138,7 @@ function App() {
           <Route path="/equipment" element={<EquipmentPage />} />
           <Route path="/irrigation" element={<IrrigationPage />} />
           <Route path="/admin/upload-product" element={<AdminProductUploadPage />} />
-
+          <Route path="/admin/products" element={<AdminProductListPage />} />
 
         </Routes>
       </Router>

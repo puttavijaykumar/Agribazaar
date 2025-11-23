@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AuthService from "../services/AuthService";
+import { useNavigate } from "react-router-dom";
 
 const categories = ["Seeds", "Fertilizers", "Tools", "Equipment", "Irrigation"];
 
@@ -15,6 +16,9 @@ const initialForm = {
 };
 
 const AdminProductUploadPage = () => {
+
+  const navigate = useNavigate();
+
   const [form, setForm] = useState(initialForm);
   const [previews, setPreviews] = useState([null, null, null, null]);
   const [loading, setLoading] = useState(false);
@@ -80,6 +84,28 @@ const AdminProductUploadPage = () => {
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", padding: "2rem 1rem" }}>
       <div style={{ maxWidth: 700, margin: "0 auto" }}>
+
+        {/* ------ ADD THIS BUTTON SECTION HERE ------ */}
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 16 }}>
+          <button
+            onClick={() => navigate("/admin/products")}
+            style={{
+              background: "linear-gradient(135deg,#81c784 0%,#388e3c 100%)",
+              color: "white",
+              border: "none",
+              borderRadius: 8,
+              padding: "10px 22px",
+              fontWeight: 600,
+              cursor: "pointer",
+              fontSize: "1rem",
+              boxShadow: "0 2px 10px #c3e6cb77"
+            }}
+          >
+            View All Products
+          </button>
+        </div>
+
+        
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
           <h1 style={{ fontSize: "2.5rem", fontWeight: 800, color: "white", marginBottom: 8 }}>Add New Product</h1>
