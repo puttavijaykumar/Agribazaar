@@ -1,5 +1,7 @@
 # accounts/urls.py
 from django.urls import path
+from rest_framework.routers import DefaultRouter
+
 from .views import RegisterView, LoginView, set_role
 from .views import google_login
 from .views import password_reset_request, password_reset_confirm,user_profile
@@ -15,6 +17,10 @@ from .views import UserSettingsView
 from .views import AddressListCreateView, AddressDetailView
 from .views import MyProductListView
 
+from .views import AdminCatalogProductViewSet
+
+router = DefaultRouter()
+router.register(r'admin-products', AdminCatalogProductViewSet, basename='admincatalogproduct')
 
 product_list = ProductViewSet.as_view({
     'get': 'list',
@@ -65,3 +71,5 @@ urlpatterns = [
     path('addresses/<int:pk>/', AddressDetailView.as_view(), name='address-detail'),
     
 ]
+
+urlpatterns += router.urls

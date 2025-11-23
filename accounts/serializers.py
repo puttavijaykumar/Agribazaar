@@ -11,6 +11,7 @@ from .models import Cart,CartItem
 from .models import Notification
 from .models import UserSettings
 from .models import RewardTransaction
+from .models import AdminCatalogProduct
 
 from .models import Address
 
@@ -228,3 +229,9 @@ class AddressSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
+    
+    
+class AdminCatalogProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdminCatalogProduct
+        fields = '__all__'

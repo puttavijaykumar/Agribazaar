@@ -70,6 +70,8 @@ from .serializers import AddressSerializer
 from rest_framework.generics import ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 
+from .models import AdminCatalogProduct
+from .serializers import AdminCatalogProductSerializer
 
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
@@ -325,7 +327,6 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user, category=category)
 
         
-        
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def sales_analytics(request):
@@ -512,3 +513,9 @@ class AddressDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Address.objects.filter(user=self.request.user)
     
 
+
+class AdminCatalogProductViewSet(viewsets.ModelViewSet):
+    queryset = AdminCatalogProduct.objects.all()
+    serializer_class = AdminCatalogProductSerializer
+    permission_classes = [permissions.IsAdminUser]  # Only admin can add/edit; adjust as needed
+    filterset_fields = ['category']

@@ -437,6 +437,20 @@ const HomePage = () => {
     }
   }, []);
 
+  const handleCategoryClick = (category) => {
+    const routes = {
+      Seeds: "/seeds",
+      Fertilizers: "/fertilizers",
+      Tools: "/tools",
+      Equipment: "/equipment",
+      Irrigation: "/irrigation",
+    };
+    if (routes[category]) {
+      navigate(routes[category]);
+    }
+  };
+
+
   return (
     <div
       style={{
@@ -469,14 +483,19 @@ const HomePage = () => {
             style={mainCategoryBoxStyle(idx)}
             onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.07)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            onClick={() => handleCategoryClick(item.label)}
+            tabIndex={0}
+            role="button"
+            aria-label={`Go to ${item.label} category`}
+            onKeyDown={(e) => { if (e.key === "Enter") handleCategoryClick(item.label); }}
           >
             <span style={{ fontSize: "1.9rem", marginRight: 12 }}>{item.emoji}</span>
             <span>{item.label}</span>
           </div>
         ))}
-        {/* Empty space for scroll padding */}
         <div style={{ minWidth: "2rem", flexShrink: 0 }}></div>
       </section>
+
 
       {/* ---------- SECTION 2: AGRICULTURE NEWS ---------- */}
       <h2

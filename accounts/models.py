@@ -201,3 +201,29 @@ class Address(models.Model):
     
     def __str__(self):
         return f"{self.line1}, {self.city}, {self.state}"
+
+# Admin Catalog Product model for managing products in admin catalog
+class AdminCatalogProduct(models.Model):
+    CATEGORY_CHOICES = [
+        ("Seeds", "Seeds"),
+        ("Fertilizers", "Fertilizers"),
+        ("Tools", "Tools"),
+        ("Equipment", "Equipment"),
+        ("Irrigation", "Irrigation"),
+    ]
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField()
+    category = models.CharField(max_length=40, choices=CATEGORY_CHOICES)
+    image1 = CloudinaryField('image', blank=True, null=True)
+    image2 = CloudinaryField('image', blank=True, null=True)
+    image3 = CloudinaryField('image', blank=True, null=True)
+    image4 = CloudinaryField('image', blank=True, null=True)
+    stock = models.PositiveIntegerField(default=0)
+    warranty_period = models.CharField(max_length=50, blank=True, null=True)  # for Tools/Equipment
+    fertilizer_type = models.CharField(max_length=50, blank=True, null=True)  # for Fertilizer-specific info
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.category})"

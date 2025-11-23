@@ -34,6 +34,14 @@ import OrdersPage from './pages/OrdersPage';
 import TrackOrdersPage from './pages/TrackOrdersPage';
 import ReorderPage from './pages/ReorderPage';
 
+// Shop by Category pages
+import SeedsPage from "./pages/SeedsPage";
+import FertilizersPage from "./pages/FertilizersPage";
+import ToolsPage from "./pages/ToolsPage";
+import EquipmentPage from "./pages/EquipmentPage";
+import IrrigationPage from "./pages/IrrigationPage";
+
+
 import axios from "axios";
 import React, { useEffect } from "react";
 import SearchResults from './pages/SearchResults';
@@ -121,6 +129,13 @@ function App() {
           <Route path="/orders/track" element={<TrackOrdersPage />} />
           <Route path="/orders/reorder" element={<ReorderPage />} />
           <Route path="/search" element={<SearchResults />} />
+          
+          <Route path="/seeds" element={<SeedsPage />} />
+          <Route path="/fertilizers" element={<FertilizersPage />} />
+          <Route path="/tools" element={<ToolsPage />} />
+          <Route path="/equipment" element={<EquipmentPage />} />
+          <Route path="/irrigation" element={<IrrigationPage />} />
+
           
         </Routes>
       </Router>

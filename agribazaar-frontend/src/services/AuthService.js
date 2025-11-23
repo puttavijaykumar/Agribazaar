@@ -355,6 +355,65 @@ const searchProducts = async (query) => {
   }
 };
 
+// Fetch all admin products with optional category filter
+const fetchAdminProducts = async (category = null) => {
+  const token = localStorage.getItem("access");
+  let url = `${API_URL}/admin-products/`;
+  if (category) url += `?category=${encodeURIComponent(category)}`;
+  const response = await axios.get(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// Fetch a SINGLE admin product by id
+const fetchAdminProductById = async (id) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(`${API_URL}/admin-products/${id}/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+// Add a new admin product (ADMIN ONLY)
+const createAdminProduct = async (formData) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.post(`${API_URL}/admin-products/`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
+// Update admin product (ADMIN ONLY)
+const updateAdminProduct = async (id, formData) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.put(
+    `${API_URL}/admin-products/${id}/`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+};
+
+// Delete admin product (ADMIN ONLY)
+const deleteAdminProduct = async (id) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.delete(
+    `${API_URL}/admin-products/${id}/`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  return response.data;
+};
 
 export default {
   register,
@@ -394,4 +453,9 @@ export default {
   updateAddress,
   deleteAddress,
   searchProducts,
+  fetchAdminProducts,
+  fetchAdminProductById,
+  createAdminProduct,
+  updateAdminProduct,
+  deleteAdminProduct,
 };
