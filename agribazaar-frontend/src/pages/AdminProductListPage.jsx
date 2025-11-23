@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AuthService from "../services/AuthService";
+const IMAGE_BASE_URL = 'https://res.cloudinary.com/dpiogqjk4/';
 
 const AdminProductListPage = () => {
   const [products, setProducts] = useState([]);
@@ -36,6 +37,15 @@ const AdminProductListPage = () => {
     setDeletingId(null);
   };
 
+  // Helper to get correct image URL (returns null if no image)
+  const getImageUrl = (img) => {
+    if (!img) return null;
+    // If API already sends full "img.url", use that; else construct with base URL
+    if (typeof img === "object" && img.url) return img.url;
+    if (typeof img === "string" && !img.startsWith("http")) return `${IMAGE_BASE_URL}${img}`;
+    return img; // Already full path
+  };
+
   return (
     <div style={{ maxWidth: 1000, margin: "2rem auto", padding: "2rem", background: "#f6fafd", borderRadius: 12, boxShadow: "0 0 10px #0002" }}>
       <h2 style={{ textAlign: "center", color: "#2d6a4f", marginBottom: 24 }}>Admin Uploaded Products</h2>
@@ -62,16 +72,17 @@ const AdminProductListPage = () => {
                     <span style={{ color: "#aaa" }}>No images</span>
                   ) : (
                     <div style={{ display: "flex", gap: 6, justifyContent: "center" }}>
-                      {[prod.image1, prod.image2, prod.image3, prod.image4].map((img, idx) =>
-                        img ? (
+                      {[prod.image1, prod.image2, prod.image3, prod.image4].map((img, idx) => {
+                        const url = getImageUrl(img);
+                        return url ? (
                           <img
                             key={idx}
-                            src={typeof img === "string" ? img : img.url}
+                            src={url}
                             alt={`prod-img-${idx}`}
                             style={{ width: 40, height: 40, objectFit: "cover", borderRadius: 4, border: "1px solid #ddd" }}
                           />
-                        ) : null
-                      )}
+                        ) : null;
+                      })}
                     </div>
                   )}
                 </td>
