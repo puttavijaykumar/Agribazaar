@@ -41,7 +41,7 @@ import ToolsPage from "./pages/ToolsPage";
 import EquipmentPage from "./pages/EquipmentPage";
 import IrrigationPage from "./pages/IrrigationPage";
 
-
+import AdminProductUploadPage from "./pages/AdminProductUploadPage";
 import axios from "axios";
 import React, { useEffect } from "react";
 import SearchResults from './pages/SearchResults';
@@ -135,8 +135,9 @@ function App() {
           <Route path="/tools" element={<ToolsPage />} />
           <Route path="/equipment" element={<EquipmentPage />} />
           <Route path="/irrigation" element={<IrrigationPage />} />
+          <Route path="/admin/upload-product" element={<AdminProductUploadPage />} />
 
-          
+
         </Routes>
       </Router>
     </GoogleOAuthProvider>
