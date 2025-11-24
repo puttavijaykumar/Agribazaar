@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
 import AuthService from "../services/AuthService";
+import EnhancedFooter from "../components/EnhancedFooter";
+import BuyerNavbar from "../components/BuyerNavbar";
+
 const IMAGE_BASE_URL = 'https://res.cloudinary.com/dpiogqjk4/';
 
 const IrrigationPage = () => {
   const [products, setProducts] = useState([]);
+  const [navbarUser, setNavbarUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) setNavbarUser(JSON.parse(storedUser));
+  }, []);
 
   useEffect(() => {
     AuthService.fetchAdminProducts("Irrigation")
@@ -19,6 +28,8 @@ const IrrigationPage = () => {
   }, []);
 
   return (
+    <div style={{ minHeight: "100vh", background: "#f9fdfb", paddingBottom: "2rem" }}>
+      <BuyerNavbar user={navbarUser || {}} />
     <div style={{ padding: '2rem' }}>
       <h1>Irrigation</h1>
       {loading ? (
@@ -48,6 +59,8 @@ const IrrigationPage = () => {
         </div>
       )}
     </div>
+    <EnhancedFooter />
+  </div>
   );
 };
 
