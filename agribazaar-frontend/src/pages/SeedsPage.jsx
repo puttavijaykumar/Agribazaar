@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import AuthService from "../services/AuthService";
-import BuyerNavbar from "../components/BuyerNavbar";
 import EnhancedFooter from "../components/EnhancedFooter";
+import BuyerNavbar from "../components/BuyerNavbar";
 const IMAGE_BASE_URL = 'https://res.cloudinary.com/dpiogqjk4/';
 
 const SeedsPage = () => {
   const [products, setProducts] = useState([]);
+  const [navbarUser, setNavbarUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) setNavbarUser(JSON.parse(storedUser));
+  }, []);
 
   useEffect(() => {
     AuthService.fetchAdminProducts("Seeds")
@@ -21,7 +27,7 @@ const SeedsPage = () => {
   }, []);
 
   return (
-    <>
+    <div style={{ minHeight: "100vh", background: "#f9fdfb", paddingBottom: "2rem" }}>
       <BuyerNavbar user={navbarUser || {}} />
       <div style={{ padding: '2rem' }}>
         <h1>Seeds</h1>
@@ -37,7 +43,8 @@ const SeedsPage = () => {
                 padding: '1rem',
                 borderRadius: '8px',
                 width: '200px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+                boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                background: "#fff"
               }}>
                 <img
                   src={product.image1 ? `${IMAGE_BASE_URL}${product.image1}` : ''}
@@ -53,8 +60,8 @@ const SeedsPage = () => {
         )}
       </div>
       <EnhancedFooter />
-    </>
+    </div>
   );
-};
+}
 
 export default SeedsPage;
