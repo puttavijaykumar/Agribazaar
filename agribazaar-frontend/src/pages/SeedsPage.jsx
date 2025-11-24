@@ -29,28 +29,20 @@ const SeedsPage = () => {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #f9fdfb 0%, #f0f8f4 100%)", display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", background: "#f5f5f5", display: "flex", flexDirection: "column" }}>
       <BuyerNavbar user={navbarUser || {}} />
       
-      <main style={{ flex: 1, padding: "clamp(1rem, 5vw, 2rem)" }}>
+      <main style={{ flex: 1, padding: "clamp(1rem, 3vw, 2rem)", maxWidth: "1400px", margin: "0 auto", width: "100%" }}>
         {/* Header Section */}
-        <div style={{ marginBottom: "clamp(1.5rem, 5vw, 3rem)" }}>
+        <div style={{ marginBottom: "clamp(1.5rem, 4vw, 2rem)" }}>
           <h1 style={{
-            fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
-            color: "#1a472a",
-            margin: "0 0 0.5rem 0",
-            fontWeight: "700",
-            letterSpacing: "-0.5px"
+            fontSize: "clamp(1.5rem, 4vw, 2rem)",
+            color: "#1a1a1a",
+            margin: "0 0 0.25rem 0",
+            fontWeight: "600"
           }}>
-            🌱 Premium Seeds Collection
+            Seeds
           </h1>
-          <p style={{
-            color: "#666",
-            fontSize: "clamp(0.9rem, 2vw, 1rem)",
-            margin: 0
-          }}>
-            Discover our hand-picked selection of quality seeds
-          </p>
         </div>
 
         {/* Loading State */}
@@ -59,38 +51,38 @@ const SeedsPage = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            minHeight: "300px",
+            minHeight: "400px",
             flexDirection: "column",
             gap: "1rem"
           }}>
             <div style={{
-              width: "50px",
-              height: "50px",
-              border: "4px solid #e8f5e9",
-              borderTop: "4px solid #2d6a4f",
+              width: "40px",
+              height: "40px",
+              border: "3px solid #e8e8e8",
+              borderTop: "3px solid #2d6a4f",
               borderRadius: "50%",
               animation: "spin 0.8s linear infinite"
             }}></div>
-            <p style={{ color: "#666", fontSize: "1rem" }}>Loading premium seeds...</p>
+            <p style={{ color: "#666", fontSize: "0.95rem" }}>Loading seeds...</p>
           </div>
         ) : products.length === 0 ? (
           <div style={{
             textAlign: "center",
-            padding: "clamp(2rem, 5vw, 4rem)",
+            padding: "clamp(2rem, 5vw, 3rem)",
             background: "#fff",
-            borderRadius: "12px",
-            border: "2px dashed #2d6a4f"
+            borderRadius: "8px",
+            border: "1px solid #ddd"
           }}>
-            <p style={{ fontSize: "clamp(1rem, 2vw, 1.2rem)", color: "#666" }}>
-              🌾 No seeds available right now. Check back soon!
+            <p style={{ fontSize: "1rem", color: "#666", margin: 0 }}>
+              No seeds available right now.
             </p>
           </div>
         ) : (
-          /* Products Grid */
+          /* Products Grid - Compact Style */
           <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(clamp(160px, 100%, 280px), 1fr))",
-            gap: "clamp(1rem, 3vw, 1.5rem)",
+            gridTemplateColumns: "repeat(auto-fill, minmax(clamp(140px, 100%, 200px), 1fr))",
+            gap: "clamp(0.75rem, 2vw, 1rem)",
             marginBottom: "2rem"
           }}>
             {products.map(product => (
@@ -99,106 +91,104 @@ const SeedsPage = () => {
                 onMouseEnter={() => setHoveredId(product.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 style={{
-                  border: "1px solid #e0e0e0",
-                  borderRadius: "12px",
-                  padding: "clamp(0.75rem, 3vw, 1rem)",
+                  border: "1px solid #ddd",
+                  borderRadius: "6px",
+                  padding: "clamp(0.6rem, 2vw, 0.8rem)",
                   background: "#fff",
                   boxShadow: hoveredId === product.id 
-                    ? "0 8px 24px rgba(45, 106, 79, 0.15)" 
-                    : "0 2px 8px rgba(0, 0, 0, 0.05)",
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  transform: hoveredId === product.id ? "translateY(-4px)" : "translateY(0)",
+                    ? "0 4px 12px rgba(0, 0, 0, 0.1)" 
+                    : "0 1px 3px rgba(0, 0, 0, 0.05)",
+                  transition: "all 0.2s ease",
                   cursor: "pointer",
                   display: "flex",
-                  flexDirection: "column",
-                  height: "100%"
+                  flexDirection: "column"
                 }}
               >
                 {/* Image Container */}
                 <div style={{
                   overflow: "hidden",
-                  borderRadius: "8px",
-                  marginBottom: "clamp(0.5rem, 2vw, 0.75rem)",
-                  height: "clamp(120px, 25vw, 180px)",
-                  background: "#f5f5f5"
+                  borderRadius: "4px",
+                  marginBottom: "clamp(0.5rem, 2vw, 0.6rem)",
+                  height: "clamp(100px, 20vw, 140px)",
+                  background: "#f9f9f9",
+                  position: "relative"
                 }}>
                   <img
-                    src={product.image1 ? `${IMAGE_BASE_URL}${product.image1}` : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="180"%3E%3Crect fill="%23f0f0f0" width="200" height="180"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-size="14"%3ENo Image%3C/text%3E%3C/svg%3E'}
+                    src={product.image1 ? `${IMAGE_BASE_URL}${product.image1}` : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="140"%3E%3Crect fill="%23f0f0f0" width="200" height="140"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="12"%3EImage%3C/text%3E%3C/svg%3E'}
                     alt={product.name}
                     style={{
                       width: "100%",
                       height: "100%",
-                      objectFit: "cover",
-                      transition: "transform 0.3s ease"
+                      objectFit: "cover"
                     }}
-                    onMouseEnter={(e) => e.target.style.transform = "scale(1.05)"}
-                    onMouseLeave={(e) => e.target.style.transform = "scale(1)"}
                   />
                 </div>
 
-                {/* Content */}
-                <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-                  <h3 style={{
-                    margin: "0 0 clamp(0.25rem, 2vw, 0.5rem) 0",
-                    fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
-                    color: "#1a472a",
-                    fontWeight: "600",
-                    lineHeight: "1.3",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden"
-                  }}>
-                    {product.name}
-                  </h3>
+                {/* Product Name */}
+                <h3 style={{
+                  margin: "0 0 clamp(0.3rem, 1vw, 0.4rem) 0",
+                  fontSize: "clamp(0.8rem, 1.8vw, 0.95rem)",
+                  color: "#1a1a1a",
+                  fontWeight: "500",
+                  lineHeight: "1.3",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden"
+                }}>
+                  {product.name}
+                </h3>
 
-                  <p style={{
-                    fontSize: "clamp(0.75rem, 1.5vw, 0.9rem)",
-                    color: "#999",
-                    margin: "0 0 clamp(0.25rem, 2vw, 0.5rem) 0",
-                    lineHeight: "1.4",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                    flex: 1
-                  }}>
-                    {product.description}
-                  </p>
+                {/* Description */}
+                <p style={{
+                  fontSize: "clamp(0.7rem, 1.5vw, 0.8rem)",
+                  color: "#888",
+                  margin: "0 0 clamp(0.3rem, 1vw, 0.4rem) 0",
+                  lineHeight: "1.2",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden"
+                }}>
+                  {product.description}
+                </p>
 
-                  {/* Price */}
-                  <div style={{
-                    marginTop: "auto",
-                    paddingTop: "clamp(0.5rem, 2vw, 0.75rem)",
-                    borderTop: "1px solid #f0f0f0"
-                  }}>
+                {/* Price & Button Container */}
+                <div style={{
+                  marginTop: "auto",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "clamp(0.4rem, 1vw, 0.6rem)",
+                  paddingTop: "clamp(0.5rem, 1vw, 0.6rem)"
+                }}>
+                  <div>
                     <p style={{
                       margin: 0,
-                      fontSize: "clamp(1.1rem, 2vw, 1.4rem)",
-                      color: "#2d6a4f",
-                      fontWeight: "700"
+                      fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
+                      color: "#1a1a1a",
+                      fontWeight: "600"
                     }}>
                       ₹{product.price}
                     </p>
                   </div>
+                  
+                  <button style={{
+                    padding: "clamp(0.35rem, 1.5vw, 0.5rem) clamp(0.6rem, 2vw, 1rem)",
+                    background: "#40916c",
+                    color: "#fff",
+                    border: "1px solid #40916c",
+                    borderRadius: "4px",
+                    fontSize: "clamp(0.7rem, 1.5vw, 0.8rem)",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    whiteSpace: "nowrap",
+                    flex: "0 0 auto"
+                  }}>
+                    ADD
+                  </button>
                 </div>
-
-                {/* Add to Cart Button */}
-                <button style={{
-                  marginTop: "clamp(0.5rem, 2vw, 0.75rem)",
-                  padding: "clamp(0.5rem, 2vw, 0.75rem)",
-                  background: hoveredId === product.id ? "#2d6a4f" : "#40916c",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "6px",
-                  fontSize: "clamp(0.8rem, 1.5vw, 0.9rem)",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  opacity: hoveredId === product.id ? 1 : 0.9
-                }}>
-                  Add to Cart
-                </button>
               </div>
             ))}
           </div>
@@ -212,13 +202,19 @@ const SeedsPage = () => {
 
         @media (max-width: 480px) {
           main {
-            padding: 1rem;
+            padding: 0.75rem;
           }
         }
 
-        @media (min-width: 768px) and (max-width: 1024px) {
-          div[role="main"] {
-            padding: 1.5rem;
+        @media (min-width: 481px) and (max-width: 768px) {
+          div {
+            --grid-cols: repeat(auto-fill, minmax(160px, 1fr));
+          }
+        }
+
+        @media (min-width: 1400px) {
+          main {
+            padding: 2rem;
           }
         }
       `}</style>
