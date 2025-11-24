@@ -518,10 +518,9 @@ class AdminCatalogProductViewSet(viewsets.ModelViewSet):
     queryset = AdminCatalogProduct.objects.all()
     serializer_class = AdminCatalogProductSerializer
     filterset_fields = ['category']
+    filter_backends = [DjangoFilterBackend]
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
-            # Allow GET requests for product lists/detail (public)
             return [permissions.AllowAny()]
-        # Add/Edit/Delete/Update requires admin
         return [permissions.IsAdminUser()]
