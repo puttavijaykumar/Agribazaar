@@ -22,7 +22,7 @@ const SeedsPage = () => {
 
   return (
     <>
-      <BuyerNavbar />
+      <BuyerNavbar user={navbarUser || {}} />
       <div style={{ padding: '2rem' }}>
         <h1>Seeds</h1>
         {loading ? (
