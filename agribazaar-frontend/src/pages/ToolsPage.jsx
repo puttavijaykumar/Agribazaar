@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AuthService from "../services/AuthService";
+const IMAGE_BASE_URL = 'https://res.cloudinary.com/dpiogqjk4/';
 
 const ToolsPage = () => {
   const [products, setProducts] = useState([]);
@@ -35,7 +36,7 @@ const ToolsPage = () => {
               boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}>
               <img
-                src={product.image1 && product.image1.url}
+                src={product.image1 ? `${IMAGE_BASE_URL}${product.image1}` : ''}
                 alt={product.name}
                 style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '6px' }}
               />
