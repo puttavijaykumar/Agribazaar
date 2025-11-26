@@ -220,6 +220,11 @@ class AdminCatalogProduct(models.Model):
     image3 = CloudinaryField('image', blank=True, null=True)
     image4 = CloudinaryField('image', blank=True, null=True)
     stock = models.PositiveIntegerField(default=0)
+    # NEW FIELDS FOR TOP OFFERS
+    is_featured = models.BooleanField(default=False)  # Mark as featured/top offer
+    discount_percent = models.IntegerField(default=0)  # Discount percentage
+    farmer_name = models.CharField(max_length=255, blank=True, null=True)
+    farmer_location = models.CharField(max_length=255, blank=True, null=True)
     warranty_period = models.CharField(max_length=50, blank=True, null=True)  # for Tools/Equipment
     fertilizer_type = models.CharField(max_length=50, blank=True, null=True)  # for Fertilizer-specific info
     created_at = models.DateTimeField(auto_now_add=True)
