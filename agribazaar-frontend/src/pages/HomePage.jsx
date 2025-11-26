@@ -101,31 +101,6 @@ const newsSectionStyle = {
   WebkitOverflowScrolling: "touch",
 };
 
-const [newsItems, setNewsItems] = useState([]);
-
-useEffect(() => {
-  AuthService.fetchAgriNews()
-    .then((articles) => {
-      setNewsItems(
-        articles.map((article, i) => (
-          <span key={article.url || i} style={{ flexShrink: 0, whiteSpace: "nowrap" }}>
-            <a
-              href={article.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: "#226d32", fontWeight: 700, fontSize: "1rem", textDecoration: "none" }}
-            >
-              {article.title}
-            </a>
-            <span style={{ color: "#666", fontWeight: 400, marginLeft: 8, fontSize: 14 }}>
-              {article.source} | {new Date(article.publishedAt).toLocaleDateString()}
-            </span>
-          </span>
-        ))
-      );
-    })
-    .catch(() => setNewsItems([<span key="fail" style={{color: "red"}}>Could not load news.</span>]));
-}, []);
 
 const offersContainer = {
   display: "flex",
@@ -456,6 +431,33 @@ const HomePage = () => {
     } catch {
       return null;
     }
+  }, []);
+
+  // <-- Insert news state and useEffect here -->
+  const [newsItems, setNewsItems] = React.useState([]);
+
+  React.useEffect(() => {
+    AuthService.fetchAgriNews()
+      .then((articles) => {
+        setNewsItems(
+          articles.map((article, i) => (
+            <span key={article.url || i} style={{ flexShrink: 0, whiteSpace: "nowrap" }}>
+              <a
+                href={article.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#226d32", fontWeight: 700, fontSize: "1rem", textDecoration: "none" }}
+              >
+                {article.title}
+              </a>
+              <span style={{ color: "#666", fontWeight: 400, marginLeft: 8, fontSize: 14 }}>
+                {article.source} | {new Date(article.publishedAt).toLocaleDateString()}
+              </span>
+            </span>
+          ))
+        );
+      })
+      .catch(() => setNewsItems([<span key="fail" style={{color: "red"}}>Could not load news.</span>]));
   }, []);
 
   const handleCategoryClick = (category) => {
