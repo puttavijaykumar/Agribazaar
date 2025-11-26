@@ -415,6 +415,12 @@ const deleteAdminProduct = async (id) => {
   return response.data;
 };
 
+// Fetch agriculture news updates (public, no auth needed)
+const fetchAgriNews = async () => {
+  const response = await axios.get(`${API_URL}/api/agri-news/latest/`);
+  return response.data;
+};
+
 export default {
   register,
   login,
@@ -458,4 +464,5 @@ export default {
   createAdminProduct,
   updateAdminProduct,
   deleteAdminProduct,
+  fetchAgriNews 
 };

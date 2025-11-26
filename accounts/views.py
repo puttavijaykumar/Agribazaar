@@ -524,3 +524,38 @@ class AdminCatalogProductViewSet(viewsets.ModelViewSet):
         if self.action in ['list', 'retrieve']:
             return [permissions.AllowAny()]
         return [permissions.IsAdminUser()]
+    
+    
+from rest_framework import status
+import requests
+
+NEWS_API_URL = "https://newsapi.org/v2/everything"
+NEWS_API_KEY = "f986edd1afe64a47988b934616f61f81"
+
+class AgricultureNewsAPIView(APIView):
+    def get(self, request):
+        params = {
+            "q": "farming agriculture",
+            "apiKey": NEWS_API_KEY,
+            "pageSize": 3,
+            "language": "en",
+        }
+        try:
+            response = requests.get(NEWS_API_URL, params=params)
+            response.raise_for_status()
+            data = response.json().get("articles", [])
+            # Optionally filter fields for the frontend
+            result = [
+                {
+                    "title": art.get("title"),
+                    "url": art.get("url"),
+                    "source": art.get("source", {}).get("name"),
+                    "publishedAt": art.get("publishedAt"),
+                    "description": art.get("description"),
+                    "urlToImage": art.get("urlToImage"),
+                }
+                for art in data
+            ]
+            return Response(result)
+        except Exception as e:
+            return Response({"error": "Failed to fetch news", "detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

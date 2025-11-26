@@ -18,6 +18,7 @@ from .views import AddressListCreateView, AddressDetailView
 from .views import MyProductListView
 
 from .views import AdminCatalogProductViewSet
+from .views import AgricultureNewsAPIView
 
 router = DefaultRouter()
 router.register(r'admin-products', AdminCatalogProductViewSet, basename='admincatalogproduct')
@@ -69,6 +70,8 @@ urlpatterns = [
 
     path('addresses/', AddressListCreateView.as_view(), name='address-list-create'),
     path('addresses/<int:pk>/', AddressDetailView.as_view(), name='address-detail'),
+    path('api/agri-news/latest/', AgricultureNewsAPIView.as_view(), name='agri-news-latest'),
+
     
 ]
 

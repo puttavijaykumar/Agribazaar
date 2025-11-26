@@ -100,11 +100,31 @@ const newsSectionStyle = {
   WebkitOverflowScrolling: "touch",
 };
 
-const newsItems = [
-  "🌾 Government sets new MSP for wheat and paddy this season",
-  "🚜 AgriBazaar introduces new equipment rental scheme",
-  "🛒 Online trading of maize crosses previous month record",
-];
+const [newsItems, setNewsItems] = useState([]);
+
+useEffect(() => {
+  AuthService.fetchAgriNews()
+    .then((articles) => {
+      setNewsItems(
+        articles.map((article, i) => (
+          <span key={article.url || i} style={{ flexShrink: 0, whiteSpace: "nowrap" }}>
+            <a
+              href={article.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#226d32", fontWeight: 700, fontSize: "1rem", textDecoration: "none" }}
+            >
+              {article.title}
+            </a>
+            <span style={{ color: "#666", fontWeight: 400, marginLeft: 8, fontSize: 14 }}>
+              {article.source} | {new Date(article.publishedAt).toLocaleDateString()}
+            </span>
+          </span>
+        ))
+      );
+    })
+    .catch(() => setNewsItems([<span key="fail" style={{color: "red"}}>Could not load news.</span>]));
+}, []);
 
 const offersContainer = {
   display: "flex",
@@ -512,12 +532,12 @@ const HomePage = () => {
          Agriculture News & Updates
       </h2>
       <section style={newsSectionStyle}>
-        {newsItems.map((item, i) => (
-          <span key={i} style={{ flexShrink: 0, whiteSpace: "nowrap" }}>
-            {item}
-          </span>
-        ))}
+        {newsItems.length === 0
+          ? <span>Loading latest news...</span>
+          : newsItems
+        }
       </section>
+
 
       {/* ---------- SECTION 3: TOP OFFERS ---------- */}
       <h2
