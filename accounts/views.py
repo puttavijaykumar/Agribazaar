@@ -537,7 +537,7 @@ class AgricultureNewsAPIView(APIView):
         params = {
             "q": "farming agriculture",
             "apiKey": NEWS_API_KEY,
-            "pageSize": 3,
+            "pageSize": 10,
             "language": "en",
         }
         try:

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
 import HomeNavbar from "../components/HomeNavbar";  // IMPORT THE NEW NAVBAR
+import AgricultureNewsSection from "../components/AgricultureNewsSection";
 
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -533,12 +534,7 @@ const HomePage = () => {
       >
          Agriculture News & Updates
       </h2>
-      <section style={newsSectionStyle}>
-        {newsItems.length === 0
-          ? <span>Loading latest news...</span>
-          : newsItems
-        }
-      </section>
+      <AgricultureNewsSection newsItems={newsItems} newsSectionStyle={newsSectionStyle} />
 
 
       {/* ---------- SECTION 3: TOP OFFERS ---------- */}
