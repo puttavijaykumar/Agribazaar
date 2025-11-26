@@ -559,3 +559,50 @@ class AgricultureNewsAPIView(APIView):
             return Response(result)
         except Exception as e:
             return Response({"error": "Failed to fetch news", "detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class TopOffersAPIView(APIView):
+    def get(self, request):
+        try:
+            # Fetch products marked as "featured" with active discounts
+            products = AdminCatalogProduct.objects.filter(
+                is_featured=True
+            ).values(
+                'id', 
+                'name', 
+                'price', 
+                'image1', 
+                'description', 
+                'category', 
+                'discount_percent', 
+                'farmer_name', 
+                'farmer_location', 
+                'stock'
+            )[:8]  # Limit to 8 top offers
+            
+            result = []
+            for p in products:
+                original_price = float(p['price'])
+                discount_percent = p.get('discount_percent', 0) or 0
+                discounted_price = original_price * (1 - discount_percent / 100)
+                
+                result.append({
+                    "id": p['id'],
+                    "title": p['name'],
+                    "desc": p['description'],
+                    "img": f"https://res.cloudinary.com/dpiogqjk4/{p['image1']}" if p['image1'] else "",
+                    "discount": f"{discount_percent}%",
+                    "originalPrice": original_price,
+                    "discountedPrice": round(discounted_price, 2),
+                    "farmer": p.get('farmer_name', 'Unknown Farmer'),
+                    "location": p.get('farmer_location', 'India'),
+                    "stock": p['stock'],
+                })
+            
+            return Response(result, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response(
+                {"error": "Failed to fetch top offers", "detail": str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

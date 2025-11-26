@@ -12,11 +12,14 @@ const initialForm = {
   stock: "",
   warranty_period: "",
   fertilizer_type: "",
+  is_featured: false,  // NEW FIELD
+  discount_percent: 0,  // NEW FIELD
+  farmer_name: "",  // NEW FIELD
+  farmer_location: "",  // NEW FIELD
   images: [null, null, null, null],
 };
 
 const AdminProductUploadPage = () => {
-
   const navigate = useNavigate();
 
   const [form, setForm] = useState(initialForm);
@@ -25,8 +28,11 @@ const AdminProductUploadPage = () => {
   const [message, setMessage] = useState("");
 
   const handleInput = (e) => {
-    const { name, value } = e.target;
-    setForm(f => ({ ...f, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setForm(f => ({
+      ...f,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handleImage = (index, file) => {
@@ -55,7 +61,7 @@ const AdminProductUploadPage = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-    setMessage(""); 
+    setMessage("");
     setLoading(true);
 
     const data = new FormData();
@@ -66,6 +72,11 @@ const AdminProductUploadPage = () => {
     data.append("stock", form.stock);
     data.append("warranty_period", form.warranty_period);
     data.append("fertilizer_type", form.fertilizer_type);
+    data.append("is_featured", form.is_featured);  // NEW
+    data.append("discount_percent", form.discount_percent);  // NEW
+    data.append("farmer_name", form.farmer_name);  // NEW
+    data.append("farmer_location", form.farmer_location);  // NEW
+    
     for (let i = 0; i < 4; i++) {
       if (form.images[i]) data.append(`image${i + 1}`, form.images[i]);
     }
@@ -85,7 +96,7 @@ const AdminProductUploadPage = () => {
     <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", padding: "2rem 1rem" }}>
       <div style={{ maxWidth: 700, margin: "0 auto" }}>
 
-        {/* ------ ADD THIS BUTTON SECTION HERE ------ */}
+        {/* View All Products Button */}
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 16 }}>
           <button
             onClick={() => navigate("/admin/products")}
@@ -105,7 +116,6 @@ const AdminProductUploadPage = () => {
           </button>
         </div>
 
-        
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
           <h1 style={{ fontSize: "2.5rem", fontWeight: 800, color: "white", marginBottom: 8 }}>Add New Product</h1>
@@ -269,6 +279,104 @@ const AdminProductUploadPage = () => {
                   onFocus={(e) => e.target.style.borderColor = "#667eea"}
                   onBlur={(e) => e.target.style.borderColor = "#e0e0e0"}
                 />
+              </div>
+
+              {/* Farmer Details - NEW */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", backgroundColor: "#f0f4ff", padding: "1rem", borderRadius: "8px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 600, color: "#333", marginBottom: 6 }}>Farmer Name</label>
+                  <input
+                    name="farmer_name"
+                    value={form.farmer_name}
+                    onChange={handleInput}
+                    placeholder="e.g., Rajesh Kumar"
+                    style={{
+                      width: "100%",
+                      padding: "10px 14px",
+                      fontSize: "0.95rem",
+                      border: "2px solid #e0e0e0",
+                      borderRadius: "8px",
+                      fontFamily: "inherit",
+                      transition: "all 0.3s",
+                      boxSizing: "border-box",
+                      outline: "none"
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = "#667eea"}
+                    onBlur={(e) => e.target.style.borderColor = "#e0e0e0"}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 600, color: "#333", marginBottom: 6 }}>Location</label>
+                  <input
+                    name="farmer_location"
+                    value={form.farmer_location}
+                    onChange={handleInput}
+                    placeholder="e.g., Himachal Pradesh"
+                    style={{
+                      width: "100%",
+                      padding: "10px 14px",
+                      fontSize: "0.95rem",
+                      border: "2px solid #e0e0e0",
+                      borderRadius: "8px",
+                      fontFamily: "inherit",
+                      transition: "all 0.3s",
+                      boxSizing: "border-box",
+                      outline: "none"
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = "#667eea"}
+                    onBlur={(e) => e.target.style.borderColor = "#e0e0e0"}
+                  />
+                </div>
+              </div>
+
+              {/* Top Offer Section - NEW */}
+              <div style={{ backgroundColor: "#fff3cd", padding: "1rem", borderRadius: "8px", border: "2px solid #ffc107" }}>
+                <h3 style={{ margin: "0 0 1rem 0", color: "#856404", fontSize: "1rem" }}>⭐ Top Offers (Optional)</h3>
+                
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 600, color: "#333", marginBottom: 6 }}>Discount % (0-100)</label>
+                    <input
+                      name="discount_percent"
+                      type="number"
+                      value={form.discount_percent}
+                      onChange={handleInput}
+                      placeholder="0"
+                      min="0"
+                      max="100"
+                      style={{
+                        width: "100%",
+                        padding: "10px 14px",
+                        fontSize: "0.95rem",
+                        border: "2px solid #e0e0e0",
+                        borderRadius: "8px",
+                        fontFamily: "inherit",
+                        transition: "all 0.3s",
+                        boxSizing: "border-box",
+                        outline: "none"
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = "#ffc107"}
+                      onBlur={(e) => e.target.style.borderColor = "#e0e0e0"}
+                    />
+                  </div>
+                  <div style={{ display: "flex", alignItems: "flex-end" }}>
+                    <label style={{ display: "flex", alignItems: "center", cursor: "pointer", userSelect: "none" }}>
+                      <input
+                        type="checkbox"
+                        name="is_featured"
+                        checked={form.is_featured}
+                        onChange={handleInput}
+                        style={{
+                          width: "18px",
+                          height: "18px",
+                          cursor: "pointer",
+                          marginRight: "8px"
+                        }}
+                      />
+                      <span style={{ fontSize: "0.95rem", fontWeight: 600, color: "#333" }}>Featured in Top Offers</span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               {/* Category-Specific Fields */}

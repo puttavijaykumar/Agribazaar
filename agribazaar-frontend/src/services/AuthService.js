@@ -421,6 +421,11 @@ const fetchAgriNews = async () => {
   return response.data;
 };
 
+// Fetch top offers/featured products - PUBLIC
+const fetchTopOffers = async () => {
+  const response = await axios.get(`${API_URL}/top-offers/`);
+  return response.data;
+};
 export default {
   register,
   login,
@@ -464,5 +469,6 @@ export default {
   createAdminProduct,
   updateAdminProduct,
   deleteAdminProduct,
-  fetchAgriNews 
+  fetchAgriNews,
+  fetchTopOffers,
 };
