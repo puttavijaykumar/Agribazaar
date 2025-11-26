@@ -232,7 +232,7 @@ class AddressSerializer(serializers.ModelSerializer):
     
     
 class AdminCatalogProductSerializer(serializers.ModelSerializer):
-    # NEW: Add computed fields
+    # Add computed fields
     discounted_price = serializers.SerializerMethodField()
     offer_label = serializers.SerializerMethodField()
     
@@ -242,11 +242,11 @@ class AdminCatalogProductSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'price',
-            'discounted_price',  # NEW
+            'discounted_price',
             'description',
             'category',
-            'offer_category',  # NEW
-            'offer_label',  # NEW
+            'offer_category',
+            'offer_label',
             'image1',
             'image2',
             'image3',
@@ -263,13 +263,13 @@ class AdminCatalogProductSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
     
-    # NEW: Method to calculate discounted price
     def get_discounted_price(self, obj):
         """Calculate price after discount"""
-        discounted = float(obj.price) * (1 - obj.discount_percent / 100)
-        return round(discounted, 2)
+        if obj.discount_percent:
+            discounted = float(obj.price) * (1 - obj.discount_percent / 100)
+            return round(discounted, 2)
+        return float(obj.price)
     
-    # NEW: Method to get offer label with emoji
     def get_offer_label(self, obj):
         """Get formatted offer label"""
         labels = {

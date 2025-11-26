@@ -242,6 +242,7 @@ class AdminCatalogProduct(models.Model):
         ("Tools", "Tools"),
         ("Equipment", "Equipment"),
         ("Irrigation", "Irrigation"),
+        ("Top Offers", "Top Offers Only"),  # REMOVED emoji
     ]
     
     # NEW: Offer category choices

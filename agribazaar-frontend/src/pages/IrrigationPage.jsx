@@ -3,12 +3,25 @@ import AuthService from "../services/AuthService";
 import EnhancedFooter from "../components/EnhancedFooter";
 import BuyerNavbar from "../components/BuyerNavbar";
 
-const IMAGE_BASE_URL = 'https://res.cloudinary.com/dpiogqjk4/';
+// Helper to handle both URLs and filenames
+const getImageUrl = (imageField) => {
+  if (!imageField) {
+    return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="140"%3E%3Crect fill="%23f0f0f0" width="200" height="140"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="12"%3EImage%3C/text%3E%3C/svg%3E';
+  }
+  if (typeof imageField === 'string' && imageField.startsWith('http')) {
+    return imageField;
+  }
+  if (typeof imageField === 'string') {
+    return `https://res.cloudinary.com/dpiogqjk4/${imageField}`;
+  }
+  return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="140"%3E%3Crect fill="%23f0f0f0" width="200" height="140"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="12"%3EImage%3C/text%3E%3C/svg%3E';
+};
 
 const IrrigationPage = () => {
   const [products, setProducts] = useState([]);
   const [navbarUser, setNavbarUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [hoveredId, setHoveredId] = useState(null);
 
   useEffect(() => {
@@ -17,13 +30,16 @@ const IrrigationPage = () => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
     AuthService.fetchAdminProducts("Irrigation")
       .then(res => {
-        setProducts(res);
+        setProducts(res || []);
         setLoading(false);
       })
       .catch(err => {
         console.error(err);
+        setError("Failed to load irrigation products. Please try again later.");
         setLoading(false);
       });
   }, []);
@@ -44,6 +60,20 @@ const IrrigationPage = () => {
             Irrigation
           </h1>
         </div>
+
+        {/* Error State */}
+        {error && (
+          <div style={{
+            padding: "1rem",
+            backgroundColor: "#f8d7da",
+            color: "#721c24",
+            borderRadius: "6px",
+            marginBottom: "1rem",
+            border: "1px solid #f5c6cb"
+          }}>
+            {error}
+          </div>
+        )}
 
         {/* Loading State */}
         {loading ? (
@@ -78,7 +108,7 @@ const IrrigationPage = () => {
             </p>
           </div>
         ) : (
-          /* Products Grid - Compact Style */
+          /* Products Grid */
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(clamp(140px, 100%, 200px), 1fr))",
@@ -114,12 +144,15 @@ const IrrigationPage = () => {
                   position: "relative"
                 }}>
                   <img
-                    src={product.image1 ? `${IMAGE_BASE_URL}${product.image1}` : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="140"%3E%3Crect fill="%23f0f0f0" width="200" height="140"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="12"%3EImage%3C/text%3E%3C/svg%3E'}
+                    src={getImageUrl(product.image1)}
                     alt={product.name}
                     style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover"
+                    }}
+                    onError={(e) => {
+                      e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="140"%3E%3Crect fill="%23f0f0f0" width="200" height="140"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="12"%3ENo Image%3C/text%3E%3C/svg%3E';
                     }}
                   />
                 </div>
@@ -153,6 +186,18 @@ const IrrigationPage = () => {
                   {product.description}
                 </p>
 
+                {/* Farmer Info (if applicable) */}
+                {product.farmer_name && (
+                  <p style={{
+                    fontSize: "clamp(0.65rem, 1.2vw, 0.75rem)",
+                    color: "#999",
+                    margin: "0.2rem 0 0.4rem 0",
+                    lineHeight: "1.2"
+                  }}>
+                    {product.farmer_name} {product.farmer_location ? `- ${product.farmer_location}` : ""}
+                  </p>
+                )}
+
                 {/* Price & Button Container */}
                 <div style={{
                   marginTop: "auto",
@@ -163,29 +208,65 @@ const IrrigationPage = () => {
                   paddingTop: "clamp(0.5rem, 1vw, 0.6rem)"
                 }}>
                   <div>
-                    <p style={{
-                      margin: 0,
-                      fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
-                      color: "#1a1a1a",
-                      fontWeight: "600"
-                    }}>
-                      ₹{product.price}
-                    </p>
+                    {/* Show discount if available */}
+                    {product.discount_percent > 0 ? (
+                      <div>
+                        <p style={{
+                          margin: 0,
+                          fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
+                          color: "#1a1a1a",
+                          fontWeight: "600"
+                        }}>
+                          ₹{product.discounted_price}
+                        </p>
+                        <p style={{
+                          margin: "0.2rem 0 0 0",
+                          fontSize: "clamp(0.7rem, 1.5vw, 0.8rem)",
+                          color: "#999",
+                          textDecoration: "line-through"
+                        }}>
+                          ₹{product.price}
+                        </p>
+                      </div>
+                    ) : (
+                      <p style={{
+                        margin: 0,
+                        fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
+                        color: "#1a1a1a",
+                        fontWeight: "600"
+                      }}>
+                        ₹{product.price}
+                      </p>
+                    )}
                   </div>
                   
-                  <button style={{
-                    padding: "clamp(0.35rem, 1.5vw, 0.5rem) clamp(0.6rem, 2vw, 1rem)",
-                    background: "#16a085",
-                    color: "#fff",
-                    border: "1px solid #16a085",
-                    borderRadius: "4px",
-                    fontSize: "clamp(0.7rem, 1.5vw, 0.8rem)",
-                    fontWeight: "600",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                    whiteSpace: "nowrap",
-                    flex: "0 0 auto"
-                  }}>
+                  <button
+                    onClick={() => {
+                      // TODO: add to cart
+                      console.log("Added to cart:", product.id);
+                    }}
+                    style={{
+                      padding: "clamp(0.35rem, 1.5vw, 0.5rem) clamp(0.6rem, 2vw, 1rem)",
+                      background: "#16a085",
+                      color: "#fff",
+                      border: "1px solid #16a085",
+                      borderRadius: "4px",
+                      fontSize: "clamp(0.7rem, 1.5vw, 0.8rem)",
+                      fontWeight: "600",
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                      whiteSpace: "nowrap",
+                      flex: "0 0 auto"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = "#0e7566";
+                      e.target.style.borderColor = "#0e7566";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = "#16a085";
+                      e.target.style.borderColor = "#16a085";
+                    }}
+                  >
                     ADD
                   </button>
                 </div>

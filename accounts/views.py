@@ -520,84 +520,254 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from .models import AdminCatalogProduct
 from .serializers import AdminCatalogProductSerializer
 
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.views import APIView
+from .models import AdminCatalogProduct
+from .serializers import AdminCatalogProductSerializer
+
+
 class AdminCatalogProductViewSet(viewsets.ModelViewSet):
-    queryset = AdminCatalogProduct.objects.all()
+    """
+    ViewSet for managing admin catalog products
+    """
+    # queryset = AdminCatalogProduct.objects.all()
     serializer_class = AdminCatalogProductSerializer
     
     # Enable filtering and searching
-    filterset_fields = ['category', 'offer_category']  # NEW: Added offer_category filter
+    filterset_fields = ['category', 'offer_category']
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    search_fields = ['name', 'description', 'farmer_name']  # NEW: Search fields
-    ordering_fields = ['price', 'discount_percent', 'created_at']  # NEW: Sort fields
-    ordering = ['-created_at']  # Default ordering
+    search_fields = ['name', 'description', 'farmer_name']
+    ordering_fields = ['price', 'discount_percent', 'created_at']
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        """
+        Override queryset to exclude Top Offers from regular category filters
+        """
+        queryset = AdminCatalogProduct.objects.all()
+        category = self.request.query_params.get('category', None)
+        
+        # If filtering by category and it's not "Top Offers", exclude Top Offers from results
+        if category and category != "Top Offers":
+            queryset = queryset.filter(category=category).exclude(category="Top Offers")
+        
+        return queryset
 
     def get_permissions(self):
+        """
+        Allow anyone to list/retrieve, but only admins can create/update/delete
+        """
         if self.action in ['list', 'retrieve']:
             return [permissions.AllowAny()]
         return [permissions.IsAdminUser()]
     
-    # NEW: Custom action to get top offers
+    # Custom action for top offers
     @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def top_offers(self, request):
         """
-        Get featured products with offer categories
+        Get all products in Top Offers category with featured status
         """
-        products = AdminCatalogProduct.objects.exclude(
-            offer_category='none'
-        ).filter(
+        products = AdminCatalogProduct.objects.filter(
+            category="Top Offers",
             is_featured=True
         ).order_by('-discount_percent')[:8]
         
         serializer = self.get_serializer(products, many=True)
         return Response(serializer.data)
     
-    # NEW: Filter by offer category
+    # Custom action for flash deals
     @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def flash_deals(self, request):
-        """Get all flash deal products"""
+        """
+        Get all Flash Deal products
+        """
         products = AdminCatalogProduct.objects.filter(
+            category="Top Offers",
             offer_category='flash_deal',
             is_featured=True
-        ).order_by('-discount_percent')
+        ).order_by('-discount_percent')[:8]
         
         serializer = self.get_serializer(products, many=True)
         return Response(serializer.data)
     
+    # Custom action for seasonal offers
     @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def seasonal_offers(self, request):
-        """Get all seasonal offer products"""
+        """
+        Get all Seasonal Offer products
+        """
         products = AdminCatalogProduct.objects.filter(
+            category="Top Offers",
             offer_category='seasonal',
             is_featured=True
-        ).order_by('-created_at')
+        ).order_by('-created_at')[:8]
         
         serializer = self.get_serializer(products, many=True)
         return Response(serializer.data)
     
+    # Custom action for limited stock
     @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def limited_stock(self, request):
-        """Get all limited stock products"""
+        """
+        Get all Limited Stock products with low inventory
+        """
         products = AdminCatalogProduct.objects.filter(
+            category="Top Offers",
             offer_category='limited_stock',
             is_featured=True,
             stock__lt=20  # Stock less than 20
-        )
+        ).order_by('stock')[:8]
         
         serializer = self.get_serializer(products, many=True)
         return Response(serializer.data)
     
+    # Custom action for trending
     @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def trending(self, request):
-        """Get all trending products"""
+        """
+        Get all Trending products
+        """
         products = AdminCatalogProduct.objects.filter(
+            category="Top Offers",
             offer_category='trending',
             is_featured=True
         ).order_by('-created_at')[:10]
         
         serializer = self.get_serializer(products, many=True)
         return Response(serializer.data)
-
     
+    # Custom action for category-specific products
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def by_category(self, request):
+        """
+        Get products by category
+        Usage: /admin-products/by_category/?category=Seeds
+        """
+        category = request.query_params.get('category', None)
+        
+        if not category:
+            return Response(
+                {"error": "category parameter is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        products = AdminCatalogProduct.objects.filter(
+            category=category
+        ).order_by('-created_at')
+        
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
+
+
+class TopOffersAPIView(APIView):
+    """
+    Standalone API view for fetching top offers
+    """
+    def get(self, request):
+        try:
+            # Fetch ONLY products with category = "Top Offers"
+            products = AdminCatalogProduct.objects.filter(
+                category="Top Offers",
+                is_featured=True
+            ).order_by('-discount_percent')[:8]
+            
+            result = []
+            for p in products:
+                original_price = float(p.price)
+                discount_percent = p.discount_percent or 0
+                discounted_price = original_price * (1 - discount_percent / 100)
+                
+                # Offer type labels without emojis
+                offer_labels = {
+                    'flash_deal': 'Flash Deal',
+                    'seasonal': 'Seasonal',
+                    'limited_stock': 'Limited Stock',
+                    'trending': 'Trending',
+                    'none': 'Top Offer'
+                }
+                
+                result.append({
+                    "id": p.id,
+                    "title": p.name,
+                    "desc": p.description,
+                    "img": p.image1.url if p.image1 else "",
+                    "discount": f"{discount_percent}%",
+                    "originalPrice": original_price,
+                    "discountedPrice": round(discounted_price, 2),
+                    "farmer": p.farmer_name or 'Unknown Farmer',
+                    "location": p.farmer_location or 'India',
+                    "stock": p.stock,
+                    "offerType": offer_labels.get(p.offer_category, 'Top Offer'),
+                    "category": p.category,
+                })
+            
+            return Response(result, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response(
+                {"error": "Failed to fetch top offers", "detail": str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class CategoryProductsAPIView(APIView):
+    """
+    Get products by specific category (Seeds, Fertilizers, Tools, Equipment, Irrigation)
+    NOT including Top Offers
+    """
+    def get(self, request, category=None):
+        try:
+            if not category:
+                return Response(
+                    {"error": "Category is required"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Reject if trying to access Top Offers through this endpoint
+            if category == "Top Offers":
+                return Response(
+                    {"error": "Use /top-offers/ endpoint for top offers"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Get products only from requested category
+            products = AdminCatalogProduct.objects.filter(
+                category=category
+            ).order_by('-created_at')
+            
+            serializer = AdminCatalogProductSerializer(products, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response(
+                {"error": "Failed to fetch products", "detail": str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class FeaturedProductsAPIView(APIView):
+    """
+    Get all featured products (both Top Offers and regular categories)
+    """
+    def get(self, request):
+        try:
+            products = AdminCatalogProduct.objects.filter(
+                is_featured=True
+            ).order_by('-discount_percent')[:15]
+            
+            serializer = AdminCatalogProductSerializer(products, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response(
+                {"error": "Failed to fetch featured products", "detail": str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 from rest_framework import status
 import requests
 
@@ -633,49 +803,3 @@ class AgricultureNewsAPIView(APIView):
             return Response({"error": "Failed to fetch news", "detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
-class TopOffersAPIView(APIView):
-    def get(self, request):
-        try:
-            # Fetch products with offer_category != 'none' AND is_featured = True
-            products = AdminCatalogProduct.objects.exclude(
-                offer_category='none'
-            ).filter(
-                is_featured=True
-            ).order_by('-discount_percent')[:8]  # Sort by discount, limit to 8
-            
-            result = []
-            for p in products:
-                original_price = float(p.price)
-                discount_percent = p.discount_percent or 0
-                discounted_price = original_price * (1 - discount_percent / 100)
-                
-                # Offer type labels
-                offer_labels = {
-                    'flash_deal': 'Flash Deal',
-                    'seasonal': 'Seasonal',
-                    'limited_stock': 'Limited Stock',
-                    'trending': 'Trending',
-                }
-                
-                result.append({
-                    "id": p.id,
-                    "title": p.name,
-                    "desc": p.description,
-                    "img": p.image1.url if p.image1 else "",  # Use Cloudinary URL directly
-                    "discount": f"{discount_percent}%",
-                    "originalPrice": original_price,
-                    "discountedPrice": round(discounted_price, 2),
-                    "farmer": p.farmer_name or 'Unknown Farmer',
-                    "location": p.farmer_location or 'India',
-                    "stock": p.stock,
-                    "offerType": offer_labels.get(p.offer_category, 'Offer'),  # NEW
-                    "category": p.category,  # NEW: Include product category
-                })
-            
-            return Response(result, status=status.HTTP_200_OK)
-        
-        except Exception as e:
-            return Response(
-                {"error": "Failed to fetch top offers", "detail": str(e)}, 
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )

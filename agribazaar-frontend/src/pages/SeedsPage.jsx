@@ -3,36 +3,82 @@ import AuthService from "../services/AuthService";
 import EnhancedFooter from "../components/EnhancedFooter";
 import BuyerNavbar from "../components/BuyerNavbar";
 
-const IMAGE_BASE_URL = 'https://res.cloudinary.com/dpiogqjk4/';
-
 const SeedsPage = () => {
   const [products, setProducts] = useState([]);
   const [navbarUser, setNavbarUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [hoveredId, setHoveredId] = useState(null);
 
+  // Load user from localStorage
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setNavbarUser(JSON.parse(storedUser));
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setNavbarUser(JSON.parse(storedUser));
+      }
+    } catch (err) {
+      console.error("Error parsing user data:", err);
+    }
   }, []);
 
+  // Fetch seeds on component mount
   useEffect(() => {
-    AuthService.fetchAdminProducts("Seeds")
-      .then(res => {
-        setProducts(res);
+    const loadSeeds = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const data = await AuthService.fetchAdminProducts("Seeds");
+        setProducts(data || []);
+      } catch (err) {
+        console.error("Error fetching seeds:", err);
+        setError("Failed to load seeds. Please try again later.");
+        setProducts([]);
+      } finally {
         setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
+      }
+    };
+
+    loadSeeds();
   }, []);
+
+  // Helper function to get image URL
+  const getImageUrl = (imageField) => {
+    if (!imageField) {
+      return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="140"%3E%3Crect fill="%23f0f0f0" width="200" height="140"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="12"%3EImage%3C/text%3E%3C/svg%3E';
+    }
+    
+    // If it's already a full URL (from serializer)
+    if (typeof imageField === 'string' && imageField.startsWith('http')) {
+      return imageField;
+    }
+    
+    // If it's just a filename, prepend base URL
+    if (typeof imageField === 'string') {
+      return `https://res.cloudinary.com/dpiogqjk4/${imageField}`;
+    }
+    
+    // Fallback
+    return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="140"%3E%3Crect fill="%23f0f0f0" width="200" height="140"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="12"%3EImage%3C/text%3E%3C/svg%3E';
+  };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f5f5f5", display: "flex", flexDirection: "column" }}>
+    <div style={{ 
+      minHeight: "100vh", 
+      background: "#f5f5f5", 
+      display: "flex", 
+      flexDirection: "column" 
+    }}>
       <BuyerNavbar user={navbarUser || {}} />
       
-      <main style={{ flex: 1, padding: "clamp(1rem, 3vw, 2rem)", maxWidth: "1400px", margin: "0 auto", width: "100%" }}>
+      <main style={{ 
+        flex: 1, 
+        padding: "clamp(1rem, 3vw, 2rem)", 
+        maxWidth: "1400px", 
+        margin: "0 auto", 
+        width: "100%" 
+      }}>
         {/* Header Section */}
         <div style={{ marginBottom: "clamp(1.5rem, 4vw, 2rem)" }}>
           <h1 style={{
@@ -44,6 +90,20 @@ const SeedsPage = () => {
             Seeds
           </h1>
         </div>
+
+        {/* Error State */}
+        {error && (
+          <div style={{
+            padding: "1rem",
+            backgroundColor: "#f8d7da",
+            color: "#721c24",
+            borderRadius: "6px",
+            marginBottom: "1rem",
+            border: "1px solid #f5c6cb"
+          }}>
+            {error}
+          </div>
+        )}
 
         {/* Loading State */}
         {loading ? (
@@ -78,7 +138,7 @@ const SeedsPage = () => {
             </p>
           </div>
         ) : (
-          /* Products Grid - Compact Style */
+          /* Products Grid */
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(clamp(140px, 100%, 200px), 1fr))",
@@ -114,12 +174,15 @@ const SeedsPage = () => {
                   position: "relative"
                 }}>
                   <img
-                    src={product.image1 ? `${IMAGE_BASE_URL}${product.image1}` : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="140"%3E%3Crect fill="%23f0f0f0" width="200" height="140"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="12"%3EImage%3C/text%3E%3C/svg%3E'}
+                    src={getImageUrl(product.image1)}
                     alt={product.name}
                     style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover"
+                    }}
+                    onError={(e) => {
+                      e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="140"%3E%3Crect fill="%23f0f0f0" width="200" height="140"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="12"%3ENo Image%3C/text%3E%3C/svg%3E';
                     }}
                   />
                 </div>
@@ -153,6 +216,18 @@ const SeedsPage = () => {
                   {product.description}
                 </p>
 
+                {/* Farmer Info (if available) */}
+                {product.farmer_name && (
+                  <p style={{
+                    fontSize: "clamp(0.65rem, 1.2vw, 0.75rem)",
+                    color: "#999",
+                    margin: "0.2rem 0 0.4rem 0",
+                    lineHeight: "1.2"
+                  }}>
+                    {product.farmer_name} - {product.farmer_location || 'India'}
+                  </p>
+                )}
+
                 {/* Price & Button Container */}
                 <div style={{
                   marginTop: "auto",
@@ -163,29 +238,65 @@ const SeedsPage = () => {
                   paddingTop: "clamp(0.5rem, 1vw, 0.6rem)"
                 }}>
                   <div>
-                    <p style={{
-                      margin: 0,
-                      fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
-                      color: "#1a1a1a",
-                      fontWeight: "600"
-                    }}>
-                      ₹{product.price}
-                    </p>
+                    {/* Display discounted price if available */}
+                    {product.discount_percent > 0 ? (
+                      <div>
+                        <p style={{
+                          margin: 0,
+                          fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
+                          color: "#1a1a1a",
+                          fontWeight: "600"
+                        }}>
+                          ₹{product.discounted_price}
+                        </p>
+                        <p style={{
+                          margin: "0.2rem 0 0 0",
+                          fontSize: "clamp(0.7rem, 1.5vw, 0.8rem)",
+                          color: "#999",
+                          textDecoration: "line-through"
+                        }}>
+                          ₹{product.price}
+                        </p>
+                      </div>
+                    ) : (
+                      <p style={{
+                        margin: 0,
+                        fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
+                        color: "#1a1a1a",
+                        fontWeight: "600"
+                      }}>
+                        ₹{product.price}
+                      </p>
+                    )}
                   </div>
                   
-                  <button style={{
-                    padding: "clamp(0.35rem, 1.5vw, 0.5rem) clamp(0.6rem, 2vw, 1rem)",
-                    background: "#40916c",
-                    color: "#fff",
-                    border: "1px solid #40916c",
-                    borderRadius: "4px",
-                    fontSize: "clamp(0.7rem, 1.5vw, 0.8rem)",
-                    fontWeight: "600",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                    whiteSpace: "nowrap",
-                    flex: "0 0 auto"
-                  }}>
+                  <button 
+                    onClick={() => {
+                      // TODO: Add to cart functionality
+                      console.log("Added to cart:", product.id);
+                    }}
+                    style={{
+                      padding: "clamp(0.35rem, 1.5vw, 0.5rem) clamp(0.6rem, 2vw, 1rem)",
+                      background: "#40916c",
+                      color: "#fff",
+                      border: "1px solid #40916c",
+                      borderRadius: "4px",
+                      fontSize: "clamp(0.7rem, 1.5vw, 0.8rem)",
+                      fontWeight: "600",
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                      whiteSpace: "nowrap",
+                      flex: "0 0 auto"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = "#2d5a47";
+                      e.target.style.borderColor = "#2d5a47";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = "#40916c";
+                      e.target.style.borderColor = "#40916c";
+                    }}
+                  >
                     ADD
                   </button>
                 </div>
@@ -222,6 +333,6 @@ const SeedsPage = () => {
       <EnhancedFooter />
     </div>
   );
-}
+};
 
 export default SeedsPage;

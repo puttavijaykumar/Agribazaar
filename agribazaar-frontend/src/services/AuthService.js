@@ -356,15 +356,15 @@ const searchProducts = async (query) => {
 };
 
 // Fetch all admin products with optional category filter
-const fetchAdminProducts = async (category = null) => {
-  const token = localStorage.getItem("access");
-  let url = `${API_URL}/admin-products/`;
-  if (category) url += `?category=${encodeURIComponent(category)}`;
-  const response = await axios.get(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data;
-};
+// const fetchAdminProducts = async (category = null) => {
+//   const token = localStorage.getItem("access");
+//   let url = `${API_URL}/admin-products/`;
+//   if (category) url += `?category=${encodeURIComponent(category)}`;
+//   const response = await axios.get(url, {
+//     headers: { Authorization: `Bearer ${token}` },
+//   });
+//   return response.data;
+// };
 
 // Fetch a SINGLE admin product by id
 const fetchAdminProductById = async (id) => {
@@ -421,11 +421,92 @@ const fetchAgriNews = async () => {
   return response.data;
 };
 
-// Fetch top offers/featured products - PUBLIC
-const fetchTopOffers = async () => {
-  const response = await axios.get(`${API_URL}/top-offers/`);
+// Fetch products by category (excludes Top Offers)
+const fetchAdminProducts = async (category = null) => {
+  let url = `${API_URL}/admin-products/`;
+  
+  if (category) {
+    url += `?category=${encodeURIComponent(category)}`;
+  }
+  
+  const response = await axios.get(url, {
+    headers: authHeader(),
+  });
   return response.data;
 };
+
+
+// Fetch top offers only
+const fetchTopOffers = async () => {
+  const url = `${API_URL}/top-offers/`;
+  
+  const response = await axios.get(url, {
+    headers: authHeader(),
+  });
+  return response.data;
+};
+
+// Fetch flash deals
+const fetchFlashDeals = async () => {
+  const url = `${API_URL}/admin-products/flash_deals/`;
+  
+  const response = await axios.get(url, {
+    headers: authHeader(),
+  });
+  return response.data;
+};
+
+// Fetch seasonal offers
+const fetchSeasonalOffers = async () => {
+  const url = `${API_URL}/admin-products/seasonal_offers/`;
+  
+  const response = await axios.get(url, {
+    headers: authHeader(),
+  });
+  return response.data;
+};
+
+// Fetch limited stock
+const fetchLimitedStock = async () => {
+  const url = `${API_URL}/admin-products/limited_stock/`;
+  
+  const response = await axios.get(url, {
+    headers: authHeader(),
+  });
+  return response.data;
+};
+
+// Fetch trending products
+const fetchTrending = async () => {
+  const url = `${API_URL}/admin-products/trending/`;
+  
+  const response = await axios.get(url, {
+    headers: authHeader(),
+  });
+  return response.data;
+};
+
+// Fetch featured products
+const fetchFeaturedProducts = async () => {
+  const url = `${API_URL}/featured-products/`;
+  
+  const response = await axios.get(url, {
+    headers: authHeader(),
+  });
+  return response.data;
+};
+
+// Fetch products by specific category
+const fetchProductsByCategory = async (category) => {
+  const url = `${API_URL}/category/${encodeURIComponent(category)}/`;
+  
+  const response = await axios.get(url, {
+    headers: authHeader(),
+  });
+  return response.data;
+};
+
+
 export default {
   register,
   login,
