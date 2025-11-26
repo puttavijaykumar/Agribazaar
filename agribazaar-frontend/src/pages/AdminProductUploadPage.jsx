@@ -41,15 +41,15 @@ const AdminProductUploadPage = () => {
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
     if (type === "checkbox") {
-      setFormData({ ...formData, [name]: checked });
+      setFormData(prev => ({ ...prev, [name]: checked }));
     } else if (type === "file") {
-      setFormData({ ...formData, [name]: files[0] });
-      setPreview({
-        ...preview,
+      setFormData(prev => ({ ...prev, [name]: files[0] }));
+      setPreview(prev => ({
+        ...prev,
         [name]: files[0] ? URL.createObjectURL(files[0]) : undefined,
-      });
+      }));
     } else {
-      setFormData({ ...formData, [name]: value });
+      setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
 
@@ -67,10 +67,13 @@ const AdminProductUploadPage = () => {
       .then(() => {
         setMsg("Product uploaded successfully!");
         setFormData({
-          ...formData,
           name: "",
           price: "",
           description: "",
+          category: "Seeds",
+          offer_category: "none",
+          discount_percent: 0,
+          is_featured: false,
           stock: 0,
           farmer_name: "",
           farmer_location: "",
@@ -86,74 +89,40 @@ const AdminProductUploadPage = () => {
       .finally(() => setLoading(false));
   };
 
-  const FormGroup = ({ label, required = false, children }) => (
-    <div style={{ marginBottom: 20 }}>
-      <label style={{ 
-        display: "block", 
-        marginBottom: 8, 
-        fontSize: 14, 
-        fontWeight: 600,
-        color: "#333",
-        letterSpacing: 0.3
-      }}>
-        {label} {required && <span style={{ color: "#e74c3c" }}>*</span>}
-      </label>
-      {children}
-    </div>
-  );
+  const formGroupStyle = {
+    marginBottom: 20
+  };
 
-  const [focusedField, setFocusedField] = useState(null);
+  const labelStyle = {
+    display: "block", 
+    marginBottom: 8, 
+    fontSize: 14, 
+    fontWeight: 600,
+    color: "#333",
+    letterSpacing: 0.3
+  };
 
-  const inputStyle = (isFocused) => ({
+  const inputStyle = {
     width: "100%",
     padding: "12px 14px",
-    border: "1.5px solid " + (isFocused ? "#227c38" : "#e0e0e0"),
+    border: "1.5px solid #e0e0e0",
     borderRadius: 6,
     fontSize: 14,
-    transition: "border-color 0.2s ease",
     boxSizing: "border-box",
     fontFamily: "inherit",
-    boxShadow: isFocused ? "0 0 0 3px rgba(34, 124, 56, 0.1)" : "none",
-  });
+  };
 
-  const InputField = ({ type = "text", name, ...props }) => (
-    <input
-      type={type}
-      name={name}
-      style={inputStyle(focusedField === name)}
-      onFocus={() => setFocusedField(name)}
-      onBlur={() => setFocusedField(null)}
-      {...props}
-    />
-  );
+  const selectStyle = {
+    ...inputStyle,
+    backgroundColor: "#fff",
+    cursor: "pointer",
+  };
 
-  const SelectField = ({ name, ...props }) => (
-    <select
-      name={name}
-      style={{
-        ...inputStyle(focusedField === name),
-        backgroundColor: "#fff",
-        cursor: "pointer",
-      }}
-      onFocus={() => setFocusedField(name)}
-      onBlur={() => setFocusedField(null)}
-      {...props}
-    />
-  );
-
-  const TextAreaField = ({ name, ...props }) => (
-    <textarea
-      name={name}
-      style={{
-        ...inputStyle(focusedField === name),
-        minHeight: 100,
-        resize: "vertical",
-      }}
-      onFocus={() => setFocusedField(name)}
-      onBlur={() => setFocusedField(null)}
-      {...props}
-    />
-  );
+  const textareaStyle = {
+    ...inputStyle,
+    minHeight: 100,
+    resize: "vertical",
+  };
 
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)", padding: "40px 20px" }}>
@@ -186,25 +155,53 @@ const AdminProductUploadPage = () => {
           borderRadius: 12, 
           boxShadow: "0 10px 40px rgba(0, 0, 0, 0.1)",
           padding: 32,
-          backdropFilter: "blur(10px)"
         }}>
-          <div component="form" onSubmit={handleSubmit} encType="multipart/form-data">
+          <div>
             {/* Basic Information */}
             <div style={{ marginBottom: 28, paddingBottom: 28, borderBottom: "2px solid #f0f0f0" }}>
               <h2 style={{ fontSize: 16, fontWeight: 700, color: "#227c38", marginBottom: 20, textTransform: "uppercase", letterSpacing: 1 }}>
                 Basic Information
               </h2>
-              <FormGroup label="Product Name" required>
-                <InputField name="name" value={formData.name} onChange={handleChange} required placeholder="Enter product name" />
-              </FormGroup>
+              
+              <div style={formGroupStyle}>
+                <label style={labelStyle}>Product Name <span style={{ color: "#e74c3c" }}>*</span></label>
+                <input 
+                  type="text" 
+                  name="name" 
+                  value={formData.name} 
+                  onChange={handleChange} 
+                  placeholder="Enter product name"
+                  required 
+                  style={inputStyle}
+                />
+              </div>
 
-              <FormGroup label="Price (₹)" required>
-                <InputField type="number" step="0.01" min="0" name="price" value={formData.price} onChange={handleChange} required placeholder="0.00" />
-              </FormGroup>
+              <div style={formGroupStyle}>
+                <label style={labelStyle}>Price (₹) <span style={{ color: "#e74c3c" }}>*</span></label>
+                <input 
+                  type="number" 
+                  step="0.01" 
+                  min="0" 
+                  name="price" 
+                  value={formData.price} 
+                  onChange={handleChange} 
+                  placeholder="0.00"
+                  required 
+                  style={inputStyle}
+                />
+              </div>
 
-              <FormGroup label="Description" required>
-                <TextAreaField name="description" value={formData.description} onChange={handleChange} required placeholder="Enter detailed product description" />
-              </FormGroup>
+              <div style={formGroupStyle}>
+                <label style={labelStyle}>Description <span style={{ color: "#e74c3c" }}>*</span></label>
+                <textarea 
+                  name="description" 
+                  value={formData.description} 
+                  onChange={handleChange} 
+                  placeholder="Enter detailed product description"
+                  required 
+                  style={textareaStyle}
+                />
+              </div>
             </div>
 
             {/* Category & Offer */}
@@ -212,32 +209,70 @@ const AdminProductUploadPage = () => {
               <h2 style={{ fontSize: 16, fontWeight: 700, color: "#227c38", marginBottom: 20, textTransform: "uppercase", letterSpacing: 1 }}>
                 Category & Offers
               </h2>
+              
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
-                <FormGroup label="Category">
-                  <SelectField name="category" value={formData.category} onChange={handleChange}>
+                <div style={formGroupStyle}>
+                  <label style={labelStyle}>Category</label>
+                  <select 
+                    name="category" 
+                    value={formData.category} 
+                    onChange={handleChange}
+                    style={selectStyle}
+                  >
                     {CATEGORY_CHOICES.map(cat => <option value={cat} key={cat}>{cat}</option>)}
-                  </SelectField>
-                </FormGroup>
+                  </select>
+                </div>
 
-                <FormGroup label="Offer Type">
-                  <SelectField name="offer_category" value={formData.offer_category} onChange={handleChange}>
+                <div style={formGroupStyle}>
+                  <label style={labelStyle}>Offer Type</label>
+                  <select 
+                    name="offer_category" 
+                    value={formData.offer_category} 
+                    onChange={handleChange}
+                    style={selectStyle}
+                  >
                     {OFFER_CHOICES.map(opt => <option value={opt.value} key={opt.value}>{opt.label}</option>)}
-                  </SelectField>
-                </FormGroup>
+                  </select>
+                </div>
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                <FormGroup label="Discount %">
-                  <InputField type="number" name="discount_percent" min="0" max="100" value={formData.discount_percent} onChange={handleChange} placeholder="0" />
-                </FormGroup>
+                <div style={formGroupStyle}>
+                  <label style={labelStyle}>Discount %</label>
+                  <input 
+                    type="number" 
+                    name="discount_percent" 
+                    min="0" 
+                    max="100" 
+                    value={formData.discount_percent} 
+                    onChange={handleChange} 
+                    placeholder="0"
+                    style={inputStyle}
+                  />
+                </div>
 
-                <FormGroup label="Stock">
-                  <InputField type="number" min="0" name="stock" value={formData.stock} onChange={handleChange} placeholder="0" />
-                </FormGroup>
+                <div style={formGroupStyle}>
+                  <label style={labelStyle}>Stock</label>
+                  <input 
+                    type="number" 
+                    min="0" 
+                    name="stock" 
+                    value={formData.stock} 
+                    onChange={handleChange} 
+                    placeholder="0"
+                    style={inputStyle}
+                  />
+                </div>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 20, padding: "12px 14px", background: "#f0f8f4", borderRadius: 6, border: "1px solid #d4edda" }}>
-                <input type="checkbox" name="is_featured" checked={formData.is_featured} onChange={handleChange} style={{ cursor: "pointer", width: 18, height: 18 }} />
+                <input 
+                  type="checkbox" 
+                  name="is_featured" 
+                  checked={formData.is_featured} 
+                  onChange={handleChange} 
+                  style={{ cursor: "pointer", width: 18, height: 18 }} 
+                />
                 <label style={{ fontSize: 14, color: "#333", fontWeight: 500, cursor: "pointer", margin: 0 }}>
                   Mark as Featured Product
                 </label>
@@ -249,13 +284,30 @@ const AdminProductUploadPage = () => {
               <h2 style={{ fontSize: 16, fontWeight: 700, color: "#227c38", marginBottom: 20, textTransform: "uppercase", letterSpacing: 1 }}>
                 Farmer Information
               </h2>
-              <FormGroup label="Farmer Name">
-                <InputField name="farmer_name" value={formData.farmer_name} onChange={handleChange} placeholder="Enter farmer name" />
-              </FormGroup>
+              
+              <div style={formGroupStyle}>
+                <label style={labelStyle}>Farmer Name</label>
+                <input 
+                  type="text" 
+                  name="farmer_name" 
+                  value={formData.farmer_name} 
+                  onChange={handleChange} 
+                  placeholder="Enter farmer name"
+                  style={inputStyle}
+                />
+              </div>
 
-              <FormGroup label="Farmer Location">
-                <InputField name="farmer_location" value={formData.farmer_location} onChange={handleChange} placeholder="Enter location" />
-              </FormGroup>
+              <div style={formGroupStyle}>
+                <label style={labelStyle}>Farmer Location</label>
+                <input 
+                  type="text" 
+                  name="farmer_location" 
+                  value={formData.farmer_location} 
+                  onChange={handleChange} 
+                  placeholder="Enter location"
+                  style={inputStyle}
+                />
+              </div>
             </div>
 
             {/* Additional Details */}
@@ -263,13 +315,30 @@ const AdminProductUploadPage = () => {
               <h2 style={{ fontSize: 16, fontWeight: 700, color: "#227c38", marginBottom: 20, textTransform: "uppercase", letterSpacing: 1 }}>
                 Additional Details
               </h2>
-              <FormGroup label="Warranty Period">
-                <InputField name="warranty_period" value={formData.warranty_period} onChange={handleChange} placeholder="e.g., 1 year, 6 months" />
-              </FormGroup>
+              
+              <div style={formGroupStyle}>
+                <label style={labelStyle}>Warranty Period</label>
+                <input 
+                  type="text" 
+                  name="warranty_period" 
+                  value={formData.warranty_period} 
+                  onChange={handleChange} 
+                  placeholder="e.g., 1 year, 6 months"
+                  style={inputStyle}
+                />
+              </div>
 
-              <FormGroup label="Fertilizer Type">
-                <InputField name="fertilizer_type" value={formData.fertilizer_type} onChange={handleChange} placeholder="e.g., Organic, NPK" />
-              </FormGroup>
+              <div style={formGroupStyle}>
+                <label style={labelStyle}>Fertilizer Type</label>
+                <input 
+                  type="text" 
+                  name="fertilizer_type" 
+                  value={formData.fertilizer_type} 
+                  onChange={handleChange} 
+                  placeholder="e.g., Organic, NPK"
+                  style={inputStyle}
+                />
+              </div>
             </div>
 
             {/* Image Upload */}
@@ -278,12 +347,9 @@ const AdminProductUploadPage = () => {
                 Product Images
               </h2>
               {[1, 2, 3, 4].map((num) => (
-                <FormGroup key={`image${num}`} label={`Image ${num}`}>
-                  <div style={{ 
-                    display: "flex", 
-                    gap: 12, 
-                    alignItems: "flex-start"
-                  }}>
+                <div key={`image${num}`} style={formGroupStyle}>
+                  <label style={labelStyle}>Image {num}</label>
+                  <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                     <div style={{ flex: 1 }}>
                       <input 
                         type="file" 
@@ -298,6 +364,7 @@ const AdminProductUploadPage = () => {
                           cursor: "pointer",
                           fontSize: 14,
                           color: "#666",
+                          boxSizing: "border-box"
                         }}
                       />
                     </div>
@@ -312,7 +379,7 @@ const AdminProductUploadPage = () => {
                       </div>
                     )}
                   </div>
-                </FormGroup>
+                </div>
               ))}
             </div>
 
@@ -339,14 +406,12 @@ const AdminProductUploadPage = () => {
                 if (!loading) {
                   e.target.style.background = "#1a5a2b";
                   e.target.style.boxShadow = "0 6px 16px rgba(34, 124, 56, 0.4)";
-                  e.target.style.transform = "translateY(-2px)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (!loading) {
                   e.target.style.background = "#227c38";
                   e.target.style.boxShadow = "0 4px 12px rgba(34, 124, 56, 0.3)";
-                  e.target.style.transform = "translateY(0)";
                 }
               }}
             >
