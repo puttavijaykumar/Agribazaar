@@ -102,79 +102,55 @@ const AdminProductUploadPage = () => {
     </div>
   );
 
-  const InputField = ({ type = "text", ...props }) => (
+  const [focusedField, setFocusedField] = useState(null);
+
+  const inputStyle = (isFocused) => ({
+    width: "100%",
+    padding: "12px 14px",
+    border: "1.5px solid " + (isFocused ? "#227c38" : "#e0e0e0"),
+    borderRadius: 6,
+    fontSize: 14,
+    transition: "border-color 0.2s ease",
+    boxSizing: "border-box",
+    fontFamily: "inherit",
+    boxShadow: isFocused ? "0 0 0 3px rgba(34, 124, 56, 0.1)" : "none",
+  });
+
+  const InputField = ({ type = "text", name, ...props }) => (
     <input
       type={type}
-      style={{
-        width: "100%",
-        padding: "12px 14px",
-        border: "1.5px solid #e0e0e0",
-        borderRadius: 6,
-        fontSize: 14,
-        transition: "all 0.3s ease",
-        boxSizing: "border-box",
-        fontFamily: "inherit",
-      }}
-      onFocus={(e) => {
-        e.target.style.borderColor = "#227c38";
-        e.target.style.boxShadow = "0 0 0 3px rgba(34, 124, 56, 0.1)";
-      }}
-      onBlur={(e) => {
-        e.target.style.borderColor = "#e0e0e0";
-        e.target.style.boxShadow = "none";
-      }}
+      name={name}
+      style={inputStyle(focusedField === name)}
+      onFocus={() => setFocusedField(name)}
+      onBlur={() => setFocusedField(null)}
       {...props}
     />
   );
 
-  const SelectField = (props) => (
+  const SelectField = ({ name, ...props }) => (
     <select
+      name={name}
       style={{
-        width: "100%",
-        padding: "12px 14px",
-        border: "1.5px solid #e0e0e0",
-        borderRadius: 6,
-        fontSize: 14,
-        transition: "all 0.3s ease",
-        boxSizing: "border-box",
-        fontFamily: "inherit",
+        ...inputStyle(focusedField === name),
         backgroundColor: "#fff",
         cursor: "pointer",
       }}
-      onFocus={(e) => {
-        e.target.style.borderColor = "#227c38";
-        e.target.style.boxShadow = "0 0 0 3px rgba(34, 124, 56, 0.1)";
-      }}
-      onBlur={(e) => {
-        e.target.style.borderColor = "#e0e0e0";
-        e.target.style.boxShadow = "none";
-      }}
+      onFocus={() => setFocusedField(name)}
+      onBlur={() => setFocusedField(null)}
       {...props}
     />
   );
 
-  const TextAreaField = (props) => (
+  const TextAreaField = ({ name, ...props }) => (
     <textarea
+      name={name}
       style={{
-        width: "100%",
-        padding: "12px 14px",
-        border: "1.5px solid #e0e0e0",
-        borderRadius: 6,
-        fontSize: 14,
-        fontFamily: "inherit",
+        ...inputStyle(focusedField === name),
         minHeight: 100,
         resize: "vertical",
-        transition: "all 0.3s ease",
-        boxSizing: "border-box",
       }}
-      onFocus={(e) => {
-        e.target.style.borderColor = "#227c38";
-        e.target.style.boxShadow = "0 0 0 3px rgba(34, 124, 56, 0.1)";
-      }}
-      onBlur={(e) => {
-        e.target.style.borderColor = "#e0e0e0";
-        e.target.style.boxShadow = "none";
-      }}
+      onFocus={() => setFocusedField(name)}
+      onBlur={() => setFocusedField(null)}
       {...props}
     />
   );
