@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import AuthService from "../services/AuthService";
 import HomeNavbar from "../components/HomeNavbar";  // IMPORT THE NEW NAVBAR
+import React, { useState, useEffect } from "react";
 
 
 const user = JSON.parse(localStorage.getItem("user"));
