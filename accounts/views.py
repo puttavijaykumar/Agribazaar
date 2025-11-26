@@ -512,19 +512,91 @@ class AddressDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return Address.objects.filter(user=self.request.user)
     
-
+from rest_framework import viewsets, permissions
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from .models import AdminCatalogProduct
+from .serializers import AdminCatalogProductSerializer
 
 class AdminCatalogProductViewSet(viewsets.ModelViewSet):
     queryset = AdminCatalogProduct.objects.all()
     serializer_class = AdminCatalogProductSerializer
-    filterset_fields = ['category']
-    filter_backends = [DjangoFilterBackend]
+    
+    # Enable filtering and searching
+    filterset_fields = ['category', 'offer_category']  # NEW: Added offer_category filter
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['name', 'description', 'farmer_name']  # NEW: Search fields
+    ordering_fields = ['price', 'discount_percent', 'created_at']  # NEW: Sort fields
+    ordering = ['-created_at']  # Default ordering
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
             return [permissions.AllowAny()]
         return [permissions.IsAdminUser()]
     
+    # NEW: Custom action to get top offers
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def top_offers(self, request):
+        """
+        Get featured products with offer categories
+        """
+        products = AdminCatalogProduct.objects.exclude(
+            offer_category='none'
+        ).filter(
+            is_featured=True
+        ).order_by('-discount_percent')[:8]
+        
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
+    
+    # NEW: Filter by offer category
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def flash_deals(self, request):
+        """Get all flash deal products"""
+        products = AdminCatalogProduct.objects.filter(
+            offer_category='flash_deal',
+            is_featured=True
+        ).order_by('-discount_percent')
+        
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def seasonal_offers(self, request):
+        """Get all seasonal offer products"""
+        products = AdminCatalogProduct.objects.filter(
+            offer_category='seasonal',
+            is_featured=True
+        ).order_by('-created_at')
+        
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def limited_stock(self, request):
+        """Get all limited stock products"""
+        products = AdminCatalogProduct.objects.filter(
+            offer_category='limited_stock',
+            is_featured=True,
+            stock__lt=20  # Stock less than 20
+        )
+        
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def trending(self, request):
+        """Get all trending products"""
+        products = AdminCatalogProduct.objects.filter(
+            offer_category='trending',
+            is_featured=True
+        ).order_by('-created_at')[:10]
+        
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
+
     
 from rest_framework import status
 import requests
@@ -564,39 +636,40 @@ class AgricultureNewsAPIView(APIView):
 class TopOffersAPIView(APIView):
     def get(self, request):
         try:
-            # Fetch products marked as "featured" with active discounts
-            products = AdminCatalogProduct.objects.filter(
+            # Fetch products with offer_category != 'none' AND is_featured = True
+            products = AdminCatalogProduct.objects.exclude(
+                offer_category='none'
+            ).filter(
                 is_featured=True
-            ).values(
-                'id', 
-                'name', 
-                'price', 
-                'image1', 
-                'description', 
-                'category', 
-                'discount_percent', 
-                'farmer_name', 
-                'farmer_location', 
-                'stock'
-            )[:8]  # Limit to 8 top offers
+            ).order_by('-discount_percent')[:8]  # Sort by discount, limit to 8
             
             result = []
             for p in products:
-                original_price = float(p['price'])
-                discount_percent = p.get('discount_percent', 0) or 0
+                original_price = float(p.price)
+                discount_percent = p.discount_percent or 0
                 discounted_price = original_price * (1 - discount_percent / 100)
                 
+                # Offer type labels
+                offer_labels = {
+                    'flash_deal': 'Flash Deal',
+                    'seasonal': 'Seasonal',
+                    'limited_stock': 'Limited Stock',
+                    'trending': 'Trending',
+                }
+                
                 result.append({
-                    "id": p['id'],
-                    "title": p['name'],
-                    "desc": p['description'],
-                    "img": f"https://res.cloudinary.com/dpiogqjk4/{p['image1']}" if p['image1'] else "",
+                    "id": p.id,
+                    "title": p.name,
+                    "desc": p.description,
+                    "img": p.image1.url if p.image1 else "",  # Use Cloudinary URL directly
                     "discount": f"{discount_percent}%",
                     "originalPrice": original_price,
                     "discountedPrice": round(discounted_price, 2),
-                    "farmer": p.get('farmer_name', 'Unknown Farmer'),
-                    "location": p.get('farmer_location', 'India'),
-                    "stock": p['stock'],
+                    "farmer": p.farmer_name or 'Unknown Farmer',
+                    "location": p.farmer_location or 'India',
+                    "stock": p.stock,
+                    "offerType": offer_labels.get(p.offer_category, 'Offer'),  # NEW
+                    "category": p.category,  # NEW: Include product category
                 })
             
             return Response(result, status=status.HTTP_200_OK)

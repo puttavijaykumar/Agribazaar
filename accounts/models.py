@@ -202,6 +202,38 @@ class Address(models.Model):
     def __str__(self):
         return f"{self.line1}, {self.city}, {self.state}"
 
+# # Admin Catalog Product model for managing products in admin catalog
+# class AdminCatalogProduct(models.Model):
+#     CATEGORY_CHOICES = [
+#         ("Seeds", "Seeds"),
+#         ("Fertilizers", "Fertilizers"),
+#         ("Tools", "Tools"),
+#         ("Equipment", "Equipment"),
+#         ("Irrigation", "Irrigation"),
+#     ]
+#     name = models.CharField(max_length=100)
+#     price = models.DecimalField(max_digits=10, decimal_places=2)
+#     description = models.TextField()
+#     category = models.CharField(max_length=40, choices=CATEGORY_CHOICES)
+#     image1 = CloudinaryField('image', blank=True, null=True)
+#     image2 = CloudinaryField('image', blank=True, null=True)
+#     image3 = CloudinaryField('image', blank=True, null=True)
+#     image4 = CloudinaryField('image', blank=True, null=True)
+#     stock = models.PositiveIntegerField(default=0)
+#     # NEW FIELDS FOR TOP OFFERS
+#     is_featured = models.BooleanField(default=False)  # Mark as featured/top offer
+#     discount_percent = models.IntegerField(default=0)  # Discount percentage
+#     farmer_name = models.CharField(max_length=255, blank=True, null=True)
+#     farmer_location = models.CharField(max_length=255, blank=True, null=True)
+#     warranty_period = models.CharField(max_length=50, blank=True, null=True)  # for Tools/Equipment
+#     fertilizer_type = models.CharField(max_length=50, blank=True, null=True)  # for Fertilizer-specific info
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
+#     def __str__(self):
+#         return f"{self.name} ({self.category})"
+    
+    
 # Admin Catalog Product model for managing products in admin catalog
 class AdminCatalogProduct(models.Model):
     CATEGORY_CHOICES = [
@@ -211,6 +243,16 @@ class AdminCatalogProduct(models.Model):
         ("Equipment", "Equipment"),
         ("Irrigation", "Irrigation"),
     ]
+    
+    # NEW: Offer category choices
+    OFFER_CHOICES = [
+        ('none', 'Not an Offer'),
+        ('flash_deal', 'Flash Deal'),
+        ('seasonal', 'Seasonal Offer'),
+        ('limited_stock', 'Limited Stock'),
+        ('trending', 'Trending Now'),
+    ]
+    
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
@@ -220,13 +262,23 @@ class AdminCatalogProduct(models.Model):
     image3 = CloudinaryField('image', blank=True, null=True)
     image4 = CloudinaryField('image', blank=True, null=True)
     stock = models.PositiveIntegerField(default=0)
-    # NEW FIELDS FOR TOP OFFERS
+    
+    # EXISTING FIELDS FOR TOP OFFERS
     is_featured = models.BooleanField(default=False)  # Mark as featured/top offer
     discount_percent = models.IntegerField(default=0)  # Discount percentage
     farmer_name = models.CharField(max_length=255, blank=True, null=True)
     farmer_location = models.CharField(max_length=255, blank=True, null=True)
     warranty_period = models.CharField(max_length=50, blank=True, null=True)  # for Tools/Equipment
     fertilizer_type = models.CharField(max_length=50, blank=True, null=True)  # for Fertilizer-specific info
+    
+    # NEW FIELD: Offer Category (separate from product category)
+    offer_category = models.CharField(
+        max_length=20,
+        choices=OFFER_CHOICES,
+        default='none',
+        help_text="Select offer type to display in Top Offers section"
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
