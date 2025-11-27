@@ -82,71 +82,7 @@ const mainCategoryContainerStyle = {
   WebkitOverflowScrolling: "touch",
 };
 
-const offersContainer = {
-  display: "flex",
-  gap: "1rem",
-  overflowX: "auto",
-  padding: "1rem 2rem",
-  margin: "1rem 0",
-  overflowY: "hidden",
-  scrollBehavior: "smooth",
-  WebkitOverflowScrolling: "touch",
-  paddingRight: "3rem",
-};
 
-const offerCardStyle = {
-  flex: "1 1 220px",
-  maxWidth: "260px",
-  minHeight: "230px",
-  backgroundColor: colors.lightBg,
-  color: colors.contrastText,
-  padding: "1rem",
-  borderRadius: "12px",
-  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-  flexShrink: 0,
-  textAlign: "center",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "flex-start",
-  alignItems: "center",
-  transition: "transform 0.3s ease, box-shadow 0.3s ease",
-};
-
-const offerImgStyle = {
-  width: "100%",
-  height: "100px",
-  objectFit: "cover",
-  borderRadius: "10px",
-  marginBottom: "10px",
-};
-
-const offerProducts = [
-  {
-    title: "Black Rice - 10% Off",
-    desc: "Buy pulses with offer 10%",
-    img: "https://res.cloudinary.com/dpiogqjk4/image/upload/v1757018968/lzfkpdpk0unm9dmugb2x.avif",
-  },
-  {
-    title: "Sweet Corn - 15% Off",
-    desc: "Get the finest quality red chillies at unbeatable prices!",
-    img: "https://res.cloudinary.com/dpiogqjk4/image/upload/v1761923036/maize_cloudinary_vceqyu.jpg",
-  },
-  {
-    title: "Indrayani Rice - 20% Off",
-    desc: "Freshness You Can Taste – At Juicy Prices!",
-    img: "https://res.cloudinary.com/dpiogqjk4/image/upload/v1757094535/nuh9degi74yky2b7wrua.jpg",
-  },
-  {
-    title: "Kolam Rice - 25% Off",
-    desc: "Pure & Wholesome Wheat – Now at Special Prices!",
-    img: "https://res.cloudinary.com/dpiogqjk4/image/upload/v1761923196/pulses_cloudinary_rwjwoi.jpg",
-  },
-  {
-    title: "Sugarcane Juice - 18% Off",
-    desc: "Premium Rice at Unbeatable Prices!",
-    img: "https://res.cloudinary.com/dpiogqjk4/image/upload/v1761923328/vegetables_mu0jxc.jpg",
-  },
-];
 
 const categoryContainerStyle = {
   display: "flex",
