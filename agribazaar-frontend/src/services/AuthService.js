@@ -508,7 +508,7 @@ const fetchProductsByCategory = async (category) => {
 
 // In AuthService.js or AuthServices.jsx
 const fetchLiveMarketPrices = async () => {
-  const url = `${API_URL}/live-market-prices/`; 
+  const url = `${API_URL}/api/live-market-prices/`; 
   const response = await axios.get(url, {
     headers: authHeader(), 
   });
