@@ -265,7 +265,7 @@ const TopOffersSection = ({ colors }) => {
                           color: "#999",
                         }}
                       >
-                        ₹{originalPrice}
+                        ₹{originalPrice} per kg
                       </span>
                     )}
                     <span
@@ -275,8 +275,8 @@ const TopOffersSection = ({ colors }) => {
                         color: colors.primaryGreen,
                       }}
                     >
-                      ₹{discountedPrice}
-                    </span>
+                      ₹{discountedPrice} per kg
+                    </span> 
                   </div>
 
                   {/* Farmer Info */}
