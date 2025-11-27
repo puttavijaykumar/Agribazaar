@@ -506,6 +506,15 @@ const fetchProductsByCategory = async (category) => {
   return response.data;
 };
 
+// In AuthService.js or AuthServices.jsx
+const fetchLiveMarketPrices = async () => {
+  const url = `${API_URL}/live-market-prices/`; 
+  const response = await axios.get(url, {
+    headers: authHeader(), 
+  });
+  return response.data;
+};
+
 
 export default {
   register,
@@ -551,6 +560,7 @@ export default {
   updateAdminProduct,
   deleteAdminProduct,
   fetchAgriNews,
+  fetchLiveMarketPrices,
   fetchTopOffers,
   fetchFlashDeals,
   fetchSeasonalOffers,

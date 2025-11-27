@@ -18,7 +18,7 @@ from .views import AddressListCreateView, AddressDetailView
 from .views import MyProductListView
 
 from .views import AdminCatalogProductViewSet
-from .views import AgricultureNewsAPIView
+from .views import AgricultureNewsAPIView,LiveMarketPriceAPIView
 from .views import TopOffersAPIView,CategoryProductsAPIView,FeaturedProductsAPIView
 
 router = DefaultRouter()
@@ -72,6 +72,7 @@ urlpatterns = [
     path('addresses/', AddressListCreateView.as_view(), name='address-list-create'),
     path('addresses/<int:pk>/', AddressDetailView.as_view(), name='address-detail'),
     path('api/agri-news/latest/', AgricultureNewsAPIView.as_view(), name='agri-news-latest'),
+    path('api/live-market-prices/', LiveMarketPriceAPIView.as_view(), name='live-market-prices'),
     path('top-offers/', TopOffersAPIView.as_view(), name='top-offers'),
     path('featured-products/', FeaturedProductsAPIView.as_view(), name='featured-products'),
     path('category/<str:category>/', CategoryProductsAPIView.as_view(), name='category-products'),

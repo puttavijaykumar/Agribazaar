@@ -802,4 +802,16 @@ class AgricultureNewsAPIView(APIView):
         except Exception as e:
             return Response({"error": "Failed to fetch news", "detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
+# Live Market Prices API View
+class LiveMarketPriceAPIView(APIView):
+    def get(self, request):
+        api_key = "579b464db66ec23bdd0000018d6f8bafc93d4a3863116e69aee5d22b"
+        url = f"https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key={api_key}&format=json&limit=10"
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()
+            # Optionally, filter or format data before returning
+            return Response(data)
+        except Exception as e:
+            return Response({"error": "Failed to fetch live market prices", "detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

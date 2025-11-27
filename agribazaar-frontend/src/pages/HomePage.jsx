@@ -4,6 +4,7 @@ import AuthService from "../services/AuthService";
 import TopOffersSection from "../components/TopOffersSection"; // LINE 4
 import HomeNavbar from "../components/HomeNavbar";  // IMPORT THE NEW NAVBAR
 import AgricultureNewsSection from "../components/AgricultureNewsSection";
+import LiveMarketPricesPage from "../components/LiveMarketPricesPage";
 
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -149,21 +150,21 @@ const productCategories = [
   },
 ];
 
-const livePricesStyle = {
-  backgroundColor: colors.harvestYellow,
-  color: colors.primaryGreen,
-  padding: "1rem 2rem",
-  display: "flex",
-  gap: "2rem",
-  overflowX: "auto",
-  overflowY: "hidden",
-  fontWeight: "600",
-  borderRadius: "12px",
-  margin: "1rem 2rem",
-  scrollBehavior: "smooth",
-  WebkitOverflowScrolling: "touch",
-  paddingRight: "3rem",
-};
+// const livePricesStyle = {
+//   backgroundColor: colors.harvestYellow,
+//   color: colors.primaryGreen,
+//   padding: "1rem 2rem",
+//   display: "flex",
+//   gap: "2rem",
+//   overflowX: "auto",
+//   overflowY: "hidden",
+//   fontWeight: "600",
+//   borderRadius: "12px",
+//   margin: "1rem 2rem",
+//   scrollBehavior: "smooth",
+//   WebkitOverflowScrolling: "touch",
+//   paddingRight: "3rem",
+// };
 
 const footerStyle = {
   background: `linear-gradient(135deg, #0d3822 0%, #1b5e20 25%, #2d6a4f 50%, #1b5e20 75%, #0d3822 100%)`,
@@ -522,24 +523,8 @@ const HomePage = () => {
       </section>
 
       {/* ---------- SECTION 5: LIVE MARKET PRICES ---------- */}
-      <h2
-        style={{
-          fontSize: "clamp(1.3rem, 5vw, 2rem)",
-          fontWeight: "800",
-          textAlign: "left",
-          marginLeft: "2rem",
-          marginBottom: "16px",
-          color: colors.primaryGreen,
-          marginTop: "2rem",
-        }}
-      >
-         Live Market Prices
-      </h2>
-      <section style={livePricesStyle}>
-        <span style={{ flexShrink: 0, whiteSpace: "nowrap" }}>Potato (Kangra) ₹1700 - ₹2600</span>
-        <span style={{ flexShrink: 0, whiteSpace: "nowrap" }}>Banana (Palampur) ₹4300 - ₹4400</span>
-        <span style={{ flexShrink: 0, whiteSpace: "nowrap" }}>Bottle gourd (Palampur) ₹3500 - ₹5000</span>
-      </section>
+      <LiveMarketPricesSection colors={colors} />
+
 
       {/* ---------- FOOTER ---------- */}
       <EnhancedFooter />
