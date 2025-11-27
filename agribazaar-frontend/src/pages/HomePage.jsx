@@ -150,22 +150,6 @@ const productCategories = [
   },
 ];
 
-// const livePricesStyle = {
-//   backgroundColor: colors.harvestYellow,
-//   color: colors.primaryGreen,
-//   padding: "1rem 2rem",
-//   display: "flex",
-//   gap: "2rem",
-//   overflowX: "auto",
-//   overflowY: "hidden",
-//   fontWeight: "600",
-//   borderRadius: "12px",
-//   margin: "1rem 2rem",
-//   scrollBehavior: "smooth",
-//   WebkitOverflowScrolling: "touch",
-//   paddingRight: "3rem",
-// };
-
 const footerStyle = {
   background: `linear-gradient(135deg, #0d3822 0%, #1b5e20 25%, #2d6a4f 50%, #1b5e20 75%, #0d3822 100%)`,
   color: "white",
@@ -455,7 +439,7 @@ const HomePage = () => {
 
 
       {/* ---------- SECTION 2: AGRICULTURE NEWS ---------- */}
-      {/* <h2
+      <h2
         style={{
           fontSize: "clamp(1.3rem, 5vw, 2rem)",
           fontWeight: "800",
@@ -467,7 +451,7 @@ const HomePage = () => {
         }}
       >
          Agriculture News & Updates
-      </h2> */}
+      </h2>
 
       <AgricultureNewsSection newsItems={newsItems} newsSectionStyle={newsSectionStyle} />
 

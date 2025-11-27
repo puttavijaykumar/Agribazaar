@@ -3,6 +3,7 @@ import React, { useState, useEffect  } from "react";
 import { Heart, ShoppingCart, Package, Bell, MessageCircle, Trophy, User, Search, LogOut, Settings, MapPin, HelpCircle } from "lucide-react";
 import AuthService from "../services/AuthService";
 import BuyerNavbar from "../components/BuyerNavbar";
+import TopOffersSection from "../components/TopOffersSection"; // LINE 4
 
 
 
@@ -660,8 +661,9 @@ const BuyerDashboard = () => {
         ))}
         <div style={{ minWidth: "2rem", flexShrink: 0 }}></div>
       </section>
+      {/* Top Offers Section */}
+      <TopOffersSection colors={colors} />
 
-      
       {/* Recently Viewed */}
       <section style={{ padding: "1rem 2rem" }}>
         <h2 style={{ fontWeight: "700", color: colors.primaryGreen, marginBottom: "1rem" }}>Recently Viewed Products</h2>
