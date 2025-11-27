@@ -507,6 +507,19 @@ const HomePage = () => {
       </section>
 
       {/* ---------- SECTION 5: LIVE MARKET PRICES ---------- */}
+      <h2
+        style={{
+          fontSize: "clamp(1.3rem, 5vw, 2rem)",
+          fontWeight: "800",
+          textAlign: "left",
+          marginLeft: "2rem",
+          marginBottom: "16px",
+          color: colors.primaryGreen,
+          marginTop: "2rem",
+        }}
+      >
+        Live Market Price in India 
+      </h2>
       <LiveMarketPricesSection colors={colors} />
 
 
