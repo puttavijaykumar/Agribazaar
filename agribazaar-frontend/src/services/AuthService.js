@@ -507,10 +507,13 @@ const fetchProductsByCategory = async (category) => {
 };
 
 // In AuthService.js or AuthServices.jsx
-const fetchLiveMarketPrices = async () => {
-  const url = `${API_URL}/api/live-market-prices/`; 
+const fetchLiveMarketPrices = async (limit = 50) => {
+  let url = `${API_URL}/api/live-market-prices/`;
+  if (limit) {
+    url += `?limit=${limit}`;
+  }
   const response = await axios.get(url, {
-    headers: authHeader(), 
+    headers: authHeader(),
   });
   return response.data;
 };
