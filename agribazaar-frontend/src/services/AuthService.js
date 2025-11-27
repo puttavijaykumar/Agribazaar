@@ -552,4 +552,10 @@ export default {
   deleteAdminProduct,
   fetchAgriNews,
   fetchTopOffers,
+  fetchFlashDeals,
+  fetchSeasonalOffers,
+  fetchLimitedStock,
+  fetchTrending,
+  fetchFeaturedProducts,
+  fetchProductsByCategory,
 };

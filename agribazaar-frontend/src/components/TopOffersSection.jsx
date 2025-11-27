@@ -1,19 +1,37 @@
 import React, { useEffect, useState } from "react";
 import AuthService from "../services/AuthService";
 
+// Helper for safe image URLs
+const getImageUrl = (img) => {
+  if (!img) {
+    return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="260" height="120"%3E%3Crect fill="%23f0f0f0" width="260" height="120"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="14"%3ENo Image%3C/text%3E%3C/svg%3E';
+  }
+  // If it's already a full URL, return it
+  if (typeof img === "string" && img.startsWith("http")) {
+    return img;
+  }
+  // Otherwise it's a relative path from Cloudinary
+  return img;
+};
+
 const TopOffersSection = ({ colors }) => {
   const [offerProducts, setOfferProducts] = useState([]);
   const [loadingOffers, setLoadingOffers] = useState(true);
+  const [error, setError] = useState(null);
   const [hoverOffer, setHoverOffer] = useState(null);
 
   useEffect(() => {
+    setLoadingOffers(true);
+    setError(null);
     AuthService.fetchTopOffers()
       .then((offers) => {
-        setOfferProducts(offers);
+        console.log("Top offers fetched:", offers); // Debug: check if your new product is here
+        setOfferProducts(offers || []);
         setLoadingOffers(false);
       })
       .catch((err) => {
         console.error("Error fetching top offers:", err);
+        setError("Failed to load top offers. Please try again later.");
         setLoadingOffers(false);
       });
   }, []);
@@ -100,35 +118,114 @@ const TopOffersSection = ({ colors }) => {
         Top Offers
       </h2>
 
+      {/* Error State */}
+      {error && (
+        <div
+          style={{
+            padding: "1rem",
+            margin: "0 2rem 1rem 2rem",
+            backgroundColor: "#f8d7da",
+            color: "#721c24",
+            borderRadius: "6px",
+            border: "1px solid #f5c6cb",
+          }}
+        >
+          {error}
+        </div>
+      )}
+
       <section style={offersContainer}>
         {loadingOffers ? (
-          <span>Loading top offers...</span>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "280px",
+              width: "100%",
+              flexDirection: "column",
+              gap: "1rem",
+            }}
+          >
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                border: "3px solid #e8e8e8",
+                borderTop: "3px solid #2e7d32",
+                borderRadius: "50%",
+                animation: "spin 0.8s linear infinite",
+              }}
+            ></div>
+            <span style={{ color: "#666", fontSize: "0.95rem" }}>
+              Loading top offers...
+            </span>
+          </div>
         ) : offerProducts.length === 0 ? (
-          <span>No offers available right now.</span>
+          <div
+            style={{
+              textAlign: "center",
+              padding: "2rem",
+              width: "100%",
+              color: "#666",
+            }}
+          >
+            No offers available right now.
+          </div>
         ) : (
-          offerProducts.map(
-            ({ title, desc, img, discount, originalPrice, discountedPrice, farmer, location, stock }, idx) => (
+          offerProducts.map((offer) => {
+            const {
+              id,
+              title,
+              desc,
+              img,
+              discount,
+              originalPrice,
+              discountedPrice,
+              farmer,
+              location,
+              stock,
+            } = offer;
+
+            return (
               <div
-                key={idx}
+                key={id} // ✅ Use id instead of idx
                 style={{
                   ...offerCardStyle,
-                  transform: hoverOffer === idx ? "scale(1.05)" : "scale(1)",
+                  transform: hoverOffer === id ? "scale(1.05)" : "scale(1)",
                   boxShadow:
-                    hoverOffer === idx
+                    hoverOffer === id
                       ? "0 8px 16px rgba(0,0,0,0.2)"
                       : "0 4px 8px rgba(0,0,0,0.1)",
                 }}
-                onMouseEnter={() => setHoverOffer(idx)}
+                onMouseEnter={() => setHoverOffer(id)}
                 onMouseLeave={() => setHoverOffer(null)}
               >
                 {/* Discount Badge */}
-                {discount !== "0%" && <div style={discountBadgeStyle}>{discount} OFF</div>}
+                {discount && discount !== "0%" && (
+                  <div style={discountBadgeStyle}>{discount} OFF</div>
+                )}
 
-                {/* Image */}
-                <img src={img} alt={title} style={offerImgStyle} />
+                {/* Image with fallback */}
+                <img
+                  src={getImageUrl(img)}
+                  alt={title}
+                  style={offerImgStyle}
+                  onError={(e) => {
+                    e.target.src =
+                      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="260" height="120"%3E%3Crect fill="%23f0f0f0" width="260" height="120"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23ccc" font-size="14"%3ENo Image%3C/text%3E%3C/svg%3E';
+                  }}
+                />
 
                 {/* Content */}
-                <div style={{ width: "100%", flex: 1, display: "flex", flexDirection: "column" }}>
+                <div
+                  style={{
+                    width: "100%",
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
                   <h3
                     style={{
                       fontSize: "0.95rem",
@@ -160,15 +257,17 @@ const TopOffersSection = ({ colors }) => {
                       justifyContent: "center",
                     }}
                   >
-                    <span
-                      style={{
-                        fontSize: "0.8rem",
-                        textDecoration: "line-through",
-                        color: "#999",
-                      }}
-                    >
-                      ₹{originalPrice}
-                    </span>
+                    {discount && discount !== "0%" && (
+                      <span
+                        style={{
+                          fontSize: "0.8rem",
+                          textDecoration: "line-through",
+                          color: "#999",
+                        }}
+                      >
+                        ₹{originalPrice}
+                      </span>
+                    )}
                     <span
                       style={{
                         fontSize: "1.1rem",
@@ -181,21 +280,23 @@ const TopOffersSection = ({ colors }) => {
                   </div>
 
                   {/* Farmer Info */}
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "#666",
-                      padding: "0.5rem 0",
-                      borderTop: "1px solid #ddd",
-                      paddingTop: "0.5rem",
-                      marginBottom: "0.5rem",
-                    }}
-                  >
-                    👨‍🌾 {farmer} • {location}
-                  </div>
+                  {(farmer || location) && (
+                    <div
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "#666",
+                        padding: "0.5rem 0",
+                        borderTop: "1px solid #ddd",
+                        paddingTop: "0.5rem",
+                        marginBottom: "0.5rem",
+                      }}
+                    >
+                      👨‍🌾 {farmer || "Farmer"} • {location || "India"}
+                    </div>
+                  )}
 
                   {/* Stock Alert */}
-                  {stock < 20 && (
+                  {stock > 0 && stock < 20 && (
                     <div
                       style={{
                         fontSize: "0.8rem",
@@ -217,13 +318,17 @@ const TopOffersSection = ({ colors }) => {
                     onMouseLeave={(e) =>
                       (e.target.style.background = colors.primaryGreen)
                     }
+                    onClick={() => {
+                      // TODO: Navigate to product detail page or add to cart
+                      console.log("Shop Now clicked for product", id);
+                    }}
                   >
                     Shop Now
                   </button>
                 </div>
               </div>
-            )
-          )
+            );
+          })
         )}
       </section>
 
@@ -235,6 +340,10 @@ const TopOffersSection = ({ colors }) => {
         section {
           -ms-overflow-style: none;
           scrollbar-width: none;
+        }
+        
+        @keyframes spin {
+          to { transform: rotate(360deg); }
         }
       `}</style>
     </>
