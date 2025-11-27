@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import AuthService from "../services/AuthService";
 
 const livePricesStyle = (colors) => ({
-  backgroundColor: colors.harvestYellow,
+  backgroundColor: colors.harvestYellow,  // light yellow background for the entire container
   color: colors.primaryGreen,
   padding: "1rem 2rem",
   display: "flex",
-  gap: "2rem",
+  gap: "1rem",
   overflowX: "auto",
   overflowY: "hidden",
   fontWeight: "600",
@@ -15,13 +15,21 @@ const livePricesStyle = (colors) => ({
   scrollBehavior: "smooth",
   WebkitOverflowScrolling: "touch",
   paddingRight: "3rem",
+  // Added white-space nowrap so contents won't wrap vertically
+  whiteSpace: "nowrap",
 });
 
 const priceItemStyle = {
   flexShrink: 0,
-  whiteSpace: "nowrap",
   cursor: "pointer",
-  textDecoration: "underline",
+  backgroundColor: "#fff9db",  // lighter yellow shade for individual price box
+  borderRadius: "8px",
+  padding: "0.5rem 1rem",
+  boxShadow: "0 2px 5px rgba(0,0,0,0.07)",
+  userSelect: "none",
+  display: "inline-block",
+  color: "inherit",
+  textDecoration: "none",  // no underline
 };
 
 const LiveMarketPricesSection = ({ colors }) => {
@@ -43,11 +51,8 @@ const LiveMarketPricesSection = ({ colors }) => {
       });
   }, []);
 
-  // Generate market URL – you can replace or improve this logic if you have exact URLs
   const getMarketUrl = (marketName) => {
-    // Simple example: Convert market name to URL-friendly string and external URL
     if (!marketName) return "#";
-    const slug = marketName.toLowerCase().replace(/\s+/g, "-");
     return `https://www.google.com/search?q=${encodeURIComponent(marketName + " market")}`;
   };
 
