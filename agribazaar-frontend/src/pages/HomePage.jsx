@@ -4,7 +4,7 @@ import AuthService from "../services/AuthService";
 import TopOffersSection from "../components/TopOffersSection"; // LINE 4
 import HomeNavbar from "../components/HomeNavbar";  // IMPORT THE NEW NAVBAR
 import AgricultureNewsSection from "../components/AgricultureNewsSection";
-import LiveMarketPricesPage from "../components/LiveMarketPricesPage";
+import LiveMarketPricesSection from "../components/LiveMarketPricesSection";
 
 
 const user = JSON.parse(localStorage.getItem("user"));
