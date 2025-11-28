@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
-import TopOffersSection from "../components/TopOffersSection"; // LINE 4
-import HomeNavbar from "../components/HomeNavbar";  // IMPORT THE NEW NAVBAR
+import TopOffersSection from "../components/TopOffersSection"; 
+import HomeNavbar from "../components/HomeNavbar";  
 import AgricultureNewsSection from "../components/AgricultureNewsSection";
 import LiveMarketPricesSection from "../components/LiveMarketPricesSection";
+import MobileBottomNav from "./MobileBottomNav";
 
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -525,6 +526,8 @@ const HomePage = () => {
 
       {/* ---------- FOOTER ---------- */}
       <EnhancedFooter />
+      
+      <MobileBottomNav loggedIn={!!user} />
 
       <style>{`
         /* Hide scrollbar but keep scrolling */

@@ -17,7 +17,6 @@ import {
   X,
 } from "lucide-react";
 import "./HomeNavbar.css";
-
 const HomeNavbar = ({ user }) => {
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
@@ -563,7 +562,7 @@ const HomeNavbar = ({ user }) => {
             )}
           </div>
 
-          {/* Mobile Icons */}
+          {/* Mobile Icons
           {isBuyer && (
             <div
               style={{
@@ -597,9 +596,9 @@ const HomeNavbar = ({ user }) => {
                 <Package size={20} /> Orders
               </Link>
             </div>
-          )}
+          )} */}
 
-          {/* Mobile Auth */}
+          {/* Mobile Auth
           {loggedIn ? (
             <div
               style={{
@@ -694,7 +693,7 @@ const HomeNavbar = ({ user }) => {
             >
               <UserCheck size={18} /> Become a Seller
             </Link>
-          )}
+          )} */}
         </div>
       )}
 
