@@ -779,38 +779,7 @@ const BuyerDashboard = () => {
           </div>
         )}
       </section>
-      {/* ---------- SECTION 2: TOP OFFERS ---------- */}
-      <h2
-        style={{
-          fontSize: "clamp(1.3rem, 5vw, 2rem)",
-          fontWeight: "800",
-          textAlign: "left",
-          marginLeft: "2rem",
-          marginBottom: "16px",
-          color: colors.primaryGreen,
-          marginTop: "2rem",
-        }}
-      >
-         Top Offers
-      </h2>
-      <section style={offersContainer}>
-        {offerProducts.map(({ title, desc, img }, idx) => (
-          <div
-            key={idx}
-            style={{
-              ...offerCardStyle,
-              transform: idx === -1 ? "scale(1.05)" : "scale(1)",
-              boxShadow:
-                idx === -1 ? "0 8px 16px rgba(0,0,0,0.2)" : "0 4px 8px rgba(0,0,0,0.1)",
-            }}
-          >
-            <img src={img} alt={title} style={offerImgStyle} />
-            <h3 style={{ fontSize: "0.95rem", margin: "0.5rem 0 0.3rem" }}>{title}</h3>
-            <p style={{ fontSize: "0.85rem", margin: "0", color: "#666" }}>{desc}</p>
-          </div>
-        ))}
-      </section>
-
+      
       {/* ---------- SECTION 3: PRODUCT CATEGORIES ---------- */}
       <h2
         style={{
