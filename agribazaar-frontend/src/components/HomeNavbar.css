@@ -1,0 +1,44 @@
+/* Base navbar styling */
+.nav-root {
+  background: #388e3c;            /* Green bar */
+  color: white;
+  padding: 0.8rem 1rem;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Desktop by default */
+.desktop-nav,
+.desktop-icons {
+  display: flex;
+}
+
+.mobile-menu-btn,
+.mobile-nav,
+.mobile-overlay {
+  display: none;
+}
+
+/* Mobile breakpoint */
+@media (max-width: 768px) {
+  .desktop-nav,
+  .desktop-icons {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-nav {
+    display: flex;
+  }
+
+  .mobile-overlay {
+    display: block;
+  }
+}
