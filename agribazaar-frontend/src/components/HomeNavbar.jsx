@@ -1,6 +1,6 @@
 // src/components/HomeNavbar.jsx
 import React, { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ShoppingCart,
   Heart,
@@ -15,27 +15,21 @@ import {
   Tractor,
   Menu,
   X,
-  Search,     // ⭐ Added for mobile inline search button
 } from "lucide-react";
 import "./HomeNavbar.css";
 
 const HomeNavbar = ({ user }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-
   const [showProfile, setShowProfile] = useState(false);
   const [showCategoryMenu, setShowCategoryMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showDashboardDropdown, setShowDashboardDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // ROLE CHECKS
   const loggedIn = !!user;
-  const isFarmer = user?.role === "farmer";
-  const isBuyer = user?.role === "buyer";
-  const isBoth = user?.role === "both"; // both = uses original Switch dropdown
-
-  const isHomePage = location.pathname === "/";   // ⭐ Needed for switch on home only
+  const isFarmer = user?.role === "farmer" || user?.role === "both";
+  const isBuyer = user?.role === "buyer" || user?.role === "both";
+  const isBoth = user?.role === "both";
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -60,88 +54,9 @@ const HomeNavbar = ({ user }) => {
     "Machinery",
   ];
 
-  /*  
-  ==========================================================
-    ⭐ MOBILE SWITCH BUTTON LOGIC
-    - Only appears on HOME PAGE
-    - Farmer → Farmer button
-    - Buyer → Buyer button
-    - Both → old dropdown (handled in original code)
-    - Guest → no switch
-  ==========================================================
-  */
-  const renderMobileSwitch = () => {
-    if (isBoth || !loggedIn) return null; // both uses old dropdown
-
-    if (isFarmer && isHomePage) {
-      return (
-        <button
-          className="mobile-switch-btn"
-          onClick={() => navigate("/farmer/dashboard")}
-        >
-          Farmer
-        </button>
-      );
-    }
-
-    if (isBuyer && isHomePage) {
-      return (
-        <button
-          className="mobile-switch-btn"
-          onClick={() => navigate("/buyer/dashboard")}
-        >
-          Buyer
-        </button>
-      );
-    }
-
-    return null;
-  };
-
   return (
     <>
-      {/* =====================================================
-           ⭐ MOBILE TOP NAVBAR ROW (ONLY SHOWN < 768px)
-          Categories | FULL SEARCH BAR | Switch | Menu
-         ===================================================== */}
-      <div className="mobile-top-row">
-        
-        {/* ⭐ CATEGORIES BUTTON (mobile) */}
-        <button
-          className="mobile-cat-btn"
-          onClick={() => setShowCategoryMenu(!showCategoryMenu)}
-        >
-          Categories
-        </button>
-
-        {/* ⭐ FULL-WIDTH SEARCH BAR */}
-        <form className="mobile-search-form" onSubmit={handleSearch}>
-          <input
-            type="search"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button type="submit">
-            <Search size={18} />
-          </button>
-        </form>
-
-        {/* ⭐ SWITCH (Farmer / Buyer / Both) */}
-        {renderMobileSwitch()}
-
-        {/* ⭐ MENU TOGGLE */}
-        <button
-          className="mobile-menu-btn top-menu-btn"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* =====================================================
-           DESKTOP NAVBAR (UNTOUCHED - SAME AS ORIGINAL)
-         ===================================================== */}
+      {/* Main Navbar */}
       <nav
         className="nav-root"
         style={{
@@ -151,20 +66,22 @@ const HomeNavbar = ({ user }) => {
           gap: "1rem",
         }}
       >
-
-        {/* LEFT SIDE — LOGO + MENU TOGGLE (Desktop)  */}
-        <div className="navbar-left">
-          {/* ⭐ MOBILE MENU BUTTON MOVED TO MOBILE ROW — hidden on desktop */}
+        {/* Left: Brand + Mobile Menu Toggle */}
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <button
-            className="mobile-menu-hidden-btn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="mobile-menu-btn"
+            style={{
+              background: "transparent",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+            }}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* ⭐ LOGO — hidden only on mobile */}
           <div
-            className="desktop-logo"
             style={{
               fontWeight: 900,
               fontSize: "clamp(1.2rem,4vw,1.8rem)",
@@ -188,9 +105,7 @@ const HomeNavbar = ({ user }) => {
           </div>
         </div>
 
-        {/* ====================================================
-           DESKTOP SEARCH + CATEGORY + ICONS  (unchanged)
-         ==================================================== */}
+        {/* Desktop: Categories + Search */}
         <div
           className="desktop-nav"
           style={{
@@ -201,8 +116,7 @@ const HomeNavbar = ({ user }) => {
             justifyContent: "center",
           }}
         >
-
-          {/* ================= CATEGORIES (Desktop) =================== */}
+          {/* Categories Dropdown */}
           <div style={{ position: "relative" }}>
             <button
               onClick={() => setShowCategoryMenu((prev) => !prev)}
@@ -219,7 +133,6 @@ const HomeNavbar = ({ user }) => {
             >
               Categories ▾
             </button>
-
             {showCategoryMenu && (
               <div
                 style={{
@@ -240,7 +153,9 @@ const HomeNavbar = ({ user }) => {
                     key={cat}
                     onClick={() => {
                       setShowCategoryMenu(false);
-                      navigate(`/search?query=${encodeURIComponent(cat)}`);
+                      navigate(
+                        `/search?query=${encodeURIComponent(cat)}`
+                      );
                     }}
                     style={{
                       padding: "10px 20px",
@@ -262,7 +177,7 @@ const HomeNavbar = ({ user }) => {
             )}
           </div>
 
-          {/* =================== DESKTOP SEARCH BAR =================== */}
+          {/* Search Bar */}
           <form
             onSubmit={handleSearch}
             style={{
@@ -303,254 +218,240 @@ const HomeNavbar = ({ user }) => {
               Search
             </button>
           </form>
-                    {/* ===================== DESKTOP ICONS (unchanged) ===================== */}
-          <div
-            className="desktop-icons"
-            style={{
-              display: "flex",
-              gap: "0.8rem",
-              alignItems: "center",
-              fontSize: "1rem",
-            }}
-          >
-            {/* BUYER ONLY ICONS */}
-            {isBuyer && (
-              <>
-                <Link to="/cart" style={iconLinkStyle} title="View Cart">
-                  <ShoppingCart size={20} />
-                </Link>
+        </div>
 
-                <Link
-                  to="/buyer/wishlist"
-                  style={iconLinkStyle}
-                  title="Wishlist"
-                >
-                  <Heart size={20} />
-                </Link>
-
-                <Link to="/orders" style={iconLinkStyle} title="Your Orders">
-                  <Package size={20} />
-                </Link>
-              </>
-            )}
-
-            {/* SELLER BUTTON (IF NOT FARMER) */}
-            {!isFarmer && loggedIn && (
+        {/* Desktop: Right Icons */}
+        <div
+          className="desktop-icons"
+          style={{
+            display: "flex",
+            gap: "0.8rem",
+            alignItems: "center",
+            fontSize: "1rem",
+          }}
+        >
+          {isBuyer && (
+            <>
+              <Link to="/cart" style={iconLinkStyle} title="View Cart">
+                <ShoppingCart size={20} />
+              </Link>
               <Link
-                to="/register"
+                to="/buyer/wishlist"
+                style={iconLinkStyle}
+                title="Wishlist"
+              >
+                <Heart size={20} />
+              </Link>
+              <Link to="/orders" style={iconLinkStyle} title="Your Orders">
+                <Package size={20} />
+              </Link>
+            </>
+          )}
+
+          {!isFarmer && (
+            <Link
+              to="/register"
+              style={{
+                ...iconLinkStyle,
+                fontWeight: "bold",
+                color: "#aed581",
+                background: "#263238",
+                borderRadius: 8,
+                padding: "0.4rem 0.8rem",
+                fontSize: "0.85rem",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <UserCheck size={16} style={{ marginRight: 4 }} /> Seller
+            </Link>
+          )}
+
+          {isBoth && (
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={() =>
+                  setShowDashboardDropdown((v) => !v)
+                }
                 style={{
                   ...iconLinkStyle,
-                  fontWeight: "bold",
-                  color: "#aed581",
-                  background: "#263238",
+                  background: "#f3e8fd",
+                  color: "#263238",
+                  border: "1px solid #aed581",
+                  fontWeight: 700,
                   borderRadius: 8,
-                  padding: "0.4rem 0.8rem",
+                  padding: "0.35rem 0.9rem",
                   fontSize: "0.85rem",
                   whiteSpace: "nowrap",
                 }}
               >
-                <UserCheck size={16} style={{ marginRight: 4 }} /> Seller
-              </Link>
-            )}
-
-            {/* BOTH ROLE SWITCH (unchanged dropdown) */}
-            {isBoth && (
-              <div style={{ position: "relative" }}>
-                <button
-                  onClick={() =>
-                    setShowDashboardDropdown((v) => !v)
-                  }
+                Switch ▼
+              </button>
+              {showDashboardDropdown && (
+                <div
                   style={{
-                    ...iconLinkStyle,
-                    background: "#f3e8fd",
+                    position: "absolute",
+                    right: 0,
+                    top: "110%",
+                    background: "#fff",
                     color: "#263238",
-                    border: "1px solid #aed581",
-                    fontWeight: 700,
-                    borderRadius: 8,
-                    padding: "0.35rem 0.9rem",
-                    fontSize: "0.85rem",
-                    whiteSpace: "nowrap",
+                    borderRadius: 10,
+                    boxShadow:
+                      "0 4px 18px rgba(102, 187, 106, 0.13)",
+                    zIndex: 50,
+                    minWidth: "150px",
+                    overflow: "hidden",
                   }}
                 >
-                  Switch ▼
-                </button>
+                  <div
+                    onClick={() => {
+                      setShowDashboardDropdown(false);
+                      navigate("/farmer/dashboard");
+                    }}
+                    style={{ ...menuItemStyle }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "#f1f8e9")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "#fff")
+                    }
+                  >
+                    <Tractor size={16} /> Farmer
+                  </div>
+                  <div
+                    onClick={() => {
+                      setShowDashboardDropdown(false);
+                      navigate("/buyer/dashboard");
+                    }}
+                    style={{
+                      ...menuItemStyle,
+                      borderBottom: "none",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "#e3f2fd")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "#fff")
+                    }
+                  >
+                    <ShoppingCart size={16} /> Buyer
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
-                {showDashboardDropdown && (
+          {loggedIn ? (
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={() => setShowProfile((v) => !v)}
+                style={{
+                  ...iconLinkStyle,
+                  fontWeight: 900,
+                  borderRadius: "50%",
+                  width: 36,
+                  height: 36,
+                  background: "#1b5e20",
+                  color: "#fff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: 0,
+                }}
+                title="Profile"
+              >
+                <User size={18} />
+              </button>
+              {showProfile && (
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    top: "100%",
+                    background: "#fff",
+                    color: "#263238",
+                    borderRadius: 10,
+                    boxShadow:
+                      "0 4px 20px rgba(0,0,0,0.13)",
+                    zIndex: 40,
+                    minWidth: 160,
+                  }}
+                >
                   <div
                     style={{
-                      position: "absolute",
-                      right: 0,
-                      top: "110%",
-                      background: "#fff",
-                      color: "#263238",
-                      borderRadius: 10,
-                      boxShadow:
-                        "0 4px 18px rgba(102, 187, 106, 0.13)",
-                      zIndex: 50,
-                      minWidth: "150px",
+                      borderBottom: "1px solid #eee",
+                      fontWeight: 700,
+                      padding: "12px 15px 0 15px",
+                      fontSize: "0.9rem",
+                      whiteSpace: "nowrap",
                       overflow: "hidden",
+                      textOverflow: "ellipsis",
                     }}
                   >
-                    <div
-                      onClick={() => {
-                        setShowDashboardDropdown(false);
-                        navigate("/farmer/dashboard");
-                      }}
-                      style={{ ...menuItemStyle }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.background = "#f1f8e9")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "#fff")
-                      }
-                    >
-                      <Tractor size={16} /> Farmer
-                    </div>
-
-                    <div
-                      onClick={() => {
-                        setShowDashboardDropdown(false);
-                        navigate("/buyer/dashboard");
-                      }}
-                      style={{
-                        ...menuItemStyle,
-                        borderBottom: "none",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.background = "#e3f2fd")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "#fff")
-                      }
-                    >
-                      <ShoppingCart size={16} /> Buyer
-                    </div>
+                    {user?.username || user?.email}
                   </div>
-                )}
-              </div>
-            )}
-
-            {/* PROFILE DROPDOWN (unchanged) */}
-            {loggedIn ? (
-              <div style={{ position: "relative" }}>
-                <button
-                  onClick={() => setShowProfile((v) => !v)}
-                  style={{
-                    ...iconLinkStyle,
-                    fontWeight: 900,
-                    borderRadius: "50%",
-                    width: 36,
-                    height: 36,
-                    background: "#1b5e20",
-                    color: "#fff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: 0,
-                  }}
-                  title="Profile"
-                >
-                  <User size={18} />
-                </button>
-
-                {showProfile && (
-                  <div
+                  <Link
+                    to="/profile"
+                    onClick={() => setShowProfile(false)}
+                    style={menuItemStyle}
+                  >
+                    <User size={16} /> My Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
                     style={{
-                      position: "absolute",
-                      right: 0,
-                      top: "100%",
-                      background: "#fff",
-                      color: "#263238",
-                      borderRadius: 10,
-                      boxShadow:
-                        "0 4px 20px rgba(0,0,0,0.13)",
-                      zIndex: 40,
-                      minWidth: 160,
+                      ...menuItemStyle,
+                      color: "#b23a48",
+                      border: "none",
+                      background: "none",
+                      width: "100%",
+                      justifyContent: "flex-start",
                     }}
                   >
-                    <div
-                      style={{
-                        borderBottom: "1px solid #eee",
-                        fontWeight: 700,
-                        padding: "12px 15px 0 15px",
-                        fontSize: "0.9rem",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {user?.username || user?.email}
-                    </div>
+                    <LogOut size={16} /> Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                style={{
+                  ...iconLinkStyle,
+                  fontSize: "0.9rem",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <LogIn size={18} /> Login
+              </Link>
+              <Link
+                to="/register"
+                style={{
+                  ...iconLinkStyle,
+                  fontSize: "0.9rem",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <UserPlus size={18} /> Sign Up
+              </Link>
+            </>
+          )}
 
-                    <Link
-                      to="/profile"
-                      onClick={() => setShowProfile(false)}
-                      style={menuItemStyle}
-                    >
-                      <User size={16} /> My Profile
-                    </Link>
-
-                    <button
-                      onClick={handleLogout}
-                      style={{
-                        ...menuItemStyle,
-                        color: "#b23a48",
-                        border: "none",
-                        background: "none",
-                        width: "100%",
-                        justifyContent: "flex-start",
-                      }}
-                    >
-                      <LogOut size={16} /> Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  style={{
-                    ...iconLinkStyle,
-                    fontSize: "0.9rem",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <LogIn size={18} /> Login
-                </Link>
-
-                <Link
-                  to="/register"
-                  style={{
-                    ...iconLinkStyle,
-                    fontSize: "0.9rem",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <UserPlus size={18} /> Sign Up
-                </Link>
-              </>
-            )}
-
-            {/* DARK MODE ICON (unchanged) */}
-            <button
-              title="Coming soon: Dark mode"
-              style={{
-                background: "transparent",
-                color: "white",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              <Sun size={18} />
-            </button>
-          </div>
+          <button
+            title="Coming soon: Dark mode"
+            style={{
+              background: "transparent",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            <Sun size={18} />
+          </button>
         </div>
       </nav>
 
-      {/* =====================================================
-           ⭐ MOBILE MENU DRAWER (unchanged)
-         ===================================================== */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
           className="mobile-nav"
@@ -567,7 +468,7 @@ const HomeNavbar = ({ user }) => {
             zIndex: 99,
           }}
         >
-          {/* SEARCH (unchanged) */}
+          {/* Mobile Search */}
           <form
             onSubmit={handleSearch}
             style={{
@@ -608,7 +509,7 @@ const HomeNavbar = ({ user }) => {
             </button>
           </form>
 
-          {/* CATEGORIES (unchanged) */}
+          {/* Categories */}
           <div style={{ position: "relative" }}>
             <button
               onClick={() => setShowCategoryMenu((prev) => !prev)}
@@ -627,7 +528,6 @@ const HomeNavbar = ({ user }) => {
             >
               Categories ▾
             </button>
-
             {showCategoryMenu && (
               <div
                 style={{
@@ -663,41 +563,62 @@ const HomeNavbar = ({ user }) => {
             )}
           </div>
 
-          {/* MOBILE ACCOUNT + NAVIGATION ITEMS */}
-          {loggedIn ? (
-            <>
+          {/* Mobile Icons
+          {isBuyer && (
+            <div
+              style={{
+                display: "flex",
+                gap: "0.5rem",
+                justifyContent: "space-around",
+                borderTop: "1px solid rgba(255,255,255,0.1)",
+                paddingTop: "0.5rem",
+                marginTop: "0.5rem",
+              }}
+            >
               <Link
                 to="/cart"
-                style={mobileLinkStyle}
+                style={{ ...mobileLinkStyle }}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <ShoppingCart size={20} /> Cart
               </Link>
-
               <Link
                 to="/buyer/wishlist"
-                style={mobileLinkStyle}
+                style={{ ...mobileLinkStyle }}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Heart size={20} /> Wishlist
               </Link>
-
               <Link
                 to="/orders"
-                style={mobileLinkStyle}
+                style={{ ...mobileLinkStyle }}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Package size={20} /> Orders
               </Link>
+            </div>
+          )} */}
 
+          {/* Mobile Auth
+          {loggedIn ? (
+            <div
+              style={{
+                borderTop: "1px solid rgba(255,255,255,0.1)",
+                paddingTop: "0.5rem",
+                marginTop: "0.5rem",
+              }}
+            >
               <Link
                 to="/profile"
-                style={mobileLinkStyle}
+                style={{
+                  ...mobileLinkStyle,
+                  display: "flex",
+                  gap: 8,
+                }}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <User size={20} /> Profile
+                <User size={18} /> My Profile
               </Link>
-
               <button
                 onClick={() => {
                   handleLogout();
@@ -705,53 +626,99 @@ const HomeNavbar = ({ user }) => {
                 }}
                 style={{
                   ...mobileLinkStyle,
-                  color: "#ffebe8",
-                  borderColor: "rgba(255,255,255,0.4)",
+                  display: "flex",
+                  gap: 8,
+                  color: "#aed581",
+                  background: "transparent",
+                  border: "none",
+                  width: "100%",
+                  justifyContent: "flex-start",
+                  textAlign: "left",
                 }}
               >
-                <LogOut size={20} /> Logout
+                <LogOut size={18} /> Logout
               </button>
-            </>
+            </div>
           ) : (
-            <>
+            <div
+              style={{
+                borderTop: "1px solid rgba(255,255,255,0.1)",
+                paddingTop: "0.5rem",
+                marginTop: "0.5rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
               <Link
                 to="/login"
-                style={mobileLinkStyle}
+                style={{
+                  ...mobileLinkStyle,
+                  display: "flex",
+                  gap: 8,
+                  justifyContent: "center",
+                }}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <LogIn size={20} /> Login
+                <LogIn size={18} /> Login
               </Link>
-
               <Link
                 to="/register"
                 style={{
                   ...mobileLinkStyle,
+                  display: "flex",
+                  gap: 8,
+                  justifyContent: "center",
                   background: "#aed581",
                   color: "#388e3c",
                 }}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <UserPlus size={20} /> Sign Up
+                <UserPlus size={18} /> Sign Up
               </Link>
-            </>
+            </div>
           )}
+
+          {!isFarmer && (
+            <Link
+              to="/register"
+              style={{
+                ...mobileLinkStyle,
+                display: "flex",
+                gap: 8,
+                justifyContent: "center",
+                background: "#263238",
+                marginTop: "0.5rem",
+              }}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <UserCheck size={18} /> Become a Seller
+            </Link>
+          )} */}
         </div>
       )}
 
-      {/* MOBILE OVERLAY */}
+      {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div
           className="mobile-overlay"
           onClick={() => setMobileMenuOpen(false)}
-        ></div>
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0,0,0,0.3)",
+            zIndex: 95,
+          }}
+        />
       )}
     </>
   );
 };
 
-/* =====================================================
-   STYLES (same as original + a few mobile additions)
-   ===================================================== */
+// Styles
 const iconLinkStyle = {
   color: "white",
   fontWeight: 700,
@@ -798,4 +765,3 @@ const mobileLinkStyle = {
 };
 
 export default HomeNavbar;
-
