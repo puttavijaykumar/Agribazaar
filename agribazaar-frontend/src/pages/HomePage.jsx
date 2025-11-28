@@ -5,7 +5,7 @@ import TopOffersSection from "../components/TopOffersSection";
 import HomeNavbar from "../components/HomeNavbar";  
 import AgricultureNewsSection from "../components/AgricultureNewsSection";
 import LiveMarketPricesSection from "../components/LiveMarketPricesSection";
-import MobileBottomNav from "./MobileBottomNav";
+import MobileBottomNav from "../components/MobileBottomNav";
 
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -526,7 +526,7 @@ const HomePage = () => {
 
       {/* ---------- FOOTER ---------- */}
       <EnhancedFooter />
-      
+
       <MobileBottomNav loggedIn={!!user} />
 
       <style>{`
