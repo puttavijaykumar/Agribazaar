@@ -663,7 +663,47 @@ const BuyerDashboard = () => {
       </section>
       {/* Top Offers Section */}
       <TopOffersSection colors={colors} />
-
+      
+      {/* ---------- SECTION 3: PRODUCT CATEGORIES ---------- */}
+      <h2
+        style={{
+          fontSize: "clamp(1.3rem, 5vw, 2rem)",
+          fontWeight: "800",
+          textAlign: "left",
+          marginLeft: "2rem",
+          marginBottom: "16px",
+          color: colors.primaryGreen,
+          marginTop: "2rem",
+        }}
+      >
+         Shop Crops, Livestock & More
+      </h2>
+      <section style={categoryContainerStyle}>
+        {productCategories.map(({ name, img }, idx) => (
+          <div key={idx} style={{ textAlign: "center", flexShrink: 0 }}>
+            <img
+              src={img}
+              alt={name}
+              style={{
+                ...categoryImageStyle,
+              }}
+            />
+            <p
+              style={{
+                marginTop: "1rem",
+                fontWeight: "600",
+                fontSize: "clamp(0.85rem, 2vw, 1.15rem)",
+                margin: "1rem 0 0 0",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {name}
+            </p>
+          </div>
+        ))}
+        <div style={{ minWidth: "2rem", flexShrink: 0 }}></div>
+      </section>
+      
       {/* Recently Viewed */}
       <section style={{ padding: "1rem 2rem" }}>
         <h2 style={{ fontWeight: "700", color: colors.primaryGreen, marginBottom: "1rem" }}>Recently Viewed Products</h2>
@@ -780,45 +820,7 @@ const BuyerDashboard = () => {
         )}
       </section>
       
-      {/* ---------- SECTION 3: PRODUCT CATEGORIES ---------- */}
-      <h2
-        style={{
-          fontSize: "clamp(1.3rem, 5vw, 2rem)",
-          fontWeight: "800",
-          textAlign: "left",
-          marginLeft: "2rem",
-          marginBottom: "16px",
-          color: colors.primaryGreen,
-          marginTop: "2rem",
-        }}
-      >
-         Shop Crops, Livestock & More
-      </h2>
-      <section style={categoryContainerStyle}>
-        {productCategories.map(({ name, img }, idx) => (
-          <div key={idx} style={{ textAlign: "center", flexShrink: 0 }}>
-            <img
-              src={img}
-              alt={name}
-              style={{
-                ...categoryImageStyle,
-              }}
-            />
-            <p
-              style={{
-                marginTop: "1rem",
-                fontWeight: "600",
-                fontSize: "clamp(0.85rem, 2vw, 1.15rem)",
-                margin: "1rem 0 0 0",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {name}
-            </p>
-          </div>
-        ))}
-        <div style={{ minWidth: "2rem", flexShrink: 0 }}></div>
-      </section>
+      
 
       {/* Footer */}
       <EnhancedFooter />
