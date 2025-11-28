@@ -2,8 +2,21 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ShoppingCart, Heart, User, LogOut, LogIn, UserPlus, Sun, Bell, Leaf, Upload, UserCheck, Package, Tractor, Menu, X
+  ShoppingCart,
+  Heart,
+  User,
+  LogOut,
+  LogIn,
+  UserPlus,
+  Sun,
+  Leaf,
+  UserCheck,
+  Package,
+  Tractor,
+  Menu,
+  X,
 } from "lucide-react";
+import "./HomeNavbar.css";
 
 const HomeNavbar = ({ user }) => {
   const navigate = useNavigate();
@@ -31,37 +44,39 @@ const HomeNavbar = ({ user }) => {
     window.location.href = "/login";
   };
 
-  const categories = ["Grains", "Spices", "Fruits", "Vegetables", "Dairy", "Seeds", "Machinery"];
+  const categories = [
+    "Grains",
+    "Spices",
+    "Fruits",
+    "Vegetables",
+    "Dairy",
+    "Seeds",
+    "Machinery",
+  ];
 
   return (
     <>
       {/* Main Navbar */}
-      <nav style={{
-        background: "#388e3c",
-        color: "white",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0.8rem 1rem",
-        boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-        gap: "1rem"
-      }}>
+      <nav
+        className="nav-root"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "1rem",
+        }}
+      >
         {/* Left: Brand + Mobile Menu Toggle */}
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="mobile-menu-btn"
             style={{
               background: "transparent",
               color: "white",
               border: "none",
               cursor: "pointer",
-              display: "none",
-              "@media (max-width: 768px)": { display: "flex" }
             }}
-            className="mobile-menu-btn"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -74,27 +89,33 @@ const HomeNavbar = ({ user }) => {
               display: "flex",
               alignItems: "center",
               cursor: "pointer",
-              whiteSpace: "nowrap"
+              whiteSpace: "nowrap",
             }}
             onClick={() => {
               navigate("/");
               setMobileMenuOpen(false);
             }}
           >
-            <Leaf size={24} color="#aed581" style={{ marginRight: 6, minWidth: 24 }} />
+            <Leaf
+              size={24}
+              color="#aed581"
+              style={{ marginRight: 6, minWidth: 24 }}
+            />
             <span style={{ display: "block" }}>AgriBazaar</span>
           </div>
         </div>
 
-        {/* Desktop: Categories + Search + Right Icons */}
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1.5rem",
-          flex: 1,
-          justifyContent: "center",
-          "@media (max-width: 768px)": { display: "none" }
-        }} className="desktop-nav">
+        {/* Desktop: Categories + Search */}
+        <div
+          className="desktop-nav"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "1.5rem",
+            flex: 1,
+            justifyContent: "center",
+          }}
+        >
           {/* Categories Dropdown */}
           <div style={{ position: "relative" }}>
             <button
@@ -107,39 +128,47 @@ const HomeNavbar = ({ user }) => {
                 fontSize: "0.95rem",
                 cursor: "pointer",
                 letterSpacing: 0.5,
-                whiteSpace: "nowrap"
+                whiteSpace: "nowrap",
               }}
             >
               Categories ▾
             </button>
             {showCategoryMenu && (
-              <div style={{
-                position: "absolute",
-                left: 0,
-                top: "110%",
-                background: "white",
-                color: "#263238",
-                borderRadius: 8,
-                boxShadow: "0 4px 12px rgba(0,0,0,0.13)",
-                minWidth: 150,
-                zIndex: 20,
-                fontWeight: 500
-              }}>
+              <div
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: "110%",
+                  background: "white",
+                  color: "#263238",
+                  borderRadius: 8,
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.13)",
+                  minWidth: 150,
+                  zIndex: 20,
+                  fontWeight: 500,
+                }}
+              >
                 {categories.map((cat) => (
                   <div
                     key={cat}
                     onClick={() => {
                       setShowCategoryMenu(false);
-                      navigate(`/search?query=${encodeURIComponent(cat)}`);
+                      navigate(
+                        `/search?query=${encodeURIComponent(cat)}`
+                      );
                     }}
                     style={{
                       padding: "10px 20px",
                       cursor: "pointer",
                       borderBottom: "1px solid #f1f1f1",
-                      transition: "background 0.2s"
+                      transition: "background 0.2s",
                     }}
-                    onMouseEnter={e => e.currentTarget.style.background = "#f7fef7"}
-                    onMouseLeave={e => e.currentTarget.style.background = "white"}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "#f7fef7")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "white")
+                    }
                   >
                     {cat}
                   </div>
@@ -155,21 +184,21 @@ const HomeNavbar = ({ user }) => {
               flex: "1 0 200px",
               maxWidth: 400,
               display: "flex",
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <input
               type="search"
               placeholder="Search products..."
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 flex: 1,
                 border: "none",
                 borderRadius: "20px 0 0 20px",
                 padding: "0.5rem 1rem",
                 fontSize: "0.9rem",
-                outline: "none"
+                outline: "none",
               }}
             />
             <button
@@ -183,7 +212,7 @@ const HomeNavbar = ({ user }) => {
                 fontWeight: 700,
                 fontSize: "0.9rem",
                 cursor: "pointer",
-                whiteSpace: "nowrap"
+                whiteSpace: "nowrap",
               }}
             >
               Search
@@ -193,21 +222,24 @@ const HomeNavbar = ({ user }) => {
 
         {/* Desktop: Right Icons */}
         <div
+          className="desktop-icons"
           style={{
             display: "flex",
             gap: "0.8rem",
             alignItems: "center",
             fontSize: "1rem",
-            "@media (max-width: 768px)": { display: "none" }
           }}
-          className="desktop-icons"
         >
           {isBuyer && (
             <>
               <Link to="/cart" style={iconLinkStyle} title="View Cart">
                 <ShoppingCart size={20} />
               </Link>
-              <Link to="/buyer/wishlist" style={iconLinkStyle} title="Wishlist">
+              <Link
+                to="/buyer/wishlist"
+                style={iconLinkStyle}
+                title="Wishlist"
+              >
                 <Heart size={20} />
               </Link>
               <Link to="/orders" style={iconLinkStyle} title="Your Orders">
@@ -217,16 +249,19 @@ const HomeNavbar = ({ user }) => {
           )}
 
           {!isFarmer && (
-            <Link to="/register" style={{
-              ...iconLinkStyle,
-              fontWeight: "bold",
-              color: "#aed581",
-              background: "#263238",
-              borderRadius: 8,
-              padding: "0.4rem 0.8rem",
-              fontSize: "0.85rem",
-              whiteSpace: "nowrap"
-            }}>
+            <Link
+              to="/register"
+              style={{
+                ...iconLinkStyle,
+                fontWeight: "bold",
+                color: "#aed581",
+                background: "#263238",
+                borderRadius: 8,
+                padding: "0.4rem 0.8rem",
+                fontSize: "0.85rem",
+                whiteSpace: "nowrap",
+              }}
+            >
               <UserCheck size={16} style={{ marginRight: 4 }} /> Seller
             </Link>
           )}
@@ -234,7 +269,9 @@ const HomeNavbar = ({ user }) => {
           {isBoth && (
             <div style={{ position: "relative" }}>
               <button
-                onClick={() => setShowDashboardDropdown(v => !v)}
+                onClick={() =>
+                  setShowDashboardDropdown((v) => !v)
+                }
                 style={{
                   ...iconLinkStyle,
                   background: "#f3e8fd",
@@ -244,32 +281,39 @@ const HomeNavbar = ({ user }) => {
                   borderRadius: 8,
                   padding: "0.35rem 0.9rem",
                   fontSize: "0.85rem",
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
                 }}
               >
                 Switch ▼
               </button>
               {showDashboardDropdown && (
-                <div style={{
-                  position: "absolute",
-                  right: 0,
-                  top: "110%",
-                  background: "#fff",
-                  color: "#263238",
-                  borderRadius: 10,
-                  boxShadow: "0 4px 18px rgba(102, 187, 106, 0.13)",
-                  zIndex: 50,
-                  minWidth: "150px",
-                  overflow: "hidden"
-                }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    top: "110%",
+                    background: "#fff",
+                    color: "#263238",
+                    borderRadius: 10,
+                    boxShadow:
+                      "0 4px 18px rgba(102, 187, 106, 0.13)",
+                    zIndex: 50,
+                    minWidth: "150px",
+                    overflow: "hidden",
+                  }}
+                >
                   <div
                     onClick={() => {
                       setShowDashboardDropdown(false);
                       navigate("/farmer/dashboard");
                     }}
-                    style={{...menuItemStyle}}
-                    onMouseEnter={e => e.currentTarget.style.background = "#f1f8e9"}
-                    onMouseLeave={e => e.currentTarget.style.background = "#fff"}
+                    style={{ ...menuItemStyle }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "#f1f8e9")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "#fff")
+                    }
                   >
                     <Tractor size={16} /> Farmer
                   </div>
@@ -278,9 +322,16 @@ const HomeNavbar = ({ user }) => {
                       setShowDashboardDropdown(false);
                       navigate("/buyer/dashboard");
                     }}
-                    style={{...menuItemStyle, borderBottom: "none"}}
-                    onMouseEnter={e => e.currentTarget.style.background = "#e3f2fd"}
-                    onMouseLeave={e => e.currentTarget.style.background = "#fff"}
+                    style={{
+                      ...menuItemStyle,
+                      borderBottom: "none",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "#e3f2fd")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "#fff")
+                    }
                   >
                     <ShoppingCart size={16} /> Buyer
                   </div>
@@ -304,41 +355,57 @@ const HomeNavbar = ({ user }) => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  padding: 0
+                  padding: 0,
                 }}
                 title="Profile"
               >
                 <User size={18} />
               </button>
               {showProfile && (
-                <div style={{
-                  position: "absolute",
-                  right: 0,
-                  top: "100%",
-                  background: "#fff",
-                  color: "#263238",
-                  borderRadius: 10,
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.13)",
-                  zIndex: 40,
-                  minWidth: 160
-                }}>
-                  <div style={{
-                    borderBottom: "1px solid #eee",
-                    fontWeight: 700,
-                    padding: "12px 15px 0 15px",
-                    fontSize: "0.9rem",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis"
-                  }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    top: "100%",
+                    background: "#fff",
+                    color: "#263238",
+                    borderRadius: 10,
+                    boxShadow:
+                      "0 4px 20px rgba(0,0,0,0.13)",
+                    zIndex: 40,
+                    minWidth: 160,
+                  }}
+                >
+                  <div
+                    style={{
+                      borderBottom: "1px solid #eee",
+                      fontWeight: 700,
+                      padding: "12px 15px 0 15px",
+                      fontSize: "0.9rem",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
                     {user?.username || user?.email}
                   </div>
-                  <Link to="/profile" onClick={() => setShowProfile(false)} style={menuItemStyle}>
+                  <Link
+                    to="/profile"
+                    onClick={() => setShowProfile(false)}
+                    style={menuItemStyle}
+                  >
                     <User size={16} /> My Profile
                   </Link>
                   <button
                     onClick={handleLogout}
-                    style={{...menuItemStyle, color: "#b23a48", border: "none", background: "none", width: "100%", justifyContent: "flex-start"}}
+                    style={{
+                      ...menuItemStyle,
+                      color: "#b23a48",
+                      border: "none",
+                      background: "none",
+                      width: "100%",
+                      justifyContent: "flex-start",
+                    }}
                   >
                     <LogOut size={16} /> Logout
                   </button>
@@ -347,17 +414,37 @@ const HomeNavbar = ({ user }) => {
             </div>
           ) : (
             <>
-              <Link to="/login" style={{ ...iconLinkStyle, fontSize: "0.9rem", whiteSpace: "nowrap" }}>
+              <Link
+                to="/login"
+                style={{
+                  ...iconLinkStyle,
+                  fontSize: "0.9rem",
+                  whiteSpace: "nowrap",
+                }}
+              >
                 <LogIn size={18} /> Login
               </Link>
-              <Link to="/register" style={{ ...iconLinkStyle, fontSize: "0.9rem", whiteSpace: "nowrap" }}>
+              <Link
+                to="/register"
+                style={{
+                  ...iconLinkStyle,
+                  fontSize: "0.9rem",
+                  whiteSpace: "nowrap",
+                }}
+              >
                 <UserPlus size={18} /> Sign Up
               </Link>
             </>
           )}
+
           <button
             title="Coming soon: Dark mode"
-            style={{ background: "transparent", color: "white", border: "none", cursor: "pointer" }}
+            style={{
+              background: "transparent",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+            }}
           >
             <Sun size={18} />
           </button>
@@ -366,19 +453,21 @@ const HomeNavbar = ({ user }) => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div style={{
-          background: "#388e3c",
-          color: "white",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.5rem",
-          padding: "1rem",
-          borderBottom: "1px solid rgba(255,255,255,0.1)",
-          position: "sticky",
-          top: 56,
-          zIndex: 99,
-          "@media (min-width: 769px)": { display: "none" }
-        }} className="mobile-nav">
+        <div
+          className="mobile-nav"
+          style={{
+            background: "#388e3c",
+            color: "white",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+            padding: "1rem",
+            borderBottom: "1px solid rgba(255,255,255,0.1)",
+            position: "sticky",
+            top: 56,
+            zIndex: 99,
+          }}
+        >
           {/* Mobile Search */}
           <form
             onSubmit={handleSearch}
@@ -386,21 +475,21 @@ const HomeNavbar = ({ user }) => {
               display: "flex",
               alignItems: "center",
               marginBottom: "0.5rem",
-              gap: "0.5rem"
+              gap: "0.5rem",
             }}
           >
             <input
               type="search"
               placeholder="Search..."
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 flex: 1,
                 border: "none",
                 borderRadius: "15px",
                 padding: "0.5rem 0.8rem",
                 fontSize: "0.9rem",
-                outline: "none"
+                outline: "none",
               }}
             />
             <button
@@ -413,7 +502,7 @@ const HomeNavbar = ({ user }) => {
                 border: "none",
                 fontWeight: 700,
                 fontSize: "0.85rem",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             >
               Search
@@ -434,33 +523,37 @@ const HomeNavbar = ({ user }) => {
                 padding: "0.6rem 1rem",
                 borderRadius: 8,
                 width: "100%",
-                textAlign: "left"
+                textAlign: "left",
               }}
             >
               Categories ▾
             </button>
             {showCategoryMenu && (
-              <div style={{
-                background: "white",
-                color: "#263238",
-                borderRadius: 8,
-                marginTop: "0.5rem",
-                fontWeight: 500,
-                overflow: "hidden"
-              }}>
+              <div
+                style={{
+                  background: "white",
+                  color: "#263238",
+                  borderRadius: 8,
+                  marginTop: "0.5rem",
+                  fontWeight: 500,
+                  overflow: "hidden",
+                }}
+              >
                 {categories.map((cat) => (
                   <div
                     key={cat}
                     onClick={() => {
                       setShowCategoryMenu(false);
-                      navigate(`/search?query=${encodeURIComponent(cat)}`);
+                      navigate(
+                        `/search?query=${encodeURIComponent(cat)}`
+                      );
                       setMobileMenuOpen(false);
                     }}
                     style={{
                       padding: "10px 15px",
                       cursor: "pointer",
                       borderBottom: "1px solid #f1f1f1",
-                      fontSize: "0.9rem"
+                      fontSize: "0.9rem",
                     }}
                   >
                     {cat}
@@ -472,14 +565,35 @@ const HomeNavbar = ({ user }) => {
 
           {/* Mobile Icons */}
           {isBuyer && (
-            <div style={{ display: "flex", gap: "0.5rem", justifyContent: "space-around", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "0.5rem", marginTop: "0.5rem" }}>
-              <Link to="/cart" style={{ ...mobileLinkStyle }} onClick={() => setMobileMenuOpen(false)}>
+            <div
+              style={{
+                display: "flex",
+                gap: "0.5rem",
+                justifyContent: "space-around",
+                borderTop: "1px solid rgba(255,255,255,0.1)",
+                paddingTop: "0.5rem",
+                marginTop: "0.5rem",
+              }}
+            >
+              <Link
+                to="/cart"
+                style={{ ...mobileLinkStyle }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 <ShoppingCart size={20} /> Cart
               </Link>
-              <Link to="/buyer/wishlist" style={{ ...mobileLinkStyle }} onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                to="/buyer/wishlist"
+                style={{ ...mobileLinkStyle }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 <Heart size={20} /> Wishlist
               </Link>
-              <Link to="/orders" style={{ ...mobileLinkStyle }} onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                to="/orders"
+                style={{ ...mobileLinkStyle }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 <Package size={20} /> Orders
               </Link>
             </div>
@@ -487,8 +601,22 @@ const HomeNavbar = ({ user }) => {
 
           {/* Mobile Auth */}
           {loggedIn ? (
-            <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "0.5rem", marginTop: "0.5rem" }}>
-              <Link to="/profile" style={{ ...mobileLinkStyle, display: "flex", gap: 8 }} onClick={() => setMobileMenuOpen(false)}>
+            <div
+              style={{
+                borderTop: "1px solid rgba(255,255,255,0.1)",
+                paddingTop: "0.5rem",
+                marginTop: "0.5rem",
+              }}
+            >
+              <Link
+                to="/profile"
+                style={{
+                  ...mobileLinkStyle,
+                  display: "flex",
+                  gap: 8,
+                }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 <User size={18} /> My Profile
               </Link>
               <button
@@ -496,24 +624,74 @@ const HomeNavbar = ({ user }) => {
                   handleLogout();
                   setMobileMenuOpen(false);
                 }}
-                style={{ ...mobileLinkStyle, display: "flex", gap: 8, color: "#aed581", background: "transparent", border: "none", width: "100%", justifyContent: "flex-start", textAlign: "left" }}
+                style={{
+                  ...mobileLinkStyle,
+                  display: "flex",
+                  gap: 8,
+                  color: "#aed581",
+                  background: "transparent",
+                  border: "none",
+                  width: "100%",
+                  justifyContent: "flex-start",
+                  textAlign: "left",
+                }}
               >
                 <LogOut size={18} /> Logout
               </button>
             </div>
           ) : (
-            <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "0.5rem", marginTop: "0.5rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              <Link to="/login" style={{ ...mobileLinkStyle, display: "flex", gap: 8, justifyContent: "center" }} onClick={() => setMobileMenuOpen(false)}>
+            <div
+              style={{
+                borderTop: "1px solid rgba(255,255,255,0.1)",
+                paddingTop: "0.5rem",
+                marginTop: "0.5rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
+              <Link
+                to="/login"
+                style={{
+                  ...mobileLinkStyle,
+                  display: "flex",
+                  gap: 8,
+                  justifyContent: "center",
+                }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 <LogIn size={18} /> Login
               </Link>
-              <Link to="/register" style={{ ...mobileLinkStyle, display: "flex", gap: 8, justifyContent: "center", background: "#aed581", color: "#388e3c" }} onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                to="/register"
+                style={{
+                  ...mobileLinkStyle,
+                  display: "flex",
+                  gap: 8,
+                  justifyContent: "center",
+                  background: "#aed581",
+                  color: "#388e3c",
+                }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 <UserPlus size={18} /> Sign Up
               </Link>
             </div>
           )}
 
           {!isFarmer && (
-            <Link to="/register" style={{ ...mobileLinkStyle, display: "flex", gap: 8, justifyContent: "center", background: "#263238", marginTop: "0.5rem" }} onClick={() => setMobileMenuOpen(false)}>
+            <Link
+              to="/register"
+              style={{
+                ...mobileLinkStyle,
+                display: "flex",
+                gap: 8,
+                justifyContent: "center",
+                background: "#263238",
+                marginTop: "0.5rem",
+              }}
+              onClick={() => setMobileMenuOpen(false)}
+            >
               <UserCheck size={18} /> Become a Seller
             </Link>
           )}
@@ -523,6 +701,7 @@ const HomeNavbar = ({ user }) => {
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div
+          className="mobile-overlay"
           onClick={() => setMobileMenuOpen(false)}
           style={{
             position: "fixed",
@@ -532,10 +711,7 @@ const HomeNavbar = ({ user }) => {
             bottom: 0,
             background: "rgba(0,0,0,0.3)",
             zIndex: 95,
-            display: "none",
-            "@media (max-width: 768px)": { display: "block" }
           }}
-          className="mobile-overlay"
         />
       )}
     </>
@@ -554,7 +730,7 @@ const iconLinkStyle = {
   display: "inline-flex",
   gap: 4,
   textDecoration: "none",
-  padding: "0.3rem"
+  padding: "0.3rem",
 };
 
 const menuItemStyle = {
@@ -567,7 +743,7 @@ const menuItemStyle = {
   padding: "10px 15px",
   borderBottom: "1px solid #eee",
   cursor: "pointer",
-  textDecoration: "none"
+  textDecoration: "none",
 };
 
 const mobileLinkStyle = {
@@ -585,7 +761,7 @@ const mobileLinkStyle = {
   alignItems: "center",
   gap: 8,
   textAlign: "center",
-  transition: "all 0.2s"
+  transition: "all 0.2s",
 };
 
 export default HomeNavbar;
