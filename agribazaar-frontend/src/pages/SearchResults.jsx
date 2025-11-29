@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate  } from 'react-router-dom';
 import AuthService from '../services/AuthService';
 import BuyerNavbar from '../components/BuyerNavbar';
 import EnhancedFooter from '../components/EnhancedFooter';
@@ -9,6 +9,7 @@ const IMAGE_BASE_URL = 'https://res.cloudinary.com/dpiogqjk4/';
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();      // add this line
   const query = searchParams.get('query') || '';
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
