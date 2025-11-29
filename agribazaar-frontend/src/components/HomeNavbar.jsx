@@ -154,7 +154,7 @@ const HomeNavbar = ({ user }) => {
                     onClick={() => {
                       setShowCategoryMenu(false);
                       navigate(
-                        `/search?query=${encodeURIComponent(cat)}`
+                        `/farmer-category/${encodeURIComponent(cat)}`
                       );
                     }}
                     style={{
@@ -224,6 +224,7 @@ const HomeNavbar = ({ user }) => {
         <div
           className="desktop-icons"
           style={{
+
             display: "flex",
             gap: "0.8rem",
             alignItems: "center",
