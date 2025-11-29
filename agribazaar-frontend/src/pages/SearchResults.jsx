@@ -90,6 +90,7 @@ const SearchResults = () => {
                   width: '100%',
                   maxWidth: '260px',
                   margin: '0 auto',
+                  cursor: 'pointer',
                 }}
               >
                 <img
