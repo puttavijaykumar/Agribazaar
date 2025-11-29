@@ -200,7 +200,7 @@ const BuyerNavbar = ({
                     key={cat}
                     onClick={() => {
                       setShowCategoryMenu(false);
-                      navigate(`/search?query=${encodeURIComponent(cat)}`);
+                      navigate(`/farmer-category/${encodeURIComponent(cat)}`);
                     }}
                     style={{
                       padding: "10px 20px",
