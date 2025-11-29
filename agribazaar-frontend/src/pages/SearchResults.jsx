@@ -78,6 +78,7 @@ const SearchResults = () => {
             {products.map((product) => (
               <div
                 key={product.id}
+                onClick={() => navigate(`/product/farmer/${product.id}`)}
                 style={{
                   background: '#fff',
                   borderRadius: '8px',
