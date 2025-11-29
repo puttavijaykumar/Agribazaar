@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import AuthService from "../services/AuthService";
 import EnhancedFooter from "../components/EnhancedFooter";
 import BuyerNavbar from "../components/BuyerNavbar";
@@ -18,6 +20,7 @@ const getImageUrl = (imageField) => {
 };
 
 const EquipmentPage = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [navbarUser, setNavbarUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -120,6 +123,7 @@ const EquipmentPage = () => {
                 key={product.id}
                 onMouseEnter={() => setHoveredId(product.id)}
                 onMouseLeave={() => setHoveredId(null)}
+                onClick={() => navigate(`/product/admin/${product.id}`)}
                 style={{
                   border: "1px solid #ddd",
                   borderRadius: "6px",
