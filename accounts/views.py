@@ -73,6 +73,24 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import AdminCatalogProduct
 from .serializers import AdminCatalogProductSerializer
 
+from rest_framework import viewsets, permissions
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from .models import AdminCatalogProduct
+from .serializers import AdminCatalogProductSerializer
+
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.views import APIView
+from .models import AdminCatalogProduct
+from .serializers import AdminCatalogProductSerializer
+
+
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
 
@@ -512,22 +530,6 @@ class AddressDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return Address.objects.filter(user=self.request.user)
     
-from rest_framework import viewsets, permissions
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
-from .models import AdminCatalogProduct
-from .serializers import AdminCatalogProductSerializer
-
-from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.views import APIView
-from .models import AdminCatalogProduct
-from .serializers import AdminCatalogProductSerializer
 
 
 class AdminCatalogProductViewSet(viewsets.ModelViewSet):

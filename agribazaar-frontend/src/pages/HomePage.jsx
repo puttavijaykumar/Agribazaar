@@ -475,7 +475,11 @@ const HomePage = () => {
       </h2>
       <section style={categoryContainerStyle}>
         {productCategories.map(({ name, img }, idx) => (
-          <div key={idx} style={{ textAlign: "center", flexShrink: 0 }}>
+          <div 
+            key={idx} 
+            style={{ textAlign: "center", flexShrink: 0 }}
+            onClick={() => navigate(`/farmer-category/${encodeURIComponent(name)}`)}
+          >
             <img
               src={img}
               alt={name}

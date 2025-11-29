@@ -355,16 +355,17 @@ const searchProducts = async (query) => {
   }
 };
 
-// Fetch all admin products with optional category filter
-// const fetchAdminProducts = async (category = null) => {
-//   const token = localStorage.getItem("access");
-//   let url = `${API_URL}/admin-products/`;
-//   if (category) url += `?category=${encodeURIComponent(category)}`;
-//   const response = await axios.get(url, {
-//     headers: { Authorization: `Bearer ${token}` },
-//   });
-//   return response.data;
-// };
+// Fetch farmer products by category 
+const fetchFarmerProductsByCategory = async (category) => {
+  const token = localStorage.getItem("access");
+  const response = await axios.get(
+    `${API_URL}/products/?category=${encodeURIComponent(category)}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  return response.data;
+};
 
 // Fetch a SINGLE admin product by id
 const fetchAdminProductById = async (id) => {
@@ -557,6 +558,7 @@ export default {
   updateAddress,
   deleteAddress,
   searchProducts,
+  fetchFarmerProductsByCategory,
   fetchAdminProducts,
   fetchAdminProductById,
   createAdminProduct,

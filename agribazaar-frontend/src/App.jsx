@@ -47,6 +47,7 @@ import AdminProductListPage from "./pages/AdminProductListPage";
 import axios from "axios";
 import React, { useEffect } from "react";
 import SearchResults from './pages/SearchResults';
+import FarmerCategoryPage from "./pages/FarmerCategoryPage";
 
 import ProductDetail from "./pages/ProductDetail";
 
@@ -141,6 +142,7 @@ function App() {
           <Route path="/admin/upload-product" element={<AdminProductUploadPage />} />
           <Route path="/admin/products" element={<AdminProductListPage />} />
           <Route path="/product/:type/:id" element={<ProductDetail />} />
+          <Route path="/farmer-category/:category" element={<FarmerCategoryPage />} />
 
         </Routes>
       </Router>
