@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
 
 // Helper for safe image URLs
@@ -15,6 +16,8 @@ const getImageUrl = (img) => {
 };
 
 const TopOffersSection = ({ colors }) => {
+
+  const navigate = useNavigate();  
   const [offerProducts, setOfferProducts] = useState([]);
   const [loadingOffers, setLoadingOffers] = useState(true);
   const [error, setError] = useState(null);
@@ -318,10 +321,7 @@ const TopOffersSection = ({ colors }) => {
                     onMouseLeave={(e) =>
                       (e.target.style.background = colors.primaryGreen)
                     }
-                    onClick={() => {
-                      // TODO: Navigate to product detail page or add to cart
-                      console.log("Shop Now clicked for product", id);
-                    }}
+                    onClick={() => navigate(`/product/admin/${id}`)}
                   >
                     Shop Now
                   </button>

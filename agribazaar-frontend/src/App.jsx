@@ -48,6 +48,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import SearchResults from './pages/SearchResults';
 
+import ProductDetail from "./pages/ProductDetail";
 
 const clientId = "806359710543-50721viene83vcg32pi1utpt3aeobe7k.apps.googleusercontent.com";
 
@@ -139,7 +140,8 @@ function App() {
           <Route path="/irrigation" element={<IrrigationPage />} />
           <Route path="/admin/upload-product" element={<AdminProductUploadPage />} />
           <Route path="/admin/products" element={<AdminProductListPage />} />
-          
+          <Route path="/product/:type/:id" element={<ProductDetail />} />
+
         </Routes>
       </Router>
     </GoogleOAuthProvider>
