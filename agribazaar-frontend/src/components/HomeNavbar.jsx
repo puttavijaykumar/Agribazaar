@@ -545,7 +545,7 @@ const HomeNavbar = ({ user }) => {
                     onClick={() => {
                       setShowCategoryMenu(false);
                       navigate(
-                        `/search?query=${encodeURIComponent(cat)}`
+                        `/farmer-category/${encodeURIComponent(cat)}`
                       );
                       setMobileMenuOpen(false);
                     }}
@@ -563,138 +563,7 @@ const HomeNavbar = ({ user }) => {
             )}
           </div>
 
-          {/* Mobile Icons
-          {isBuyer && (
-            <div
-              style={{
-                display: "flex",
-                gap: "0.5rem",
-                justifyContent: "space-around",
-                borderTop: "1px solid rgba(255,255,255,0.1)",
-                paddingTop: "0.5rem",
-                marginTop: "0.5rem",
-              }}
-            >
-              <Link
-                to="/cart"
-                style={{ ...mobileLinkStyle }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <ShoppingCart size={20} /> Cart
-              </Link>
-              <Link
-                to="/buyer/wishlist"
-                style={{ ...mobileLinkStyle }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Heart size={20} /> Wishlist
-              </Link>
-              <Link
-                to="/orders"
-                style={{ ...mobileLinkStyle }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Package size={20} /> Orders
-              </Link>
-            </div>
-          )} */}
-
-          {/* Mobile Auth
-          {loggedIn ? (
-            <div
-              style={{
-                borderTop: "1px solid rgba(255,255,255,0.1)",
-                paddingTop: "0.5rem",
-                marginTop: "0.5rem",
-              }}
-            >
-              <Link
-                to="/profile"
-                style={{
-                  ...mobileLinkStyle,
-                  display: "flex",
-                  gap: 8,
-                }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <User size={18} /> My Profile
-              </Link>
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setMobileMenuOpen(false);
-                }}
-                style={{
-                  ...mobileLinkStyle,
-                  display: "flex",
-                  gap: 8,
-                  color: "#aed581",
-                  background: "transparent",
-                  border: "none",
-                  width: "100%",
-                  justifyContent: "flex-start",
-                  textAlign: "left",
-                }}
-              >
-                <LogOut size={18} /> Logout
-              </button>
-            </div>
-          ) : (
-            <div
-              style={{
-                borderTop: "1px solid rgba(255,255,255,0.1)",
-                paddingTop: "0.5rem",
-                marginTop: "0.5rem",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
-              }}
-            >
-              <Link
-                to="/login"
-                style={{
-                  ...mobileLinkStyle,
-                  display: "flex",
-                  gap: 8,
-                  justifyContent: "center",
-                }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <LogIn size={18} /> Login
-              </Link>
-              <Link
-                to="/register"
-                style={{
-                  ...mobileLinkStyle,
-                  display: "flex",
-                  gap: 8,
-                  justifyContent: "center",
-                  background: "#aed581",
-                  color: "#388e3c",
-                }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <UserPlus size={18} /> Sign Up
-              </Link>
-            </div>
-          )}
-
-          {!isFarmer && (
-            <Link
-              to="/register"
-              style={{
-                ...mobileLinkStyle,
-                display: "flex",
-                gap: 8,
-                justifyContent: "center",
-                background: "#263238",
-                marginTop: "0.5rem",
-              }}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <UserCheck size={18} /> Become a Seller
-            </Link>
-          )} */}
+          
         </div>
       )}
 
