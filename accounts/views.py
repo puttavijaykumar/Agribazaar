@@ -313,7 +313,7 @@ def infer_category(name, description):
         return "Spices"
     if any(word in text for word in ["apple", "banana", "mango", "orange", "fruit", "lemon", "papaya", "Pomegranate","Guava","Strawberries","berry"]):
         return "Fruits"
-    if any(word in text for word in ["potato", "onion", "tomato", "cabbage", "veg", "spinach", "carrot", "cauliflower", "okra", "brinjal","green chillies", "cucumber", "pumpkin", "beans"]):
+    if any(word in text for word in ["potato", "onion", "tomato", "cabbage", "veg", "spinach", "carrot", "cauliflower", "okra", "brinjal","Chillies", "cucumber", "pumpkin", "beans"]):
         return "Vegetables"
     if any(word in text for word in ["milk", "cheese", "butter", "paneer", "dairy", "yogurt", "curd", "ghee"]):
         return "Dairy"
