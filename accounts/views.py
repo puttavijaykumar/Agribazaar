@@ -340,7 +340,7 @@ def infer_category(name, description):
         "groundnut", "peanut", "sunflower", "mustard", "flax",
         "sesame", "til", "soybean", "soya", "canola", "niger",
         "groundnut oil", "sunflower oil", "mustard oil", "sesame oil",
-        "soybean oil","oil","oils",
+        "soybean oil","oil","oils","groundnut seeds","sunflower seeds","mustard seeds","sesame seeds","soybean seeds","seed","seeds"
     ]):
         return "Oilseeds"
     
