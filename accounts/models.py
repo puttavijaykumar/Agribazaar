@@ -55,7 +55,11 @@ CATEGORY_CHOICES = [
     ("Vegetables", "Vegetables"),
     ("Dairy", "Dairy"),
     ("Seeds", "Seeds"),
-    ("Machinery", "Machinery"),
+    ("Oilseeds", "Oilseeds"),                 
+    ("Dry Fruits", "Dry Fruits"),             
+    ("Organic Products", "Organic Products"), 
+    ("Farm Animals", "Farm Animals"),    
+    # ("Machinery", "Machinery"),
     ("Uncategorized", "Uncategorized"),
 ]
 

@@ -320,8 +320,40 @@ def infer_category(name, description):
     if any(word in text for word in ["seed", "seeds", "hybrid"]):
         if any(word in text for word in ["groundnut", "sunflower", "mustard", "flax", "sesame", "soybean", "canola"]):
             return "Seeds"
-    if any(word in text for word in ["tractor", "harvester", "sprayer", "tools", "plough", "machinery", "equipment", "pump", "motor"]):
-        return "Machinery"
+        
+    # 1) Farm Animals
+    if any(word in text for word in [
+        "cow", "buffalo", "goat", "sheep", "calf", "bull", "heifer",
+        "poultry", "chicken", "broiler", "layer", "duck", "quail",
+        "farm animal", "livestock"
+    ]):
+        return "Farm Animals"
+
+    # 2) Organic Products
+    if "organic" in text or "bio" in text or "natural farming" in text:
+        return "Organic Products"
+
+    # 3) Dry Fruits
+    if any(word in text for word in [
+        "almond", "badam", "cashew", "kaju", "raisin", "kishmish",
+        "walnut", "pista", "pistachio", "apricot", "dates", "anjeer",
+        "dry fruit", "dry fruits"
+    ]):
+        return "Dry Fruits"
+
+    # 4) Oilseeds (oil crops not explicitly sold as seed packets)
+    oilseed_keywords = [
+        "groundnut", "peanut", "sunflower", "mustard", "flax",
+        "sesame", "til", "soybean", "soya", "canola", "niger"
+    ]
+    if any(word in text for word in oilseed_keywords):
+        # If clearly a seed packet/hybrid, treat as Seeds instead (handled below)
+        if not any(word in text for word in ["seed", "seeds", "hybrid"]):
+            return "Oilseeds"
+        
+    # if any(word in text for word in ["tractor", "harvester", "sprayer", "tools", "plough", "machinery", "equipment", "pump", "motor"]):
+    #     return "Machinery"
+    
     return "Uncategorized"
 
 # Farmer products uploading function
