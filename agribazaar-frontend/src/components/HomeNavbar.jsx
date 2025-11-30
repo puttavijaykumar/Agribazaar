@@ -50,8 +50,9 @@ const HomeNavbar = ({ user }) => {
     "Fruits",
     "Vegetables",
     "Dairy",
-    "Seeds",
-    "Machinery",
+    "Dry Fruits",
+    "Organic Products",
+    "Oilseeds",
   ];
 
   return (

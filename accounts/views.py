@@ -320,20 +320,14 @@ def infer_category(name, description):
     if any(word in text for word in ["seed", "seeds", "hybrid"]):
         if any(word in text for word in ["groundnut", "sunflower", "mustard", "flax", "sesame", "soybean", "canola"]):
             return "Seeds"
-        
-    # 1) Farm Animals
     if any(word in text for word in [
         "cow", "buffalo", "goat", "sheep", "calf", "bull", "heifer",
         "poultry", "chicken", "broiler", "layer", "duck", "quail",
         "farm animal", "livestock"
     ]):
         return "Farm Animals"
-
-    # 2) Organic Products
     if "organic" in text or "bio" in text or "natural farming" in text:
         return "Organic Products"
-
-    # 3) Dry Fruits
     if any(word in text for word in [
         "almond", "badam", "cashew", "kaju", "raisin", "kishmish",
         "walnut", "pista", "pistachio", "apricot", "dates", "anjeer",
