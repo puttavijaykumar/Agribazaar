@@ -311,15 +311,12 @@ def infer_category(name, description):
         return "Grains"
     if any(word in text for word in ["turmeric", "chilli", "pepper", "cumin", "mustard", "coriander", "spice"]):
         return "Spices"
-    if any(word in text for word in ["apple", "banana", "mango", "orange", "fruit", "lemon", "papaya", "berry"]):
+    if any(word in text for word in ["apple", "banana", "mango", "orange", "fruit", "lemon", "papaya", "Pomegranate","Guava","Strawberries","berry"]):
         return "Fruits"
-    if any(word in text for word in ["potato", "onion", "tomato", "cabbage", "veg", "spinach", "carrot", "cauliflower", "okra"]):
+    if any(word in text for word in ["potato", "onion", "tomato", "cabbage", "veg", "spinach", "carrot", "cauliflower", "okra", "brinjal","green chillies", "cucumber", "pumpkin", "beans"]):
         return "Vegetables"
     if any(word in text for word in ["milk", "cheese", "butter", "paneer", "dairy", "yogurt", "curd", "ghee"]):
         return "Dairy"
-    if any(word in text for word in ["seed", "seeds", "hybrid"]):
-        if any(word in text for word in ["groundnut", "sunflower", "mustard", "flax", "sesame", "soybean", "canola"]):
-            return "Seeds"
     if any(word in text for word in [
         "cow", "buffalo", "goat", "sheep", "calf", "bull", "heifer",
         "poultry", "chicken", "broiler", "layer", "duck", "quail",
@@ -334,8 +331,6 @@ def infer_category(name, description):
         "dry fruit", "dry fruits"
     ]):
         return "Dry Fruits"
-
-    # 4) Oilseeds (oil crops not explicitly sold as seed packets)
     oilseed_keywords = [
         "groundnut", "peanut", "sunflower", "mustard", "flax",
         "sesame", "til", "soybean", "soya", "canola", "niger"
@@ -344,9 +339,6 @@ def infer_category(name, description):
         # If clearly a seed packet/hybrid, treat as Seeds instead (handled below)
         if not any(word in text for word in ["seed", "seeds", "hybrid"]):
             return "Oilseeds"
-        
-    # if any(word in text for word in ["tractor", "harvester", "sprayer", "tools", "plough", "machinery", "equipment", "pump", "motor"]):
-    #     return "Machinery"
     
     return "Uncategorized"
 
