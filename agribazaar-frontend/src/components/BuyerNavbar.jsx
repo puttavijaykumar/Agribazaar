@@ -97,7 +97,7 @@ const NavIcon = ({ icon: Icon, badge, label, onClick }) => (
 
 // Categories for dropdown
 const categories = [
-  "Grains", "Spices", "Fruits", "Vegetables", "Dairy", "Seeds", "Machinery"
+  "Grains", "Spices", "Fruits", "Vegetables", "Dairy", "Dry Fruits", "Organic Products","Oilseeds",
 ];
 
 const BuyerNavbar = ({
