@@ -335,14 +335,13 @@ def infer_category(name, description):
         "dry fruit", "dry fruits"
     ]):
         return "Dry Fruits"
-    oilseed_keywords = [
+    
+    if any(word in text for word in [
         "groundnut", "peanut", "sunflower", "mustard", "flax",
         "sesame", "til", "soybean", "soya", "canola", "niger",
-    ]
-
-    if any(word in text for word in oilseed_keywords):
-        if any(word in text for word in ["seed", "seeds", "oil", "oils", "hybrid"]):
-            return "Oilseeds"
+        "groundnut oil", "sunflower oil", "mustard oil", "sesame oil",
+        "soybean oil","oil","oils",
+    ]):
         return "Oilseeds"
     
     return "Uncategorized"
