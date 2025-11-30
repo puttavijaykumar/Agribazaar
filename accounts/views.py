@@ -323,7 +323,11 @@ def infer_category(name, description):
         "farm animal", "livestock"
     ]):
         return "Farm Animals"
-    if "organic" in text or "bio" in text or "natural farming" in text:
+    if any(word in text for word in [
+        "organic",
+        "bio",
+        "natural farming",
+    ]):
         return "Organic Products"
     if any(word in text for word in [
         "almond", "badam", "cashew", "kaju", "raisin", "kishmish",
