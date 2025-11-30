@@ -337,12 +337,13 @@ def infer_category(name, description):
         return "Dry Fruits"
     oilseed_keywords = [
         "groundnut", "peanut", "sunflower", "mustard", "flax",
-        "sesame", "til", "soybean", "soya", "canola", "niger"
+        "sesame", "til", "soybean", "soya", "canola", "niger",
     ]
+
     if any(word in text for word in oilseed_keywords):
-        # If clearly a seed packet/hybrid, treat as Seeds instead (handled below)
-        if not any(word in text for word in ["seed", "seeds", "oil","oils","hybrid"]):
+        if any(word in text for word in ["seed", "seeds", "oil", "oils", "hybrid"]):
             return "Oilseeds"
+        return "Oilseeds"
     
     return "Uncategorized"
 
