@@ -306,7 +306,7 @@ def infer_category(name, description):
     if any(word in text for word in [
         "wheat", "rice", "barley", "maize", "corn", "millet", "sorghum", "oats",
         "grain", "paddy", "basmati", "boiled rice", "dal", "chana", "gram", "moong", "masoor",
-        "groundnut", "sunflower", "mustard", "flax", "sesame", "soybean", "canola"
+        "canola"
     ]):
         return "Grains"
     if any(word in text for word in ["turmeric", "chilli", "pepper", "cumin", "mustard", "coriander", "spice"]):
