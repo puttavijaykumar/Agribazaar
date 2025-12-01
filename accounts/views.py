@@ -339,8 +339,8 @@ def infer_category(name, description):
     if any(word in text for word in [
         "groundnut", "peanut", "sunflower", "mustard", "flax",
         "sesame", "til", "soybean", "soya", "canola", "niger",
-        "groundnut oil", "sunflower oil", "mustard oil", "sesame oil",
-        "soybean oil","oil","oils","groundnut seeds","sunflower seeds","mustard seeds","sesame seeds","soybean seeds","seed","seeds"
+        "groundnut oil", "sunflower oil", "mustard oil", "sesame oil","sesame",
+        "soybean oil","oil","oils","groundnut seeds","sunflower seeds","mustard seeds","sesame seeds","soybean seeds","seed","seeds","flax seeds"
     ]):
         return "Oilseeds"
     
