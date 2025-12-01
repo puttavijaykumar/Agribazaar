@@ -318,9 +318,9 @@ def infer_category(name, description):
     if any(word in text for word in ["milk", "cheese", "butter", "paneer", "dairy", "yogurt", "curd", "ghee"]):
         return "Dairy"
     if any(word in text for word in [
-        "cow", "buffalo", "goat", "sheep", "calf", "bull", "heifer",
+        "cow", "buffalo", "goat","goats","sheep", "calf", "bull", "heifer",
         "poultry", "chicken", "broiler", "layer", "duck", "quail",
-        "farm animal", "livestock","hf","jersey", "sahiwal", "desi", "indigenous", "desi cow", "indigenous cow", "indigenous cattle"
+        "farm animal", "livestock","hf","jersey", "sahiwal", "desi", "indigenous", "desi cow", "indigenous cow", "indigenous cattle","hen"
     ]):
         return "Farm Animals"
     if any(word in text for word in [
