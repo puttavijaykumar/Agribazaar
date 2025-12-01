@@ -309,7 +309,7 @@ def infer_category(name, description):
         "canola"
     ]):
         return "Grains"
-    if any(word in text for word in ["turmeric", "chilli", "pepper", "cumin", "mustard", "coriander", "spice"]):
+    if any(word in text for word in ["turmeric", "chilli", "pepper", "cumin", "coriander", "spice"]):
         return "Spices"
     if any(word in text for word in ["apple", "banana", "mango", "orange", "fruit", "lemon", "papaya", "Pomegranate","Guava","Strawberries","berry"]):
         return "Fruits"
