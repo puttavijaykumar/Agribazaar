@@ -332,7 +332,7 @@ const BuyerNavbar = ({
                 cursor: "pointer"
               }}
             >
-              Farmer Dashboard
+              Farmer 
             </button>
           )}
           {/* Profile dropdown */}
