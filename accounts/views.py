@@ -320,7 +320,7 @@ def infer_category(name, description):
     if any(word in text for word in [
         "cow", "buffalo", "goat","goats","sheep", "calf", "bull", "heifer",
         "poultry", "chicken", "broiler", "layer", "duck", "quail",
-        "farm animal", "livestock","hf","jersey", "sahiwal", "desi", "indigenous", "desi cow", "indigenous cow", "indigenous cattle","hen"
+        "farm animal", "livestock","hf","jersey", "sahiwal", "desi", "indigenous", "desi cow", "indigenous cow", "indigenous cattle","hen","bull"
     ]):
         return "Farm Animals"
     if any(word in text for word in [
